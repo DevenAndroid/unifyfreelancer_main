@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../resources/app_theme.dart';
@@ -14,6 +16,7 @@ class ContractsDetailsScreen extends StatefulWidget {
 }
 
 class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
+  String? _startDateVPG, _endDateVPG;
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -301,67 +304,116 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     SizedBox(
                                       height: 10.h,
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: AppTheme.whiteColor,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.2),
-                                                spreadRadius: 2,
-                                                blurRadius: 4,
-                                                offset: const Offset(0, 3))
-                                          ]),
-                                      child: TextFormField(
-                                          onChanged: (value) {
-                                            setState(() {});
-                                          },
-                                          decoration: InputDecoration(
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 10),
-                                              border: new OutlineInputBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        5.0),
-                                                borderSide: new BorderSide(
-                                                    color: AppTheme.whiteColor),
+                                    InkWell(
+                                      onTap: () {
+                                        Get.defaultDialog(
+                                            title: 'Date Range',
+                                            content: Container(
+                                              width:
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height:
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                                  0.5,
+                                              child: Column(
+                                                children: [
+                                                  SfDateRangePicker(
+                                                    showActionButtons:
+                                                    true,
+                                                    onSubmit: (Object?
+                                                    value) {
+                                                      Navigator.pop(
+                                                          context);
+                                                    },
+                                                    onCancel: () {
+                                                      Navigator.pop(
+                                                          context);
+                                                    },
+                                                    selectionMode:
+                                                    DateRangePickerSelectionMode
+                                                        .range,
+                                                    onSelectionChanged:
+                                                    selectionChangedVPG,
+                                                  ),
+                                                ],
                                               ),
-                                              hintText: 'Aug 22 - 28,2022',
-                                              focusColor: Color(0xffE8E7E7),
-                                              hintStyle: TextStyle(
-                                                  fontSize: 14,
-                                                  color: AppTheme.textColor),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        5.0),
-                                                borderSide: new BorderSide(
-                                                    color: AppTheme.whiteColor),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        5.0),
-                                                borderSide: new BorderSide(
-                                                    color: AppTheme.whiteColor),
-                                              ),
-                                              errorBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        5.0),
-                                                borderSide: new BorderSide(
-                                                    color: AppTheme.whiteColor),
-                                              ),
-                                              suffixIcon: Icon(
-                                                Icons.calendar_month_outlined,
-                                                color: AppTheme.primaryColor,
-                                                size: 20,
-                                              ))),
+                                            ));
+                                        print(_startDateVPG);
+                                        print(_endDateVPG);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: AppTheme.whiteColor,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2))
+                                            ]),
+                                        child: TextFormField(
+                                          enabled: false,
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 10),
+                                                border: new OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme.whiteColor),
+                                                ),
+                                                hintText: '${_startDateVPG} To ${_endDateVPG}',
+                                                focusColor: Color(0xffE8E7E7),
+                                                hintStyle: TextStyle(
+                                                    fontSize: 14,
+                                                    color: AppTheme.textColor),
+                                                disabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                  new BorderRadius.circular(
+                                                      5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme.whiteColor),
+                                                ) ,
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme.whiteColor),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme.whiteColor),
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme.whiteColor),
+                                                ),
+                                                suffixIcon: Icon(
+                                                  Icons.calendar_month_outlined,
+                                                  color: AppTheme.primaryColor,
+                                                  size: 20,
+                                                ))),
+                                      ),
                                     ),
                                     SizedBox(
-                                      height: 10.h,
+                                      height: 20.h,
                                     ),
                                     Expanded(
                                       child: ListView.builder(
@@ -644,4 +696,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       ),
     );
   }
+  void selectionChangedVPG(DateRangePickerSelectionChangedArgs args) {
+    setState(() {
+      _startDateVPG =
+          DateFormat('yyyy-MM-dd').format(args.value.startDate).toString();
+      _endDateVPG = DateFormat('yyyy-MM-dd')
+          .format(args.value.endDate ?? args.value.startDate)
+          .toString();
+    });
+  }
+
 }

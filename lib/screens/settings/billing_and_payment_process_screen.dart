@@ -112,7 +112,7 @@ class _BillingAndPaymentProcessScreenState
                   height: 5,
                 ),
                 CustomTextField(
-                  controller: _cardController,
+                  controller: _fNameController,
                   obSecure: false.obs,
                   keyboardType: TextInputType.text,
                   hintText: "First Name".obs,
@@ -131,7 +131,7 @@ class _BillingAndPaymentProcessScreenState
                   height: 5,
                 ),
                 CustomTextField(
-                  controller: _cardController,
+                  controller: _lNameController,
                   obSecure: false.obs,
                   keyboardType: TextInputType.text,
                   hintText: "Last Name".obs,
@@ -153,7 +153,7 @@ class _BillingAndPaymentProcessScreenState
                   children: [
                     Expanded(
                       child: CustomTextField(
-                        controller: _cardController,
+                        controller: _monthController,
                         obSecure: false.obs,
                         keyboardType: TextInputType.number,
                         hintText: "MM".obs,
@@ -164,7 +164,7 @@ class _BillingAndPaymentProcessScreenState
                     ),
                     Expanded(
                       child: CustomTextField(
-                        controller: _cardController,
+                        controller: _yearController,
                         obSecure: false.obs,
                         keyboardType: TextInputType.number,
                         hintText: "YY".obs,
@@ -186,7 +186,7 @@ class _BillingAndPaymentProcessScreenState
                   height: 5,
                 ),
                 CustomTextField(
-                  controller: _cardController,
+                  controller: _securityController,
                   obSecure: true.obs,
                   keyboardType: TextInputType.number,
                   hintText: "Security Code".obs,
@@ -202,7 +202,7 @@ class _BillingAndPaymentProcessScreenState
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () {},
+                onPressed: () =>Get.back(),
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),

@@ -1,14 +1,14 @@
 class ModelLoginResponse {
   ModelLoginResponse({
-    required this.status,
-    required this.message,
-    required this.authToken,
-    required this.data,
+    this.status,
+    this.message,
+    this.authToken,
+    this.data,
   });
-  late final bool status;
-  late final String message;
-  late final String authToken;
-  late final Data data;
+  bool? status;
+  String? message;
+  String? authToken;
+  Data? data;
 
   ModelLoginResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -22,7 +22,7 @@ class ModelLoginResponse {
     _data['status'] = status;
     _data['message'] = message;
     _data['auth_token'] = authToken;
-    _data['data'] = data.toJson();
+    _data['data'] = data!.toJson();
     return _data;
   }
 }
@@ -46,39 +46,39 @@ class Data {
 
 class User {
   User({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.phone,
-    required this.emailVerifiedAt,
-    required this.status,
-    required this.referalCode,
-    required this.address,
-    required this.country,
-    required this.state,
-    required this.city,
-    required this.zipCode,
-    required this.profileImage,
-    required this.agreeTerms,
-    required this.sendEmail,
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phone,
+    this.emailVerifiedAt,
+    this.status,
+    this.referalCode,
+    this.address,
+    this.country,
+    this.state,
+    this.city,
+    this.zipCode,
+    this.profileImage,
+    this.agreeTerms,
+    this.sendEmail,
   });
-  late final int id;
-  late final String firstName;
-  late final String lastName;
-  late final String email;
-  late final String phone;
-  late final bool emailVerifiedAt;
-  late final String status;
-  late final String referalCode;
-  late final String address;
-  late final String country;
-  late final String state;
-  late final String city;
-  late final String zipCode;
-  late final String profileImage;
-  late final int agreeTerms;
-  late final int sendEmail;
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phone;
+  bool? emailVerifiedAt;
+  String? status;
+  String? referalCode;
+  String? address;
+  String? country;
+  String? state;
+  String? city;
+  String? zipCode;
+  String? profileImage;
+  dynamic agreeTerms;
+  dynamic sendEmail;
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

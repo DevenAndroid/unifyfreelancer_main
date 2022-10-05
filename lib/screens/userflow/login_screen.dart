@@ -129,23 +129,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
-                            login(usernameController.text,
-                                    passwordController.text, context)
-                                .then((value) async {
+                            login(usernameController.text, passwordController.text, context).then((value) async {
                               if (value.status == true) {
-                                showError(value.message);
-                                SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
-                                pref.setString(
-                                    'cookie', jsonEncode(value.authToken));
+                                showError(value.message.toString());
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                pref.setString('cookie', jsonEncode(value.authToken));
                                 Get.toNamed(MyRouter.bottomNavbar);
-                                print("login hoigva");
-                                log(":::" +
-                                    jsonEncode(pref.getString('cookie')));
+                                print("login Done");
+                                log(":::" + jsonEncode(pref.getString('cookie')));
                               } else {
-                                showError(value.message);
+                                showError(value.message.toString());
                               }
-                              return null;
                             });
                           }
                         }, deviceWidth, 50),

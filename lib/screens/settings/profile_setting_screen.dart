@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../../resources/app_theme.dart';
-import '../../widgets/appDrawer.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -392,17 +392,20 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                   color: AppTheme.textColor),
                             ),
 
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
-                                Icons.edit,
-                                color: AppTheme.primaryColor,
-                                size: 15,
+                            InkWell(
+                              onTap: ()=>Get.toNamed(MyRouter.editSkillsScreen),
+                              child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                padding: EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppTheme.whiteColor,
+                                    border: Border.all(color: Color(0xff707070))),
+                                child: Icon(
+                                  Icons.edit,
+                                  color: AppTheme.primaryColor,
+                                  size: 15,
+                                ),
                               ),
                             ),
 
@@ -431,7 +434,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                       ],
                     ),
                   ),
-                  Container(
+                 /* Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     padding: EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width,
@@ -498,7 +501,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                         )
                       ],
                     ),
-                  )
+                  )*/
 
                 ],
               )),

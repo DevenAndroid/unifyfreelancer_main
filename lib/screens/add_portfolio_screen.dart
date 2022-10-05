@@ -95,7 +95,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () {},
+                onPressed: () =>Get.back(),
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),

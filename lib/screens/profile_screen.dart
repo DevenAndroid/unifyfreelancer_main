@@ -310,77 +310,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (ctx) => AlertDialog(
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: SizedBox(
-                                                height: 15,
-                                                width: 20,
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: SizedBox(
+                                                  height: 15,
+                                                  width: 20,
+                                                ),
                                               ),
-                                            ),
-                                            Positioned(
-                                                top: -15,
-                                                right: -15,
-                                                child: IconButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  icon: Icon(
-                                                    Icons.clear,
-                                                    size: 20,
-                                                  ),
-                                                ))
-                                          ],
-                                        ),
-                                        Text(
-                                          "Edit Name",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.textColor),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        BoxTextField(
-                                          obSecure: false.obs,
-                                          hintText: "First Name".obs,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        BoxTextField(
-                                          obSecure: false.obs,
-                                          hintText: "Last Name".obs,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        BoxTextField(
-                                          obSecure: false.obs,
-                                          hintText: "description".obs,
-                                          isMulti: true,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomOutlineButton(
-                                          title: "Change",
-                                          backgroundColor:
-                                              AppTheme.primaryColor,
-                                          onPressed: () {},
-                                          textColor: AppTheme.whiteColor,
-                                          expandedValue: true,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                      ],
+                                              Positioned(
+                                                  top: -15,
+                                                  right: -15,
+                                                  child: IconButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    icon: Icon(
+                                                      Icons.clear,
+                                                      size: 20,
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                          Text(
+                                            "Edit Name",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.textColor),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          BoxTextField(
+                                            obSecure: false.obs,
+                                            hintText: "First Name".obs,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          BoxTextField(
+                                            obSecure: false.obs,
+                                            hintText: "Last Name".obs,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          BoxTextField(
+                                            obSecure: false.obs,
+                                            hintText: "description".obs,
+                                            isMulti: true,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          CustomOutlineButton(
+                                            title: "Change",
+                                            backgroundColor:
+                                                AppTheme.primaryColor,
+                                            onPressed: () {},
+                                            textColor: AppTheme.whiteColor,
+                                            expandedValue: true,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

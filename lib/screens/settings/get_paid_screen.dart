@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../resources/app_theme.dart';
+import '../../routers/my_router.dart';
 import '../../widgets/custom_appbar.dart';
 
 
@@ -132,16 +134,19 @@ class _GetPaidScreenState extends State<GetPaidScreen> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.whiteColor,
-                            border: Border.all(color: Color(0xff707070))),
-                        child: Icon(
-                          Icons.add,
-                          color: AppTheme.primaryColor,
-                          size: 15,
+                      InkWell(
+                        onTap: ()=>Get.toNamed(MyRouter.billingAndPaymentProcessScreen),
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.whiteColor,
+                              border: Border.all(color: Color(0xff707070))),
+                          child: Icon(
+                            Icons.add,
+                            color: AppTheme.primaryColor,
+                            size: 15,
+                          ),
                         ),
                       ),
                     ],

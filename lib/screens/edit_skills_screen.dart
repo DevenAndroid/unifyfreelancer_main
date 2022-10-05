@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../resources/app_theme.dart';
+import '../routers/my_router.dart';
 import '../widgets/common_outline_button.dart';
 import '../widgets/custom_appbar.dart';
 
@@ -134,7 +136,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
               child: CustomOutlineButton(
                 title: 'cancel',
                 backgroundColor: AppTheme.whiteColor,
-                onPressed: () {},
+                onPressed: ()=>Get.back(),
                 textColor: AppTheme.primaryColor,
                 expandedValue: false,
               ),
@@ -147,7 +149,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () {},
+                onPressed: ()=>Get.toNamed(MyRouter.profileScreen),
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),

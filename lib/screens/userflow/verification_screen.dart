@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:get/get.dart';
 
+import '../../repository/verify_signup_repository.dart';
 import '../../resources/app_theme.dart';
+import '../../routers/my_router.dart';
 import '../../widgets/common_button.dart';
 import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_dialogue.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);
@@ -14,7 +18,15 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   var _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   email = Get.arguments[0];
+  }
+  var email ;
+  var otp;
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -76,10 +88,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     showFieldAsBox: true,
                     //runs when a code is typed in
                     onCodeChanged: (String code) {
-                      //handle validation or checks here
+
                     },
                     //runs when every textfield is filled
-                    onSubmit: (String verificationCode) {}, // end onSubmit
+                    onSubmit: (String verificationCode) {
+                      setState(() {
+                        otp = verificationCode;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -105,7 +121,21 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     height: 15,
                   ),
                   CommonButton("Verify", () {
-                    if (_formKey.currentState!.validate()) {}
+                    print("value");
+                    if (_formKey.currentState!.validate()) {
+                        print("value");
+                        print(otp);
+                      verifySignUp(email,otp,context).then((value) async{
+                        print(value);
+                   if(value.status==true){
+                     Get.toNamed(MyRouter.bottomNavbar,);
+                     showError(value.message.toString());
+                   }
+                   else{
+                     showError(value.message.toString());
+                   }
+                      });
+                    }
                   }, deviceWidth, 50),
                 ],
               ),

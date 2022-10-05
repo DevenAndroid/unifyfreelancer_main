@@ -86,7 +86,7 @@ class _AddOtherExperiencesScreenState extends State<AddOtherExperiencesScreen> {
               child: CustomOutlineButton(
                 title: 'cancel',
                 backgroundColor: AppTheme.whiteColor,
-                onPressed: () {},
+                onPressed: ()=>Get.back(),
                 textColor: AppTheme.primaryColor,
                 expandedValue: false,
               ),

@@ -12,6 +12,7 @@ import '../../resources/app_theme.dart';
 import '../../widgets/custom_appbar.dart';
 
 import '../Controller/jobs_detail_controller.dart';
+import '../routers/my_router.dart';
 import '../widgets/appDrawer.dart';
 import '../widgets/common_outline_button.dart';
 
@@ -768,7 +769,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                       height: deviceHeight * .025,
                     ),
                     CustomOutlineButton(
-                      onPressed: () {},
+                      onPressed: () =>Get.toNamed(MyRouter.bottomNavbar),
                       title: " Send Proposal",
                       textColor: AppTheme.whiteColor,
                       expandedValue: true,

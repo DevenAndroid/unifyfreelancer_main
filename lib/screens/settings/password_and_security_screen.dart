@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../../resources/app_theme.dart';
 import '../../widgets/appDrawer.dart';
@@ -12,9 +14,7 @@ class PasswordAndSecurityScreen extends StatefulWidget {
   @override
   State<PasswordAndSecurityScreen> createState() =>
       _PasswordAndSecurityScreenState();
-
 }
-
 
 class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
   bool isSwitched = false;
@@ -51,22 +51,29 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                                   fontWeight: FontWeight.w700,
                                   color: AppTheme.textColor),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
-                                Icons.edit,
-                                color: AppTheme.primaryColor,
-                                size: 15,
+                            InkWell(
+                              onTap: () =>
+                                  Get.toNamed(MyRouter.forgotPasswordScreen),
+                              child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppTheme.whiteColor,
+                                    border:
+                                        Border.all(color: Color(0xff707070))),
+                                child: Icon(
+                                  Icons.edit,
+                                  color: AppTheme.primaryColor,
+                                  size: 15,
+                                ),
                               ),
                             ),
                           ]),
                       Container(
-                        margin: const EdgeInsets.only(top: 10, bottom: 15),
+                        margin: const EdgeInsets.only(
+                          top: 10,
+                        ),
                         width: deviceWidth,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -127,7 +134,7 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                           ],
                         ),
                       ),
-                      Row(
+                      /*  Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -159,8 +166,8 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                         style: TextStyle(
                             fontSize: 13,
                             color: AppTheme.textColor.withOpacity(.63)),
-                      ),
-                      Container(
+                      ),*/
+                      /*Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 15),
                         width: deviceWidth,
                         padding: const EdgeInsets.all(10),
@@ -440,6 +447,108 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                                   )
 
                                 ],))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),*/
+                      Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 15),
+                        width: deviceWidth,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppTheme.whiteColor,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Security question",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.settingsTextColor),
+                                ),
+                                SizedBox(
+                                  width: 15.w,
+                                ),
+                                Icon(
+                                  Icons.help,
+                                  color: Color(0xffB9BDC1),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 20, top: 5),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.primaryColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: AppTheme.whiteColor,
+                                    size: 15,
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Column(
+                                  children: [
+                                    Row(children: [
+                                      Text(
+                                        "Enabled",
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.settingsTextColor),
+                                      ),
+                                      InkWell(
+                                        onTap: ()=>Get.toNamed(MyRouter.securityQuestionScreen),
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: 20),
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppTheme.whiteColor,
+                                              border: Border.all(
+                                                  color: Color(0xff707070))),
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: AppTheme.primaryColor,
+                                            size: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                    Text(
+                                      "Answer a question you choose to confirm it’s you.",
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Color(0xff545454),
+                                      ),
+                                    )
+                                  ],
+                                ))
                               ],
                             )
                           ],

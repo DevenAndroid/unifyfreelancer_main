@@ -64,7 +64,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 CustomTextField(
                     controller: _certifications,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.datetime,
+                    keyboardType: TextInputType.text,
                     hintText: "Certification name".obs),
                 SizedBox(
                   height: 10,
@@ -80,7 +80,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 CustomTextField(
                     controller: _expirationDate,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.datetime,
                     hintText: "Expiration Date".obs),
                 SizedBox(
                   height: 10,
@@ -88,8 +88,8 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 CustomTextField(
                     controller: _certificationId,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Certification name".obs),
+                    keyboardType: TextInputType.number,
+                    hintText: "Certification ID".obs),
                 SizedBox(
                   height: 10,
                 ),
@@ -107,7 +107,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
               child: CustomOutlineButton(
                 title: 'cancel',
                 backgroundColor: AppTheme.whiteColor,
-                onPressed: () {},
+                onPressed: ()=>Get.back(),
                 textColor: AppTheme.primaryColor,
                 expandedValue: false,
               ),

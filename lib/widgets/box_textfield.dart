@@ -91,7 +91,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,
-            suffixIcon: GestureDetector(
+          /*  suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {
                     widget.obSecure!.value = !widget.obSecure!.value;
@@ -103,7 +103,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
                   widget.suffixIcon,
                   color: AppTheme.primaryColor,
                 )),
-
+*/
             // labelStyle: TextStyle(fontSize: lableFontSize()),
             // labelText: label,
             hintStyle: const TextStyle(color: Color(0xff596681), fontSize: 15),

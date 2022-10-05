@@ -46,7 +46,7 @@ List<String> stackButtonsList = [
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: CustomAppbar(
           isLikeButton: false,
-          isProfileImage: true,
+          isProfileImage: false,
           titleText: "Save Jobs",
         ),
       ),
@@ -59,7 +59,7 @@ List<String> stackButtonsList = [
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 5,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder:( context, index) {
               return Container(
                   margin: const EdgeInsets.only(bottom: 15,right: 10,left: 10),
                   width: deviceWidth,

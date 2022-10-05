@@ -71,7 +71,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                 CustomTextField(
                     controller: _titleController,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.datetime,
+                    keyboardType: TextInputType.text,
                     hintText: "Ex. Direct of marketing".obs),
                 SizedBox(
                   height: 15,
@@ -124,7 +124,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
           child: CustomOutlineButton(
             title: 'Request Testimonial',
             backgroundColor: AppTheme.primaryColor,
-            onPressed: () {},
+            onPressed: () =>Get.back(),
             textColor: AppTheme.whiteColor,
             expandedValue: false,
           ),

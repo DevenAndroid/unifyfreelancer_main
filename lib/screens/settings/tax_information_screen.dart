@@ -24,12 +24,13 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   TextEditingController postalController = TextEditingController();
   TextEditingController dateInput = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController taxpayerNumberController = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     dateInput.text = ""; //set the initial value of text field
     initCountry();
-    super.initState();
   }
 
   var editTax = false;
@@ -40,6 +41,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
 
   String? gst;
   String? usPerson;
+  String? taxPayerNumber;
 
   Country? _selectedCountry;
   var countryText = false;
@@ -63,6 +65,16 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   }
 
   bool acceptTermsOrPrivacy = false;
+
+  var federalTaxClassification = [
+    "Individual/sole proprietor or single-member LLC",
+    "Limited liability company",
+    "c Corporation",
+    "S Corporation",
+    "Partnership",
+    "Trust/estate",
+    "Other",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +166,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                     "Country ",
                                     style: TextStyle(
                                         fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
                                         color: Color(0xff393939)),
                                   ),
                                   SizedBox(
@@ -183,13 +196,11 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 14,
                                                         horizontal: 20),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
+                                                focusedBorder: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: AppTheme
-                                                          .primaryColor
-                                                          .withOpacity(.15),
-                                                      width: 1.0),
+                                                      color: AppTheme.primaryColor.withOpacity(.15),
+                                                      width: 1.0
+                                                  ),
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                 ),
@@ -281,6 +292,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                     "Address",
                                     style: TextStyle(
                                         fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
                                         color: Color(0xff393939)),
                                   ),
                                   SizedBox(
@@ -306,6 +318,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                     "Postal Code",
                                     style: TextStyle(
                                         fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
                                         color: Color(0xff393939)),
                                   ),
                                   SizedBox(
@@ -313,7 +326,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                   ),
                                   BoxTextField(
                                     obSecure: false.obs,
-                                    controller: addressController,
+                                    controller: postalController,
                                     hintText: "Postal Code".obs,
                                     keyboardType: TextInputType.number,
                                   ),
@@ -513,7 +526,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                           fontSize: 14,
                                           color: AppTheme.settingsTextColor),
                                     ),
-                                    contentPadding: const EdgeInsets.all(0),
+                                    contentPadding: EdgeInsets.zero,
                                     dense: true,
                                     visualDensity: VisualDensity(
                                         horizontal: -4, vertical: -4),
@@ -768,7 +781,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                     Row(
                       children: [
                         Text(
-                          "W-8BEN",
+                          edit9BEN == true ? "W-9" : "W-8BEN",
                           style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
@@ -865,130 +878,478 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                   },
                                 ),
                                 SizedBox(
-                                  height: 15.h,
-                                ),
-                                Text(
-                                  "Before withdrawing funds, all non-U.S persons must provide their W8-BEN Tax Information",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: AppTheme.textColor),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Text(
-                                  "Legal Name of Taxpayer",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppTheme.textColor),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                BoxTextField(
-                                  obSecure: false.obs,
-                                  controller: nameController,
-                                  hintText: "Name".obs,
-                                  keyboardType: TextInputType.text,
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                Text(
-                                  "Provide the same name as shown as on your tax return",
-                                  style: TextStyle(
-                                      fontSize: 10.sp,
-                                      color: AppTheme.textColor),
-                                ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Checkbox(
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        value: acceptTermsOrPrivacy,
-                                        activeColor: AppTheme.primaryColor,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            acceptTermsOrPrivacy = newValue!;
-                                          });
-                                        }),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: RichText(
-                                        text: TextSpan(
-                                          style: const TextStyle(
-                                              color: AppTheme.primaryColor,
-                                              fontSize: 10),
-                                          children: [
-                                            const TextSpan(
-                                              text:
-                                                  'Yes, I certify, under penalties of perjury, That the representations in this ',
-                                              style: TextStyle(
-                                                color: Color(0xff172B4D),
-                                                fontSize: 12,
+                                    child: edit9BEN == true
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 15.h,
                                               ),
-                                            ),
-                                            const TextSpan(
-                                              text: 'Tax Certificate',
-                                              style: TextStyle(
-                                                color: AppTheme.primaryColor,
-                                                fontSize: 12,
+                                              Text(
+                                                "Before withdrawing funds, all non U.S. persons must provide their W-9 tax information.",
+                                                style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    color: AppTheme.textColor),
                                               ),
-                                            ),
-                                            const TextSpan(
-                                              text: " are true and correct.",
-                                              style: TextStyle(
-                                                color: Color(0xff172B4D),
-                                                fontSize: 12,
+                                              SizedBox(
+                                                height: 20.h,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: CustomOutlineButton(
-                                          title: 'Update',
-                                          backgroundColor:
-                                              AppTheme.primaryColor,
-                                          onPressed: () {},
-                                          expandedValue: false,
-                                          textColor: AppTheme.whiteColor,
-                                        )),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                        flex: 1,
-                                        child: CustomOutlineButton(
-                                          title: 'cancel',
-                                          backgroundColor: AppTheme.whiteColor,
-                                          onPressed: () {
-                                            setState(() {
-                                              editBEN = false;
-                                            });
-                                          },
-                                          expandedValue: false,
-                                          textColor: AppTheme.primaryColor,
-                                        )),
-                                  ],
-                                )
+                                              Text(
+                                                "Legal Name of Taxpayer",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              BoxTextField(
+                                                obSecure: false.obs,
+                                                controller: nameController,
+                                                hintText: "Name".obs,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              Text(
+                                                "Federal Tax Classification",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              DropdownButtonFormField<dynamic>(
+                                                isExpanded: true,
+                                                value: null,
+                                                validator: (value) {
+                                                  if (value == null) {
+                                                    return 'Please select type';
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                  hintText: "Please select",
+                                                  hintStyle: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0xff596681)),
+                                                  counterText: "",
+                                                  filled: true,
+                                                  fillColor: AppTheme
+                                                      .primaryColor
+                                                      .withOpacity(.05),
+                                                  focusColor: AppTheme
+                                                      .primaryColor
+                                                      .withOpacity(.05),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 14,
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color: AppTheme
+                                                          .primaryColor
+                                                          .withOpacity(.15),
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  ),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: AppTheme
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    .15),
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      10.0))),
+                                                  border: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: AppTheme
+                                                              .primaryColor
+                                                              .withOpacity(.15),
+                                                          width: 2.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0)),
+                                                ),
+                                                // Down Arrow Icon
+                                                icon: const Icon(
+                                                    Icons.keyboard_arrow_down,
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                                items: List.generate(
+                                                    federalTaxClassification
+                                                        .length,
+                                                    (index) => DropdownMenuItem(
+                                                          value:
+                                                              federalTaxClassification[
+                                                                  index],
+                                                          child: Text(
+                                                            federalTaxClassification[
+                                                                    index]
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                color: Color(
+                                                                    0xff596681)),
+                                                          ),
+                                                        )),
+                                                // After selecting the desired option,it will
+                                                // change button value to selected value
+                                                onChanged: (newValue) {},
+                                              ),
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              Text(
+                                                "Taxpayer Identification Number Type",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              RadioListTile(
+                                                title: Text(
+                                                  "Social Security Number (SSN)",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: AppTheme
+                                                          .settingsTextColor),
+                                                ),
+                                                contentPadding:
+                                                    const EdgeInsets.all(0),
+                                                dense: true,
+                                                visualDensity: VisualDensity(
+                                                    horizontal: -4,
+                                                    vertical: -4),
+                                                value: "SSN",
+                                                groupValue: taxPayerNumber,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    taxPayerNumber =
+                                                        value.toString();
+                                                  });
+                                                },
+                                              ),
+                                              RadioListTile(
+                                                title: Text(
+                                                  "Employer Identification Number (EIN)",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: AppTheme
+                                                          .settingsTextColor),
+                                                ),
+                                                contentPadding:
+                                                    const EdgeInsets.all(0),
+                                                dense: true,
+                                                visualDensity:
+                                                    const VisualDensity(
+                                                        horizontal: -4,
+                                                        vertical: -4),
+                                                value: "EIN",
+                                                groupValue: gst,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    taxPayerNumber =
+                                                        value.toString();
+                                                  });
+                                                },
+                                              ),
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              Text(
+                                                "SSN/EIN #",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              BoxTextField(
+                                                obSecure: false.obs,
+                                                controller: taxpayerNumberController,
+                                                hintText: "".obs,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                              ),
+                                              SizedBox(
+                                                height: 20.h,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Checkbox(
+                                                      materialTapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      value:
+                                                          acceptTermsOrPrivacy,
+                                                      activeColor:
+                                                          AppTheme.primaryColor,
+                                                      onChanged: (newValue) {
+                                                        setState(() {
+                                                          acceptTermsOrPrivacy =
+                                                              newValue!;
+                                                        });
+                                                      }),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: const TextStyle(
+                                                            color: AppTheme
+                                                                .primaryColor,
+                                                            fontSize: 10),
+                                                        children: [
+                                                          const TextSpan(
+                                                            text:
+                                                                'Yes, I certify, under penalties of perjury, That the representations in this ',
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xff172B4D),
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                          const TextSpan(
+                                                            text:
+                                                                'Tax Certificate',
+                                                            style: TextStyle(
+                                                              color: AppTheme
+                                                                  .primaryColor,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                          const TextSpan(
+                                                            text:
+                                                                " are true and correct.",
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xff172B4D),
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          CustomOutlineButton(
+                                                        title: 'Update',
+                                                        backgroundColor:
+                                                            AppTheme
+                                                                .primaryColor,
+                                                        onPressed: () {},
+                                                        expandedValue: false,
+                                                        textColor:
+                                                            AppTheme.whiteColor,
+                                                      )),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          CustomOutlineButton(
+                                                        title: 'cancel',
+                                                        backgroundColor:
+                                                            AppTheme.whiteColor,
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            editBEN = false;
+                                                          });
+                                                        },
+                                                        expandedValue: false,
+                                                        textColor: AppTheme
+                                                            .primaryColor,
+                                                      )),
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              Text(
+                                                "Before withdrawing funds, all non-U.S persons must provide their W8-BEN Tax Information",
+                                                style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 20.h,
+                                              ),
+                                              Text(
+                                                "Legal Name of Taxpayer",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              BoxTextField(
+                                                obSecure: false.obs,
+                                                controller: nameController,
+                                                hintText: "Name".obs,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                              ),
+                                              SizedBox(
+                                                height: 5.h,
+                                              ),
+                                              Text(
+                                                "Provide the same name as shown as on your tax return",
+                                                style: TextStyle(
+                                                    fontSize: 10.sp,
+                                                    color: AppTheme.textColor),
+                                              ),
+                                              SizedBox(
+                                                height: 15.h,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Checkbox(
+                                                      materialTapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      value:
+                                                          acceptTermsOrPrivacy,
+                                                      activeColor:
+                                                          AppTheme.primaryColor,
+                                                      onChanged: (newValue) {
+                                                        setState(() {
+                                                          acceptTermsOrPrivacy =
+                                                              newValue!;
+                                                        });
+                                                      }),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: const TextStyle(
+                                                            color: AppTheme
+                                                                .primaryColor,
+                                                            fontSize: 10),
+                                                        children: [
+                                                          const TextSpan(
+                                                            text:
+                                                                'Yes, I certify, under penalties of perjury, That the representations in this ',
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xff172B4D),
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                          const TextSpan(
+                                                            text:
+                                                                'Tax Certificate',
+                                                            style: TextStyle(
+                                                              color: AppTheme
+                                                                  .primaryColor,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                          const TextSpan(
+                                                            text:
+                                                                " are true and correct.",
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xff172B4D),
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 20.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          CustomOutlineButton(
+                                                        title: 'Update',
+                                                        backgroundColor:
+                                                            AppTheme
+                                                                .primaryColor,
+                                                        onPressed: () {},
+                                                        expandedValue: false,
+                                                        textColor:
+                                                            AppTheme.whiteColor,
+                                                      )),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                          CustomOutlineButton(
+                                                        title: 'cancel',
+                                                        backgroundColor:
+                                                            AppTheme.whiteColor,
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            editBEN = false;
+                                                          });
+                                                        },
+                                                        expandedValue: false,
+                                                        textColor: AppTheme
+                                                            .primaryColor,
+                                                      )),
+                                                ],
+                                              )
+                                            ],
+                                          ))
                               ],
                             )
                           : Column(

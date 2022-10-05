@@ -24,6 +24,7 @@ import '../screens/add_certifications.dart';
 import '../screens/add_other_experiences_screen.dart';
 import '../screens/add_portfolio_screen.dart';
 import '../screens/add_testimonials_screen.dart';
+import '../screens/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
 import '../screens/edit_skills_screen.dart';
 import '../screens/new_password_screen.dart';
@@ -73,79 +74,44 @@ class MyRouter {
   static var profileSettingScreen = "/profileSettingScreen";
   static var passwordAndSecurityScreen = "/passwordAndSecurityScreen";
   static var helpAndSupportScreen = "/helpAndSupportScreen";
+  static var securityQuestionScreen = "/securityQuestionScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const BottomNavbar()),
-    GetPage(
-        name: MyRouter.onBoardingScreen, page: () => const OnBoardingScreen()),
+    GetPage(name: '/', page: () => const SignUpScreen()),
+    GetPage(name: MyRouter.onBoardingScreen, page: () => const OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
-    GetPage(
-        name: MyRouter.forgotPasswordScreen,
-        page: () => const ForgotPasswordScreen()),
-    GetPage(
-        name: MyRouter.verificationScreen,
-        page: () => const VerificationScreen()),
-    GetPage(
-        name: MyRouter.newPasswordScreen,
-        page: () => const NewPasswordScreen()),
+    GetPage(name: MyRouter.forgotPasswordScreen, page: () => const ForgotPasswordScreen()),
+    GetPage(name: MyRouter.verificationScreen, page: () => const VerificationScreen()),
+    GetPage(name: MyRouter.newPasswordScreen, page: () => const NewPasswordScreen()),
     GetPage(name: MyRouter.bottomNavbar, page: () => const BottomNavbar()),
     GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
     GetPage(name: MyRouter.saveJobsScreen, page: () => const SaveJobsScreen()),
-    GetPage(
-        name: MyRouter.jobDetailsScreen, page: () => const JobDetailsScreen()),
-    GetPage(
-        name: MyRouter.proposalsScreen, page: () => const ProposalsScreen()),
-    GetPage(
-        name: MyRouter.contractsScreen, page: () => const ContractsScreen()),
-    GetPage(
-        name: MyRouter.contractsDetailsScreen,
-        page: () => const ContractsDetailsScreen()),
+    GetPage(name: MyRouter.jobDetailsScreen, page: () => const JobDetailsScreen()),
+    GetPage(name: MyRouter.proposalsScreen, page: () => const ProposalsScreen()),
+    GetPage(name: MyRouter.contractsScreen, page: () => const ContractsScreen()),
+    GetPage(name: MyRouter.contractsDetailsScreen, page: () => const ContractsDetailsScreen()),
     GetPage(name: MyRouter.alertsScreen, page: () => const AlertsScreen()),
-    GetPage(
-        name: MyRouter.unifyQualificationsScreen,
-        page: () => const UnifyQualificationsScreen()),
+    GetPage(name: MyRouter.unifyQualificationsScreen, page: () => const UnifyQualificationsScreen()),
     GetPage(name: MyRouter.reportsScreen, page: () => const ReportsScreen()),
     GetPage(name: MyRouter.messagesScreen, page: () => const MessagesScreen()),
     GetPage(name: MyRouter.chatScreen, page: () => const ChatScreen()),
     GetPage(name: MyRouter.profileScreen, page: () => const ProfileScreen()),
-    GetPage(
-        name: MyRouter.addCertificationsScreen,
-        page: () => const AddCertificationsScreen()),
-    GetPage(
-        name: MyRouter.editSkillsScreen, page: () => const EditSkillsScreen()),
-    GetPage(
-        name: MyRouter.addOtherExperiencesScreen,
-        page: () => const AddOtherExperiencesScreen()),
-    GetPage(
-        name: MyRouter.addTestimonialsScreen,
-        page: () => const AddTestimonialsScreen()),
-    GetPage(
-        name: MyRouter.addPortFolioScreen,
-        page: () => const AddPortFolioScreen()),
+    GetPage(name: MyRouter.addCertificationsScreen, page: () => const AddCertificationsScreen()),
+    GetPage(name: MyRouter.editSkillsScreen, page: () => const EditSkillsScreen()),
+    GetPage(name: MyRouter.addOtherExperiencesScreen, page: () => const AddOtherExperiencesScreen()),
+    GetPage(name: MyRouter.addTestimonialsScreen, page: () => const AddTestimonialsScreen()),
+    GetPage(name: MyRouter.addPortFolioScreen, page: () => const AddPortFolioScreen()),
     GetPage(name: MyRouter.settingsScreen, page: () => const SettingsScreen()),
-    GetPage(
-        name: MyRouter.billingAndPaymentScreen,
-        page: () => const BillingAndPaymentScreen()),
-    GetPage(
-        name: MyRouter.billingAndPaymentProcessScreen,
-        page: () => const BillingAndPaymentProcessScreen()),
+    GetPage(name: MyRouter.billingAndPaymentScreen, page: () => const BillingAndPaymentScreen()),
+    GetPage(name: MyRouter.billingAndPaymentProcessScreen, page: () => const BillingAndPaymentProcessScreen()),
     GetPage(name: MyRouter.getPaidScreen, page: () => const GetPaidScreen()),
     GetPage(name: MyRouter.myTeamsScreen, page: () => const MyTeamsScreen()),
-    GetPage(
-        name: MyRouter.taxInformationScreen,
-        page: () => const TaxInformationScreen()),
-    GetPage(
-        name: MyRouter.contactInfoScreen,
-        page: () => const ContactInfoScreen()),
-    GetPage(
-        name: MyRouter.profileSettingScreen,
-        page: () => const ProfileSettingScreen()),
-    GetPage(
-        name: MyRouter.passwordAndSecurityScreen,
-        page: () => const PasswordAndSecurityScreen()),
-    GetPage(
-        name: MyRouter.helpAndSupportScreen,
-        page: () => const HelpAndSupportScreen()),
+    GetPage(name: MyRouter.taxInformationScreen, page: () => const TaxInformationScreen()),
+    GetPage(name: MyRouter.contactInfoScreen, page: () => const ContactInfoScreen()),
+    GetPage(name: MyRouter.profileSettingScreen, page: () => const ProfileSettingScreen()),
+    GetPage(name: MyRouter.passwordAndSecurityScreen, page: () => const PasswordAndSecurityScreen()),
+    GetPage(name: MyRouter.helpAndSupportScreen, page: () => const HelpAndSupportScreen()),
+    GetPage(name: MyRouter.securityQuestionScreen, page: () => const SecurityQuestionScreen()),
   ];
 }

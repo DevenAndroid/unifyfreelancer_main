@@ -138,7 +138,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "First name",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -161,7 +163,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Last name",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -184,7 +188,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Email",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -465,8 +471,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                 ),
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
-                    padding: const EdgeInsets.only(
-                        right: 10, top: 10, left: 20, bottom: 10),
+                    padding: const EdgeInsets.all(10).copyWith(left: 20),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       color: AppTheme.whiteColor,
@@ -490,7 +495,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Phone",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -513,7 +520,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Time Zone",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -580,11 +589,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                 onChanged: (newValue) {},
                               ),
                               SizedBox(
-                                height: 10.h,
+                                height: 20.h,
                               ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
+
                               Divider(
                                 color: AppTheme.primaryColor.withOpacity(.49),
                               ),
@@ -594,7 +601,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Address",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -617,7 +626,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Zip/Postal code",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -640,7 +651,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "City",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -663,7 +676,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               Text(
                                 "Select Country",
                                 style: TextStyle(
-                                    fontSize: 14.sp, color: Color(0xff393939)),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff393939)),
                               ),
                               SizedBox(
                                 height: 5.h,
