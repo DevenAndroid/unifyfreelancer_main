@@ -36,6 +36,7 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
           ),
         ),
         body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(

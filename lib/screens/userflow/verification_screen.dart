@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/repository/resend_otp_repository.dart';
 
 import '../../repository/verify_signup_repository.dart';
 import '../../resources/app_theme.dart';
@@ -19,11 +20,15 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   var _formKey = GlobalKey<FormState>();
   TextEditingController otpController = TextEditingController();
+
+  bool isFromSignUp = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
    email = Get.arguments[0];
+   isFromSignUp = Get.arguments[1].toString() == "fromSignUp" ? true : false;
   }
   var email ;
   var otp;
@@ -41,6 +46,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: _formKey,
             child: Container(
@@ -100,22 +106,36 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  RichText(
-                    text: TextSpan(
-                        text: "if you Don't receive a code ",
-                        style: TextStyle(
-                          color: AppTheme.textColor,
-                          fontSize: 14,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Resend",
-                            style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          )
-                        ]),
+                  InkWell(
+                    onTap: (){
+                      resendOtp(email, context).then((value) async {
+                        if(value.status==true){
+                          showError(value.message.toString());
+                          print(value.message);
+                        }
+                        else{
+                          showError(value.message.toString());
+                          print(value.message);
+                        }
+                      });
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                          text: "if you Don't receive a code ",
+                          style: TextStyle(
+                            color: AppTheme.textColor,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Resend",
+                              style: TextStyle(
+                                  color: AppTheme.primaryColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ]),
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -125,16 +145,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     if (_formKey.currentState!.validate()) {
                         print("value");
                         print(otp);
-                      verifySignUp(email,otp,context).then((value) async{
-                        print(value);
-                   if(value.status==true){
-                     Get.toNamed(MyRouter.bottomNavbar,);
-                     showError(value.message.toString());
-                   }
-                   else{
-                     showError(value.message.toString());
-                   }
-                      });
+                        if(isFromSignUp == true){
+
+                        } else {
+                          verifySignUp(email,otp,context).then((value) async{
+                            print(value);
+                            if(value.status==true){
+                              Get.toNamed(MyRouter.bottomNavbar,);
+                              showError(value.message.toString());
+                            }
+                            else{
+                              showError(value.message.toString());
+                            }
+                          });
+                        }
                     }
                   }, deviceWidth, 50),
                 ],

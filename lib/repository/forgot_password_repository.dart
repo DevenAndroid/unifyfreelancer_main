@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../helper.dart';
-import '../models/model_login.dart';
+import '../models/model_forgot_password.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelLoginResponse> login(email, password, BuildContext context) async {
+Future<ModelForgotPasswordResponse> forgotPassword(email, BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
   //SharedPreferences pref = await SharedPreferences.getInstance();
   map['email'] = email;
-  map['password'] = password;
+
   print(map);
 
   final headers = {
@@ -21,19 +21,18 @@ Future<ModelLoginResponse> login(email, password, BuildContext context) async {
     HttpHeaders.acceptHeader: 'application/json',
   };
 
-  print(ApiUrls.login);
 
-  http.Response response = await http.post(Uri.parse(ApiUrls.login),
+  http.Response response = await http.post(Uri.parse(ApiUrls.forgotPassword),
       body: jsonEncode(map), headers: headers);
 
   if (response.statusCode == 200) {
     Helpers.hideLoader(loader);
-    return ModelLoginResponse.fromJson(jsonDecode(response.body));
+    return ModelForgotPasswordResponse.fromJson(jsonDecode(response.body));
+
   } else if (response.statusCode == 400) {
     Helpers.hideLoader(loader);
     // return ModelLoginResponse.fromJson(jsonDecode(response.body));
-    return ModelLoginResponse(
-        authToken: "",
+    return ModelForgotPasswordResponse(
         data: null,
         message: jsonDecode(response.body)["message"],
         status: false);

@@ -1,11 +1,11 @@
-class ModelSignUpResponse {
+class ModelResendOtpResponse {
   bool? status;
   String? message;
   Data? data;
 
-  ModelSignUpResponse({this.status, this.message, this.data});
+  ModelResendOtpResponse({this.status, this.message, this.data});
 
-  ModelSignUpResponse.fromJson(Map<String, dynamic> json) {
+  ModelResendOtpResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

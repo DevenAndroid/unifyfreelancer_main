@@ -5,9 +5,7 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
-import 'package:unifyfreelancer/widgets/custom_appbar.dart';
 
-import '../widgets/appDrawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override

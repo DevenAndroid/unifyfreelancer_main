@@ -52,7 +52,7 @@ List<String> stackButtonsList = [
       ),
       drawer: AppDrawerScreen(),
       body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: ListView.builder(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:country_calling_code_picker/picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,12 +33,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController searchController = TextEditingController();
 
   bool acceptTermsOrPrivacy = false;
-  var selectedCountry;
   RxBool eyeHide = false.obs;
 
-  Country? _selectedCountry;
   var countryText = false;
-
+  var selectedCountry;
   Map<String, String> searchList = {};
 
   ModelCountryList countryList = ModelCountryList();
@@ -48,7 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    initCountry();
     super.initState();
     countryListRepo().then((value) => setState(() {
           countryList = value;
@@ -56,31 +52,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }));
   }
 
-  void initCountry() async {
-    final country = await getDefaultCountry(context);
-    setState(() {
-      _selectedCountry = country;
-    });
-  }
-
-  void _onPressedShowBottomSheet() async {
-    final country = await showCountryPickerSheet(
-      context,
-    );
-    if (country != null) {
-      setState(() {
-        _selectedCountry = country;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    final country = _selectedCountry;
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Form(
           key: _formKey,
           child: Stack(
@@ -90,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: deviceHeight,
                 width: deviceWidth,
               ),
-              Image.asset(AppAssets.loginBg),
+              Image.asset(AppAssets.loginBg,fit: BoxFit.cover,width: deviceWidth,),
               Positioned(
                   top: 55.h,
                   right: 0,
@@ -119,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ]),
                     child: SingleChildScrollView(
-                      physics: ScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           Text(
@@ -337,8 +315,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                                 horizontal: 30,
                                                                 vertical: 10),
                                                         child: Text(
-                                                          searchList1[index].name.toString(),
-                                                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                                                          searchList1[index]
+                                                              .name
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
                                                         )),
                                                   );
                                                 }),
@@ -533,7 +517,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         lastNameController.text,
                                         emailController.text,
                                         passwordController.text,
-                                         selectedCountry,
+                                        selectedCountry,
                                         "freelancer",
                                         "",
                                         acceptTermsOrPrivacy == true ? 1 : 0,
@@ -544,10 +528,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     print(jsonEncode(value));
                                     // sens to email verify Screen
                                     Get.toNamed(MyRouter.verificationScreen,
-                                        arguments: [emailController.text]);
-                                    showError(value.message);
+                                        arguments: [emailController.text,"fromSignUp"]);
+                                    showError(value.message!);
                                   } else {
-                                    showError(value.message);
+                                    showError(value.message!);
                                   }
                                   return null;
                                 });
@@ -596,36 +580,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-
-// Widget _buildDropdownItem(Country country) => Container(
-//       child: Row(
-//         children: <Widget>[
-//           SizedBox(
-//             width: 12.0,
-//           ),
-//           CountryPickerUtils.getDefaultFlagImage(country),
-//           SizedBox(
-//             width: 8.0,
-//           ),
-//           // Text("+${country.phoneCode}(${country.isoCode})"),
-//           Expanded(
-//             child: Text(
-//               "${country.name}",
-//               style: TextStyle(overflow: TextOverflow.ellipsis),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-}
-
-class PickerPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CountryPickerWidget(
-      onSelected: (country) => Navigator.pop(context, country),
     );
   }
 }

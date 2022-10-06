@@ -1,11 +1,11 @@
-class ModelSignUpResponse {
+class ModelForgotPasswordResponse {
   bool? status;
   String? message;
   Data? data;
 
-  ModelSignUpResponse({this.status, this.message, this.data});
+  ModelForgotPasswordResponse({this.status, this.message, this.data});
 
-  ModelSignUpResponse.fromJson(Map<String, dynamic> json) {
+  ModelForgotPasswordResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -23,19 +23,16 @@ class ModelSignUpResponse {
 }
 
 class Data {
-  String? email;
   int? otp;
 
-  Data({this.email, this.otp});
+  Data({this.otp});
 
   Data.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
     otp = json['otp'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
     data['otp'] = this.otp;
     return data;
   }

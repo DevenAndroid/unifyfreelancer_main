@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
 
+import '../repository/forgot_password_repository.dart';
 import '../resources/app_theme.dart';
-import '../resources/strings.dart';
 import '../widgets/box_textfield.dart';
 import '../widgets/common_button.dart';
 import '../widgets/custom_appbar.dart';
@@ -34,6 +35,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: _formKey,
             child: Container(
@@ -82,7 +84,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     height: 15,
                   ),
                   CommonButton("Send", () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      forgotPassword(emailController.text, context)
+                          .then((value) async {
+                        if (value.status == true) {
+
+                          Fluttertoast.showToast(
+                              msg: value.message.toString(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 14.0);
+                          Get.toNamed(MyRouter.verificationScreen,
+                              arguments: [emailController.text,""]);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: value.message.toString(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 14.0);
+
+                        }
+                      });
+
+                    }
                   }, deviceWidth, 50),
                 ],
               ),

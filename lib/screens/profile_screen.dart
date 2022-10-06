@@ -187,6 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
@@ -311,6 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     content: SingleChildScrollView(
+                                      physics: const BouncingScrollPhysics(),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:

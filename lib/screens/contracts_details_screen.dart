@@ -32,6 +32,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Container(
           margin: EdgeInsets.only(top: 10),
           width: deviceWidth,

@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(

@@ -77,7 +77,7 @@ class MyRouter {
   static var securityQuestionScreen = "/securityQuestionScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SignUpScreen()),
+    GetPage(name: '/', page: () => const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => const OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),

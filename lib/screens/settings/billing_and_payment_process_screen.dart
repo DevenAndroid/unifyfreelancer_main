@@ -36,6 +36,7 @@ class _BillingAndPaymentProcessScreenState
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
             child: Column(

@@ -40,6 +40,7 @@ class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(

@@ -6,14 +6,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:unifyfreelancer/repository/login_repository.dart';
-import 'package:unifyfreelancer/resources/app_assets.dart';
-import 'package:unifyfreelancer/resources/app_theme.dart';
-import 'package:unifyfreelancer/resources/strings.dart';
-import 'package:unifyfreelancer/routers/my_router.dart';
-import 'package:unifyfreelancer/widgets/box_textfield.dart';
-import 'package:unifyfreelancer/widgets/common_button.dart';
-import 'package:unifyfreelancer/widgets/custom_dialogue.dart';
+
+import '../../repository/login_repository.dart';
+import '../../resources/app_assets.dart';
+import '../../resources/app_theme.dart';
+import '../../resources/strings.dart';
+import '../../routers/my_router.dart';
+import '../../widgets/box_textfield.dart';
+import '../../widgets/common_button.dart';
+import '../../widgets/custom_dialogue.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -33,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Form(
           key: _formKey,
           child: Stack(
@@ -42,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: deviceHeight,
                 width: deviceWidth,
               ),
-              Image.asset(AppAssets.loginBg),
+              Image.asset(AppAssets.loginBg,fit: BoxFit.cover,width: deviceWidth,),
               Positioned(
                   top: 90.h,
                   right: 0,
@@ -114,14 +117,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 12.h,
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            AppStrings.forgotPassword,
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppTheme.primaryColor),
+                        InkWell(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: ()=>Get.toNamed(MyRouter.forgotPasswordScreen),
+                              child: Text(
+                                AppStrings.forgotPassword,
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppTheme.primaryColor),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(

@@ -35,6 +35,7 @@ class _AddOtherExperiencesScreenState extends State<AddOtherExperiencesScreen> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Container(
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),

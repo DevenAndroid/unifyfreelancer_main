@@ -36,6 +36,7 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
         ),
 
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(

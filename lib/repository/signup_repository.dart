@@ -42,15 +42,20 @@ Future<ModelSignUpResponse> signUp(
   http.Response response = await http.post(Uri.parse(ApiUrls.signUp),
       body: jsonEncode(map), headers: headers);
 
+
+
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     Helpers.hideLoader(loader);
     return ModelSignUpResponse.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
+  } else if (response.statusCode == 400) {
     Helpers.hideLoader(loader);
-    throw Exception(jsonDecode(response.body));
+    // return ModelLoginResponse.fromJson(jsonDecode(response.body));
+    return ModelSignUpResponse(
+        data: null,
+        message: jsonDecode(response.body)["message"],
+        status: false);
+  } else {
+    Helpers.hideLoader(loader);
+    throw Exception(response.body);
   }
 }

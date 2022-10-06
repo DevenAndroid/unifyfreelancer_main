@@ -40,6 +40,7 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(

@@ -32,6 +32,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: _formKey,
             child: Container(

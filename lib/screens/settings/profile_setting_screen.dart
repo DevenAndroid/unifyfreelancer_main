@@ -41,6 +41,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
         ),
 
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
               padding: const EdgeInsets.all(10),
               child: Column(

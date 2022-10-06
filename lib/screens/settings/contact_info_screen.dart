@@ -1,10 +1,12 @@
-import 'package:country_calling_code_picker/country.dart';
-import 'package:country_calling_code_picker/country_code_picker.dart';
-import 'package:country_calling_code_picker/functions.dart';
+// import 'package:country_calling_code_picker/country.dart';
+// import 'package:country_calling_code_picker/country_code_picker.dart';
+// import 'package:country_calling_code_picker/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../models/model_countrylist.dart';
+import '../../repository/countrylist_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_outline_button.dart';
@@ -28,32 +30,45 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
     '(UTC+04:00) Tbilisi',
   ];
 
-  Country? _selectedCountry;
+  // Country? _selectedCountry;
   var countryText = false;
 
   @override
   void initState() {
-    initCountry();
+    // initCountry();
     super.initState();
+    countryListRepo().then((value) => setState(() {
+      countryList = value;
+      countryList1.addAll(value.countrylist!);
+    }));
   }
 
-  void initCountry() async {
-    final country = await getDefaultCountry(context);
-    setState(() {
-      _selectedCountry = country;
-    });
-  }
+  // void initCountry() async {
+  //   final country = await getDefaultCountry(context);
+  //   setState(() {
+  //     _selectedCountry = country;
+  //   });
+  // }
+  //
+  // void _onPressedShowBottomSheet() async {
+  //   final country = await showCountryPickerSheet(
+  //     context,
+  //   );
+  //   if (country != null) {
+  //     setState(() {
+  //       _selectedCountry = country;
+  //     });
+  //   }
+  // }
 
-  void _onPressedShowBottomSheet() async {
-    final country = await showCountryPickerSheet(
-      context,
-    );
-    if (country != null) {
-      setState(() {
-        _selectedCountry = country;
-      });
-    }
-  }
+  var selectedCountry;
+  Map<String, String> searchList = {};
+
+  ModelCountryList countryList = ModelCountryList();
+  List<Countrylist> countryList1 = [];
+  List<Countrylist> searchList1 = [];
+
+
 
   TextEditingController fNameController = TextEditingController();
   TextEditingController lNameController = TextEditingController();
@@ -65,7 +80,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final country = _selectedCountry;
+    // final country = _selectedCountry;
     return Scaffold(
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
@@ -77,6 +92,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -197,7 +213,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               ),
                               BoxTextField(
                                 obSecure: false.obs,
-                                controller: addressController,
+                                controller: emailController,
                                 hintText: "Email".obs,
                                 keyboardType: TextInputType.emailAddress,
                               ),
@@ -683,105 +699,344 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                               SizedBox(
                                 height: 5.h,
                               ),
+                              // InkWell(
+                              //     onTap: () {
+                              //       _onPressedShowBottomSheet();
+                              //       setState(() {
+                              //         countryText = true;
+                              //       });
+                              //     },
+                              //     child: countryText == false
+                              //         ? TextFormField(
+                              //             enabled: false,
+                              //             decoration: InputDecoration(
+                              //               filled: true,
+                              //               fillColor: AppTheme.primaryColor
+                              //                   .withOpacity(.05),
+                              //               hintText: "Select country",
+                              //               errorText: "Select country",
+                              //               /* prefixIcon: Icon(Icons.flag),*/
+                              //               hintStyle: const TextStyle(
+                              //                   color: Color(0xff596681),
+                              //                   fontSize: 15),
+                              //               contentPadding:
+                              //                   const EdgeInsets.symmetric(
+                              //                       vertical: 14,
+                              //                       horizontal: 20),
+                              //               focusedBorder: OutlineInputBorder(
+                              //                 borderSide: BorderSide(
+                              //                     color: AppTheme.primaryColor
+                              //                         .withOpacity(.15),
+                              //                     width: 1.0),
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(8),
+                              //               ),
+                              //               enabledBorder: OutlineInputBorder(
+                              //                 borderSide: BorderSide(
+                              //                     color: AppTheme.primaryColor
+                              //                         .withOpacity(.15),
+                              //                     width: 1.0),
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(8),
+                              //               ),
+                              //               border: OutlineInputBorder(
+                              //                   borderSide: BorderSide(
+                              //                       color: AppTheme.primaryColor
+                              //                           .withOpacity(.15),
+                              //                       width: 1.0),
+                              //                   borderRadius:
+                              //                       BorderRadius.circular(8.0)),
+                              //             ),
+                              //           )
+                              //         : TextFormField(
+                              //             enabled: false,
+                              //             decoration: InputDecoration(
+                              //               filled: true,
+                              //               fillColor: AppTheme.primaryColor
+                              //                   .withOpacity(.05),
+                              //               hintText: ' ${country!.name}',
+                              //               errorText: "Select country",
+                              //               /*prefixIcon: Padding(
+                              //                 padding: EdgeInsets.only(
+                              //                     left: 5, right: 5),
+                              //                 child: Image.asset(
+                              //                   country.flag,
+                              //                   package: countryCodePackageName,
+                              //                   width: 5,
+                              //                   height: 5,
+                              //                 ),
+                              //               ),*/
+                              //               hintStyle: const TextStyle(
+                              //                   color: Color(0xff596681),
+                              //                   fontSize: 15),
+                              //               contentPadding:
+                              //                   const EdgeInsets.symmetric(
+                              //                       vertical: 14,
+                              //                       horizontal: 20),
+                              //               focusedBorder: OutlineInputBorder(
+                              //                 borderSide: BorderSide(
+                              //                     color: AppTheme.primaryColor
+                              //                         .withOpacity(.15),
+                              //                     width: 1.0),
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(8),
+                              //               ),
+                              //               enabledBorder: OutlineInputBorder(
+                              //                 borderSide: BorderSide(
+                              //                     color: AppTheme.primaryColor
+                              //                         .withOpacity(.15),
+                              //                     width: 1.0),
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(8),
+                              //               ),
+                              //               border: OutlineInputBorder(
+                              //                   borderSide: BorderSide(
+                              //                       color: AppTheme.primaryColor
+                              //                           .withOpacity(.15),
+                              //                       width: 1.0),
+                              //                   borderRadius:
+                              //                       BorderRadius.circular(8.0)),
+                              //             ),
+                              //           )),
                               InkWell(
                                   onTap: () {
-                                    _onPressedShowBottomSheet();
-                                    setState(() {
-                                      countryText = true;
-                                    });
+                                    // countryListRepo().then((value) => print(value));
+                                    countryText = true;
+                                    searchList1 = countryList1;
+                                    // searchList = countryList;
+                                    showModalBottomSheet<void>(
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(30),
+                                              topRight: Radius.circular(30))),
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return SizedBox(
+                                          height: MediaQuery.of(context).size.height * .7,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  icon: Icon(
+                                                    Icons.clear,
+                                                    color: AppTheme.blackColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(10)
+                                                    .copyWith(top: 0),
+                                                child: TextFormField(
+                                                  onChanged: (String value) {
+                                                    if (value.isNotEmpty) {
+                                                      setState(() {
+                                                        searchList1 = countryList1
+                                                            .where((element) => element
+                                                            .name!
+                                                            .toLowerCase()
+                                                            .contains(value
+                                                            .toLowerCase()))
+                                                            .toList();
+                                                      });
+                                                    } else if (value == "") {
+                                                      setState(() {
+                                                        searchList1 = countryList1;
+                                                      });
+                                                    }
+                                                  },
+                                                  /*onFieldSubmitted: (value) {
+                                                if (value != "") {
+                                                  setState(() {
+                                                    searchList1 = countryList1
+                                                        .where((element) => element
+                                                            .name!
+                                                            .toLowerCase()
+                                                            .contains(value
+                                                                .toLowerCase()))
+                                                        .toList();
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    searchList1 = countryList1;
+                                                  });
+                                                }
+                                              },*/
+                                                  decoration: InputDecoration(
+                                                    filled: true,
+                                                    fillColor: AppTheme.primaryColor
+                                                        .withOpacity(.05),
+                                                    hintText: "Select country",
+                                                    prefixIcon: Icon(Icons.flag),
+                                                    hintStyle: const TextStyle(
+                                                        color: Color(0xff596681),
+                                                        fontSize: 15),
+                                                    contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 14,
+                                                        horizontal: 20),
+                                                    focusedBorder:
+                                                    OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: AppTheme
+                                                              .primaryColor
+                                                              .withOpacity(.15),
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                      BorderRadius.circular(8),
+                                                    ),
+                                                    enabledBorder:
+                                                    OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: AppTheme
+                                                              .primaryColor
+                                                              .withOpacity(.15),
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                      BorderRadius.circular(8),
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppTheme
+                                                                .primaryColor
+                                                                .withOpacity(.15),
+                                                            width: 1.0),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0)),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: ListView.builder(
+                                                    physics:
+                                                    BouncingScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount: searchList1.length,
+                                                    itemBuilder: (context, index) {
+                                                      return InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedCountry =
+                                                                searchList1[index]
+                                                                    .name
+                                                                    .toString();
+                                                          });
+                                                          print(searchList1[index]
+                                                              .name
+                                                              .toString());
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 30,
+                                                                vertical: 10),
+                                                            child: Text(
+                                                              searchList1[index]
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                            )),
+                                                      );
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   child: countryText == false
                                       ? TextFormField(
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: AppTheme.primaryColor
-                                                .withOpacity(.05),
-                                            hintText: "Select country",
-                                            errorText: "Select country",
-                                            /* prefixIcon: Icon(Icons.flag),*/
-                                            hintStyle: const TextStyle(
-                                                color: Color(0xff596681),
-                                                fontSize: 15),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 14,
-                                                    horizontal: 20),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppTheme.primaryColor
-                                                        .withOpacity(.15),
-                                                    width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0)),
-                                          ),
-                                        )
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: AppTheme.primaryColor
+                                          .withOpacity(.05),
+                                      hintText: "Select country",
+                                      errorText: "Select country",
+                                      prefixIcon: Icon(Icons.flag),
+                                      hintStyle: const TextStyle(
+                                          color: Color(0xff596681),
+                                          fontSize: 15),
+                                      contentPadding:
+                                      const EdgeInsets.symmetric(
+                                          vertical: 14, horizontal: 20),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
+                                          BorderRadius.circular(8.0)),
+                                    ),
+                                  )
                                       : TextFormField(
-                                          enabled: false,
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: AppTheme.primaryColor
-                                                .withOpacity(.05),
-                                            hintText: ' ${country!.name}',
-                                            errorText: "Select country",
-                                            /*prefixIcon: Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 5, right: 5),
-                                              child: Image.asset(
-                                                country.flag,
-                                                package: countryCodePackageName,
-                                                width: 5,
-                                                height: 5,
-                                              ),
-                                            ),*/
-                                            hintStyle: const TextStyle(
-                                                color: Color(0xff596681),
-                                                fontSize: 15),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 14,
-                                                    horizontal: 20),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppTheme.primaryColor
-                                                        .withOpacity(.15),
-                                                    width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0)),
-                                          ),
-                                        )),
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: AppTheme.primaryColor
+                                          .withOpacity(.05),
+                                      hintText: '${selectedCountry}',
+                                      prefixIcon: Icon(Icons.flag),
+                                      hintStyle: const TextStyle(
+                                          color: Color(0xff596681),
+                                          fontSize: 15),
+                                      contentPadding:
+                                      const EdgeInsets.symmetric(
+                                          vertical: 14, horizontal: 20),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
+                                          BorderRadius.circular(8.0)),
+                                    ),
+                                  )),
                               SizedBox(
                                 height: 15.h,
                               ),
@@ -891,11 +1146,11 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
   }
 }
 
-class PickerPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CountryPickerWidget(
-      onSelected: (country) => Navigator.pop(context, country),
-    );
-  }
-}
+// class PickerPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CountryPickerWidget(
+//       onSelected: (country) => Navigator.pop(context, country),
+//     );
+//   }
+// }
