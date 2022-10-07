@@ -18,8 +18,8 @@ class BoxTextField extends StatefulWidget {
   final String? errorText;
   final String? labelText;
   final RxString hintText;
-  final IconData? suffixIcon;
   final Widget? prefix;
+  final Widget? suffixIcon;
 
   BoxTextField({
     this.controller,
@@ -32,13 +32,13 @@ class BoxTextField extends StatefulWidget {
     this.autofocus = false,
     this.errorText,
     required this.hintText,
-    this.suffixIcon,
     this.prefix,
     this.enabled = true,
     this.onEditingCompleted,
     this.onChanged,
     this.onSaved,
     this.labelText,
+    this.suffixIcon,
   });
 
   @override
@@ -91,7 +91,8 @@ class _BoxTextFieldState extends State<BoxTextField> {
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,
-          /*  suffixIcon: GestureDetector(
+            suffixIcon: widget.suffixIcon,
+            /*  suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {
                     widget.obSecure!.value = !widget.obSecure!.value;

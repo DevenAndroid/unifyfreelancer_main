@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 
+import '../repository/reset_password_repository.dart';
 import '../resources/app_theme.dart';
 import '../widgets/box_textfield.dart';
 import '../widgets/common_button.dart';
@@ -16,7 +19,16 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   var _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  var email;
+  RxBool eyeHide = true.obs;
+  RxBool eyeHide2 = true.obs;
+  @override
+  void initState() {
+    super.initState();
+    email =Get.arguments[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +81,27 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     height: 10,
                   ),
                   BoxTextField(
-                      controller: emailController,
-                      obSecure: true.obs,
+                      suffixIcon: eyeHide == false
+                          ? InkWell(
+                          onTap: () => setState(() {
+                            eyeHide = true.obs;
+                          }),
+                          child:
+                          Icon(Icons.remove_red_eye_outlined))
+                          : InkWell(
+                          onTap: () => setState(() {
+                            eyeHide = false.obs;
+                          }),
+                          child:
+                          Icon(Icons.visibility_off_outlined)),
+                      controller: passwordController,
+                      obSecure: eyeHide,
                       hintText: "  New password".obs,
-                      validator: MultiValidator([
-                        RequiredValidator(
-                            errorText: 'username or email is required'),
-                        EmailValidator(errorText: 'enter a valid email address')
-                      ])),
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'password is required'),
+                      MinLengthValidator(8,
+                          errorText: 'password must be at least 8 digits long'),
+                    ]),),
                   SizedBox(
                     height: 15,
                   ),
@@ -91,20 +116,48 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     height: 10,
                   ),
                   BoxTextField(
-                    controller: emailController,
-                    obSecure: true.obs,
+                    suffixIcon: eyeHide2 == false
+                        ? InkWell(
+                        onTap: () => setState(() {
+                          eyeHide2 = true.obs;
+                        }),
+                        child:
+                        Icon(Icons.remove_red_eye_outlined))
+                        : InkWell(
+                        onTap: () => setState(() {
+                          eyeHide2 = false.obs;
+                        }),
+                        child:
+                        Icon(Icons.visibility_off_outlined)),
+                    controller: confirmPasswordController,
+                    obSecure: eyeHide2,
                     hintText: "  Confirm new password".obs,
-                    validator: MultiValidator([
-                      RequiredValidator(errorText: 'password is required'),
-                      MinLengthValidator(8,
-                          errorText: 'password must be at least 8 digits long'),
-                    ]),
+                    validator: (value) {
+                      if (value == "") {
+                        return "Confirm password required";
+                      } else if (value.toString() !=
+                          passwordController.text.trim()) {
+                        return "Confirm password is not matching with password";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   CommonButton("Submit", () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      resetPassword(email,passwordController.text.trim(),confirmPasswordController.text.trim(),context).then((value) async{
+                        if(value.status==true){
+                          showToast(value.message.toString());
+                          Get.toNamed(MyRouter.loginScreen);
+                        }
+                        else{
+                          showToast(value.message.toString());
+                        }
+                      });
+                    }
                   }, deviceWidth, 50),
                 ],
               ),

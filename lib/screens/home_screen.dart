@@ -42,15 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      /* appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: CustomAppbar(
-          isLikeButton: true,
-          isProfileImage: true,
-          titleText: "Jobs",
-        ),
-      ),
-      drawer: AppDrawerScreen(),*/
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
@@ -283,28 +274,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           SizedBox(
                                             width: deviceWidth,
-                                            height: 55.h,
+                                            height: 45.h,
                                             child: ListView.builder(
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount:
-                                                    stackButtonsList.length,
+                                                physics: BouncingScrollPhysics(),
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: stackButtonsList.length,
                                                 itemBuilder: (context, index) {
                                                   return Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: 4, bottom: 8),
-                                                    child: CustomOutlineButton(
-                                                      title: stackButtonsList[
-                                                          index],
-                                                      backgroundColor:
-                                                          AppTheme.whiteColor,
-                                                      textColor:
-                                                          AppTheme.primaryColor,
+                                                    margin: EdgeInsets.only(right: 4, bottom: 10),
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: AppTheme.whiteColor,
+                                                          side: const BorderSide(
+                                                            color: Color(0xff6D2EF1),
+                                                          ),
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.all(
+                                                                Radius.circular(30),
+                                                              )),
+                                                          padding: EdgeInsets.symmetric(horizontal: 20,),
+                                                          textStyle: const TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                          )),
+                                                      onPressed: () {  },
+                                                      child: Text("${stackButtonsList[index]}",style: TextStyle(color: AppTheme.primaryColor),),
+                                                    )
+
+                                                    /*CustomOutlineButton(
+                                                      title: stackButtonsList[index],
+                                                      backgroundColor: AppTheme.whiteColor,
+                                                      textColor: AppTheme.primaryColor,
                                                       expandedValue: false,
                                                       onPressed: () {},
-                                                    ),
+                                                    ),*/
                                                   );
                                                 }),
                                             /*

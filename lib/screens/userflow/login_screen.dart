@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,10 +13,10 @@ import '../../resources/app_assets.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/strings.dart';
 import '../../routers/my_router.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_button.dart';
 import '../../widgets/custom_dialogue.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  RxBool eyeHide = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: deviceHeight,
                 width: deviceWidth,
               ),
-              Image.asset(AppAssets.loginBg,fit: BoxFit.cover,width: deviceWidth,),
+              Image.asset(
+                AppAssets.loginBg,
+                fit: BoxFit.cover,
+                width: deviceWidth,
+              ),
               Positioned(
                   top: 90.h,
                   right: 0,
@@ -99,21 +105,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 16.h,
                         ),
-                        BoxTextField(
-                          prefix: Icon(
-                            Icons.lock_outline,
-                          ),
-                          controller: passwordController,
-                          obSecure: false.obs,
-                          hintText: AppStrings.password.obs,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'password is required'),
-                            MinLengthValidator(8,
-                                errorText:
-                                    'password must be at least 8 digits long'),
-                          ]),
-                        ),
+                        Obx(() {
+                          return BoxTextField(
+                            obSecure: eyeHide,
+                            prefix: Icon(
+                              Icons.lock_outline,
+                            ),
+                            suffixIcon: eyeHide == false
+                                ? InkWell(
+                                    onTap: () => setState(() {
+                                          eyeHide = true.obs;
+                                        }),
+                                    child: Icon(Icons.remove_red_eye_outlined))
+                                : InkWell(
+                                    onTap: () => setState(() {
+                                          eyeHide = false.obs;
+                                        }),
+                                    child: Icon(Icons.visibility_off_outlined)),
+                            controller: passwordController,
+                            hintText: AppStrings.password.obs,
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'password is required'),
+                              MinLengthValidator(8,
+                                  errorText:
+                                      'password must be at least 8 digits long'),
+                            ]),
+                          );
+                        }),
                         SizedBox(
                           height: 12.h,
                         ),
@@ -121,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: InkWell(
-                              onTap: ()=>Get.toNamed(MyRouter.forgotPasswordScreen),
+                              onTap: () =>
+                                  Get.toNamed(MyRouter.forgotPasswordScreen),
                               child: Text(
                                 AppStrings.forgotPassword,
                                 style: TextStyle(
@@ -137,16 +157,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
-                            login(usernameController.text, passwordController.text, context).then((value) async {
+                            login(usernameController.text,
+                                    passwordController.text, context)
+                                .then((value) async {
                               if (value.status == true) {
-                                showError(value.message.toString());
-                                SharedPreferences pref = await SharedPreferences.getInstance();
-                                pref.setString('cookie', jsonEncode(value.authToken));
+                                showToast(
+                                  value.message.toString(),
+                                );
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
+                                pref.setString(
+                                    'cookie', jsonEncode(value.authToken));
                                 Get.toNamed(MyRouter.bottomNavbar);
                                 print("login Done");
-                                log(":::" + jsonEncode(pref.getString('cookie')));
+                                log(":::" +
+                                    jsonEncode(pref.getString('cookie')));
                               } else {
-                                showError(value.message.toString());
+                                showToast(
+                                  value.message.toString(),
+                                );
                               }
                             });
                           }

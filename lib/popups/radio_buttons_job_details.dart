@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'Controller/jobs_detail_controller.dart';
-import 'resources/app_theme.dart';
+import '../Controller/jobs_detail_controller.dart';
+import '../resources/app_theme.dart';
 
 class RadioButtonsJobDetails extends StatefulWidget {
   const RadioButtonsJobDetails({Key? key}) : super(key: key);

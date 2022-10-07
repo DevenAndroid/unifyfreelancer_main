@@ -169,21 +169,40 @@ List<String> stackButtonsList = [
                         height: deviceHeight * .01,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 45,
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemCount: stackButtonsList.length,
                             itemBuilder: (context,index){
                           return Container(
-                            margin: EdgeInsets.only(right: 4,bottom: 2
-                            ),
-                            child: CustomOutlineButton(title: stackButtonsList[index],
-                            backgroundColor: AppTheme.whiteColor,
-                            textColor: AppTheme.primaryColor,
-                            expandedValue: false,
-                            onPressed: (){},),
-                          );
+                              margin: EdgeInsets.only(right: 4, bottom: 10),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppTheme.whiteColor,
+                                    side: const BorderSide(
+                                      color: Color(0xff6D2EF1),
+                                    ),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(30),
+                                        )),
+                                    padding: EdgeInsets.symmetric(horizontal: 20,),
+                                    textStyle: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                onPressed: () {  },
+                                child: Text("${stackButtonsList[index]}",style: TextStyle(color: AppTheme.primaryColor),),
+                              )
+
+                            /*CustomOutlineButton(
+                                                      title: stackButtonsList[index],
+                                                      backgroundColor: AppTheme.whiteColor,
+                                                      textColor: AppTheme.primaryColor,
+                                                      expandedValue: false,
+                                                      onPressed: () {},
+                                                    ),*/
+                          );;
                         }
                         ),
                       ),

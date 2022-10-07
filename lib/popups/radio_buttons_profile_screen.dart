@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 
-import 'controller/profie_screen_controller.dart';
+import '../controller/profie_screen_controller.dart';
 
 class RadioButtonsProfileScreen extends StatefulWidget {
   const RadioButtonsProfileScreen({Key? key}) : super(key: key);

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:unifyfreelancer/radio_buttons_job_details.dart';
+import 'package:unifyfreelancer/popups/radio_buttons_job_details.dart';
 
 import '../../resources/app_theme.dart';
 import '../../widgets/custom_appbar.dart';

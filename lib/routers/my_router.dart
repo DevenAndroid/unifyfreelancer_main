@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
-import 'package:unifyfreelancer/Screens/userflow/signup_screen.dart';
-import 'package:unifyfreelancer/Screens/userflow/splashScreen.dart';
+import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
+
 
 import '../Screens/alerts_screen.dart';
 
@@ -34,6 +34,7 @@ import '../screens/settings/get_paid_screen.dart';
 import '../screens/settings/my_teams_screen.dart';
 import '../screens/settings/password_and_security_screen.dart';
 import '../screens/settings/profile_setting_screen.dart';
+import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
 import '../screens/forgot_password_screen.dart';
 import '../screens/userflow/verification_screen.dart';
@@ -78,7 +79,7 @@ class MyRouter {
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
-    GetPage(name: MyRouter.onBoardingScreen, page: () => const OnBoardingScreen()),
+    GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.forgotPasswordScreen, page: () => const ForgotPasswordScreen()),

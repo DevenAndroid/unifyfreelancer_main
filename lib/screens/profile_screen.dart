@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
-import 'package:unifyfreelancer/radio_buttons_profile_screen.dart';
+import 'package:unifyfreelancer/popups/radio_buttons_profile_screen.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
