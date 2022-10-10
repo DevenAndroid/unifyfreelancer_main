@@ -25,6 +25,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
     "User Interface Design",
     "User Experience Design",
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,17 +106,20 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                       skills.length,
                       (index) => Padding(
                             padding: const EdgeInsets.only(right: 4.0),
-                            child: FilterChip(
-                                elevation: 1,
-                                selectedColor: Colors.amber,
-                                backgroundColor: Color(0xffEAEEF2),
-                                padding: EdgeInsets.all(5),
-                                label: Text(
-                                  "${skills[index]}",
-                                  style: TextStyle(
-                                      fontSize: 12, color: Color(0xff393939)),
-                                ),
-                                onSelected: (value) {}),
+                            child: Chip(
+                              elevation: 1,
+                              backgroundColor: Color(0xffEAEEF2),
+                              label: Text(
+                                "${skills[index]}",
+                                style: TextStyle(
+                                    fontSize: 12, color: Color(0xff393939)),
+                              ),
+                              deleteIcon: Icon(
+                                Icons.clear,
+                                size: 15,
+                              ),
+                              onDeleted: () {},
+                            ),
                           ))),
               SizedBox(
                 height: 15,
@@ -137,7 +141,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
               child: CustomOutlineButton(
                 title: 'cancel',
                 backgroundColor: AppTheme.whiteColor,
-                onPressed: ()=>Get.back(),
+                onPressed: () => Get.back(),
                 textColor: AppTheme.primaryColor,
                 expandedValue: false,
               ),
@@ -150,7 +154,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: ()=>Get.toNamed(MyRouter.profileScreen),
+                onPressed: () => Get.toNamed(MyRouter.profileScreen),
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),

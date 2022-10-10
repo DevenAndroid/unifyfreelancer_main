@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/widgets/box_textfield.dart';
 
-import '../resources/app_theme.dart';
-import '../widgets/common_outline_button.dart';
-import '../widgets/custom_appbar.dart';
+import '../../resources/app_theme.dart';
+import '../../widgets/common_outline_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class SecurityQuestionScreen extends StatefulWidget {
   const SecurityQuestionScreen({Key? key}) : super(key: key);
@@ -103,7 +103,7 @@ class _SecurityQuestionScreenState extends State<SecurityQuestionScreen> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: "Project preference",
+                  hintText: "Security question",
                   hintStyle: TextStyle(fontSize: 13, color: Color(0xff596681)),
                   counterText: "",
                   filled: true,

@@ -174,6 +174,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  final profileController = Get.put(ProfileScreenController());
+
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -186,71 +188,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
           titleText: "Freelance Profile",
         ),
       ),
-      body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 15, bottom: 10),
-              width: deviceWidth,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppTheme.whiteColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
+      body: Obx(() {
+        return profileController.loading.value ?
+        SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
                 children: [
-                  Stack(children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          color: AppTheme.primaryColor,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1520635360276-79f3dbd809f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"))),
+                  Container(
+                    margin: const EdgeInsets.only(top: 15, bottom: 10),
+                    width: deviceWidth,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppTheme.whiteColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
-                    Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Image.asset("assets/icon/crown.png"))
-                  ]),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Hannah Finn",
-                            style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff180095)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: AppTheme.primaryColor,
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(profileController.model.value.data!.basicInfo!.profileImage.toString()))),
                           ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          /*RatingBar.builder(
+                          Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Image.asset("assets/icon/crown.png"))
+                        ]),
+                        SizedBox(
+                          width: 20.w,
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Hannah Finn",
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff180095)),
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                /*RatingBar.builder(
                             itemSize: 20,
                             initialRating: 3,
                             minRating: 1,
@@ -266,144 +270,154 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               print(rating);
                             },
                           ),*/
-                          Wrap(
-                            children: List.generate(
-                                3,
-                                (index) => 3 > index
-                                    ? Icon(
-                                        Icons.star,
-                                        color: AppTheme.pinkText,
-                                      )
-                                    : Icon(
-                                        Icons.star_border_outlined,
-                                        color: Colors.grey,
-                                      )),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "Website designer and developer",
-                        style: TextStyle(
-                            fontSize: 14.sp, color: AppTheme.textColor),
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.flag),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Text(
-                            "Victoria, Australia",
-                            style: TextStyle(
-                                fontSize: 14.sp, color: AppTheme.textColor),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    content: SingleChildScrollView(
-                                      physics: const BouncingScrollPhysics(),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Stack(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.topRight,
-                                                child: SizedBox(
-                                                  height: 15,
-                                                  width: 20,
-                                                ),
-                                              ),
-                                              Positioned(
-                                                  top: -15,
-                                                  right: -15,
-                                                  child: IconButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    icon: Icon(
-                                                      Icons.clear,
-                                                      size: 20,
+                                Wrap(
+                                  children: List.generate(
+                                      3,
+                                      (index) => 3 > index
+                                          ? Icon(
+                                              Icons.star,
+                                              color: AppTheme.pinkText,
+                                            )
+                                          : Icon(
+                                              Icons.star_border_outlined,
+                                              color: Colors.grey,
+                                            )),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Website designer and developer",
+                              style: TextStyle(
+                                  fontSize: 14.sp, color: AppTheme.textColor),
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.flag),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  "Victoria, Australia",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: AppTheme.textColor),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (ctx) => AlertDialog(
+                                          insetPadding: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 10),
+                                          content: SingleChildScrollView(
+                                            physics:
+                                                const BouncingScrollPhysics(),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: SizedBox(
+                                                        height: 15,
+                                                        width: 20,
+                                                      ),
                                                     ),
-                                                  ))
-                                            ],
+                                                    Positioned(
+                                                        top: -15,
+                                                        right: -15,
+                                                        child: IconButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          icon: Icon(
+                                                            Icons.clear,
+                                                            size: 20,
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                                Text(
+                                                  "Edit Name",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color:
+                                                          AppTheme.textColor),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                BoxTextField(
+                                                  obSecure: false.obs,
+                                                  hintText: "First Name".obs,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                BoxTextField(
+                                                  obSecure: false.obs,
+                                                  hintText: "Last Name".obs,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                BoxTextField(
+                                                  obSecure: false.obs,
+                                                  hintText: "description".obs,
+                                                  isMulti: true,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomOutlineButton(
+                                                  title: "Change",
+                                                  backgroundColor:
+                                                      AppTheme.primaryColor,
+                                                  onPressed: () {},
+                                                  textColor:
+                                                      AppTheme.whiteColor,
+                                                  expandedValue: true,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          Text(
-                                            "Edit Name",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppTheme.textColor),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          BoxTextField(
-                                            obSecure: false.obs,
-                                            hintText: "First Name".obs,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          BoxTextField(
-                                            obSecure: false.obs,
-                                            hintText: "Last Name".obs,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          BoxTextField(
-                                            obSecure: false.obs,
-                                            hintText: "description".obs,
-                                            isMulti: true,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          CustomOutlineButton(
-                                            title: "Change",
-                                            backgroundColor:
-                                                AppTheme.primaryColor,
-                                            onPressed: () {},
-                                            textColor: AppTheme.whiteColor,
-                                            expandedValue: true,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: AppTheme.primaryColor,
+                                      size: 15,
                                     ),
                                   ),
-                                );
-                              },
-                              child: Icon(
-                                Icons.edit,
-                                color: AppTheme.primaryColor,
-                                size: 15,
-                              ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            /*  Container(
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  /*  Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 width: deviceWidth,
                 padding: const EdgeInsets.all(10),
@@ -592,357 +606,366 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 )),*/
 
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Total Earning",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.darkBlueText
-                                        .withOpacity(0.47)),
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Text(
-                                "\$100K",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff0777FD)),
-                              )
-                            ],
-                          ),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
                         ),
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Total Jobs",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.darkBlueText
-                                        .withOpacity(0.47)),
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Text(
-                                "26",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff6B428B)),
-                              )
-                            ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Divider(
-                      color: AppTheme.pinkText.withOpacity(.29),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Column(
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Total Hours",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.darkBlueText
-                                        .withOpacity(0.47)),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Total Earning",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.darkBlueText
+                                              .withOpacity(0.47)),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "\$100K",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff0777FD)),
+                                    )
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Text(
-                                "2065",
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffF66C6C)),
+                              Expanded(
+                                flex: 4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Total Jobs",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.darkBlueText
+                                              .withOpacity(0.47)),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "26",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff6B428B)),
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Divider(
+                            color: AppTheme.pinkText.withOpacity(.29),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Total Hours",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.darkBlueText
+                                              .withOpacity(0.47)),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Text(
+                                      "2065",
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xffF66C6C)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Pending Project",
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.darkBlueText
+                                              .withOpacity(0.47)),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text("26",
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppTheme.pinkText,
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
                         ),
-                        Expanded(
-                          flex: 4,
-                          child: Column(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Pending Project",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.darkBlueText
-                                        .withOpacity(0.47)),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text("26",
+                              Expanded(
+                                child: Text(
+                                  "Website designer and developer",
                                   style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.pinkText,
-                                  ))
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      insetPadding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 10),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: SizedBox(
+                                                  height: 15,
+                                                  width: 20,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                  top: -15,
+                                                  right: -15,
+                                                  child: IconButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    icon: Icon(
+                                                      Icons.clear,
+                                                      size: 20,
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                          Text(
+                                            "Edit Your Title",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.textColor),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          BoxTextField(
+                                            obSecure: false.obs,
+                                            hintText:
+                                                "Website design and development"
+                                                    .obs,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          BoxTextField(
+                                            obSecure: false.obs,
+                                            hintText: "description".obs,
+                                            isMulti: true,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          CustomOutlineButton(
+                                            title: "Change",
+                                            backgroundColor:
+                                                AppTheme.primaryColor,
+                                            onPressed: () {},
+                                            textColor: AppTheme.whiteColor,
+                                            expandedValue: true,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            "Website designer and developer",
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the1500s, when an unknown",
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            "View More",
+                            style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.primaryColor),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Divider(
+                            color: AppTheme.pinkText.withOpacity(.29),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Work History",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showModalBottomSheet<void>(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(30),
+                                            topRight: Radius.circular(30))),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return RadioButtonsProfileScreen();
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            "Experienced Developer for Wellenss",
                             style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.darkBlueText),
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (ctx) => AlertDialog(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: SizedBox(
-                                            height: 15,
-                                            width: 20,
-                                          ),
-                                        ),
-                                        Positioned(
-                                            top: -15,
-                                            right: -15,
-                                            child: IconButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              icon: Icon(
-                                                Icons.clear,
-                                                size: 20,
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                    Text(
-                                      "Edit Your Title",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.textColor),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    BoxTextField(
-                                      obSecure: false.obs,
-                                      hintText:
-                                          "Website design and development".obs,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    BoxTextField(
-                                      obSecure: false.obs,
-                                      hintText: "description".obs,
-                                      isMulti: true,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomOutlineButton(
-                                      title: "Change",
-                                      backgroundColor: AppTheme.primaryColor,
-                                      onPressed: () {},
-                                      textColor: AppTheme.whiteColor,
-                                      expandedValue: true,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 20),
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.edit,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
+                          SizedBox(
+                            height: 5.h,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the1500s, when an unknown",
-                      style:
-                          TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "View More",
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.primaryColor),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Divider(
-                      color: AppTheme.pinkText.withOpacity(.29),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Work History",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30))),
-                              context: context,
-                              builder: (BuildContext context) {
-                                return RadioButtonsProfileScreen();
-                              },
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.edit,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "Experienced Developer for Wellenss",
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.darkBlueText),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        /* RatingBar.builder(
+                          Row(
+                            children: [
+                              /* RatingBar.builder(
                           itemSize: 20,
                           initialRating: 3,
                           minRating: 1,
@@ -959,562 +982,574 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),*/
 
-                        Wrap(
-                          children: List.generate(
-                              5,
-                              (index) => 5 > index
-                                  ? Icon(
-                                      Icons.star,
-                                      color: AppTheme.primaryColor,
-                                      size: 17,
-                                    )
-                                  : Icon(
-                                      Icons.star_border_outlined,
-                                      color: Colors.grey,
-                                      size: 17,
-                                    )),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "5.00 Oct 29, 2021 - Dec 3, 2021",
-                          style: TextStyle(
-                              fontSize: 13.sp, color: AppTheme.textColor),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-                      style:
-                          TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "\$3.000",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "Fixed Price",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Divider(
-                      color: AppTheme.pinkText.withOpacity(.29),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "My Skills",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(MyRouter.editSkillsScreen),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.edit,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "Mobile App Development",
-                      style:
-                          TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "Full Stack Development",
-                      style:
-                          TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "All Work",
-                      style:
-                          TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Divider(
-                      color: AppTheme.pinkText.withOpacity(.29),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "My Portfolio",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(MyRouter.addPortFolioScreen),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.add,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                      height: 120.h,
-                      child: loading == null
-                          ? InkWell(
-                              onTap: () => _pickMultipleFiles(),
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    color: AppTheme.whiteColor,
-                                    border: Border.all(
-                                      color: Color(0xff707070),
-                                    ),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            "https://images.unsplash.com/photo-1659686353676-8699585ff4c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"))),
+                              Wrap(
+                                children: List.generate(
+                                    5,
+                                    (index) => 5 > index
+                                        ? Icon(
+                                            Icons.star,
+                                            color: AppTheme.primaryColor,
+                                            size: 17,
+                                          )
+                                        : Icon(
+                                            Icons.star_border_outlined,
+                                            color: Colors.grey,
+                                            size: 17,
+                                          )),
                               ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
-                              itemCount: _files01.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () => _pickMultipleFiles(),
-                                  child: Container(
-                                    margin: EdgeInsets.all(5),
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: AppTheme.whiteColor,
-                                      image: DecorationImage(
-                                          image: FileImage(_files01[index]),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                );
-                              }),
-                    )
-                  ],
-                )),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Testimonials",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () =>
-                              Get.toNamed(MyRouter.addTestimonialsScreen),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.add,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "5.00 Oct 29, 2021 - Dec 3, 2021",
+                                style: TextStyle(
+                                    fontSize: 13.sp, color: AppTheme.textColor),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                        child: uploadDocument1 == null
-                            ? Container(
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  color: AppTheme.whiteColor,
-                                ),
-                                child: InkWell(
-                                  onTap: () => uploadDocumentFunction1(),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/testimonials.png",
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        "Showcase your skills with non-Unify client testimonials",
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color(0xff363636)),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: AppTheme.whiteColor,
-                                      image: DecorationImage(
-                                          image: FileImage(
-                                              uploadDocumentDisplay1!),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text(
-                                    "Showcase your skills with non-Unify client testimonials",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w300,
-                                        color: Color(0xff363636)),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              )),
-                  ],
-                )),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Certifications",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () =>
-                              Get.toNamed(MyRouter.addCertificationsScreen),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.add,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
+                          SizedBox(
+                            height: 5.h,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                        child: uploadDocument2 == null
-                            ? Container(
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  color: AppTheme.whiteColor,
-                                ),
-                                child: InkWell(
-                                  onTap: () => uploadDocumentFunction2(),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/certification.png",
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        "Listing your certifications can help prove your specific knowledge or abilities. (+10%) You can add them manually",
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color(0xff363636)),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      color: AppTheme.whiteColor,
-                                      image: DecorationImage(
-                                          image: FileImage(
-                                              uploadDocumentDisplay2!),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text(
-                                    "Listing your certifications can help prove your specific knowledge or abilities. (+10%) You can add them manually",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w300,
-                                        color: Color(0xff363636)),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              )),
-                  ],
-                )),
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Other Experiences",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        InkWell(
-                          onTap: () =>
-                              Get.toNamed(MyRouter.addOtherExperiencesScreen),
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme.whiteColor,
-                                border: Border.all(color: Color(0xff707070))),
-                            child: Icon(
-                              Icons.add,
-                              color: AppTheme.primaryColor,
-                              size: 15,
-                            ),
+                          Text(
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    SizedBox(
-                        child: uploadDocument3 == null
-                            ? Container(
-                                margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  color: AppTheme.whiteColor,
-                                ),
-                                child: InkWell(
-                                  onTap: () => uploadDocumentFunction3(),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/files.png",
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      Text(
-                                        "Add any other experiences that help you stand out",
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color(0xff363636)),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "\$3.000",
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 25.w,
+                              ),
+                              Text(
+                                "Fixed Price",
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Divider(
+                            color: AppTheme.pinkText.withOpacity(.29),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "My Skills",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.editSkillsScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
                                       color: AppTheme.whiteColor,
-                                      image: DecorationImage(
-                                          image: FileImage(
-                                              uploadDocumentDisplay3!),
-                                          fit: BoxFit.cover),
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "Mobile App Development",
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "Full Stack Development",
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "All Work",
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Divider(
+                            color: AppTheme.pinkText.withOpacity(.29),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "My Portfolio",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.addPortFolioScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          SizedBox(
+                            height: 120.h,
+                            child: loading == null
+                                ? InkWell(
+                                    onTap: () => _pickMultipleFiles(),
+                                    child: Container(
+                                      margin: EdgeInsets.all(5),
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          color: AppTheme.whiteColor,
+                                          border: Border.all(
+                                            color: Color(0xff707070),
+                                          ),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  "https://images.unsplash.com/photo-1659686353676-8699585ff4c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"))),
                                     ),
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    itemCount: _files01.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        onTap: () => _pickMultipleFiles(),
+                                        child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: AppTheme.whiteColor,
+                                            image: DecorationImage(
+                                                image:
+                                                    FileImage(_files01[index]),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                          )
+                        ],
+                      )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Testimonials",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.addTestimonialsScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
                                   ),
-                                  SizedBox(
-                                    height: 10.h,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          SizedBox(
+                              child: uploadDocument1 == null
+                                  ? Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: AppTheme.whiteColor,
+                                      ),
+                                      child: InkWell(
+                                        onTap: () => uploadDocumentFunction1(),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/testimonials.png",
+                                              height: 100,
+                                              width: 100,
+                                            ),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
+                                            Text(
+                                              "Showcase your skills with non-Unify client testimonials",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Color(0xff363636)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Column(
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: AppTheme.whiteColor,
+                                            image: DecorationImage(
+                                                image: FileImage(
+                                                    uploadDocumentDisplay1!),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Text(
+                                          "Showcase your skills with non-Unify client testimonials",
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w300,
+                                              color: Color(0xff363636)),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    )),
+                        ],
+                      )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Certifications",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () => Get.toNamed(
+                                    MyRouter.addCertificationsScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
                                   ),
-                                  Text(
-                                    "Add any other experiences that help you stand out",
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w300,
-                                        color: Color(0xff363636)),
-                                    textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          SizedBox(
+                              child: uploadDocument2 == null
+                                  ? Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: AppTheme.whiteColor,
+                                      ),
+                                      child: InkWell(
+                                        onTap: () => uploadDocumentFunction2(),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/certification.png",
+                                              height: 100,
+                                              width: 100,
+                                            ),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
+                                            Text(
+                                              "Listing your certifications can help prove your specific knowledge or abilities. (+10%) You can add them manually",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Color(0xff363636)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Column(
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: AppTheme.whiteColor,
+                                            image: DecorationImage(
+                                                image: FileImage(
+                                                    uploadDocumentDisplay2!),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Text(
+                                          "Listing your certifications can help prove your specific knowledge or abilities. (+10%) You can add them manually",
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w300,
+                                              color: Color(0xff363636)),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    )),
+                        ],
+                      )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Other Experiences",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () => Get.toNamed(
+                                    MyRouter.addOtherExperiencesScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border:
+                                          Border.all(color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
                                   ),
-                                ],
-                              )),
-                  ],
-                )),
-          ],
-        ),
-      )),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          SizedBox(
+                              child: uploadDocument3 == null
+                                  ? Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: AppTheme.whiteColor,
+                                      ),
+                                      child: InkWell(
+                                        onTap: () => uploadDocumentFunction3(),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              "assets/images/files.png",
+                                              height: 100,
+                                              width: 100,
+                                            ),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
+                                            Text(
+                                              "Add any other experiences that help you stand out",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Color(0xff363636)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Column(
+                                      children: [
+                                        Container(
+                                          height: 100,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: AppTheme.whiteColor,
+                                            image: DecorationImage(
+                                                image: FileImage(
+                                                    uploadDocumentDisplay3!),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Text(
+                                          "Add any other experiences that help you stand out",
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w300,
+                                              color: Color(0xff363636)),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    )),
+                        ],
+                      )),
+                ],
+              ),
+            )): Center(child: CircularProgressIndicator(),);
+      }),
     );
   }
 }

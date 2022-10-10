@@ -107,7 +107,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
 */
             // labelStyle: TextStyle(fontSize: lableFontSize()),
             // labelText: label,
-            hintStyle: const TextStyle(color: Color(0xff596681), fontSize: 15),
+            hintStyle: const TextStyle(color: Color(0xff596681), fontSize: 13),
             contentPadding:
                 const EdgeInsets.only(right: 0, left: 10, top: 14, bottom: 14),
             focusedBorder: OutlineInputBorder(

@@ -563,7 +563,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     //decoration: TextDecoration.underline,
                                     ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {}),
+                                  ..onTap = () {
+                                    Get.toNamed(MyRouter.loginScreen);
+                                  }),
                           ],
                         ),
                       ),

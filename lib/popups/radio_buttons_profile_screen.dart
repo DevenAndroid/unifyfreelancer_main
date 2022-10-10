@@ -15,23 +15,30 @@ class RadioButtonsProfileScreen extends StatefulWidget {
 class _RadioButtonsProfileScreenState extends State<RadioButtonsProfileScreen> {
   final controller = Get.put(ProfileScreenController());
   String? time;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          height: 10,
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(
-              Icons.clear,
-              color: AppTheme.blackColor,
+        Stack(
+          children: [
+            SizedBox(
+              height: 30,
+              width: MediaQuery.of(context).size.width,
             ),
-          ),
+            Positioned(
+              right: 0,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.clear,
+                  color: AppTheme.blackColor,
+                  size: 20,
+                ),
+              ),
+            )
+          ],
         ),
         RadioListTile(
           title: Text(
@@ -39,7 +46,7 @@ class _RadioButtonsProfileScreenState extends State<RadioButtonsProfileScreen> {
             style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.darkBlueText,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w500),
           ),
           contentPadding: const EdgeInsets.all(0),
           dense: true,
@@ -59,7 +66,7 @@ class _RadioButtonsProfileScreenState extends State<RadioButtonsProfileScreen> {
             style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.darkBlueText,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w500),
           ),
           contentPadding: const EdgeInsets.all(0),
           dense: true,
@@ -79,7 +86,7 @@ class _RadioButtonsProfileScreenState extends State<RadioButtonsProfileScreen> {
             style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.darkBlueText,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w500),
           ),
           contentPadding: const EdgeInsets.all(0),
           dense: true,
@@ -99,7 +106,7 @@ class _RadioButtonsProfileScreenState extends State<RadioButtonsProfileScreen> {
             style: TextStyle(
                 fontSize: 14,
                 color: AppTheme.darkBlueText,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w500),
           ),
           contentPadding: const EdgeInsets.all(0),
           dense: true,

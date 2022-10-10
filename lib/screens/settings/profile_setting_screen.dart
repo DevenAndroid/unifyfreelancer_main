@@ -15,14 +15,15 @@ class ProfileSettingScreen extends StatefulWidget {
 }
 
 class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
+  var visibility = [
+    "Public",
+    "Only Freelancer users",
+    "Private",
+  ];
   var items = [
-    'All Debits All Credits',
-    'Hourly',
-    'Fixed-Price',
-    'Bonus',
-    'Adjustments',
-    'Withdrawals',
-    'Expense',
+    "Both short term and long term projects",
+    "Long-term projects (3+ months)",
+    "Short term projects (less than 3 months)"
   ];
 
   String? expValue;
@@ -48,7 +49,6 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "My Profile",
@@ -57,13 +57,14 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textColor),
                       ),
-                      Text(
+
+                     /* Text(
                         "View as others see it",
                         style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.primaryColor),
-                      ),
+                      ),*/
                     ],
                   ),
                   Container(
@@ -98,16 +99,23 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                           SizedBox(
                             height: 5.h,
                           ),
-                          TextFormField(
+                          DropdownButtonFormField<dynamic>(
+                            isExpanded: true,
+                            value: null,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please select type';
+                              }
+                            },
                             decoration: InputDecoration(
-                              hintText: "Private",
+                              hintText: "Visibility",
                               hintStyle: TextStyle(
                                   fontSize: 13, color: Color(0xff596681)),
                               counterText: "",
                               filled: true,
                               fillColor: AppTheme.primaryColor.withOpacity(.05),
                               focusColor:
-                                  AppTheme.primaryColor.withOpacity(.05),
+                              AppTheme.primaryColor.withOpacity(.05),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
@@ -120,10 +128,10 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color:
-                                        AppTheme.primaryColor.withOpacity(.15),
+                                    AppTheme.primaryColor.withOpacity(.15),
                                   ),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0))),
+                                  BorderRadius.all(Radius.circular(10.0))),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: AppTheme.primaryColor
@@ -131,6 +139,23 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                       width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0)),
                             ),
+                            // Down Arrow Icon
+                            icon: const Icon(Icons.keyboard_arrow_down,
+                                color: AppTheme.primaryColor),
+                            items: List.generate(
+                                visibility.length,
+                                    (index) => DropdownMenuItem(
+                                  value: visibility[index],
+                                  child: Text(
+                                    visibility[index].toString(),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xff596681)),
+                                  ),
+                                )),
+                            // After selecting the desired option,it will
+                            // change button value to selected value
+                            onChanged: (newValue) {},
                           ),
                           SizedBox(
                             height: 15.h,

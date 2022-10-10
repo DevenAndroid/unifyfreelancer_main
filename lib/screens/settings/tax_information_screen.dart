@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -24,15 +27,17 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   TextEditingController dateInput = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController taxpayerNumberController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+
+  ModelCountryList countryList = ModelCountryList();
+  RxList searchList1 = <String>[].obs;
 
   @override
   void initState() {
     super.initState();
-    dateInput.text = "";
     countryListRepo().then((value) => setState(() {
-      countryList = value;
-      countryList1.addAll(value.countrylist!);
-    }));
+          countryList = value;
+        }));
   }
 
   var editTax = false;
@@ -48,7 +53,6 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   var countryText = false;
   var selectedCountry;
 
-
   bool acceptTermsOrPrivacy = false;
 
   var federalTaxClassification = [
@@ -62,10 +66,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   ];
   Map<String, String> searchList = {};
 
-  ModelCountryList countryList = ModelCountryList();
   List<Countrylist> countryList1 = [];
-  List<Countrylist> searchList1 = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -164,239 +165,230 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  InkWell(
-                                      onTap: () {
-                                        // countryListRepo().then((value) => print(value));
-                                        countryText = true;
-                                        searchList1 = countryList1;
-                                        // searchList = countryList;
-                                        showModalBottomSheet<void>(
-                                          isScrollControlled: true,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(30),
-                                                  topRight: Radius.circular(30))),
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SizedBox(
-                                              height: MediaQuery.of(context).size.height * .7,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Align(
-                                                    alignment: Alignment.topRight,
-                                                    child: IconButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(context),
-                                                      icon: Icon(
-                                                        Icons.clear,
-                                                        color: AppTheme.blackColor,
-                                                      ),
+                                  TextFormField(
+                                    onTap: () {
+                                      // searchList1.value = countryList1;
+                                      searchList1.clear();
+                                      for (var item
+                                          in countryList.countrylist!) {
+                                        searchList1.add(item.name.toString());
+                                      }
+                                      showModalBottomSheet<void>(
+                                        isScrollControlled: true,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30))),
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                .7,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    icon: Icon(
+                                                      Icons.clear,
+                                                      color:
+                                                          AppTheme.blackColor,
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.all(10)
-                                                        .copyWith(top: 0),
-                                                    child: TextFormField(
-                                                      onChanged: (String value) {
-                                                        if (value.isNotEmpty) {
-                                                          setState(() {
-                                                            searchList1 = countryList1
-                                                                .where((element) => element
-                                                                .name!
-                                                                .toLowerCase()
-                                                                .contains(value
-                                                                .toLowerCase()))
-                                                                .toList();
-                                                          });
-                                                        } else if (value == "") {
-                                                          setState(() {
-                                                            searchList1 = countryList1;
-                                                          });
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.all(10)
+                                                      .copyWith(top: 0),
+                                                  child: TextFormField(
+                                                    onChanged: (value) {
+                                                      if (value != "") {
+                                                        searchList1.clear();
+                                                        // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
+                                                        for (var item
+                                                            in countryList
+                                                                .countrylist!) {
+                                                          if (item.name
+                                                              .toString()
+                                                              .toLowerCase()
+                                                              .contains(value
+                                                                  .toLowerCase())) {
+                                                            searchList1.add(item
+                                                                .name
+                                                                .toString());
+                                                          }
                                                         }
-                                                      },
-                                                      /*onFieldSubmitted: (value) {
-                                                if (value != "") {
-                                                  setState(() {
-                                                    searchList1 = countryList1
-                                                        .where((element) => element
-                                                            .name!
-                                                            .toLowerCase()
-                                                            .contains(value
-                                                                .toLowerCase()))
-                                                        .toList();
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    searchList1 = countryList1;
-                                                  });
-                                                }
-                                              },*/
-                                                      decoration: InputDecoration(
-                                                        filled: true,
-                                                        fillColor: AppTheme.primaryColor
-                                                            .withOpacity(.05),
-                                                        hintText: "Select country",
-                                                        prefixIcon: Icon(Icons.flag),
-                                                        hintStyle: const TextStyle(
-                                                            color: Color(0xff596681),
-                                                            fontSize: 15),
-                                                        contentPadding:
-                                                        const EdgeInsets.symmetric(
-                                                            vertical: 14,
-                                                            horizontal: 20),
-                                                        focusedBorder:
-                                                        OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppTheme
-                                                                  .primaryColor
-                                                                  .withOpacity(.15),
-                                                              width: 1.0),
-                                                          borderRadius:
-                                                          BorderRadius.circular(8),
-                                                        ),
-                                                        enabledBorder:
-                                                        OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: AppTheme
-                                                                  .primaryColor
-                                                                  .withOpacity(.15),
-                                                              width: 1.0),
-                                                          borderRadius:
-                                                          BorderRadius.circular(8),
-                                                        ),
-                                                        border: OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppTheme
-                                                                    .primaryColor
-                                                                    .withOpacity(.15),
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                8.0)),
+                                                      } else {
+                                                        searchList1.clear();
+                                                        for (var item
+                                                            in countryList
+                                                                .countrylist!) {
+                                                          searchList1.add(item
+                                                              .name
+                                                              .toString());
+                                                        }
+                                                      }
+                                                      log("jsonEncode(searchList1)");
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor: AppTheme
+                                                          .primaryColor
+                                                          .withOpacity(.05),
+                                                      hintText:
+                                                          "Select country",
+                                                      prefixIcon:
+                                                          Icon(Icons.flag),
+                                                      hintStyle:
+                                                          const TextStyle(
+                                                              color: Color(
+                                                                  0xff596681),
+                                                              fontSize: 15),
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 14,
+                                                              horizontal: 20),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppTheme
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    .15),
+                                                            width: 1.0),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
                                                       ),
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: AppTheme
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    .15),
+                                                            width: 1.0),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      border: OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppTheme
+                                                                  .primaryColor
+                                                                  .withOpacity(
+                                                                      .15),
+                                                              width: 1.0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0)),
                                                     ),
                                                   ),
-                                                  Expanded(
+                                                ),
+                                                Obx(() {
+                                                  return Expanded(
                                                     child: ListView.builder(
                                                         physics:
-                                                        BouncingScrollPhysics(),
+                                                            BouncingScrollPhysics(),
                                                         shrinkWrap: true,
-                                                        itemCount: searchList1.length,
-                                                        itemBuilder: (context, index) {
-                                                          return InkWell(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                selectedCountry =
-                                                                    searchList1[index]
-                                                                        .name
-                                                                        .toString();
-                                                              });
-                                                              print(searchList1[index]
-                                                                  .name
-                                                                  .toString());
-                                                              Navigator.pop(context);
-                                                            },
-                                                            child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal: 30,
-                                                                    vertical: 10),
-                                                                child: Text(
-                                                                  searchList1[index].name.toString(),
-                                                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                                                                )),
-                                                          );
+                                                        itemCount:
+                                                            searchList1.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Obx(() {
+                                                            return InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  countryController
+                                                                      .text = searchList1[
+                                                                          index]
+                                                                      .toString();
+                                                                });
+                                                                print(
+                                                                    countryController
+                                                                        .text);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Padding(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal:
+                                                                          30,
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Text(
+                                                                    searchList1[
+                                                                            index]
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  )),
+                                                            );
+                                                          });
                                                         }),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: countryText == false
-                                          ? TextFormField(
-                                        enabled: false,
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: AppTheme.primaryColor
-                                              .withOpacity(.05),
-                                          hintText: "Select country",
-                                          errorText: "Select country",
-                                          prefixIcon: Icon(Icons.flag),
-                                          hintStyle: const TextStyle(
-                                              color: Color(0xff596681),
-                                              fontSize: 15),
-                                          contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 14, horizontal: 20),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius:
-                                            BorderRadius.circular(8),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius:
-                                            BorderRadius.circular(8),
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
+                                                  );
+                                                }),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    readOnly: true,
+                                    controller: countryController,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: AppTheme.primaryColor
+                                          .withOpacity(.05),
+                                      hintText: 'Select country',
+                                      prefixIcon: Icon(Icons.flag),
+                                      suffixIcon: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        size: 20,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Color(0xff596681),
+                                          fontSize: 15),
+                                      contentPadding: const EdgeInsets.only(
+                                          top: 14, bottom: 14, left: 20),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor
+                                                .withOpacity(.15),
+                                            width: 1.0),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
                                               BorderRadius.circular(8.0)),
-                                        ),
-                                      )
-                                          : TextFormField(
-                                        enabled: false,
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: AppTheme.primaryColor
-                                              .withOpacity(.05),
-                                          hintText: '${selectedCountry}',
-                                          prefixIcon: Icon(Icons.flag),
-                                          hintStyle: const TextStyle(
-                                              color: Color(0xff596681),
-                                              fontSize: 15),
-                                          contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 14, horizontal: 20),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius:
-                                            BorderRadius.circular(8),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius:
-                                            BorderRadius.circular(8),
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius:
-                                              BorderRadius.circular(8.0)),
-                                        ),
-                                      )),
+                                    ),
+                                    validator: MultiValidator([
+                                      RequiredValidator(
+                                          errorText: 'Country is required'),
+                                    ]),
+                                  ),
                                   SizedBox(
                                     height: 10.h,
                                   ),
@@ -457,7 +449,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                       Expanded(
                                           flex: 1,
                                           child: CustomOutlineButton(
-                                            title: 'Update',
+                                            title: 'Save',
                                             backgroundColor:
                                                 AppTheme.primaryColor,
                                             onPressed: () {},
@@ -818,8 +810,6 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8.0)),
-
-
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -831,7 +821,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         flex: 1,
                                                         child:
                                                             CustomOutlineButton(
-                                                          title: 'Update',
+                                                          title: 'Save',
                                                           backgroundColor:
                                                               AppTheme
                                                                   .primaryColor,
@@ -1202,7 +1192,8 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                               ),
                                               BoxTextField(
                                                 obSecure: false.obs,
-                                                controller: taxpayerNumberController,
+                                                controller:
+                                                    taxpayerNumberController,
                                                 hintText: "".obs,
                                                 keyboardType:
                                                     TextInputType.number,
@@ -1283,7 +1274,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                       flex: 1,
                                                       child:
                                                           CustomOutlineButton(
-                                                        title: 'Update',
+                                                        title: 'Save',
                                                         backgroundColor:
                                                             AppTheme
                                                                 .primaryColor,
@@ -1433,7 +1424,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                       flex: 1,
                                                       child:
                                                           CustomOutlineButton(
-                                                        title: 'Update',
+                                                        title: 'Save',
                                                         backgroundColor:
                                                             AppTheme
                                                                 .primaryColor,
@@ -1528,4 +1519,3 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
         ));
   }
 }
-

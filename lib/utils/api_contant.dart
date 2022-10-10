@@ -12,6 +12,8 @@ class ApiUrls {
   static const String forgotPassword = "${apiBaseUrl}forget-password";
   static const String verifyForgotPassword = "${apiBaseUrl}verify-forgot-otp";
   static const String resetPassword = "${apiBaseUrl}reset-password";
+  static const String socialLoginUrl = "${apiBaseUrl}social-login";
+  static const String getFreelancerProfile = "${apiBaseUrl}get-freelancer-profile";
 
 }
  showToast(message) {

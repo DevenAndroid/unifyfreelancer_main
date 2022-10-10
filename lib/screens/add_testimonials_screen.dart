@@ -62,7 +62,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                 Text(
                   "Client Title",
                   style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: AppTheme.titleText,
                       fontWeight: FontWeight.w600),
                 ),
@@ -80,7 +80,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                 Text(
                   "Project Type",
                   style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: AppTheme.titleText,
                       fontWeight: FontWeight.w600),
                 ),
@@ -98,7 +98,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                 Text(
                   "Message to client 0/800",
                   style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: AppTheme.titleText,
                       fontWeight: FontWeight.w600),
                 ),

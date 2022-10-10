@@ -18,7 +18,7 @@ class CustomTextField extends StatefulWidget {
   final String? errorText;
   final String? labelText;
   final RxString hintText;
-  final IconData? suffixIcon;
+  final Widget? suffixIcon;
   final Widget? prefix;
 
   CustomTextField({
@@ -58,6 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
           // autofocus: autofocus,
+          obscureText: widget.obSecure!.value,
           minLines: widget.isMulti ? 4 : 1,
           maxLines: widget.isMulti ? null : 1,
           onTap: widget.onTap,
@@ -73,6 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,
+            suffixIcon:  widget.suffixIcon,
             hintStyle: const TextStyle(
               color: Color(0xff596681),
               fontSize: 15,

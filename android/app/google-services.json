@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "163073037550",
+    "project_id": "unifyfreelancer",
+    "storage_bucket": "unifyfreelancer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163073037550:android:40ec52092757d04ce7cfff",
+        "android_client_info": {
+          "package_name": "com.eoxysit.unifyfreelancer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163073037550-lbubc4o8v53aqr8osgqhmjctmpodl49g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eoxysit.unifyfreelancer",
+            "certificate_hash": "bfa708e211d74ae327a2278871b44723500474a4"
+          }
+        },
+        {
+          "client_id": "163073037550-rih8futt28jspk93c5toj7nlo8egt4q3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6ezs9-e1F42ejmZwdHv1OTvJfurFQBbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163073037550-rih8futt28jspk93c5toj7nlo8egt4q3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

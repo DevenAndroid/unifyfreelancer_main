@@ -765,41 +765,65 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                Get.defaultDialog(
-                                                    title: 'Date Range',
-                                                    content: Container(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              0.5,
-                                                      child: Column(
-                                                        children: [
-                                                          SfDateRangePicker(
-                                                            showActionButtons:
-                                                                true,
-                                                            onSubmit: (Object?
-                                                                value) {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            onCancel: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            selectionMode:
-                                                                DateRangePickerSelectionMode
-                                                                    .range,
-                                                            onSelectionChanged:
-                                                                selectionChangedVPG,
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (ctx) => Dialog(
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Container(
+                                                                  width:
+                                                                      deviceWidth,
+                                                                  height: 80,
+                                                                  color: AppTheme
+                                                                      .primaryColor,
+                                                                  child: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    "Date Range",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: AppTheme
+                                                                            .whiteColor),
+                                                                  ))),
+                                                              Container(
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                                decoration: BoxDecoration(
+                                                                    color: AppTheme
+                                                                        .whiteColor),
+                                                                child:
+                                                                    SfDateRangePicker(
+                                                                  showActionButtons:
+                                                                      true,
+                                                                  backgroundColor:
+                                                                      AppTheme
+                                                                          .whiteColor,
+                                                                  onSubmit:
+                                                                      (Object?
+                                                                          value) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  onCancel: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  selectionMode:
+                                                                      DateRangePickerSelectionMode
+                                                                          .range,
+                                                                  onSelectionChanged:
+                                                                      selectionChangedVPG,
+                                                                ),
+                                                              )
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ));
+                                                        ));
                                                 print(_startDateVPG);
                                                 print(_endDateVPG);
                                               },
@@ -906,8 +930,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
   void selectionChangedVPG(DateRangePickerSelectionChangedArgs args) {
     setState(() {
       _startDateVPG =
-          DateFormat('yyyy-MM-dd').format(args.value.startDate).toString();
-      _endDateVPG = DateFormat('yyyy-MM-dd')
+          DateFormat('dd-MM-yyyy').format(args.value.startDate).toString();
+      _endDateVPG = DateFormat('dd-MM-yyyy')
           .format(args.value.endDate ?? args.value.startDate)
           .toString();
     });

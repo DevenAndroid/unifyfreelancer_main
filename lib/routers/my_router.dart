@@ -24,7 +24,8 @@ import '../screens/add_certifications.dart';
 import '../screens/add_other_experiences_screen.dart';
 import '../screens/add_portfolio_screen.dart';
 import '../screens/add_testimonials_screen.dart';
-import '../screens/security_question_screen.dart';
+import '../screens/settings/change_password_screen.dart';
+import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
 import '../screens/edit_skills_screen.dart';
 import '../screens/new_password_screen.dart';
@@ -76,9 +77,10 @@ class MyRouter {
   static var passwordAndSecurityScreen = "/passwordAndSecurityScreen";
   static var helpAndSupportScreen = "/helpAndSupportScreen";
   static var securityQuestionScreen = "/securityQuestionScreen";
+  static var changePasswordScreen = "/changePasswordScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SplashScreen()),
+    GetPage(name: '/', page: () => const BottomNavbar()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
@@ -114,5 +116,6 @@ class MyRouter {
     GetPage(name: MyRouter.passwordAndSecurityScreen, page: () => const PasswordAndSecurityScreen()),
     GetPage(name: MyRouter.helpAndSupportScreen, page: () => const HelpAndSupportScreen()),
     GetPage(name: MyRouter.securityQuestionScreen, page: () => const SecurityQuestionScreen()),
+    GetPage(name: MyRouter.changePasswordScreen, page: () => const ChangePasswordScreen()),
   ];
 }

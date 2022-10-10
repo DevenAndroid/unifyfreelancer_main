@@ -54,7 +54,7 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                             ),
                             InkWell(
                               onTap: () =>
-                                  Get.toNamed(MyRouter.forgotPasswordScreen),
+                                  Get.toNamed(MyRouter.changePasswordScreen),
                               child: Container(
                                 margin: EdgeInsets.only(left: 20),
                                 padding: EdgeInsets.all(5),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../resources/app_theme.dart';
-import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -199,16 +198,33 @@ class _BillingAndPaymentProcessScreenState
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomOutlineButton(
-                title: 'Save',
-                backgroundColor: AppTheme.primaryColor,
-                onPressed: () =>Get.back(),
-                textColor: AppTheme.whiteColor,
-                expandedValue: false,
-              ),
+              padding: EdgeInsets.all(15),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primaryColor,
+                      side: const BorderSide(
+                        color: Color(0xff6D2EF1),
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      )),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {},
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: AppTheme.whiteColor,
+                    ),
+                  )),
             ),
-          ),
+          )
         ],
       ),
     );

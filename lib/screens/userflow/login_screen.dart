@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../repository/login_repository.dart';
+import '../../repository/social_login_repository.dart';
 import '../../resources/app_assets.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/strings.dart';
@@ -16,7 +19,6 @@ import '../../routers/my_router.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_button.dart';
-import '../../widgets/custom_dialogue.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -30,6 +32,51 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
+
+
+  loginWithGoogle(context) async {
+    await GoogleSignIn().signOut();
+    GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication googleSignInAuthentication = await googleSignIn!.authentication;
+    final userCredentials = GoogleAuthProvider.credential(accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken
+    );
+    await FirebaseAuth.instance.signInWithCredential(userCredentials);
+    socialLoginApi(context,googleSignInAuthentication.accessToken.toString(),"google");
+    log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
+    log(FirebaseAuth.instance.currentUser!.uid);
+  }
+
+  loginWithApple(context) async {
+    final appleProvider = AppleAuthProvider();
+    if (kIsWeb) {
+      await FirebaseAuth.instance.signInWithPopup(appleProvider).then((value) {
+        socialLoginApi(context,value.credential!.accessToken.toString(),"apple");
+      });
+    } else {
+      await FirebaseAuth.instance.signInWithProvider(appleProvider).then((value) {
+        socialLoginApi(context,value.credential!.accessToken.toString(),"apple");
+      });
+    }
+  }
+
+  socialLoginApi(context,authToken,provider){
+    socialLoginRepo(
+        context: context,
+        accessToken: authToken,
+        provider: provider
+    ).then((value) async {
+      showToast(value.message.toString());
+      if (value.status == true) {
+        SharedPreferences pref =
+        await SharedPreferences
+            .getInstance();
+        pref.setString('cookie', jsonEncode(value.authToken));
+        Get.toNamed(MyRouter.bottomNavbar);
+      }
+      log(value.message.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             OutlinedButton(
-                              onPressed: null,
+                              onPressed: ()=>loginWithGoogle(context),
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
@@ -217,7 +264,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 20.w,
                             ),
                             OutlinedButton(
-                              onPressed: null,
+                              onPressed: ()=>loginWithApple(
+                                context
+                              ),
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(

@@ -74,7 +74,7 @@ class OnBoardingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                           controller.contents.length,
-                              (index) => buildDot(index, context),
+                          (index) => buildDot(index, context),
                         ),
                       ),
                       Expanded(
@@ -86,7 +86,8 @@ class OnBoardingScreen extends StatelessWidget {
                             FittedBox(
                               child: Text(
                                 controller
-                                    .contents[controller.currentIndex.value].title
+                                    .contents[controller.currentIndex.value]
+                                    .title
                                     .toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -112,7 +113,8 @@ class OnBoardingScreen extends StatelessWidget {
                             SizedBox(height: AddSize.size40),
                             InkWell(
                               onTap: () {
-                                if(controller.containerWidth.value < AddSize.size80) {
+                                if (controller.containerWidth.value <
+                                    AddSize.size80) {
                                   controller.pageController.nextPage(
                                       duration: const Duration(seconds: 1),
                                       curve: Curves.ease);
@@ -129,27 +131,29 @@ class OnBoardingScreen extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: controller.currentIndex1.value == false
                                     ? const Icon(
-                                  Icons.arrow_forward_outlined,
-                                  color: Colors.white,
-                                  size: 26,
-                                )
+                                        Icons.arrow_forward_outlined,
+                                        color: Colors.white,
+                                        size: 26,
+                                      )
                                     : InkWell(
-                                  onTap: () {
-                                    Get.toNamed(MyRouter.loginScreen);
-                                  },
-                                  child: FittedBox(
-                                    child: Text(
-                                      "Get Started",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: controller.fontSize.value,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
+                                        onTap: () {
+                                          Get.toNamed(MyRouter.loginScreen);
+                                        },
+                                        child: FittedBox(
+                                          child: Text(
+                                            "Get Started",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    controller.fontSize.value,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
                               ),
                             ),
-                            Flexible(child: SizedBox(height: AddSize.size30 * 2)),
+                            Flexible(
+                                child: SizedBox(height: AddSize.size30 * 2)),
                           ],
                         ),
                       )
@@ -167,7 +171,9 @@ class OnBoardingScreen extends StatelessWidget {
   Container buildDot(int index, BuildContext context) {
     return Container(
       height: AddSize.size10 * .6,
-      width: controller.currentIndex.value == index ? AddSize.size30 : AddSize.size10,
+      width: controller.currentIndex.value == index
+          ? AddSize.size30
+          : AddSize.size10,
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -178,52 +184,3 @@ class OnBoardingScreen extends StatelessWidget {
     );
   }
 }
-
-// class OnBoardingScreen extends StatefulWidget {
-//   const OnBoardingScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
-// }
-//
-// class _OnBoardingScreenState extends State<OnBoardingScreen> {
-//
-//
-// }
-
-
-
-
-//
-//
-// class UnBordingContent {
-//   String? image;
-//   String? title;
-//   String? description;
-//
-//   UnBordingContent({this.image, this.title, this.description});
-// }
-//
-// List<UnBordingContent> contents = [
-//   UnBordingContent(
-//       image: 'assets/images/onBoarding_01.png',
-//       title: "Never miss an opportunity",
-//       description: "Based out of Southern California, "
-//           "our Security Consultants develop security strategies, "
-//           "solutions and recommendations, not just for the "
-//           "short term."),
-//   UnBordingContent(
-//       image: 'assets/images/onBoarding_02.png',
-//       title: "Find interesting project and \n submit proposals ",
-//       description: "Based out of Southern California, "
-//           "our Security Consultants develop security strategies, "
-//           "solutions and recommendations, not just for the "
-//           "short term."),
-//   UnBordingContent(
-//       image: 'assets/images/onBoarding_03.png',
-//       title: "Collabarate on the go",
-//       description: "Based out of Southern California, "
-//           "our Security Consultants develop security strategies, "
-//           "solutions and recommendations, not just for the "
-//           "short term."),
-// ];

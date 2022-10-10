@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,7 +60,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                     keyboardType: TextInputType.text,
                     hintText: "Name".obs),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 CustomTextField(
                     controller: _descriptionController,
