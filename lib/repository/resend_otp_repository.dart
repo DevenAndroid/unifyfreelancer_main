@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:unifyfreelancer/models/model_resend_otp.dart';
 
-import '../helper.dart';
+import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
 Future<ModelResendOtpResponse> resendOtp(email, BuildContext context) async {

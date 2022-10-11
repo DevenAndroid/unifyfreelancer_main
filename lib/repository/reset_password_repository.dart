@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
-import '../helper.dart';
+import '../resources/helper.dart';
 import '../models/model_reset_password.dart';
 import '../utils/api_contant.dart';
 

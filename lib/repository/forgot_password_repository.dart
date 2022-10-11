@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../helper.dart';
+import '../resources/helper.dart';
 import '../models/model_forgot_password.dart';
 import '../utils/api_contant.dart';
 

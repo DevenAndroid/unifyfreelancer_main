@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'resources/app_theme.dart';
-import 'widgets/circular_widget.dart';
+import 'app_theme.dart';
+import '../widgets/circular_widget.dart';
 
 class Helpers {
   /// Auth Services

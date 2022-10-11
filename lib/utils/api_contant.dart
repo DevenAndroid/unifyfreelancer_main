@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../resources/app_theme.dart';
 
@@ -14,6 +17,7 @@ class ApiUrls {
   static const String resetPassword = "${apiBaseUrl}reset-password";
   static const String socialLoginUrl = "${apiBaseUrl}social-login";
   static const String getFreelancerProfile = "${apiBaseUrl}get-freelancer-profile";
+  static const String editDesignationInfo = "${apiBaseUrl}edit-designation-info";
 
 }
  showToast(message) {
@@ -25,4 +29,14 @@ class ApiUrls {
       backgroundColor: AppTheme.blackColor,
       textColor: AppTheme.whiteColor,
       fontSize: 14);
+}
+
+getAuthHeader() async{
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  print(pref.getString("cookie")!.toString().replaceAll('\"', ''));
+  return {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer ${pref.getString("cookie")!.toString().replaceAll('\"', '')}'
+  };
 }

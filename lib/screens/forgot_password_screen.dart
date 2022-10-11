@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -86,7 +88,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   CommonButton("Send", () {
                     if (_formKey.currentState!.validate()) {
                       forgotPassword(emailController.text, context)
-                          .then((value) async {
+                          .then((value) async  {
+                            print(jsonEncode(value));
                         if (value.status == true) {
 
                           Fluttertoast.showToast(

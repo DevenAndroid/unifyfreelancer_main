@@ -11,9 +11,10 @@ import '../../models/model_countrylist.dart';
 import '../../repository/countrylist_repository.dart';
 import '../../repository/signup_repository.dart';
 import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
 import '../../resources/strings.dart';
 import '../../routers/my_router.dart';
-import '../../size.dart';
+
 import '../../utils/api_contant.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_button.dart';

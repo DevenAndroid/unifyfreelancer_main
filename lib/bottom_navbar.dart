@@ -7,11 +7,11 @@ import 'package:unifyfreelancer/Screens/home_screen.dart';
 import 'package:unifyfreelancer/Screens/messages_screen.dart';
 import 'package:unifyfreelancer/Screens/proposals_screen.dart';
 
-import '../Controller/bottom_nav_bar_controller.dart';
-import '../internet_connection.dart';
-import '../resources/app_theme.dart';
-import '../widgets/appDrawer.dart';
-import '../widgets/custom_appbar.dart';
+import 'Controller/bottom_nav_bar_controller.dart';
+
+import 'resources/app_theme.dart';
+import 'widgets/appDrawer.dart';
+import 'widgets/custom_appbar.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({Key? key}) : super(key: key);

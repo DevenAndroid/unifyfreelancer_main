@@ -16,9 +16,13 @@ class AddTestimonialsScreen extends StatefulWidget {
 class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController _fNameController = TextEditingController();
+  TextEditingController _lNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _linkedinController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
-  TextEditingController _projectController = TextEditingController();
-  TextEditingController _messageController = TextEditingController();
+  TextEditingController _typeController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,79 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Client Title",
+                  "First Name",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                    controller: _fNameController,
+                    obSecure: false.obs,
+                    keyboardType: TextInputType.text,
+                    hintText: "Enter First Name".obs),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Last Name",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                    controller: _lNameController,
+                    obSecure: false.obs,
+                    keyboardType: TextInputType.text,
+                    hintText: "Enter Last Name".obs),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Business email address",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                    controller: _emailController,
+                    obSecure: false.obs,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: "Enter Business Email".obs),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Client's LinkedIn Profile",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomTextField(
+                    controller: _linkedinController,
+                    obSecure: false.obs,
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: "http://".obs),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Client's title (Optional)",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -72,13 +148,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                 CustomTextField(
                     controller: _titleController,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Ex. Direct of marketing".obs),
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: "Degree (Optional)".obs),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Project Type",
+                  "Project Type (Optional)",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -88,15 +164,15 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _projectController,
+                    controller: _typeController,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Ex.Marketing brand refresh".obs),
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: "Degree (Optional)".obs),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Message to client 0/800",
+                  "Description (Optional)",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -106,31 +182,27 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _messageController,
+                    controller: _descriptionController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.text,
-                    hintText:
-                        "Lorem ipsum is simply dummy text of the printing and typesetting industry. lorem ipsum has been the industry"
-                            .obs,
+                    hintText: "Description".obs,
                     isMulti: true),
+                SizedBox(
+                  height: 25,
+                ),
+                 CustomOutlineButton(
+                   title: 'Request Testimonial',
+                   backgroundColor: AppTheme.primaryColor,
+                   onPressed: () => Get.back(),
+                   textColor: AppTheme.whiteColor,
+                   expandedValue: true,
+                 ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: SizedBox(
-        height: 70,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CustomOutlineButton(
-            title: 'Request Testimonial',
-            backgroundColor: AppTheme.primaryColor,
-            onPressed: () =>Get.back(),
-            textColor: AppTheme.whiteColor,
-            expandedValue: false,
-          ),
-        ),
-      ),
+      
     );
   }
 }

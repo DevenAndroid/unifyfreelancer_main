@@ -10,7 +10,7 @@ class ProfileScreenController extends GetxController {
   RxString timeValue = "".obs;
 
   Rx<ModelFreelancerProfile> model = ModelFreelancerProfile().obs;
-  RxBool loading = false.obs;
+  Rx<RxStatus> status = RxStatus.empty().obs;
 
   @override
   void onInit() {
@@ -21,9 +21,12 @@ class ProfileScreenController extends GetxController {
     print("object");
     freelancerProfileRepo().then((value) {
       log(jsonEncode(value));
+      model.value = value;
       if (value.status == true) {
-        model.value = value;
-        loading.value = true;
+        status.value = RxStatus.success();
+      }
+      else{
+        status.value = RxStatus.error();
       }
     });
   }

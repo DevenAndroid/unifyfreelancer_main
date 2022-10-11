@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
-import '../helper.dart';
+import '../resources/helper.dart';
 import '../models/model_verify_signup.dart';
 
 Future<ModelVerificationSignUp> verifySignUp(email,otp,context) async {
@@ -17,6 +17,7 @@ Future<ModelVerificationSignUp> verifySignUp(email,otp,context) async {
   map["email"] = email;
   map["otp"] = otp;
 
+print(map);
   final headers = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.acceptHeader: 'application/json',

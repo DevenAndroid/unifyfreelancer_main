@@ -4,8 +4,6 @@ import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 
 
 import '../Screens/alerts_screen.dart';
-
-import '../Screens/bottom_navbar.dart';
 import '../Screens/chat_screen.dart';
 import '../Screens/contracts_details_screen.dart';
 import '../Screens/contracts_screen.dart';
@@ -20,6 +18,7 @@ import '../Screens/save_jobs_screen.dart';
 import '../Screens/settings_screen.dart';
 import '../Screens/unify_qualifications.dart';
 import '../Screens/userflow/onboarding_screen.dart';
+import '../bottom_navbar.dart';
 import '../screens/add_certifications.dart';
 import '../screens/add_other_experiences_screen.dart';
 import '../screens/add_portfolio_screen.dart';

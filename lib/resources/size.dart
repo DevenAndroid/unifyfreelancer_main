@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../resources/app_theme.dart';
+import '../../resources/app_theme.dart';
 
 class AddSize {
   static final screenHeight = Get.context!.height;

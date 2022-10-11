@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 
 import '../Screens/userflow/onboarding_screen.dart';
 import '../models/onboarding_content_model.dart';
-import '../size.dart';
+import '../resources/size.dart';
+
 
 class OnBoardingController extends GetxController{
 

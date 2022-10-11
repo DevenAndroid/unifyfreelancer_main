@@ -148,6 +148,16 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                           color: AppTheme.settingsTextColor.withOpacity(.63)),
                     ),
                     SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      "Use my Profile address",
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.primaryColor),
+                    ),
+                    SizedBox(
                       height: 15.h,
                     ),
                     SizedBox(

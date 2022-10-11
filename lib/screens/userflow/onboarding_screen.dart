@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/onboarding_controller.dart';
 import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
 import '../../routers/my_router.dart';
-import '../../size.dart';
+
 
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({Key? key}) : super(key: key);

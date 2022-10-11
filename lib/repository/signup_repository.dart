@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:unifyfreelancer/models/model_signup.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
-import '../helper.dart';
+import '../resources/helper.dart';
 
 Future<ModelSignUpResponse> signUp(
     firstName,
