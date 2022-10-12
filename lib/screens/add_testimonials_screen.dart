@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
+import '../repository/edit_testimonial_info_repository.dart';
 import '../resources/app_theme.dart';
+import '../utils/api_contant.dart';
 import '../widgets/common_outline_button.dart';
 import '../widgets/custom_appbar.dart';
 import '../widgets/custom_textfield.dart';
@@ -74,10 +77,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _fNameController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Enter First Name".obs),
+                  controller: _fNameController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.text,
+                  hintText: "Enter First Name".obs,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: 'First name is required')]),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -92,10 +98,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _lNameController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Enter Last Name".obs),
+                  controller: _lNameController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.text,
+                  hintText: "Enter Last Name".obs,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: 'Last name is required')]),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -110,10 +119,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _emailController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: "Enter Business Email".obs),
+                  controller: _emailController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: "Enter Business Email".obs,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: 'Email is required')]),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -128,10 +140,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _linkedinController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: "http://".obs),
+                  controller: _linkedinController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.url,
+                  hintText: "http://".obs,
+                  // validator: MultiValidator(
+                  //     [RequiredValidator(errorText: 'Linkedin Url is required')]),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -146,10 +161,12 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                    controller: _titleController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: "Degree (Optional)".obs),
+                  controller: _titleController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: "Degree (Optional)".obs,
+
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -167,7 +184,9 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                     controller: _typeController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.emailAddress,
-                    hintText: "Degree (Optional)".obs),
+                    hintText: "Degree (Optional)".obs,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: 'Type is required')]),),
                 SizedBox(
                   height: 15,
                 ),
@@ -186,23 +205,42 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                     obSecure: false.obs,
                     keyboardType: TextInputType.text,
                     hintText: "Description".obs,
-                    isMulti: true),
+                    isMulti: true,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: 'Description is required')]),),
                 SizedBox(
                   height: 25,
                 ),
-                 CustomOutlineButton(
-                   title: 'Request Testimonial',
-                   backgroundColor: AppTheme.primaryColor,
-                   onPressed: () => Get.back(),
-                   textColor: AppTheme.whiteColor,
-                   expandedValue: true,
-                 ),
+                CustomOutlineButton(
+                  title: 'Request Testimonial',
+                  backgroundColor: AppTheme.primaryColor,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      editTestimonialInfoRepo(
+                              _fNameController.text.trim(),
+                              _lNameController.text.trim(),
+                              _emailController.text.trim(),
+                              _linkedinController.text.trim(),
+                              _titleController.text.trim(),
+                              _typeController.text.trim(),
+                              _descriptionController.text.trim(),
+                              context)
+                          .then((value) {
+                        if (value.status == true) {
+                          Get.back();
+                        }
+                        showToast(value.message.toString());
+                      });
+                    }
+                  },
+                  textColor: AppTheme.whiteColor,
+                  expandedValue: true,
+                ),
               ],
             ),
           ),
         ),
       ),
-      
     );
   }
 }

@@ -18,6 +18,12 @@ class ApiUrls {
   static const String socialLoginUrl = "${apiBaseUrl}social-login";
   static const String getFreelancerProfile = "${apiBaseUrl}get-freelancer-profile";
   static const String editDesignationInfo = "${apiBaseUrl}edit-designation-info";
+  static const String editCertificateInfo = "${apiBaseUrl}edit-certificate-info";
+  static const String deleteCertificateInfo = "${apiBaseUrl}delete-certificate-info";
+  static const String editTestimonialInfo = "${apiBaseUrl}edit-testimonial-info";
+  static const String deleteTestimonialInfo = "${apiBaseUrl}delete-testimonial-info";
+  static const String skillList = "${apiBaseUrl}skill-list";
+  static const String editSkillsInfo = "${apiBaseUrl}edit-skills-info";
 
 }
  showToast(message) {
