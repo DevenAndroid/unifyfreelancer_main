@@ -97,7 +97,7 @@ showFilterButtonSheet(
       context: context,
       isDismissible: true,
       constraints: BoxConstraints(
-        maxHeight: AddSize.screenHeight * .8,
+        maxHeight: AddSize.screenHeight * .95,
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -127,15 +127,12 @@ showFilterButtonSheet(
                 SizedBox(
                   width: AddSize.size20,
                 ),
-                /*Expanded(
-                  child: AddText(
-                    textAlign: TextAlign.center,
-                    text: titleText,
-                    color: AppTheme.filtter,
-                    fontWeight: FontWeight.w500,
-                    fontSize: AddSize.font20,
+                Expanded(
+                  child: Text(
+                      titleText,style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppTheme.textColor),
+
                   ),
-                ),*/
+                ),
                 InkWell(
                   onTap: () {
                     Get.back();

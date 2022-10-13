@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 
-import '../models/model_skill_list_response.dart';
-import '../repository/skill_list_repository.dart';
-import '../resources/app_theme.dart';
-import '../resources/size.dart';
-import '../routers/my_router.dart';
-import '../widgets/common_outline_button.dart';
-import '../widgets/custom_appbar.dart';
+import '../../models/model_skill_list_response.dart';
+import '../../repository/skill_list_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
+import '../../routers/my_router.dart';
+import '../../widgets/common_outline_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class EditSkillsScreen extends StatefulWidget {
   const EditSkillsScreen({Key? key}) : super(key: key);
@@ -18,16 +19,9 @@ class EditSkillsScreen extends StatefulWidget {
 }
 
 class _EditSkillsScreenState extends State<EditSkillsScreen> {
-  List skills = [
-    "Mobile App Design",
-    "Graphic Design",
-    "User Interface Design",
-    "User Experience Design",
-    "Mobile App Design",
-    "Graphic Design",
-    "User Interface Design",
-    "User Experience Design",
-  ];
+
+  final controller = Get.put(ProfileScreenController());
+
   ModelSkillListResponse skillList = ModelSkillListResponse();
   Rx<RxStatus> status = RxStatus
       .empty()

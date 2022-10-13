@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_textfield.dart';
 
-import '../repository/edit_certificate_info_repository.dart';
-import '../resources/app_theme.dart';
-import '../routers/my_router.dart';
-import '../widgets/common_outline_button.dart';
-import '../widgets/custom_appbar.dart';
+import '../../repository/edit_certificate_info_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../routers/my_router.dart';
+import '../../widgets/common_outline_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class AddCertificationsScreen extends StatefulWidget {
   const AddCertificationsScreen({Key? key}) : super(key: key);

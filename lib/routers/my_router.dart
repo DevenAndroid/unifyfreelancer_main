@@ -11,7 +11,7 @@ import '../Screens/help_and_support_screen.dart';
 import '../Screens/home_screen.dart';
 import '../Screens/job_details_screen.dart';
 import '../Screens/messages_screen.dart';
-import '../Screens/profile_screen.dart';
+import '../Screens/profile/profile_screen.dart';
 import '../Screens/proposals_screen.dart';
 import '../Screens/reports_screen.dart';
 import '../Screens/save_jobs_screen.dart';
@@ -19,14 +19,19 @@ import '../Screens/settings_screen.dart';
 import '../Screens/unify_qualifications.dart';
 import '../Screens/userflow/onboarding_screen.dart';
 import '../bottom_navbar.dart';
-import '../screens/add_certifications.dart';
-import '../screens/add_other_experiences_screen.dart';
-import '../screens/add_portfolio_screen.dart';
-import '../screens/add_testimonials_screen.dart';
+import '../screens/profile/add_certifications.dart';
+import '../screens/profile/add_education_screen.dart';
+import '../screens/profile/add_employment_screen.dart';
+import '../screens/profile/add_language_screen.dart';
+import '../screens/profile/add_other_experiences_screen.dart';
+import '../screens/profile/add_portfolio_screen.dart';
+import '../screens/profile/add_testimonials_screen.dart';
+import '../screens/profile/edit_language_screen.dart';
+import '../screens/profile/hour_per_week_screen.dart';
 import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
-import '../screens/edit_skills_screen.dart';
+import '../screens/profile/edit_skills_screen.dart';
 import '../screens/new_password_screen.dart';
 import '../screens/settings/billing_and_payment_screen.dart';
 import '../screens/settings/contact_info_screen.dart';
@@ -60,6 +65,11 @@ class MyRouter {
   static var messagesScreen = "/messagesScreen";
   static var chatScreen = "/chatScreen";
   static var profileScreen = "/profileScreen";
+  static var addLanguageScreen = "/addLanguageScreen";
+  static var editLanguageScreen = "/editLanguageScreen";
+  static var hoursPerWeekScreen = "/hoursPerWeekScreen";
+  static var addEducationScreen = "/addEducationScreen";
+  static var addEmploymentScreen = "/addEmploymentScreen";
   static var addCertificationsScreen = "/addCertificationsScreen";
   static var editSkillsScreen = "/editSkillsScreen";
   static var addOtherExperiencesScreen = "/addOtherExperiencesScreen";
@@ -99,6 +109,11 @@ class MyRouter {
     GetPage(name: MyRouter.messagesScreen, page: () => const MessagesScreen()),
     GetPage(name: MyRouter.chatScreen, page: () => const ChatScreen()),
     GetPage(name: MyRouter.profileScreen, page: () => const ProfileScreen()),
+    GetPage(name: MyRouter.addLanguageScreen, page: () => const AddLanguageScreen()),
+    GetPage(name: MyRouter.editLanguageScreen, page: () => const EditLanguageScreen()),
+    GetPage(name: MyRouter.hoursPerWeekScreen, page: () => const HoursPerWeekScreen()),
+    GetPage(name: MyRouter.addEducationScreen, page: () => const AddEducationScreen()),
+    GetPage(name: MyRouter.addEmploymentScreen, page: () => const AddEmploymentScreen()),
     GetPage(name: MyRouter.addCertificationsScreen, page: () => const AddCertificationsScreen()),
     GetPage(name: MyRouter.editSkillsScreen, page: () => const EditSkillsScreen()),
     GetPage(name: MyRouter.addOtherExperiencesScreen, page: () => const AddOtherExperiencesScreen()),

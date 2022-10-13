@@ -238,7 +238,7 @@ class _AppDrawerScreenState extends State<AppDrawerScreen> {
                 SharedPreferences preferences =
                     await SharedPreferences.getInstance();
                 preferences.clear();
-                Get.toNamed(MyRouter.loginScreen);
+                Get.offAllNamed(MyRouter.loginScreen);
               }),
         ],
       ),

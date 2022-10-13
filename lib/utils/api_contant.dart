@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../resources/app_theme.dart';
+import '../resources/size.dart';
 
 class ApiUrls {
   static const String apiBaseUrl = 'https://unify.eoxyslive.com/api/';
@@ -46,3 +49,75 @@ getAuthHeader() async{
     HttpHeaders.authorizationHeader: 'Bearer ${pref.getString("cookie")!.toString().replaceAll('\"', '')}'
   };
 }
+
+showFilterButtonSheet(
+    {required context, required titleText, required widgets}) {
+  showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      isDismissible: true,
+      constraints: BoxConstraints(
+        maxHeight: AddSize.screenHeight * .8,
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40.0),
+            topLeft: Radius.circular(40.0),
+          ),
+        ),
+        padding: EdgeInsets.only(
+            top: AddSize.padding20,
+            left: AddSize.padding20,
+            right: AddSize.padding20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: AddSize.size20,
+                ),
+                Expanded(
+                  child: Text(
+                    titleText,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: AppTheme.textColor
+                    ),
+
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(
+                    Icons.clear,
+                    size: AddSize.size25,
+                    color: AppTheme.primaryColor,
+                  ),
+                ),
+              ],
+            ),
+            Flexible(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: widgets,
+              ),
+            )
+          ],
+        ),
+      ));
+}
+

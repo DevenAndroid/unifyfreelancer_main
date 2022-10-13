@@ -12,13 +12,13 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
-import '../repository/delete_certificate_info_repository.dart';
-import '../repository/delete_testimonial_info_repository.dart';
-import '../repository/edit_designation_info_repository.dart';
-import '../resources/app_theme.dart';
-import '../resources/size.dart';
-import '../widgets/box_textfield.dart';
-import '../widgets/custom_appbar.dart';
+import '../../repository/delete_certificate_info_repository.dart';
+import '../../repository/delete_testimonial_info_repository.dart';
+import '../../repository/edit_designation_info_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
+import '../../widgets/box_textfield.dart';
+import '../../widgets/custom_appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -784,7 +784,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: 10.w,
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: ()=>Get.toNamed(MyRouter.hoursPerWeekScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -824,7 +824,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       color: AppTheme.darkBlueText),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: ()=>Get.toNamed(MyRouter.addLanguageScreen),
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 15),
@@ -842,7 +842,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: ()=>Get.toNamed(MyRouter.editLanguageScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -956,7 +956,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   height: 10.h,
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {Get.toNamed(MyRouter.addEducationScreen);},
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 15),
@@ -2348,7 +2348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 InkWell(
                                   onTap: () => Get.toNamed(
-                                      MyRouter.addOtherExperiencesScreen),
+                                      MyRouter.addEmploymentScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(

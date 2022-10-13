@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../resources/app_theme.dart';
-import '../widgets/common_outline_button.dart';
-import '../widgets/custom_appbar.dart';
-import '../widgets/custom_textfield.dart';
+import '../../resources/app_theme.dart';
+import '../../widgets/common_outline_button.dart';
+import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_textfield.dart';
 
 class AddOtherExperiencesScreen extends StatefulWidget {
   const AddOtherExperiencesScreen({Key? key}) : super(key: key);

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
-import '../repository/edit_testimonial_info_repository.dart';
-import '../resources/app_theme.dart';
-import '../utils/api_contant.dart';
-import '../widgets/common_outline_button.dart';
-import '../widgets/custom_appbar.dart';
-import '../widgets/custom_textfield.dart';
+import '../../repository/edit_testimonial_info_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../utils/api_contant.dart';
+import '../../widgets/common_outline_button.dart';
+import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_textfield.dart';
 
 class AddTestimonialsScreen extends StatefulWidget {
   const AddTestimonialsScreen({Key? key}) : super(key: key);

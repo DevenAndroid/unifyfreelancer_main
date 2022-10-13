@@ -10,7 +10,6 @@ import '../utils/api_contant.dart';
 Future<ModelFreelancerProfile> freelancerProfileRepo() async {
 
   SharedPreferences pref = await SharedPreferences.getInstance();
-  print(pref.getString("cookie")!.toString().replaceAll('\"', ''));
   final header =  {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.acceptHeader: 'application/json',
