@@ -30,6 +30,9 @@ class Data {
   List<Certificates>? certificates;
   List<Experiences>? experiences;
   List<Education>? education;
+  List<Language>? language;
+  String? hoursPerWeek;
+  Video? video;
 
   Data(
       {this.basicInfo,
@@ -38,7 +41,10 @@ class Data {
         this.testimonial,
         this.certificates,
         this.experiences,
-        this.education});
+        this.education,
+        this.language,
+        this.hoursPerWeek,
+        this.video});
 
   Data.fromJson(Map<String, dynamic> json) {
     basicInfo = json['basic_info'] != null
@@ -80,6 +86,14 @@ class Data {
         education!.add(new Education.fromJson(v));
       });
     }
+    if (json['language'] != null) {
+      language = <Language>[];
+      json['language'].forEach((v) {
+        language!.add(new Language.fromJson(v));
+      });
+    }
+    hoursPerWeek = json['hours_per_week'];
+    video = json['video'] != null ? new Video.fromJson(json['video']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +119,13 @@ class Data {
     if (this.education != null) {
       data['education'] = this.education!.map((v) => v.toJson()).toList();
     }
+    if (this.language != null) {
+      data['language'] = this.language!.map((v) => v.toJson()).toList();
+    }
+    data['hours_per_week'] = this.hoursPerWeek;
+    if (this.video != null) {
+      data['video'] = this.video!.toJson();
+    }
     return data;
   }
 }
@@ -125,6 +146,9 @@ class BasicInfo {
   int? totalJobs;
   int? totalHours;
   int? pendingProject;
+  String? timezone;
+  String? address;
+  String? phone;
   String? country;
   String? state;
   String? city;
@@ -145,6 +169,9 @@ class BasicInfo {
         this.totalJobs,
         this.totalHours,
         this.pendingProject,
+        this.timezone,
+        this.address,
+        this.phone,
         this.country,
         this.state,
         this.city});
@@ -165,6 +192,9 @@ class BasicInfo {
     totalJobs = json['total_jobs'];
     totalHours = json['total_hours'];
     pendingProject = json['pending_project'];
+    timezone = json['timezone'];
+    address = json['address'];
+    phone = json['phone'];
     country = json['country'];
     state = json['state'];
     city = json['city'];
@@ -187,6 +217,9 @@ class BasicInfo {
     data['total_jobs'] = this.totalJobs;
     data['total_hours'] = this.totalHours;
     data['pending_project'] = this.pendingProject;
+    data['timezone'] = this.timezone;
+    data['address'] = this.address;
+    data['phone'] = this.phone;
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
@@ -289,43 +322,32 @@ class Testimonial {
 class Certificates {
   int? id;
   String? name;
-  String? issueDate;
-  String? expiryDate;
-  String? certificateId;
+  String? description;
 
-  Certificates(
-      {this.id,
-        this.name,
-        this.issueDate,
-        this.expiryDate,
-        this.certificateId});
+  Certificates({this.id, this.name, this.description});
 
   Certificates.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    issueDate = json['issue_date'];
-    expiryDate = json['expiry_date'];
-    certificateId = json['certificate_id'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
-    data['issue_date'] = this.issueDate;
-    data['expiry_date'] = this.expiryDate;
-    data['certificate_id'] = this.certificateId;
+    data['description'] = this.description;
     return data;
   }
 }
 
 class Experiences {
   int? id;
-  Null? company;
-  Null? city;
-  Null? country;
-  Null? startDate;
-  Null? endDate;
+  String? company;
+  String? city;
+  String? country;
+  String? startDate;
+  String? endDate;
   int? currentlyWorking;
   String? subject;
   String? description;
@@ -371,7 +393,8 @@ class Experiences {
 class Education {
   int? id;
   String? school;
-  String? date;
+  String? startYear;
+  String? endYear;
   String? level;
   String? degree;
   String? areaStudy;
@@ -380,7 +403,8 @@ class Education {
   Education(
       {this.id,
         this.school,
-        this.date,
+        this.startYear,
+        this.endYear,
         this.level,
         this.degree,
         this.areaStudy,
@@ -389,7 +413,8 @@ class Education {
   Education.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     school = json['school'];
-    date = json['date'];
+    startYear = json['start_year'];
+    endYear = json['end_year'];
     level = json['level'];
     degree = json['degree'];
     areaStudy = json['area_study'];
@@ -400,11 +425,50 @@ class Education {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['school'] = this.school;
-    data['date'] = this.date;
+    data['start_year'] = this.startYear;
+    data['end_year'] = this.endYear;
     data['level'] = this.level;
     data['degree'] = this.degree;
     data['area_study'] = this.areaStudy;
     data['description'] = this.description;
+    return data;
+  }
+}
+
+class Language {
+  String? language;
+  String? level;
+
+  Language({this.language, this.level});
+
+  Language.fromJson(Map<String, dynamic> json) {
+    language = json['language'];
+    level = json['level'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['language'] = this.language;
+    data['level'] = this.level;
+    return data;
+  }
+}
+
+class Video {
+  String? url;
+  String? type;
+
+  Video({this.url, this.type});
+
+  Video.fromJson(Map<String, dynamic> json) {
+    url = json['url'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['url'] = this.url;
+    data['type'] = this.type;
     return data;
   }
 }

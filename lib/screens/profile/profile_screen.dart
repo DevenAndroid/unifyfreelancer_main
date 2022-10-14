@@ -13,6 +13,7 @@ import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../repository/delete_certificate_info_repository.dart';
+import '../../repository/delete_portfolio_info_repository.dart';
 import '../../repository/delete_testimonial_info_repository.dart';
 import '../../repository/edit_designation_info_repository.dart';
 import '../../resources/app_theme.dart';
@@ -28,27 +29,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  List<File> _files01 = [];
-  var loading = null;
+  // List<File> _files01 = [];
+  //var loading = null;
   int ratingValue = 0;
   final controller = Get.put(ProfileScreenController());
   String? time;
 
-  @override
-  void _pickMultipleFiles() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
-
-    if (result != null) {
-      List<File> _files = result.paths.map((path) => File(path!)).toList();
-      setState(() {
-        _files01 = _files;
-        loading = 1;
-      });
-    } else {
-      // User canceled the picker
-    }
-  }
+  // @override
+  // void _pickMultipleFiles() async {
+  //   FilePickerResult? result =
+  //       await FilePicker.platform.pickFiles(allowMultiple: true);
+  //
+  //   if (result != null) {
+  //     List<File> _files = result.paths.map((path) => File(path!)).toList();
+  //     setState(() {
+  //       _files01 = _files;
+  //       loading = 1;
+  //     });
+  //   } else {
+  //     // User canceled the picker
+  //   }
+  // }
 
   // FilePickerResult? uploadDocument1;
   // String? uploadDocumentFileName1;
@@ -96,9 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final profileController = Get.put(ProfileScreenController());
 
   TextEditingController _designationController = TextEditingController();
-  TextEditingController _designationDescriptionController = TextEditingController();
-
-
+  TextEditingController _designationDescriptionController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -784,7 +784,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: 10.w,
                                 ),
                                 InkWell(
-                                  onTap: ()=>Get.toNamed(MyRouter.hoursPerWeekScreen),
+                                  onTap: () =>
+                                      Get.toNamed(MyRouter.hoursPerWeekScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -824,7 +825,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       color: AppTheme.darkBlueText),
                                 ),
                                 InkWell(
-                                  onTap: ()=>Get.toNamed(MyRouter.addLanguageScreen),
+                                  onTap: () =>
+                                      Get.toNamed(MyRouter.addLanguageScreen),
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 15),
@@ -842,7 +844,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: ()=>Get.toNamed(MyRouter.editLanguageScreen),
+                                  onTap: () =>
+                                      Get.toNamed(MyRouter.editLanguageScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
@@ -956,7 +959,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   height: 10.h,
                                 ),
                                 InkWell(
-                                  onTap: () {Get.toNamed(MyRouter.addEducationScreen);},
+                                  onTap: () {
+                                    Get.toNamed(MyRouter.addEducationScreen);
+                                  },
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 15),
@@ -1520,59 +1525,184 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 10.h,
                               ),
                               SizedBox(
-                                height: 120.h,
                                 child: profileController.model.value.data!
                                             .portfolio!.length ==
                                         0
-                                    ? InkWell(
-                                        onTap: () => _pickMultipleFiles(),
-                                        child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.rectangle,
-                                              color: AppTheme.whiteColor,
-                                              border: Border.all(
-                                                color: Color(0xff707070),
-                                              ),
-                                              image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                      "https://images.unsplash.com/photo-1659686353676-8699585ff4c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"))),
-                                        ),
-                                      )
+                                    ? SizedBox()
                                     : ListView.builder(
                                         shrinkWrap: true,
                                         physics: BouncingScrollPhysics(),
                                         itemCount: profileController.model.value
                                             .data!.portfolio!.length,
-                                        scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           print(profileController.model.value
                                               .data!.portfolio![index].image
                                               .toString());
-                                          return InkWell(
-                                            onTap: () => _pickMultipleFiles(),
-                                            child: Container(
-                                              margin: EdgeInsets.all(5),
-                                              height: 100,
-                                              width: 100,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                color: AppTheme.whiteColor,
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        profileController
+                                          return Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.all(5),
+                                                height: MediaQuery.of(context).size.height*.2,
+                                                width: deviceWidth*.8,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.rectangle,
+                                                  color: AppTheme.whiteColor,
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          profileController
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .portfolio![index]
+                                                              .image
+                                                              .toString()),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Title :",
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppTheme
+                                                            .darkBlueText),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      profileController
+                                                          .model
+                                                          .value
+                                                          .data!
+                                                          .portfolio![index]
+                                                          .name
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppTheme
+                                                              .darkBlueText),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      deletePortfolioInfoRepo(
+                                                              profileController
+                                                                  .model
+                                                                  .value
+                                                                  .data!
+                                                                  .portfolio![
+                                                                      index]
+                                                                  .id,
+                                                              context)
+                                                          .then((value) {
+                                                        if (value.status ==
+                                                            true) {
+                                                          print(
+                                                              profileController
+                                                                  .model
+                                                                  .value
+                                                                  .data!
+                                                                  .portfolio![
+                                                                      index]
+                                                                  .id);
+                                                          profileController
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .portfolio!
+                                                              .removeAt(index);
+                                                          profileController
+                                                              .getData();
+                                                        }
+                                                        showToast(value.message
+                                                            .toString());
+                                                        print(profileController
                                                             .model
                                                             .value
                                                             .data!
                                                             .portfolio![index]
-                                                            .image
-                                                            .toString()),
-                                                    fit: BoxFit.cover),
+                                                            .id);
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 15),
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: AppTheme
+                                                              .whiteColor,
+                                                          border: Border.all(
+                                                              color: Color(
+                                                                  0xff707070))),
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color: AppTheme
+                                                            .primaryColor,
+                                                        size: 15,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Description :",
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppTheme
+                                                            .darkBlueText),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      profileController
+                                                          .model
+                                                          .value
+                                                          .data!
+                                                          .portfolio![index]
+                                                          .description
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 14.sp,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppTheme
+                                                              .darkBlueText),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Divider(
+                                                color: AppTheme.pinkText
+                                                    .withOpacity(.29),
+                                              ),
+                                            ],
                                           );
                                         }),
                               )
@@ -1730,14 +1860,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       ),
                                                       InkWell(
                                                         onTap: () {
-                                                          deleteTestimonialInfoRepo(profileController.model.value.data!.testimonial![index].id,context).then((value) {
-                                                            if(value.status == true){
-                                                              print(profileController.model.value.data!.testimonial![index].id);
-                                                              profileController.model.value.data!.testimonial!.removeAt(index);
-                                                              profileController.getData();
+                                                          deleteTestimonialInfoRepo(
+                                                                  profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .id,
+                                                                  context)
+                                                              .then((value) {
+                                                            if (value.status ==
+                                                                true) {
+                                                              print(profileController
+                                                                  .model
+                                                                  .value
+                                                                  .data!
+                                                                  .testimonial![
+                                                                      index]
+                                                                  .id);
+                                                              profileController
+                                                                  .model
+                                                                  .value
+                                                                  .data!
+                                                                  .testimonial!
+                                                                  .removeAt(
+                                                                      index);
+                                                              profileController
+                                                                  .getData();
                                                             }
-                                                            showToast(value.message.toString());
-                                                            print(profileController.model.value.data!.testimonial![index].id);
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                            print(profileController
+                                                                .model
+                                                                .value
+                                                                .data!
+                                                                .testimonial![
+                                                                    index]
+                                                                .id);
                                                           });
                                                         },
                                                         child: Container(
@@ -1973,8 +2134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     height: 20,
                                                   ),
                                                   Divider(
-                                                    color: AppTheme.primaryColor
-                                                        .withOpacity(.49),
+                                                    color: AppTheme.pinkText
+                                                        .withOpacity(.29),
                                                   ),
                                                 ],
                                               ),
@@ -2219,81 +2380,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "Start date :",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .certificates![
-                                                                        index]
-                                                                    .issueDate
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                "End Date :",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .certificates![
-                                                                        index]
-                                                                    .expiryDate
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ],
-                                                          )
+
+
                                                         ],
                                                       ),
                                                     ),
@@ -2303,8 +2391,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 Divider(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.49),
+                                                  color: AppTheme.pinkText
+                                                      .withOpacity(.29),
                                                 ),
                                               ],
                                             );
@@ -2347,8 +2435,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: 10.w,
                                 ),
                                 InkWell(
-                                  onTap: () => Get.toNamed(
-                                      MyRouter.addEmploymentScreen),
+                                  onTap: () =>
+                                      Get.toNamed(MyRouter.addEmploymentScreen),
                                   child: Container(
                                     padding: EdgeInsets.all(5),
                                     decoration: BoxDecoration(

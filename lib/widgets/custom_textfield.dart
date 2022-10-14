@@ -80,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               fontSize: 15,
             ),
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                const EdgeInsets.only(left: 10),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                   color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),

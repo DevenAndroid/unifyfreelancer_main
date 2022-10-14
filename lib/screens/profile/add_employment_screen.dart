@@ -1,7 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../models/model_countrylist.dart';
+import '../../repository/add_employment_repository.dart';
+import '../../repository/countrylist_repository.dart';
 import '../../resources/app_theme.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
@@ -14,7 +22,31 @@ class AddEmploymentScreen extends StatefulWidget {
 }
 
 class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
-  var acceptTermsOrPrivacy = false;
+
+  final _formKey = GlobalKey<FormState>();
+  var acceptTermsOrPrivacy = true;
+  var dateInput = "From, Date :";
+  var dateInput2 = "To, Date :";
+
+  ModelCountryList countryList = ModelCountryList();
+  RxList searchList1 = <String>[].obs;
+  TextEditingController _companyController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _fromController = TextEditingController();
+  TextEditingController _toController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    countryListRepo().then((value) =>
+        setState(() {
+          countryList = value;
+        }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +61,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
         ),
       ),
       body: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -65,9 +101,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: _companyController,
                           obSecure: false.obs,
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Ex: Unify".obs,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Company is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -86,19 +127,221 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           children: [
                             Expanded(
                               child: CustomTextField(
+                                controller: _cityController,
                                 obSecure: false.obs,
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "City".obs,
+                                validator: MultiValidator([
+                                  RequiredValidator(
+                                      errorText: 'city is required'),
+                                ]),
+
                               ),
                             ),
                             SizedBox(
                               width: 5,
                             ),
                             Expanded(
-                              child: CustomTextField(
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: "Country".obs,
+                              child: TextFormField(
+                                onTap: () {
+                                  // searchList1.value = countryList1;
+                                  searchList1.clear();
+                                  for (var item in countryList.countrylist!) {
+                                    searchList1.add(item.name.toString());
+                                  }
+                                  showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(30),
+                                            topRight: Radius.circular(30))),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        height: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height * .7,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: IconButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                icon: Icon(
+                                                  Icons.clear,
+                                                  color: AppTheme.blackColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(10)
+                                                  .copyWith(top: 0),
+                                              child: TextFormField(
+                                                onChanged: (value) {
+                                                  if (value != "") {
+                                                    searchList1.clear();
+                                                    // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
+                                                    for (var item in countryList
+                                                        .countrylist!) {
+                                                      if (item.name
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(value
+                                                          .toLowerCase())) {
+                                                        searchList1.add(
+                                                            item.name
+                                                                .toString());
+                                                      }
+                                                    }
+                                                  } else {
+                                                    searchList1.clear();
+                                                    for (var item in countryList
+                                                        .countrylist!) {
+                                                      searchList1.add(
+                                                          item.name.toString());
+                                                    }
+                                                  }
+                                                  log(
+                                                      "jsonEncode(searchList1)");
+                                                },
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  fillColor: AppTheme
+                                                      .primaryColor
+                                                      .withOpacity(.05),
+                                                  hintText: "Select country",
+                                                  prefixIcon: Icon(Icons.flag),
+                                                  hintStyle: const TextStyle(
+                                                      color: Color(0xff596681),
+                                                      fontSize: 15),
+                                                  contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14,
+                                                      horizontal: 20),
+                                                  focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: AppTheme
+                                                            .primaryColor
+                                                            .withOpacity(.15),
+                                                        width: 1.0),
+                                                    borderRadius:
+                                                    BorderRadius.circular(8),
+                                                  ),
+                                                  enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: AppTheme
+                                                            .primaryColor
+                                                            .withOpacity(.15),
+                                                        width: 1.0),
+                                                    borderRadius:
+                                                    BorderRadius.circular(8),
+                                                  ),
+                                                  border: OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: AppTheme
+                                                              .primaryColor
+                                                              .withOpacity(.15),
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0)),
+                                                ),
+                                              ),
+                                            ),
+                                            Obx(() {
+                                              return Expanded(
+                                                child: ListView.builder(
+                                                    physics:
+                                                    BouncingScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount: searchList1
+                                                        .length,
+                                                    itemBuilder: (context,
+                                                        index) {
+                                                      return Obx(() {
+                                                        return InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              countryController
+                                                                  .text =
+                                                                  searchList1[index]
+                                                                      .toString();
+                                                            });
+                                                            print(
+                                                                countryController
+                                                                    .text);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                  30,
+                                                                  vertical: 10),
+                                                              child: Text(
+                                                                searchList1[index]
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize: 14,
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                              )),
+                                                        );
+                                                      });
+                                                    }),
+                                              );
+                                            }),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                readOnly: true,
+                                controller: countryController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: AppTheme.whiteColor,
+                                  hintText: "Country",
+
+                                  labelStyle: const TextStyle(
+                                      color: Colors.black),
+                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  hintStyle: const TextStyle(
+                                    color: Color(0xff596681),
+                                    fontSize: 15,
+                                  ),
+                                  contentPadding:
+                                  const EdgeInsets.only(left: 10),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppTheme.primaryColor
+                                            .withOpacity(.15), width: 1.0),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppTheme.primaryColor
+                                            .withOpacity(.15), width: 1.0),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppTheme.primaryColor
+                                              .withOpacity(.15), width: 1.0),
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                ),
+                                validator: MultiValidator([
+                                  RequiredValidator(
+                                      errorText: 'Country is required'),
+                                ]),
                               ),
                             ),
                           ],
@@ -117,9 +360,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: _titleController,
                           obSecure: false.obs,
                           keyboardType: TextInputType.emailAddress,
-                          hintText: "Degree (Optional)".obs,
+                          hintText: "Web developer".obs,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Title is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -134,35 +382,47 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         SizedBox(
                           height: 5,
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: "From Month".obs,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              child: CustomTextField(
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: "From year".obs,
-                              ),
-                            )
-                          ],
+                        CustomTextField(
+                          controller: _fromController,
+                          readOnly: true,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                //DateTime.now() - not to allow to choose before today.
+                                lastDate: DateTime(2100));
+
+                            if (pickedDate != null) {
+                              print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              _fromController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                              setState(() {
+                                dateInput =
+                                    formattedDate; //set output date to TextField value.
+                              });
+                            } else {}
+                          },
+                          obSecure: false.obs,
+                          hintText: dateInput
+                              .toString()
+                              .obs,
+                          suffixIcon: Icon(
+                            Icons.calendar_month_outlined, size: 22,
+                            color: AppTheme.primaryColor,),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'From, date is required'),
+                          ]),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+
+
                         Row(
                           children: [
                             Checkbox(
                                 materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
+                                MaterialTapTargetSize.shrinkWrap,
                                 value: acceptTermsOrPrivacy,
                                 activeColor: AppTheme.primaryColor,
                                 onChanged: (newValue) {
@@ -182,9 +442,53 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             ),
                           ],
                         ),
+
+                        SizedBox(
+                          child: acceptTermsOrPrivacy == false ?
+                          CustomTextField(
+                            controller: _toController,
+                            readOnly: true,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1950),
+                                  //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2100));
+
+                              if (pickedDate != null) {
+                                print(
+                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                                print(
+                                    formattedDate); //formatted date output using intl package =>  2021-03-16
+                                setState(() {
+                                  dateInput2 =
+                                      formattedDate; //set output date to TextField value.
+                                });
+                              } else {}
+                            },
+                            obSecure: false.obs,
+                            hintText: dateInput2
+                                .toString()
+                                .obs,
+                            suffixIcon: Icon(
+                              Icons.calendar_month_outlined, size: 22,
+                              color: AppTheme.primaryColor,),
+                           /* validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'To, date is required'),
+                            ]),*/
+                          )
+                              : SizedBox(),
+                        ),
+
+
                         SizedBox(
                           height: 15,
                         ),
+
                         Text(
                           "Description (Optional)",
                           style: TextStyle(
@@ -196,10 +500,15 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: _descriptionController,
                           isMulti: true,
                           obSecure: false.obs,
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Description".obs,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Description is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -215,7 +524,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                       child: CustomOutlineButton(
                         title: 'Cancel',
                         backgroundColor: AppTheme.whiteColor,
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.back();
+                        },
                         textColor: AppTheme.primaryColor,
                         expandedValue: false,
                       ),
@@ -228,7 +539,25 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                       child: CustomOutlineButton(
                         title: 'Save',
                         backgroundColor: AppTheme.primaryColor,
-                        onPressed: () =>Get.back(),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            editEmploymentInfoRepo(
+                                subject: _titleController.text.trim(),
+                                description: _descriptionController.text.trim(),
+                                company: _companyController.text.trim(),
+                                city: _cityController.text.trim(),
+                                country: countryController.text.trim(),
+                                start_date: _fromController.text.trim(),
+                                end_date: _toController.text.trim(),
+                                currently_working: acceptTermsOrPrivacy == true ? 1 : 0,
+                                context: context).then((value) {
+                               if(value.status == true){
+                                 Get.back();
+                               }
+                               showToast(value.message.toString());
+                            });
+                          }
+                        },
                         textColor: AppTheme.whiteColor,
                         expandedValue: false,
                       ),

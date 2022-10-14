@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_svg/svg.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../../repository/add_portfolio_repository.dart';
 import '../../resources/app_theme.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
@@ -35,6 +37,9 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
       throw Exception(e);
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +82,11 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                     controller: _nameController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.text,
-                    hintText: "Title".obs),
+                    hintText: "Title".obs,
+                  validator: MultiValidator([
+                    RequiredValidator(
+                        errorText: 'Title is required'),
+                  ]),),
                 SizedBox(
                   height: 20,
                 ),
@@ -86,60 +95,73 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                     obSecure: false.obs,
                     keyboardType: TextInputType.text,
                     hintText: "Description".obs,
-                    isMulti: true),
+                    isMulti: true,
+                  validator: MultiValidator([
+                    RequiredValidator(
+                        errorText: 'Description is required'),
+                  ]),),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      border: Border.all(
-                          color: AppTheme.primaryColor.withOpacity(.15),
-                          width: 1.0)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icon/script.svg",
-                              height: 15,
-                              width: 15,
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              "Attach Files",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w300),
-                            )
-                          ],
+                InkWell(
+                  onTap: () =>
+                      pickImageFromDevice(imageSource: ImageSource.gallery),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(
+                            color: AppTheme.primaryColor.withOpacity(.15),
+                            width: 1.0)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icon/script.svg",
+                                height: 15,
+                                width: 15,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Attach Files",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: AppTheme.pinkText,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: AppTheme.pinkText,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                          child: Text(
+                            "Choose File",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.whiteColor),
+                          ),
                         ),
-                        child: Text(
-                          "Choose File",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.whiteColor),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                if (imageFileToPick.path != "") Image.file(imageFileToPick)
+                if (imageFileToPick.path != "")
+                  Image.file(
+                    imageFileToPick,
+                    height: 100,
+                    width: 100,
+                  )
               ],
             ),
           ),
@@ -169,7 +191,26 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () => Get.back(),
+                onPressed: (){
+                  if(_formKey.currentState!.validate() && imageFileToPick.path != ""){
+                    Map<String,String> map = {};
+                    map["title"] = _nameController.text.trim();
+                    map["description"] = _descriptionController.text.trim();
+                    editPortfolioInfoRepo(
+                      mapData: map,
+                      fieldName1: "image",
+                      file1: imageFileToPick,
+                      context: context,).then((value) {
+                        if(value.status == true){
+                          Get.back();
+                        }
+                        showToast(value.message.toString());
+                    });
+                  }
+                  else{
+                    showToast("Please add a image");
+                  }
+                },
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),

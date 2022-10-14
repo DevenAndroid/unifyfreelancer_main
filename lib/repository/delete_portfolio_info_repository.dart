@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,28 +9,28 @@ import '../models/Model_common_response.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> editSkillsInfoRepo(skill_id, context) async {
+
+
+Future<ModelCommonResponse> deletePortfolioInfoRepo(id,context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
-  map['skill_id'] = skill_id;
+  map['id'] = id;
 
   print(map);
   try {
-    http.Response response = await http.post(
-        Uri.parse(ApiUrls.editSkillsInfo),
-        headers: await getAuthHeader(),
-        body: jsonEncode(map));
+    http.Response response = await http.post(Uri.parse(ApiUrls.deletePortfolioInfo),
+        headers: await getAuthHeader(),body: jsonEncode(map) );
 
     if (response.statusCode == 200) {
       Helpers.hideLoader(loader);
       print(jsonDecode(response.body));
       return ModelCommonResponse.fromJson(jsonDecode(response.body));
+
     } else {
       Helpers.hideLoader(loader);
       print(jsonDecode(response.body));
-      return ModelCommonResponse(
-          message: jsonDecode(response.body)["message"], status: false);
+      return ModelCommonResponse(message: jsonDecode(response.body)["message"], status: false);
     }
   } on SocketException catch (e) {
     Helpers.hideLoader(loader);

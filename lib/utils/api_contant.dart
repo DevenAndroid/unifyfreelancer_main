@@ -27,6 +27,9 @@ class ApiUrls {
   static const String deleteTestimonialInfo = "${apiBaseUrl}delete-testimonial-info";
   static const String skillList = "${apiBaseUrl}skill-list";
   static const String editSkillsInfo = "${apiBaseUrl}edit-skills-info";
+  static const String editPortfolioInfo = "${apiBaseUrl}edit-portfolio-info";
+  static const String deletePortfolioInfo = "${apiBaseUrl}delete-portfolio-info";
+  static const String editEmploymentInfo = "${apiBaseUrl}edit-employment-info";
 
 }
  showToast(message) {

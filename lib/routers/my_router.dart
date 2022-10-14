@@ -89,7 +89,7 @@ class MyRouter {
   static var changePasswordScreen = "/changePasswordScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const BottomNavbar()),
+    GetPage(name: '/', page: () => const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
