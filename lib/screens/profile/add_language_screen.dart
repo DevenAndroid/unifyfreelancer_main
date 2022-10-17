@@ -40,7 +40,7 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
           child: CustomAppbar(
             isLikeButton: false,
             isProfileImage: false,
-            titleText: "Add Education",
+            titleText: "Add Language",
           )
           // onPressedForLeading:,
           ),

@@ -30,6 +30,10 @@ class ApiUrls {
   static const String editPortfolioInfo = "${apiBaseUrl}edit-portfolio-info";
   static const String deletePortfolioInfo = "${apiBaseUrl}delete-portfolio-info";
   static const String editEmploymentInfo = "${apiBaseUrl}edit-employment-info";
+  static const String hoursPerWeek = "${apiBaseUrl}hours-per-week";
+  static const String editHoursPerWeek = "${apiBaseUrl}edit-hours-per-week";
+  static const String deleteEmploymentInfo = "${apiBaseUrl}delete-employment-info";
+  static const String editEducationInfo = "${apiBaseUrl}edit-education-info";
 
 }
  showToast(message) {

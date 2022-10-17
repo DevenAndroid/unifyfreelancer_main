@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../models/model_countrylist.dart';
 import '../../repository/add_employment_repository.dart';
 import '../../repository/countrylist_repository.dart';
@@ -22,7 +23,6 @@ class AddEmploymentScreen extends StatefulWidget {
 }
 
 class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
-
   final _formKey = GlobalKey<FormState>();
   var acceptTermsOrPrivacy = true;
   var dateInput = "From, Date :";
@@ -39,13 +39,31 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   TextEditingController _descriptionController = TextEditingController();
 
 
+  final controller  = Get.put(ProfileScreenController());
+  int parentIndex = -10000;
+
+
+
   @override
   void initState() {
     super.initState();
-    countryListRepo().then((value) =>
-        setState(() {
+    countryListRepo().then((value) => setState(() {
           countryList = value;
         }));
+    if(Get.arguments != null ){
+      parentIndex = Get.arguments;
+      _companyController.text = controller.model.value.data!.employment![parentIndex].company.toString();
+      _cityController.text = controller.model.value.data!.employment![parentIndex].city.toString();
+      countryController.text = controller.model.value.data!.employment![parentIndex].country.toString();
+      _titleController.text = controller.model.value.data!.employment![parentIndex].subject.toString();
+      _fromController.text = controller.model.value.data!.employment![parentIndex].startDate.toString();
+      _toController.text = controller.model.value.data!.employment![parentIndex].endDate.toString();
+      _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
+      setState(() {
+        acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
+
+      });
+    }
   }
 
   @override
@@ -67,10 +85,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
           child: Column(
             children: [
               Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
+                  width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -106,8 +121,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Ex: Unify".obs,
                           validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Company is required'),
+                            RequiredValidator(errorText: 'Company is required'),
                           ]),
                         ),
                         SizedBox(
@@ -135,7 +149,6 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   RequiredValidator(
                                       errorText: 'city is required'),
                                 ]),
-
                               ),
                             ),
                             SizedBox(
@@ -158,14 +171,13 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return SizedBox(
-                                        height: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .height * .7,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .7,
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Align(
                                               alignment: Alignment.topRight,
@@ -192,10 +204,10 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                           .toString()
                                                           .toLowerCase()
                                                           .contains(value
-                                                          .toLowerCase())) {
-                                                        searchList1.add(
-                                                            item.name
-                                                                .toString());
+                                                              .toLowerCase())) {
+                                                        searchList1.add(item
+                                                            .name
+                                                            .toString());
                                                       }
                                                     }
                                                   } else {
@@ -206,8 +218,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                           item.name.toString());
                                                     }
                                                   }
-                                                  log(
-                                                      "jsonEncode(searchList1)");
+                                                  log("jsonEncode(searchList1)");
                                                 },
                                                 decoration: InputDecoration(
                                                   filled: true,
@@ -220,26 +231,31 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                       color: Color(0xff596681),
                                                       fontSize: 15),
                                                   contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 14,
-                                                      horizontal: 20),
-                                                  focusedBorder: OutlineInputBorder(
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 14,
+                                                          horizontal: 20),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color: AppTheme
                                                             .primaryColor
                                                             .withOpacity(.15),
                                                         width: 1.0),
                                                     borderRadius:
-                                                    BorderRadius.circular(8),
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
-                                                  enabledBorder: OutlineInputBorder(
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
                                                         color: AppTheme
                                                             .primaryColor
                                                             .withOpacity(.15),
                                                         width: 1.0),
                                                     borderRadius:
-                                                    BorderRadius.circular(8),
+                                                        BorderRadius.circular(
+                                                            8),
                                                   ),
                                                   border: OutlineInputBorder(
                                                       borderSide: BorderSide(
@@ -248,8 +264,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                               .withOpacity(.15),
                                                           width: 1.0),
                                                       borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0)),
+                                                          BorderRadius.circular(
+                                                              8.0)),
                                                 ),
                                               ),
                                             ),
@@ -257,19 +273,20 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               return Expanded(
                                                 child: ListView.builder(
                                                     physics:
-                                                    BouncingScrollPhysics(),
+                                                        BouncingScrollPhysics(),
                                                     shrinkWrap: true,
-                                                    itemCount: searchList1
-                                                        .length,
-                                                    itemBuilder: (context,
-                                                        index) {
+                                                    itemCount:
+                                                        searchList1.length,
+                                                    itemBuilder:
+                                                        (context, index) {
                                                       return Obx(() {
                                                         return InkWell(
                                                           onTap: () {
                                                             setState(() {
                                                               countryController
-                                                                  .text =
-                                                                  searchList1[index]
+                                                                      .text =
+                                                                  searchList1[
+                                                                          index]
                                                                       .toString();
                                                             });
                                                             print(
@@ -281,17 +298,20 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                           child: Padding(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                  horizontal:
-                                                                  30,
-                                                                  vertical: 10),
+                                                                      horizontal:
+                                                                          30,
+                                                                      vertical:
+                                                                          10),
                                                               child: Text(
-                                                                searchList1[index]
+                                                                searchList1[
+                                                                        index]
                                                                     .toString(),
                                                                 style: TextStyle(
-                                                                    fontSize: 14,
+                                                                    fontSize:
+                                                                        14,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
+                                                                        FontWeight
+                                                                            .w600),
                                                               )),
                                                         );
                                                       });
@@ -310,32 +330,34 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   filled: true,
                                   fillColor: AppTheme.whiteColor,
                                   hintText: "Country",
-
-                                  labelStyle: const TextStyle(
-                                      color: Colors.black),
+                                  labelStyle:
+                                      const TextStyle(color: Colors.black),
                                   suffixIcon: Icon(Icons.keyboard_arrow_down),
                                   hintStyle: const TextStyle(
                                     color: Color(0xff596681),
                                     fontSize: 15,
                                   ),
                                   contentPadding:
-                                  const EdgeInsets.only(left: 10),
+                                      const EdgeInsets.only(left: 10),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: AppTheme.primaryColor
-                                            .withOpacity(.15), width: 1.0),
+                                            .withOpacity(.15),
+                                        width: 1.0),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: AppTheme.primaryColor
-                                            .withOpacity(.15), width: 1.0),
+                                            .withOpacity(.15),
+                                        width: 1.0),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: AppTheme.primaryColor
-                                              .withOpacity(.15), width: 1.0),
+                                              .withOpacity(.15),
+                                          width: 1.0),
                                       borderRadius: BorderRadius.circular(8.0)),
                                 ),
                                 validator: MultiValidator([
@@ -365,8 +387,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Web developer".obs,
                           validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Title is required'),
+                            RequiredValidator(errorText: 'Title is required'),
                           ]),
                         ),
                         SizedBox(
@@ -394,10 +415,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 lastDate: DateTime(2100));
 
                             if (pickedDate != null) {
-                              print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              _fromController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                              print(
+                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              _fromController.text =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              print(
+                                  formattedDate); //formatted date output using intl package =>  2021-03-16
                               setState(() {
                                 dateInput =
                                     formattedDate; //set output date to TextField value.
@@ -405,24 +430,22 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             } else {}
                           },
                           obSecure: false.obs,
-                          hintText: dateInput
-                              .toString()
-                              .obs,
+                          hintText: dateInput.toString().obs,
                           suffixIcon: Icon(
-                            Icons.calendar_month_outlined, size: 22,
-                            color: AppTheme.primaryColor,),
+                            Icons.calendar_month_outlined,
+                            size: 22,
+                            color: AppTheme.primaryColor,
+                          ),
                           validator: MultiValidator([
                             RequiredValidator(
                                 errorText: 'From, date is required'),
                           ]),
                         ),
-
-
                         Row(
                           children: [
                             Checkbox(
                                 materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
+                                    MaterialTapTargetSize.shrinkWrap,
                                 value: acceptTermsOrPrivacy,
                                 activeColor: AppTheme.primaryColor,
                                 onChanged: (newValue) {
@@ -442,53 +465,50 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             ),
                           ],
                         ),
-
                         SizedBox(
-                          child: acceptTermsOrPrivacy == false ?
-                          CustomTextField(
-                            controller: _toController,
-                            readOnly: true,
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
-                                  //DateTime.now() - not to allow to choose before today.
-                                  lastDate: DateTime(2100));
+                          child: acceptTermsOrPrivacy == false
+                              ? CustomTextField(
+                                  controller: _toController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1950),
+                                        //DateTime.now() - not to allow to choose before today.
+                                        lastDate: DateTime(2100));
 
-                              if (pickedDate != null) {
-                                print(
-                                    pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                String formattedDate =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                                print(
-                                    formattedDate); //formatted date output using intl package =>  2021-03-16
-                                setState(() {
-                                  dateInput2 =
-                                      formattedDate; //set output date to TextField value.
-                                });
-                              } else {}
-                            },
-                            obSecure: false.obs,
-                            hintText: dateInput2
-                                .toString()
-                                .obs,
-                            suffixIcon: Icon(
-                              Icons.calendar_month_outlined, size: 22,
-                              color: AppTheme.primaryColor,),
-                           /* validator: MultiValidator([
+                                    if (pickedDate != null) {
+                                      print(
+                                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(pickedDate);
+                                      print(
+                                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                                      setState(() {
+                                        dateInput2 =
+                                            formattedDate; //set output date to TextField value.
+                                      });
+                                    } else {}
+                                  },
+                                  obSecure: false.obs,
+                                  hintText: dateInput2.toString().obs,
+                                  suffixIcon: Icon(
+                                    Icons.calendar_month_outlined,
+                                    size: 22,
+                                    color: AppTheme.primaryColor,
+                                  ),
+                                  /* validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'To, date is required'),
                             ]),*/
-                          )
+                                )
                               : SizedBox(),
                         ),
-
-
                         SizedBox(
                           height: 15,
                         ),
-
                         Text(
                           "Description (Optional)",
                           style: TextStyle(
@@ -513,7 +533,6 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         SizedBox(
                           height: 15,
                         ),
-
                       ])),
               Row(
                 children: [
@@ -541,21 +560,26 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         backgroundColor: AppTheme.primaryColor,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            editEmploymentInfoRepo(
-                                subject: _titleController.text.trim(),
-                                description: _descriptionController.text.trim(),
-                                company: _companyController.text.trim(),
-                                city: _cityController.text.trim(),
-                                country: countryController.text.trim(),
-                                start_date: _fromController.text.trim(),
-                                end_date: _toController.text.trim(),
-                                currently_working: acceptTermsOrPrivacy == true ? 1 : 0,
-                                context: context).then((value) {
-                               if(value.status == true){
-                                 Get.back();
-                               }
-                               showToast(value.message.toString());
-                            });
+                           editEmploymentInfoRepo(
+                             id: parentIndex == -10000 ? parentIndex : controller.model.value.data!.employment![parentIndex].id.toString(),
+                               subject: _titleController.text.trim(),
+                               description:
+                               _descriptionController.text.trim(),
+                               company: _companyController.text.trim(),
+                               city: _cityController.text.trim(),
+                               country: countryController.text.trim(),
+                               start_date: _fromController.text.trim(),
+                               end_date: _toController.text.trim(),
+                               currently_working:
+                               acceptTermsOrPrivacy == true ? 1 : 0,
+                               context: context)
+                               .then((value) {
+                             if (value.status == true) {
+                               Get.back();
+                               controller.getData();
+                             }
+                             showToast(value.message.toString());
+                           });
                           }
                         },
                         textColor: AppTheme.whiteColor,
@@ -567,7 +591,6 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
               )
             ],
           ),
-
         ),
       ),
     );

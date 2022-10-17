@@ -28,7 +28,7 @@ class Data {
   List<Portfolio>? portfolio;
   List<Testimonial>? testimonial;
   List<Certificates>? certificates;
-  List<Experiences>? experiences;
+  List<Employment>? employment;
   List<Education>? education;
   List<Language>? language;
   String? hoursPerWeek;
@@ -40,7 +40,7 @@ class Data {
         this.portfolio,
         this.testimonial,
         this.certificates,
-        this.experiences,
+        this.employment,
         this.education,
         this.language,
         this.hoursPerWeek,
@@ -74,10 +74,10 @@ class Data {
         certificates!.add(new Certificates.fromJson(v));
       });
     }
-    if (json['experiences'] != null) {
-      experiences = <Experiences>[];
-      json['experiences'].forEach((v) {
-        experiences!.add(new Experiences.fromJson(v));
+    if (json['employment'] != null) {
+      employment = <Employment>[];
+      json['employment'].forEach((v) {
+        employment!.add(new Employment.fromJson(v));
       });
     }
     if (json['education'] != null) {
@@ -113,8 +113,8 @@ class Data {
     if (this.certificates != null) {
       data['certificates'] = this.certificates!.map((v) => v.toJson()).toList();
     }
-    if (this.experiences != null) {
-      data['experiences'] = this.experiences!.map((v) => v.toJson()).toList();
+    if (this.employment != null) {
+      data['employment'] = this.employment!.map((v) => v.toJson()).toList();
     }
     if (this.education != null) {
       data['education'] = this.education!.map((v) => v.toJson()).toList();
@@ -341,7 +341,7 @@ class Certificates {
   }
 }
 
-class Experiences {
+class Employment {
   int? id;
   String? company;
   String? city;
@@ -352,7 +352,7 @@ class Experiences {
   String? subject;
   String? description;
 
-  Experiences(
+  Employment(
       {this.id,
         this.company,
         this.city,
@@ -363,7 +363,7 @@ class Experiences {
         this.subject,
         this.description});
 
-  Experiences.fromJson(Map<String, dynamic> json) {
+  Employment.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     company = json['company'];
     city = json['city'];

@@ -13,6 +13,7 @@ import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../repository/delete_certificate_info_repository.dart';
+import '../../repository/delete_employment_info_repository.dart';
 import '../../repository/delete_portfolio_info_repository.dart';
 import '../../repository/delete_testimonial_info_repository.dart';
 import '../../repository/edit_designation_info_repository.dart';
@@ -807,7 +808,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
 
                             Text(
-                              "3+ days response time",
+                              profileController.model.value.data!.hoursPerWeek
+                                  .toString(),
                               style: TextStyle(
                                   fontSize: 13.sp, color: AppTheme.textColor),
                             ),
@@ -1098,23 +1100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      profileController.model.value.data!
-                                              .basicInfo!.occuption
-                                              .toString()
-                                              .isEmpty
-                                          ? "Occupation"
-                                          : profileController.model.value.data!
-                                              .basicInfo!.occuption
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.darkBlueText),
-                                    ),
+                                  Text(
+                                    "Occupation",
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.darkBlueText),
                                   ),
                                   InkWell(
                                     onTap: () {
@@ -1224,6 +1216,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           Get.back();
                                                           print(jsonEncode(
                                                               value));
+                                                          profileController
+                                                              .getData();
                                                         } else {
                                                           print(jsonEncode(
                                                               value));
@@ -1263,6 +1257,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                 ],
+                              ),
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                profileController
+                                        .model.value.data!.basicInfo!.occuption
+                                        .toString()
+                                        .isEmpty
+                                    ? "Enter your occupation"
+                                    : profileController
+                                        .model.value.data!.basicInfo!.occuption
+                                        .toString(),
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
                               ),
                               SizedBox(
                                 height: 5.h,
@@ -1542,8 +1554,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             children: [
                                               Container(
                                                 margin: EdgeInsets.all(5),
-                                                height: MediaQuery.of(context).size.height*.2,
-                                                width: deviceWidth*.8,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .2,
+                                                width: deviceWidth * .8,
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.rectangle,
                                                   color: AppTheme.whiteColor,
@@ -2380,8 +2395,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           SizedBox(
                                                             height: 5,
                                                           ),
-
-
                                                         ],
                                                       ),
                                                     ),
@@ -2456,63 +2469,166 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               height: 15.h,
                             ),
-                            Text(
-                              "UI/UX Designer | Expert Web Technologies",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff363636)),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              "January 2019 - February 2021",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff363636)),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 15),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: profileController
+                                    .model.value.data!.employment!.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            profileController.model.value.data!
+                                                .employment![index].subject
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff363636)),
+                                          ),
+                                          Text(
+                                            profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .company
+                                                        .toString() !=
+                                                    "null"
+                                                ? " | " +
+                                                    profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .company
+                                                        .toString()
+                                                : "",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff363636)),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            profileController.model.value.data!
+                                                .employment![index].startDate
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff363636)),
+                                          ),
+                                          Text(
+                                            profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .startDate
+                                                        .toString() !=
+                                                    "null"
+                                                ? " - " +
+                                                    profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .startDate
+                                                        .toString()
+                                                : "",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff363636)),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () =>Get.toNamed(MyRouter.addEmploymentScreen,arguments: index),
+                                            child: Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                  border: Border.all(
+                                                      color:
+                                                          Color(0xff707070))),
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: AppTheme.primaryColor,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              deleteEmploymentInfoRepo(
+                                                      profileController
+                                                          .model
+                                                          .value
+                                                          .data!
+                                                          .employment![index]
+                                                          .id
+                                                          .toString(),
+                                                      context)
+                                                  .then((value) {
+                                                if (value.status == true) {
+                                                  profileController.model.value
+                                                      .data!.employment!
+                                                      .removeAt(index);
+                                                  profileController.getData();
+                                                }
+                                                showToast(
+                                                    value.message.toString());
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(left: 15),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                  border: Border.all(
+                                                      color:
+                                                          Color(0xff707070))),
+                                              child: Icon(
+                                                Icons.delete,
+                                                color: AppTheme.primaryColor,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      Divider(
+                                        color:
+                                            AppTheme.pinkText.withOpacity(.29),
+                                      ),
+                                    ],
+                                  );
+                                })
                           ],
                         ),
                       ),

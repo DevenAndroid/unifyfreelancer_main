@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_appbar.dart';
 
+import '../../repository/edit_education_info_repository.dart';
 import '../../resources/app_theme.dart';
-import '../../resources/size.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -53,6 +55,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
   Rx time2 = "".obs;
   Rx selectedDegree = "".obs;
 
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _schoolController = TextEditingController();
+  TextEditingController _fromController = TextEditingController();
+  TextEditingController _toController = TextEditingController();
+  TextEditingController _degreeController = TextEditingController();
+  TextEditingController _areaController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +76,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
           // onPressedForLeading:,
           ),
       body: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
@@ -102,9 +113,13 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: _schoolController,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.text,
                           hintText: "Ex: Northwestern University".obs,
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'School is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -158,8 +173,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 groupValue: time2.value,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    time2.value =
-                                                        value.toString();
+                                                    time2.value = value.toString();
+                                                    _fromController.text = value.toString();
+                                                    print( _fromController.text);
                                                     Get.back();
                                                   });
                                                 },
@@ -172,11 +188,13 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           },
                           readOnly: true,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
-                          hintText:
-                              "${time2.value == '' ? "Form" : time2.value.toString()}"
-                                  .obs,
+                          controller: _fromController,
+                          hintText: "From".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'From year is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -230,8 +248,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 groupValue: time.value,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    time.value =
-                                                        value.toString();
+                                                    time.value = value.toString();
+                                                    _toController.text = value.toString();
+                                                    print(_toController.text);
                                                     Get.back();
                                                   });
                                                 },
@@ -244,11 +263,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           },
                           readOnly: true,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
-                          hintText:
-                              "${time.value == '' ? "To (or expected graduation year)" : time.value.toString()}"
-                                  .obs,
+                          controller: _toController,
+                          hintText: "To (or expected graduation year)".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'To year is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -316,7 +336,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           },
                           readOnly: true,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _degreeController,
                           hintText:
                               "${selectedDegree.value == '' ? "Degree (Optional)" : selectedDegree.value.toString()}"
                                   .obs,
@@ -337,7 +357,8 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         ),
                         CustomTextField(
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _areaController,
+                          keyboardType: TextInputType.text,
                           hintText: "Ex: Computer Science".obs,
                         ),
                         SizedBox(
@@ -356,7 +377,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         CustomTextField(
                           isMulti: true,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          controller: _descriptionController,
                           hintText: "Description".obs,
                         ),
                       ])),
@@ -369,7 +390,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                       child: CustomOutlineButton(
                         title: 'Cancel',
                         backgroundColor: AppTheme.whiteColor,
-                        onPressed: () {},
+                        onPressed: () => Get.back(),
                         textColor: AppTheme.primaryColor,
                         expandedValue: false,
                       ),
@@ -382,7 +403,24 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                       child: CustomOutlineButton(
                         title: 'Save',
                         backgroundColor: AppTheme.primaryColor,
-                        onPressed: () => Get.back(),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            editEducationInfoRepo(
+                                    _schoolController.text.trim(),
+                                    _fromController.text.trim(),
+                                    _toController.text.trim(),
+                                    _degreeController.text.trim(),
+                                    _areaController.text.trim(),
+                                    _descriptionController.text.trim(),
+                                    context)
+                                .then((value) {
+                              if (value.status == true) {
+                                Get.back();
+                              }
+                              showToast(value.message.toString());
+                            });
+                          }
+                        },
                         textColor: AppTheme.whiteColor,
                         expandedValue: false,
                       ),

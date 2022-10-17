@@ -17,7 +17,7 @@ class ReportsScreen extends StatefulWidget {
 
 class _ReportsScreenState extends State<ReportsScreen> {
   RxString dropDownValue1 = 'All Transactions'.obs;
-  RxString dropDownValue2 = 'All freelancers'.obs;
+  RxString dropDownValue2 = 'All Clients'.obs;
 
   var items = [
     'All Debits All Credits',

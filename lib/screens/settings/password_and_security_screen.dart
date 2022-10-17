@@ -135,7 +135,10 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                           ],
                         ),
                       ),
-                      /*  Row(
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -167,8 +170,8 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                         style: TextStyle(
                             fontSize: 13,
                             color: AppTheme.textColor.withOpacity(.63)),
-                      ),*/
-                      /*Container(
+                      ),
+                      Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 15),
                         width: deviceWidth,
                         padding: const EdgeInsets.all(10),
@@ -370,10 +373,10 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            Divider(
+                            /*Divider(
                               color: AppTheme.primaryColor.withOpacity(.49),
-                            ),
-                            SizedBox(
+                            ),*/
+                            /*SizedBox(
                               height: 10.h,
                             ),
                             Row(
@@ -449,10 +452,10 @@ class _PasswordAndSecurityScreenState extends State<PasswordAndSecurityScreen> {
 
                                 ],))
                               ],
-                            )
+                            )*/
                           ],
                         ),
-                      ),*/
+                      ),
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 15),
                         width: deviceWidth,
