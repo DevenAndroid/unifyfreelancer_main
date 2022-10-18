@@ -90,14 +90,23 @@ final List<BoxShadow> blurBoxShadow = [
   ),
 ];
 
-showFilterButtonSheet(
-    {required context, required titleText, required widgets}) {
+
+showFilterButtonSheet1(
+    {required context,
+      required titleText,
+      required widgets,
+      maxHeight = 0.0,
+      minimumHeight = 0.0,
+      automaticDismiss = true,
+      showCloseIcon = true,
+    }) {
   showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      isDismissible: true,
+      isDismissible: automaticDismiss,
       constraints: BoxConstraints(
-        maxHeight: AddSize.screenHeight * .95,
+          maxHeight:maxHeight == 0 ? AddSize.screenHeight * .8 : maxHeight,
+          minHeight: minimumHeight
       ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -124,25 +133,27 @@ showFilterButtonSheet(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: AddSize.size20,
-                ),
+                if(showCloseIcon)
+                  SizedBox(
+                    width: AddSize.size20,
+                  ),
                 Expanded(
-                  child: Text(
+                    child: Text(
                       titleText,style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppTheme.textColor),
 
-                  ),
+                    ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(
-                    Icons.clear,
-                    size: AddSize.size25,
-                    color: AppTheme.primaryColor,
+                if(showCloseIcon)
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Icon(
+                      Icons.clear,
+                      size: AddSize.size25,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
-                ),
               ],
             ),
             Flexible(

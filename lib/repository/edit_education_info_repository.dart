@@ -8,10 +8,13 @@ import 'package:http/http.dart' as http;
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> editEducationInfoRepo(school, start_year, end_year,degree,area_study,description, context) async {
+Future<ModelCommonResponse> editEducationInfoRepo(id,school, start_year, end_year,degree,area_study,description, context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
+  if(id != -100){
+    map['id'] = id;
+  }
   map['school'] = school;
   map['start_year'] = start_year;
   map['end_year'] = end_year;
@@ -32,8 +35,7 @@ Future<ModelCommonResponse> editEducationInfoRepo(school, start_year, end_year,d
     } else {
       Helpers.hideLoader(loader);
       print(jsonDecode(response.body));
-      return ModelCommonResponse(
-          message: jsonDecode(response.body)["message"], status: false);
+      return ModelCommonResponse(message: jsonDecode(response.body)["message"], status: false);
     }
   } on SocketException catch (e) {
     Helpers.hideLoader(loader);

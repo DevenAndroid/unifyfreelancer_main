@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/popups/radio_buttons_profile_screen.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
@@ -13,10 +14,12 @@ import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../repository/delete_certificate_info_repository.dart';
+import '../../repository/delete_education_info_repository.dart';
 import '../../repository/delete_employment_info_repository.dart';
 import '../../repository/delete_portfolio_info_repository.dart';
 import '../../repository/delete_testimonial_info_repository.dart';
 import '../../repository/edit_designation_info_repository.dart';
+import '../../repository/edit_name_info_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/box_textfield.dart';
@@ -97,9 +100,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final profileController = Get.put(ProfileScreenController());
 
+  TextEditingController _fNameController = TextEditingController();
+  TextEditingController _lNameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
   TextEditingController _designationController = TextEditingController();
   TextEditingController _designationDescriptionController =
       TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  File imageFileToPick = File("");
+
+  pickImageFromDevice({required imageSource}) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image == null) return;
+      imageFileToPick = File(image.path);
+      setState(() {});
+      Map<String, String> map = {};
+      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] =profileController.model.value.data!.basicInfo!.description.toString();
+      editNameInfoRepo(mapData: map,
+          fieldName1: "profile_image",
+          file1: imageFileToPick,
+          context: context).then((value) {
+            imageFileToPick.delete();
+            imageFileToPick = File("");
+        if (value.status ==true) {profileController.getData();
+        }
+        showToast(value.message
+            .toString());
+      });
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,21 +184,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Stack(children: [
-                              Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    color: AppTheme.primaryColor,
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(profileController
-                                            .model
-                                            .value
-                                            .data!
-                                            .basicInfo!
-                                            .profileImage
-                                            .toString()))),
+                              InkWell(
+                                onTap: () {
+                                  showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 100,
+                                        color: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              InkWell(
+                                                  onTap: () {
+                                                    pickImageFromDevice(
+                                                        imageSource: ImageSource.camera);
+
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    'Image from Camera',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    pickImageFromDevice(
+                                                        imageSource: ImageSource.gallery);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    'Image from Gallery',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      color: AppTheme.primaryColor,
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(profileController
+                                              .model
+                                              .value
+                                              .data!
+                                              .basicInfo!
+                                              .profileImage
+                                              .toString()))),
+                                ),
                               ),
                               Positioned(
                                   right: 0,
@@ -173,48 +265,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      profileController.model.value.data!
-                                              .basicInfo!.firstName
-                                              .toString() +
-                                          " " +
-                                          profileController.model.value.data!
-                                              .basicInfo!.lastName
-                                              .toString(),
-                                      style: TextStyle(
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff180095)),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Wrap(
-                                      children: List.generate(
-                                          5,
-                                          (index) => double.parse(
-                                                      profileController
-                                                          .model
-                                                          .value
-                                                          .data!
-                                                          .basicInfo!
-                                                          .rating
-                                                          .toString()) >
-                                                  index
-                                              ? Icon(
-                                                  Icons.star,
-                                                  color: AppTheme.pinkText,
-                                                  size: 20,
-                                                )
-                                              : Icon(
-                                                  Icons.star_border_outlined,
-                                                  color: Colors.grey,
-                                                  size: 20,
-                                                )),
-                                    ),
-                                  ],
+                                Text(
+                                  profileController.model.value.data!.basicInfo!
+                                          .firstName
+                                          .toString() +
+                                      " " +
+                                      profileController
+                                          .model.value.data!.basicInfo!.lastName
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff180095)),
+                                ),
+                                Wrap(
+                                  children: List.generate(
+                                      5,
+                                      (index) => double.parse(profileController
+                                                  .model
+                                                  .value
+                                                  .data!
+                                                  .basicInfo!
+                                                  .rating
+                                                  .toString()) >
+                                              index
+                                          ? Icon(
+                                              Icons.star,
+                                              color: AppTheme.pinkText,
+                                              size: 16,
+                                            )
+                                          : Icon(
+                                              Icons.star_border_outlined,
+                                              color: Colors.grey,
+                                              size: 16,
+                                            )),
                                 ),
                                 Text(
                                   profileController.model.value.data!.basicInfo!
@@ -256,6 +340,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               color: Color(0xff707070))),
                                       child: InkWell(
                                         onTap: () {
+                                          _fNameController.text =
+                                              profileController.model.value
+                                                  .data!.basicInfo!.firstName
+                                                  .toString();
+                                          _lNameController.text =
+                                              profileController.model.value
+                                                  .data!.basicInfo!.lastName
+                                                  .toString();
+                                          _descriptionController.text =
+                                              profileController.model.value
+                                                  .data!.basicInfo!.description
+                                                  .toString();
                                           showDialog(
                                             context: context,
                                             builder: (ctx) => AlertDialog(
@@ -315,6 +411,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       obSecure: false.obs,
                                                       hintText:
                                                           "First Name".obs,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      controller:
+                                                          _fNameController,
+                                                      onSaved: (value) {
+                                                        setState(() {
+                                                          _fNameController
+                                                                  .text =
+                                                              value.toString();
+                                                        });
+                                                      },
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -322,6 +429,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     BoxTextField(
                                                       obSecure: false.obs,
                                                       hintText: "Last Name".obs,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      controller:
+                                                          _lNameController,
+                                                      onSaved: (value) {
+                                                        setState(() {
+                                                          _lNameController
+                                                                  .text =
+                                                              value.toString();
+                                                        });
+                                                      },
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -331,6 +449,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       hintText:
                                                           "description".obs,
                                                       isMulti: true,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      controller:
+                                                          _descriptionController,
+                                                      onSaved: (value) {
+                                                        setState(() {
+                                                          _descriptionController
+                                                                  .text =
+                                                              value.toString();
+                                                        });
+                                                      },
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -339,7 +468,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       title: "Change",
                                                       backgroundColor:
                                                           AppTheme.primaryColor,
-                                                      onPressed: () {},
+                                                      onPressed: () {
+                                                        Map<String, String>
+                                                            map = {};
+                                                        map["first_name"] =
+                                                            _fNameController
+                                                                .text
+                                                                .trim();
+                                                        map["last_name"] =
+                                                            _lNameController
+                                                                .text
+                                                                .trim();
+                                                        map["occcuption"] =
+                                                            _descriptionController
+                                                                .text
+                                                                .trim();
+                                                        editNameInfoRepo(
+                                                                mapData: map,
+                                                                fieldName1:
+                                                                    "profile_image",
+                                                                file1:
+                                                                    imageFileToPick,
+                                                                context:
+                                                                    context)
+                                                            .then((value) {
+                                                          if (value.status ==
+                                                              true) {
+                                                            profileController
+                                                                .getData();
+                                                            Get.back();
+                                                          }
+                                                          showToast(value
+                                                              .message
+                                                              .toString());
+                                                        });
+                                                      },
                                                       textColor:
                                                           AppTheme.whiteColor,
                                                       expandedValue: true,
@@ -980,7 +1143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                 ),
-                                InkWell(
+                                /* InkWell(
                                   onTap: () {},
                                   child: Container(
                                     padding: EdgeInsets.all(5),
@@ -995,84 +1158,129 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       size: 15,
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                             SizedBox(
                               height: 15.h,
                             ),
-                            Text(
-                              "Tallinna University",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff4D4D4D)),
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Bachelor or Engineering",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          AppTheme.textColor.withOpacity(.63)),
-                                ),
-                                Row(
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: profileController
+                                  .model.value.data!.education!.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: AppTheme.whiteColor,
-                                            border: Border.all(
-                                                color: Color(0xff707070))),
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: AppTheme.primaryColor,
-                                          size: 15,
-                                        ),
-                                      ),
+                                    SizedBox(
+                                      height: 10.h,
                                     ),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        margin: EdgeInsets.only(left: 15),
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: AppTheme.whiteColor,
-                                            border: Border.all(
-                                                color: Color(0xff707070))),
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: AppTheme.primaryColor,
-                                          size: 15,
+                                    Text(
+                                      profileController.model.value.data!
+                                          .education![index].school
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff4D4D4D)),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            profileController.model.value.data!
+                                                .education![index].degree
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppTheme.textColor
+                                                    .withOpacity(.63)),
+                                          ),
                                         ),
-                                      ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    MyRouter.addEducationScreen,
+                                                    arguments: index);
+                                              },
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsets.only(right: 15),
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppTheme.whiteColor,
+                                                    border: Border.all(
+                                                        color:
+                                                            Color(0xff707070))),
+                                                child: Icon(
+                                                  Icons.edit,
+                                                  color: AppTheme.primaryColor,
+                                                  size: 15,
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                deleteEducationInfoRepo(
+                                                        profileController
+                                                            .model
+                                                            .value
+                                                            .data!
+                                                            .education![index]
+                                                            .id
+                                                            .toString(),
+                                                        context)
+                                                    .then((value) {
+                                                  if (value.status == true) {
+                                                    profileController.model
+                                                        .value.data!.education!
+                                                        .removeAt(index);
+                                                    profileController.getData();
+                                                  }
+                                                  showToast(
+                                                      value.message.toString());
+                                                });
+                                              },
+                                              child: Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 15),
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: AppTheme.whiteColor,
+                                                    border: Border.all(
+                                                        color:
+                                                            Color(0xff707070))),
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: AppTheme.primaryColor,
+                                                  size: 15,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Divider(
+                                      color: AppTheme.pinkText.withOpacity(.29),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            Text(
-                              "(BEng), Computer science 2016-2017",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppTheme.textColor.withOpacity(.63)),
-                            ),
-                            SizedBox(
-                              height: 10.h,
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -2563,7 +2771,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Row(
                                         children: [
                                           InkWell(
-                                            onTap: () =>Get.toNamed(MyRouter.addEmploymentScreen,arguments: index),
+                                            onTap: () => Get.toNamed(
+                                                MyRouter.addEmploymentScreen,
+                                                arguments: index),
                                             child: Container(
                                               padding: EdgeInsets.all(5),
                                               decoration: BoxDecoration(

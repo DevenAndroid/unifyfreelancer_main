@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_appbar.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../repository/edit_education_info_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../widgets/common_outline_button.dart';
@@ -19,8 +20,12 @@ class AddEducationScreen extends StatefulWidget {
 }
 
 class _AddEducationScreenState extends State<AddEducationScreen> {
+  final controller = Get.put(ProfileScreenController());
+
   RxList yearsList = [].obs;
   RxList yearsList2 = [].obs;
+
+  int load = -100;
 
   @override
   void initState() {
@@ -37,6 +42,24 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
       yearsList2.add(i);
     }
     log(yearsList2.toString());
+
+    //For loading data
+
+    if (Get.arguments != null) {
+      load = Get.arguments;
+      _schoolController.text =
+          controller.model.value.data!.education![load].school.toString();
+      _fromController.text =
+          controller.model.value.data!.education![load].startYear.toString();
+      _toController.text =
+          controller.model.value.data!.education![load].endYear.toString();
+      _degreeController.text =
+          controller.model.value.data!.education![load].degree.toString();
+      _areaController.text =
+          controller.model.value.data!.education![load].areaStudy.toString();
+      _descriptionController.text =
+          controller.model.value.data!.education![load].description.toString();
+    }
   }
 
   RxList degree = [
@@ -173,9 +196,11 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 groupValue: time2.value,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    time2.value = value.toString();
-                                                    _fromController.text = value.toString();
-                                                    print( _fromController.text);
+                                                    time2.value =
+                                                        value.toString();
+                                                    _fromController.text =
+                                                        value.toString();
+                                                    print(_fromController.text);
                                                     Get.back();
                                                   });
                                                 },
@@ -248,8 +273,10 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 groupValue: time.value,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    time.value = value.toString();
-                                                    _toController.text = value.toString();
+                                                    time.value =
+                                                        value.toString();
+                                                    _toController.text =
+                                                        value.toString();
                                                     print(_toController.text);
                                                     Get.back();
                                                   });
@@ -274,7 +301,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Degree (Optional)",
+                          "Degree",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -324,6 +351,8 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                   setState(() {
                                                     selectedDegree.value =
                                                         value.toString();
+                                                    _degreeController.text =
+                                                        value.toString();
                                                     Get.back();
                                                   });
                                                 },
@@ -337,10 +366,11 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           readOnly: true,
                           obSecure: false.obs,
                           controller: _degreeController,
-                          hintText:
-                              "${selectedDegree.value == '' ? "Degree (Optional)" : selectedDegree.value.toString()}"
-                                  .obs,
+                          hintText: "Degree".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'Degree is required'),
+                          ]),
                         ),
                         SizedBox(
                           height: 15,
@@ -406,6 +436,10 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             editEducationInfoRepo(
+                                    load == -100
+                                        ? load
+                                        : controller.model.value.data!
+                                            .education![load].id,
                                     _schoolController.text.trim(),
                                     _fromController.text.trim(),
                                     _toController.text.trim(),
@@ -416,6 +450,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                 .then((value) {
                               if (value.status == true) {
                                 Get.back();
+                                controller.getData();
                               }
                               showToast(value.message.toString());
                             });

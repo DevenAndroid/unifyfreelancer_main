@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/popups/radio_buttons_job_details.dart';
-
 import '../../resources/app_theme.dart';
 import '../../widgets/custom_appbar.dart';
-
 import '../Controller/jobs_detail_controller.dart';
 import '../routers/my_router.dart';
 import '../widgets/appDrawer.dart';
@@ -91,7 +89,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: CustomAppbar(
           isLikeButton: true,
-          isProfileImage: true,
+          isProfileImage:false,
           titleText: "Job Details",
         ),
       ),

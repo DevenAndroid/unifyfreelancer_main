@@ -47,6 +47,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.3.47
   fluttertoast: ^8.0.9
   image_picker: ^0.8.3+3
+  flutter_spinkit: ^5.1.0
   firebase_core:
   firebase_auth:
   google_sign_in:

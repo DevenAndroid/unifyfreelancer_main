@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/model_language_list.dart';
+import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/common_outline_button.dart';
@@ -15,13 +17,7 @@ class EditLanguageScreen extends StatefulWidget {
 }
 
 class _EditLanguageScreenState extends State<EditLanguageScreen> {
-  RxList language = [
-    "English",
-    "Hindi",
-    "Spanish",
-    "Gujarati",
-    "Telugu",
-  ].obs;
+
   RxList level = [
     "Basic",
     "Conversational",
@@ -31,6 +27,25 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
 
   Rx selectedLanguage = "".obs;
   Rx selectedLevel = "".obs;
+
+  ModelLanguageList languages = ModelLanguageList();
+
+  @override
+  void initState() {
+    super.initState();
+ getData();
+  }
+
+  getData() {
+    languagesListRepo().then((value) {
+      languages = value;
+      if (value.status == true) {
+        print(languages);
+
+      }
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,55 +99,51 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
                     ),
                     CustomTextField(
                       onTap: () {
-                        showFilterButtonSheet(
+                        showFilterButtonSheet1(
                             context: context,
                             titleText: "Select a language",
-                            widgets: Obx(() {
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  ListView.builder(
-                                      padding: EdgeInsets.only(bottom: 20),
-                                      shrinkWrap: true,
-                                      itemCount: language.length,
-                                      physics: BouncingScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        return Obx(() {
-                                          return RadioListTile(
-                                            title: Text(
-                                              language[index].toString(),
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color:
-                                                  AppTheme.darkBlueText,
-                                                  fontWeight:
-                                                  FontWeight.w500),
-                                            ),
-                                            contentPadding:
-                                            const EdgeInsets.all(0),
-                                            dense: true,
-                                            visualDensity: VisualDensity(
-                                                horizontal: -4,
-                                                vertical: -4),
-                                            value:
-                                            language[index].toString(),
-                                            groupValue:
-                                            selectedLanguage.value,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedLanguage.value =
-                                                    value.toString();
-                                                Get.back();
-                                              });
-                                            },
-                                          );
-                                        });
-                                      })
-                                ],
-                              );
-                            }));
+                            widgets:Column(
+                            children: [
+                            SizedBox(
+                            height: 15,
+                        ),
+                        ListView.builder(
+                        padding: EdgeInsets.only(bottom: 20),
+                        shrinkWrap: true,
+                        itemCount: languages.data!.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                        return RadioListTile(
+                          title: Text(
+                            languages.data![index].name.toString(),
+                            style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                AppTheme.darkBlueText,
+                                fontWeight:
+                                FontWeight.w500),
+                          ),
+                          contentPadding:
+                          const EdgeInsets.all(0),
+                          dense: true,
+                          visualDensity: VisualDensity(
+                              horizontal: -4,
+                              vertical: -4),
+                          value:
+                          languages.data![index].name.toString(),
+                          groupValue:
+                          selectedLanguage.value,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedLanguage.value =
+                                  value.toString();
+                              Get.back();
+                            });
+                          },
+                        );
+                        })
+                        ],
+                        ));
                       },
                       readOnly: true,
                       obSecure: false.obs,
@@ -168,53 +179,50 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
                               ),
                               CustomTextField(
                                 onTap: () {
-                                  showFilterButtonSheet(
+                                  showFilterButtonSheet1(
                                       context: context,
                                       titleText: "To (or expected graduation year)",
-                                      widgets: Obx(() {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            ListView.builder(
-                                                padding: EdgeInsets.only(bottom: 20),
-                                                shrinkWrap: true,
-                                                itemCount: level.length,
-                                                physics: BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return Obx(() {
-                                                    return RadioListTile(
-                                                      title: Text(
-                                                        level[index].toString(),
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            AppTheme.darkBlueText,
-                                                            fontWeight:
-                                                            FontWeight.w500),
-                                                      ),
-                                                      contentPadding:
-                                                      const EdgeInsets.all(0),
-                                                      dense: true,
-                                                      visualDensity: VisualDensity(
-                                                          horizontal: -4,
-                                                          vertical: -4),
-                                                      value: level[index].toString(),
-                                                      groupValue: selectedLevel.value,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          selectedLevel.value =
-                                                              value.toString();
-                                                          Get.back();
-                                                        });
-                                                      },
-                                                    );
-                                                  });
-                                                })
-                                          ],
-                                        );
-                                      }));
+                                      widgets:Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          ListView.builder(
+                                              padding: EdgeInsets.only(bottom: 20),
+                                              shrinkWrap: true,
+                                              itemCount: level.length,
+                                              physics: BouncingScrollPhysics(),
+                                              itemBuilder: (context, index) {
+                                                return RadioListTile(
+                                                  title: Text(
+                                                    level[index].toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                        AppTheme.darkBlueText,
+                                                        fontWeight:
+                                                        FontWeight.w500),
+                                                  ),
+                                                  contentPadding:
+                                                  const EdgeInsets.all(0),
+                                                  dense: true,
+                                                  visualDensity: VisualDensity(
+                                                      horizontal: -4,
+                                                      vertical: -4),
+                                                  value: level[index].toString(),
+                                                  groupValue: selectedLevel.value,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedLevel.value =
+                                                          value.toString();
+                                                      Get.back();
+                                                    });
+                                                  },
+                                                );
+                                              })
+                                        ],
+                                      )
+                                      );
                                 },
                                 readOnly: true,
                                 obSecure: false.obs,

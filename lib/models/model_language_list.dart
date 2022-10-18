@@ -1,13 +1,11 @@
-import 'package:get/get.dart';
-
-class ModelSkillListResponse {
+class ModelLanguageList {
   bool? status;
   String? message;
   List<Data>? data;
 
-  ModelSkillListResponse({this.status, this.message, this.data});
+  ModelLanguageList({this.status, this.message, this.data});
 
-  ModelSkillListResponse.fromJson(Map<String, dynamic> json) {
+  ModelLanguageList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
@@ -32,9 +30,8 @@ class ModelSkillListResponse {
 class Data {
   int? id;
   String? name;
-  RxBool? isSelected = false.obs;
 
-  Data({this.id, this.name,this.isSelected});
+  Data({this.id, this.name});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];

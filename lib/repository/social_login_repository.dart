@@ -13,9 +13,9 @@ Future<ModelLoginResponse> socialLoginRepo({provider, accessToken,context}) asyn
   Overlay.of(context)!.insert(loader);
   try {
     var map = <String, dynamic>{};
-    SharedPreferences pref = await SharedPreferences.getInstance();
     map['provider'] = provider;
     map['token'] = accessToken;
+    map['user_type'] = "freelancer";
 
     final headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

@@ -8,16 +8,16 @@ import '../models/Model_common_response.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> editSkillsInfoRepo({skill_id, context}) async {
+Future<ModelCommonResponse> deleteEducationInfoRepo(id, context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
-  map['skill_id'] = skill_id;
+  map['id'] = id;
 
   print(map);
   try {
     http.Response response = await http.post(
-        Uri.parse(ApiUrls.editSkillsInfo),
+        Uri.parse(ApiUrls.deleteEducationInfo),
         headers: await getAuthHeader(),
         body: jsonEncode(map));
 
