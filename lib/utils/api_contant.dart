@@ -37,6 +37,7 @@ class ApiUrls {
   static const String editNameInfo= "${apiBaseUrl}edit-name-info";
   static const String deleteEducationInfo= "${apiBaseUrl}delete-education-info";
   static const String languagesList= "${apiBaseUrl}languages-list";
+  static const String editLanguage= "${apiBaseUrl}edit-language";
 
 
 }

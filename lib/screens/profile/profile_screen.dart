@@ -261,271 +261,276 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 20.w,
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  profileController.model.value.data!.basicInfo!
-                                          .firstName
-                                          .toString() +
-                                      " " +
-                                      profileController
-                                          .model.value.data!.basicInfo!.lastName
-                                          .toString(),
-                                  style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff180095)),
-                                ),
-                                Wrap(
-                                  children: List.generate(
-                                      5,
-                                      (index) => double.parse(profileController
-                                                  .model
-                                                  .value
-                                                  .data!
-                                                  .basicInfo!
-                                                  .rating
-                                                  .toString()) >
-                                              index
-                                          ? Icon(
-                                              Icons.star,
-                                              color: AppTheme.pinkText,
-                                              size: 16,
-                                            )
-                                          : Icon(
-                                              Icons.star_border_outlined,
-                                              color: Colors.grey,
-                                              size: 16,
-                                            )),
-                                ),
-                                Text(
-                                  profileController.model.value.data!.basicInfo!
-                                          .occuption
-                                          .toString()
-                                          .isEmpty
-                                      ? "Occupation"
-                                      : profileController.model.value.data!
-                                          .basicInfo!.occuption
-                                          .toString(),
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppTheme.textColor),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.flag_outlined,
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: 5.w,
-                                    ),
-                                    Text(
-                                      profileController
-                                          .model.value.data!.basicInfo!.country
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: AppTheme.textColor),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppTheme.whiteColor,
-                                          border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: InkWell(
-                                        onTap: () {
-                                          _fNameController.text =
-                                              profileController.model.value
-                                                  .data!.basicInfo!.firstName
-                                                  .toString();
-                                          _lNameController.text =
-                                              profileController.model.value
-                                                  .data!.basicInfo!.lastName
-                                                  .toString();
-                                          _descriptionController.text =
-                                              profileController.model.value
-                                                  .data!.basicInfo!.description
-                                                  .toString();
-                                          showDialog(
-                                            context: context,
-                                            builder: (ctx) => AlertDialog(
-                                              insetPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 20),
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                      horizontal: 15,
-                                                      vertical: 10),
-                                              content: SingleChildScrollView(
-                                                physics:
-                                                    const BouncingScrollPhysics(),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Stack(
-                                                      children: [
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: SizedBox(
-                                                            height: 15,
-                                                            width: 20,
+                            Expanded(
+                              child: Column(
+                                
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    profileController.model.value.data!.basicInfo!
+                                            .firstName
+                                            .toString() +
+                                        " " +
+                                        profileController
+                                            .model.value.data!.basicInfo!.lastName
+                                            .toString(),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff180095)),
+                                  ),
+                                  Wrap(
+                                    children: List.generate(
+                                        5,
+                                        (index) => double.parse(profileController
+                                                    .model
+                                                    .value
+                                                    .data!
+                                                    .basicInfo!
+                                                    .rating
+                                                    .toString()) >
+                                                index
+                                            ? Icon(
+                                                Icons.star,
+                                                color: AppTheme.pinkText,
+                                                size: 16,
+                                              )
+                                            : Icon(
+                                                Icons.star_border_outlined,
+                                                color: Colors.grey,
+                                                size: 16,
+                                              )),
+                                  ),
+                                  Text(
+                                    profileController.model.value.data!.basicInfo!
+                                            .occuption
+                                            .toString()
+                                            .isEmpty
+                                        ? "Occupation"
+                                        : profileController.model.value.data!
+                                            .basicInfo!.occuption
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: AppTheme.textColor),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.flag_outlined,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5.w,
+                                      ),
+                                      Text(
+                                        profileController
+                                            .model.value.data!.basicInfo!.country
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppTheme.textColor),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 20),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppTheme.whiteColor,
+                                            border: Border.all(
+                                                color: Color(0xff707070))),
+                                        child: InkWell(
+                                          onTap: () {
+                                            _fNameController.text =
+                                                profileController.model.value
+                                                    .data!.basicInfo!.firstName
+                                                    .toString();
+                                            _lNameController.text =
+                                                profileController.model.value
+                                                    .data!.basicInfo!.lastName
+                                                    .toString();
+                                            _descriptionController.text =
+                                                profileController.model.value
+                                                    .data!.basicInfo!.description
+                                                    .toString();
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                insetPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 20),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 15,
+                                                        vertical: 10),
+                                                content: SingleChildScrollView(
+                                                  physics:
+                                                      const BouncingScrollPhysics(),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .topRight,
+                                                            child: SizedBox(
+                                                              height: 15,
+                                                              width: 20,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Positioned(
-                                                            top: -15,
-                                                            right: -15,
-                                                            child: IconButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      context),
-                                                              icon: Icon(
-                                                                Icons.clear,
-                                                                size: 20,
-                                                              ),
-                                                            ))
-                                                      ],
-                                                    ),
-                                                    Text(
-                                                      "Edit Name",
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: AppTheme
-                                                              .textColor),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    BoxTextField(
-                                                      obSecure: false.obs,
-                                                      hintText:
-                                                          "First Name".obs,
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      controller:
-                                                          _fNameController,
-                                                      onSaved: (value) {
-                                                        setState(() {
-                                                          _fNameController
-                                                                  .text =
-                                                              value.toString();
-                                                        });
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    BoxTextField(
-                                                      obSecure: false.obs,
-                                                      hintText: "Last Name".obs,
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      controller:
-                                                          _lNameController,
-                                                      onSaved: (value) {
-                                                        setState(() {
-                                                          _lNameController
-                                                                  .text =
-                                                              value.toString();
-                                                        });
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    BoxTextField(
-                                                      obSecure: false.obs,
-                                                      hintText:
-                                                          "description".obs,
-                                                      isMulti: true,
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      controller:
-                                                          _descriptionController,
-                                                      onSaved: (value) {
-                                                        setState(() {
-                                                          _descriptionController
-                                                                  .text =
-                                                              value.toString();
-                                                        });
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    CustomOutlineButton(
-                                                      title: "Change",
-                                                      backgroundColor:
-                                                          AppTheme.primaryColor,
-                                                      onPressed: () {
-                                                        Map<String, String>
-                                                            map = {};
-                                                        map["first_name"] =
+                                                          Positioned(
+                                                              top: -15,
+                                                              right: -15,
+                                                              child: IconButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                icon: Icon(
+                                                                  Icons.clear,
+                                                                  size: 20,
+                                                                ),
+                                                              ))
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        "Edit Name",
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppTheme
+                                                                .textColor),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      BoxTextField(
+                                                        obSecure: false.obs,
+                                                        hintText:
+                                                            "First Name".obs,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        controller:
+                                                            _fNameController,
+                                                        onSaved: (value) {
+                                                          setState(() {
                                                             _fNameController
-                                                                .text
-                                                                .trim();
-                                                        map["last_name"] =
+                                                                    .text =
+                                                                value.toString();
+                                                          });
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      BoxTextField(
+                                                        obSecure: false.obs,
+                                                        hintText: "Last Name".obs,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        controller:
+                                                            _lNameController,
+                                                        onSaved: (value) {
+                                                          setState(() {
                                                             _lNameController
-                                                                .text
-                                                                .trim();
-                                                        map["occcuption"] =
+                                                                    .text =
+                                                                value.toString();
+                                                          });
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      BoxTextField(
+                                                        obSecure: false.obs,
+                                                        hintText:
+                                                            "description".obs,
+                                                        isMulti: true,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        controller:
+                                                            _descriptionController,
+                                                        onSaved: (value) {
+                                                          setState(() {
                                                             _descriptionController
-                                                                .text
-                                                                .trim();
-                                                        editNameInfoRepo(
-                                                                mapData: map,
-                                                                fieldName1:
-                                                                    "profile_image",
-                                                                file1:
-                                                                    imageFileToPick,
-                                                                context:
-                                                                    context)
-                                                            .then((value) {
-                                                          if (value.status ==
-                                                              true) {
-                                                            profileController
-                                                                .getData();
-                                                            Get.back();
-                                                          }
-                                                          showToast(value
-                                                              .message
-                                                              .toString());
-                                                        });
-                                                      },
-                                                      textColor:
-                                                          AppTheme.whiteColor,
-                                                      expandedValue: true,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                  ],
+                                                                    .text =
+                                                                value.toString();
+                                                          });
+                                                        },
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      CustomOutlineButton(
+                                                        title: "Change",
+                                                        backgroundColor:
+                                                            AppTheme.primaryColor,
+                                                        onPressed: () {
+                                                          Map<String, String>
+                                                              map = {};
+                                                          map["first_name"] =
+                                                              _fNameController
+                                                                  .text
+                                                                  .trim();
+                                                          map["last_name"] =
+                                                              _lNameController
+                                                                  .text
+                                                                  .trim();
+                                                          map["occcuption"] =
+                                                              _descriptionController
+                                                                  .text
+                                                                  .trim();
+                                                          editNameInfoRepo(
+                                                                  mapData: map,
+                                                                  fieldName1:
+                                                                      "profile_image",
+                                                                  file1:
+                                                                      imageFileToPick,
+                                                                  context:
+                                                                      context)
+                                                              .then((value) {
+                                                            if (value.status ==
+                                                                true) {
+                                                              profileController
+                                                                  .getData();
+                                                              Get.back();
+                                                            }
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                          });
+                                                        },
+                                                        textColor:
+                                                            AppTheme.whiteColor,
+                                                        expandedValue: true,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: AppTheme.primaryColor,
-                                          size: 15,
+                                            );
+                                          },
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: AppTheme.primaryColor,
+                                            size: 15,
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),

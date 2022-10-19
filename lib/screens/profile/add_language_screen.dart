@@ -99,7 +99,8 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                                               color: AppTheme.darkBlueText,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        contentPadding: const EdgeInsets.all(0),
+                                        contentPadding:
+                                        const EdgeInsets.all(0),
                                         dense: true,
                                         visualDensity: VisualDensity(
                                             horizontal: -4, vertical: -4),
@@ -122,8 +123,8 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                       obSecure: false.obs,
                       keyboardType: TextInputType.emailAddress,
                       hintText:
-                          "${selectedLanguage.value == '' ? "Select a language" : selectedLanguage.value.toString()}"
-                              .obs,
+                      "${selectedLanguage.value == '' ? "Select a language" : selectedLanguage.value.toString()}"
+                          .obs,
                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                     ),
                     SizedBox(
@@ -163,7 +164,8 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                                               color: AppTheme.darkBlueText,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        contentPadding: const EdgeInsets.all(0),
+                                        contentPadding:
+                                        const EdgeInsets.all(0),
                                         dense: true,
                                         visualDensity: VisualDensity(
                                             horizontal: -4, vertical: -4),
@@ -185,8 +187,8 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                       obSecure: false.obs,
                       keyboardType: TextInputType.emailAddress,
                       hintText:
-                          "${selectedLevel.value == '' ? "Basic" : selectedLevel.value.toString()}"
-                              .obs,
+                      "${selectedLevel.value == '' ? "Basic" : selectedLevel.value.toString()}"
+                          .obs,
                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                     ),
                   ]),
@@ -214,12 +216,27 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
               child: CustomOutlineButton(
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  print(getMapData());
+                },
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
               ),
             ),
           ),
         ]));
+  }
+  getMapData(){
+    Map<String,dynamic>map = {};
+    Map<String,dynamic>map1 = {};
+    map1["11111"] = "222";
+    map1["222222"] = "33444";
+
+    for(var i = 0; i<languages.data!.length; i++){
+      map[languages.data![i].name.toString()] = selectedLevel.value;
+    }
+
+
+    return map;
   }
 }
