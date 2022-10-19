@@ -38,6 +38,10 @@ class ApiUrls {
   static const String deleteEducationInfo= "${apiBaseUrl}delete-education-info";
   static const String languagesList= "${apiBaseUrl}languages-list";
   static const String editLanguage= "${apiBaseUrl}edit-language";
+  static const String degreeList = "${apiBaseUrl}degree-list";
+  static const String jobsList = "${apiBaseUrl}jobs-list";
+  static const String recentJobsList = "${apiBaseUrl}recent-jobs-list";
+  static const String bestMatchJobsList = "${apiBaseUrl}best-match-jobs-list";
 
 
 }

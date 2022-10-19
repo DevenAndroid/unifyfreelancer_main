@@ -1,10 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../models/model_language_list.dart';
+import '../../repository/Add_language_repository.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
@@ -17,6 +21,9 @@ class AddLanguageScreen extends StatefulWidget {
 }
 
 class _AddLanguageScreenState extends State<AddLanguageScreen> {
+
+  final controller = Get.put(ProfileScreenController());
+
   RxList level = [
     "Basic",
     "Conversational",
@@ -217,7 +224,16 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
                 onPressed: () {
-                  print(getMapData());
+                  // editLanguageRepo(getMapData(),context).then((value) {
+                  //   if(value.status == true){
+                  //     Get.back();
+                  //     controller.getData();
+                  //   }
+                  //   showToast(value.message.toString());
+                  // });
+                  if(kDebugMode){
+                    print(getMapData());
+                  }
                 },
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
@@ -229,14 +245,8 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
   getMapData(){
     Map<String,dynamic>map = {};
     Map<String,dynamic>map1 = {};
-    map1["11111"] = "222";
-    map1["222222"] = "33444";
-
-    for(var i = 0; i<languages.data!.length; i++){
-      map[languages.data![i].name.toString()] = selectedLevel.value;
-    }
-
-
+    map["languages"] = map1 ;
+    map1[selectedLanguage.value.toString()] = selectedLevel.value;
     return map;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,8 @@ import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_appbar.dart';
 
 import '../../controller/profie_screen_controller.dart';
+import '../../models/model_degree_list.dart';
+import '../../repository/degree_list_repository.dart';
 import '../../repository/edit_education_info_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../widgets/common_outline_button.dart';
@@ -27,9 +30,11 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
 
   int load = -100;
 
+  Rx<ModelDegreeList> degree = ModelDegreeList().obs;
   @override
   void initState() {
     super.initState();
+    getData();
     yearsList.clear();
     yearsList2.clear();
     var currentYear = DateTime.now().year;
@@ -62,17 +67,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     }
   }
 
-  RxList degree = [
-    "BBA- Bachelor of Business Administration"
-        "BMS- Bachelor of Management Science",
-    "BFA- Bachelor of Fine Arts",
-    "BEM- Bachelor of Event Management"
-        "BEM- Bachelor of Event Management"
-        "BghM- ",
-    "ssd- ",
-    "sdf- ",
-    "xcc- ",
-  ].obs;
+
 
   Rx time = "".obs;
   Rx time2 = "".obs;
@@ -85,6 +80,22 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
   TextEditingController _degreeController = TextEditingController();
   TextEditingController _areaController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+
+  getData(){
+    degreeListRepo().then((value) {
+      degree.value = value ;
+      if(value.status == true){
+        setState(() {
+
+        });
+        if(kDebugMode){
+          print(value);
+        }
+
+      }
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -324,13 +335,13 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                       ListView.builder(
                                           shrinkWrap: true,
                                           reverse: true,
-                                          itemCount: degree.length,
+                                          itemCount: degree.value.data!.length,
                                           physics: BouncingScrollPhysics(),
                                           itemBuilder: (context, index) {
                                             return Obx(() {
                                               return RadioListTile(
                                                 title: Text(
-                                                  degree[index].toString(),
+                                                  degree.value.data![index].title.toString(),
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
@@ -344,7 +355,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
                                                     vertical: -4),
-                                                value: degree[index].toString(),
+                                                value:  degree.value.data![index].title.toString(),
                                                 groupValue:
                                                     selectedDegree.value,
                                                 onChanged: (value) {

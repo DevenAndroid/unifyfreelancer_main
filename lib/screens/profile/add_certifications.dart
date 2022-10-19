@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_textfield.dart';
 
 import '../../repository/edit_certificate_info_repository.dart';
 import '../../resources/app_theme.dart';
-import '../../routers/my_router.dart';
+
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -23,7 +24,7 @@ class AddCertificationsScreen extends StatefulWidget {
 class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _issueDate = TextEditingController();
-  TextEditingController _expirationDate = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   var items = [
     "Adobe XD",
@@ -33,6 +34,9 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
 
   ];
   var item ;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -151,26 +155,16 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 SizedBox(
                   height: 20,
                 ),
-
                 CustomTextField(
-                    controller: _issueDate,
+                  isMulti: true,
+                    controller: _descriptionController,
                     obSecure: false.obs,
-                    keyboardType: TextInputType.datetime,
-                    hintText: "Issue Date".obs,
-                validator: (value){
-                      if(value == ""){
-                        return "please enter a date";
-                      }
-
-                },),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextField(
-                    controller: _expirationDate,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.datetime,
-                    hintText: "Expiration Date".obs),
+                    keyboardType: TextInputType.text,
+                    hintText: "Description".obs,
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: 'Description is required'),
+                    ])),
                 
               ],
             ),
@@ -201,7 +195,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 backgroundColor: AppTheme.primaryColor,
                 onPressed: (){
                   if(_formKey.currentState!.validate()){
-                    editCertificateInfoRepo(item,_issueDate.text.trim(),_expirationDate.text.trim(),357,context).then((value) {
+                    editCertificateInfoRepo(item,_descriptionController.text.trim(),context).then((value) {
                       if(value.status==true){
                         Get.back();
                       }

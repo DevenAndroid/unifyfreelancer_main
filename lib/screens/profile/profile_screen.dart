@@ -140,6 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  RxBool showMoreCertificate = false.obs;
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
@@ -1035,26 +1036,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "English:",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.textColor),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "Fluent",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: AppTheme.textColor),
-                                ),
-                              ],
-                            ),
+                           ListView.builder(
+                               shrinkWrap: true,physics: NeverScrollableScrollPhysics(),
+                               itemCount: profileController.model.value.data!.language!.length,
+                               itemBuilder: (context,index){
+                             return  Row(
+                               children: [
+                                 Text(
+                                   profileController.model.value.data!.language![index].language.toString().capitalizeFirst! + " : ",
+                                   style: TextStyle(
+                                       fontSize: 13.sp,
+                                       fontWeight: FontWeight.w600,
+                                       color: AppTheme.textColor),
+                                 ),
+                                 SizedBox(
+                                   width: 5,
+                                 ),
+                                 Text(
+                                   profileController.model.value.data!.language![index].level.toString(),
+                                   style: TextStyle(
+                                       fontSize: 13.sp,
+                                       color: AppTheme.textColor),
+                                 ),
+                               ],
+                             );
+                           }),
                             SizedBox(
                               height: 20.h,
                             ),
@@ -2463,8 +2469,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           shrinkWrap: true,
                                           physics:
                                               NeverScrollableScrollPhysics(),
-                                          itemCount: profileController.model
-                                              .value.data!.certificates!.length,
+                                          itemCount: showMoreCertificate.value ?
+                                          profileController.model.value.data!.certificates!.length :
+                                          profileController.model.value.data!.certificates!.length < 4?
+                                          profileController.model.value.data!.certificates!.length : 4,
                                           itemBuilder: (context, index) {
                                             return Column(
                                               children: [

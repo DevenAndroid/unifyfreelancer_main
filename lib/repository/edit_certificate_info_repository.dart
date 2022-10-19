@@ -8,14 +8,13 @@ import 'package:http/http.dart' as http;
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelEditCertificateInfo> editCertificateInfoRepo(name,issue_date,expiry_date,certificate_id,context) async {
+Future<ModelEditCertificateInfo> editCertificateInfoRepo(name,description,context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
   map['name'] = name;
-  map['issue_date'] = issue_date;
-  map['expiry_date'] = expiry_date;
-  map['certificate_id'] = 357;
+  map['description'] = description;
+
   print(map);
   try {
     http.Response response = await http.post(Uri.parse(ApiUrls.editCertificateInfo),
