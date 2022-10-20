@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
@@ -18,33 +19,74 @@ class EditLanguageScreen extends StatefulWidget {
 
 class _EditLanguageScreenState extends State<EditLanguageScreen> {
 
-  RxList level = [
+  final controller = Get.put(ProfileScreenController());
+
+  RxList<Data> languageListData = <Data>[].obs;
+
+  final GlobalKey<FormState> formKey = GlobalKey();
+
+  final RxList level = [
     "Basic",
     "Conversational",
     "Fluent",
     "Native or Bilingual",
   ].obs;
 
-  Rx selectedLanguage = "".obs;
-  Rx selectedLevel = "".obs;
-
-  ModelLanguageList languages = ModelLanguageList();
+  showBottomSheetForLevel(context) {
+    RxString selectedLevel = "".obs;
+    showFilterButtonSheet1(
+        context: context,
+        titleText: "To (or expected graduation year)",
+        widgets: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            ListView.builder(
+                padding: EdgeInsets.only(bottom: 20),
+                shrinkWrap: true,
+                itemCount: level.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return RadioListTile(
+                    title: Text(
+                      level[index].toString(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.darkBlueText,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    contentPadding:
+                    const EdgeInsets.all(0),
+                    dense: true,
+                    visualDensity: VisualDensity(
+                        horizontal: -4, vertical: -4),
+                    value: level[index].toString(),
+                    groupValue: selectedLevel.value,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedLevel.value = value.toString();
+                        Get.back();
+                      });
+                    },
+                  );
+                }),
+          ],
+        ));
+  }
 
   @override
   void initState() {
     super.initState();
- getData();
-  }
-
-  getData() {
-    languagesListRepo().then((value) {
-      languages = value;
-      if (value.status == true) {
-        print(languages);
-
+    languageListData.addAll(controller.languages.data!);
+    for (var item = 0; item < languageListData.length; item++) {
+      for (var item1 in controller.model.value.data!.language!) {
+        if (languageListData[item].name.toString() == item1.language) {
+          print(languageListData[item].name.toString());
+          languageListData.removeAt(item);
+        }
       }
-
-    });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +106,6 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
             child: Padding(
               padding: const EdgeInsets.all(14),
               child: Column(
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
