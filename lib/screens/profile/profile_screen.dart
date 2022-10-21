@@ -2498,31 +2498,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               itemCount: profileController
                                   .model.value.data!.language!.length,
                               itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    Text(
-                                      profileController.model.value.data!
-                                              .language![index].language
-                                              .toString()
-                                              .capitalizeFirst! +
-                                          " : ",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.textColor),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      profileController.model.value.data!
-                                          .language![index].level
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: AppTheme.textColor),
-                                    ),
-                                  ],
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 4.h),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        profileController.model.value.data!
+                                                .language![index].language
+                                                .toString()
+                                                .capitalizeFirst! +
+                                            " : ",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.textColor),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        profileController.model.value.data!
+                                            .language![index].level
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: AppTheme.textColor),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               }),
                           SizedBox(

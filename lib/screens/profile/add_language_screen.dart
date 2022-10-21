@@ -265,6 +265,9 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
     Map<String, dynamic>map = {};
     Map<String, dynamic>map1 = {};
     map["languages"] = map1;
+    for(var item in controller.model.value.data!.language!){
+      map1[item.language.toString()] = item.level.toString();
+    }
     map1[selectedLanguage.value.toString()] = selectedLevel.value;
     return map;
   }
