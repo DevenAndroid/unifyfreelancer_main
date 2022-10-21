@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "163073037550-murh0lls5bqt4dup5vcbh6qvcpet3kbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eoxysit.unifyfreelancer",
+            "certificate_hash": "205c7d0d77c9701d6bf996964859863de86a5c0e"
+          }
+        },
+        {
           "client_id": "163073037550-rih8futt28jspk93c5toj7nlo8egt4q3.apps.googleusercontent.com",
           "client_type": 3
         }

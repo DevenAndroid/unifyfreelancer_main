@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-
 import '../../controller/profie_screen_controller.dart';
-import '../../models/model_language_list.dart';
 import '../../repository/Add_language_repository.dart';
-import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
+import '../../models/model_language_list.dart';
 
 class AddLanguageScreen extends StatefulWidget {
   const AddLanguageScreen({Key? key}) : super(key: key);
@@ -24,31 +23,124 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
 
   final controller = Get.put(ProfileScreenController());
 
-  RxList level = [
+  final TextEditingController languageController = TextEditingController();
+  final TextEditingController levelController = TextEditingController();
+  RxString selectedLanguage = "".obs;
+  RxString selectedLevel = "".obs;
+
+  RxList<Data> languageListData = <Data>[].obs;
+
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final RxList level = [
     "Basic",
     "Conversational",
     "Fluent",
     "Native or Bilingual",
   ].obs;
 
-  Rx selectedLanguage = "".obs;
-  Rx selectedLevel = "".obs;
+  showBottomSheetForLanguage(context) {
+    showFilterButtonSheet1(
+        context: context,
+        titleText: "Select a language",
+        widgets: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Obx(() {
+              return ListView.builder(
+                  padding: EdgeInsets.only(bottom: 20),
+                  shrinkWrap: true,
+                  itemCount: languageListData.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Obx(() {
+                      return RadioListTile(
+                        title: Text(
+                          languageListData[index].name
+                              .toString(),
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: AppTheme.darkBlueText,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        contentPadding:
+                        const EdgeInsets.all(0),
+                        dense: true,
+                        visualDensity: VisualDensity(
+                            horizontal: -4, vertical: -4),
+                        value: languageListData[index].name.toString(),
+                        groupValue: selectedLanguage.value,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedLanguage.value = value.toString();
+                            languageController.text = value.toString();
+                            Get.back();
+                          });
+                        },
+                      );
+                    });
+                  });
+            })
+          ],
+        ));
+  }
 
-  ModelLanguageList languages = ModelLanguageList();
+  showBottomSheetForLevel(context) {
+    showFilterButtonSheet1(
+        context: context,
+        titleText: "To (or expected graduation year)",
+        widgets: Column(
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            ListView.builder(
+                padding: EdgeInsets.only(bottom: 20),
+                shrinkWrap: true,
+                itemCount: level.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return RadioListTile(
+                    title: Text(
+                      level[index].toString(),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppTheme.darkBlueText,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    contentPadding:
+                    const EdgeInsets.all(0),
+                    dense: true,
+                    visualDensity: VisualDensity(
+                        horizontal: -4, vertical: -4),
+                    value: level[index].toString(),
+                    groupValue: selectedLevel.value,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedLevel.value = value.toString();
+                        levelController.text = value.toString();
+                        Get.back();
+                      });
+                    },
+                  );
+                }),
+          ],
+        ));
+  }
 
   @override
   void initState() {
     super.initState();
-    getData();
-  }
-
-  getData() {
-    languagesListRepo().then((value) {
-      languages = value;
-      if (value.status == true) {
-        print(languages);
+    languageListData.addAll(controller.languages.data!);
+    for (var item = 0; item < languageListData.length; item++) {
+      for (var item1 in controller.model.value.data!.language!) {
+        if (languageListData[item].name.toString() == item1.language) {
+          print(languageListData[item].name.toString());
+          languageListData.removeAt(item);
+        }
       }
-    });
+    }
   }
 
   @override
@@ -61,9 +153,9 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
               isProfileImage: false,
               titleText: "Add Language",
             )
-            // onPressedForLeading:,
-            ),
+        ),
         body: Form(
+          key: formKey,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Padding(
@@ -83,55 +175,15 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                     ),
                     CustomTextField(
                       onTap: () {
-                        showFilterButtonSheet1(
-                            context: context,
-                            titleText: "Select a language",
-                            widgets: Column(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                ListView.builder(
-                                    padding: EdgeInsets.only(bottom: 20),
-                                    shrinkWrap: true,
-                                    itemCount: languages.data!.length,
-                                    physics: BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return RadioListTile(
-                                        title: Text(
-                                          languages.data![index].name
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppTheme.darkBlueText,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        contentPadding:
-                                        const EdgeInsets.all(0),
-                                        dense: true,
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        value: languages.data![index].name
-                                            .toString(),
-                                        groupValue: selectedLanguage.value,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedLanguage.value =
-                                                value.toString();
-                                            Get.back();
-                                          });
-                                        },
-                                      );
-                                    })
-                              ],
-                            ));
+                        showBottomSheetForLanguage(context);
                       },
                       readOnly: true,
+                      validator: MultiValidator([
+                        RequiredValidator(errorText: "Please select language")
+                      ]),
                       obSecure: false.obs,
-                      keyboardType: TextInputType.emailAddress,
-                      hintText:
-                      "${selectedLanguage.value == '' ? "Select a language" : selectedLanguage.value.toString()}"
-                          .obs,
+                      controller: languageController,
+                      hintText: "Select a language".obs,
                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                     ),
                     SizedBox(
@@ -149,53 +201,17 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                     ),
                     CustomTextField(
                       onTap: () {
-                        showFilterButtonSheet1(
-                            context: context,
-                            titleText: "To (or expected graduation year)",
-                            widgets: Column(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                ListView.builder(
-                                    padding: EdgeInsets.only(bottom: 20),
-                                    shrinkWrap: true,
-                                    itemCount: level.length,
-                                    physics: BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return RadioListTile(
-                                        title: Text(
-                                          level[index].toString(),
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppTheme.darkBlueText,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        contentPadding:
-                                        const EdgeInsets.all(0),
-                                        dense: true,
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        value: level[index].toString(),
-                                        groupValue: selectedLevel.value,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedLevel.value =
-                                                value.toString();
-                                            Get.back();
-                                          });
-                                        },
-                                      );
-                                    })
-                              ],
-                            ));
+                        showBottomSheetForLevel(context);
                       },
                       readOnly: true,
+                      validator: MultiValidator([
+                        RequiredValidator(
+                            errorText: "Please select language level")
+                      ]),
+                      controller: levelController,
                       obSecure: false.obs,
                       keyboardType: TextInputType.emailAddress,
-                      hintText:
-                      "${selectedLevel.value == '' ? "Basic" : selectedLevel.value.toString()}"
-                          .obs,
+                      hintText: "Select proficiency level".obs,
                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                     ),
                   ]),
@@ -224,15 +240,17 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                 title: 'Save',
                 backgroundColor: AppTheme.primaryColor,
                 onPressed: () {
-                  // editLanguageRepo(getMapData(),context).then((value) {
-                  //   if(value.status == true){
-                  //     Get.back();
-                  //     controller.getData();
-                  //   }
-                  //   showToast(value.message.toString());
-                  // });
-                  if(kDebugMode){
-                    print(getMapData());
+                  if (formKey.currentState!.validate()) {
+                    editLanguageRepo(getMapData(), context).then((value) {
+                      if (value.status == true) {
+                        Get.back();
+                        controller.getData();
+                      }
+                      showToast(value.message.toString());
+                    });
+                    if (kDebugMode) {
+                      print(getMapData());
+                    }
                   }
                 },
                 textColor: AppTheme.whiteColor,
@@ -242,10 +260,14 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
           ),
         ]));
   }
-  getMapData(){
-    Map<String,dynamic>map = {};
-    Map<String,dynamic>map1 = {};
-    map["languages"] = map1 ;
+
+  getMapData() {
+    Map<String, dynamic>map = {};
+    Map<String, dynamic>map1 = {};
+    map["languages"] = map1;
+    for(var item in controller.model.value.data!.language!){
+      map1[item.language.toString()] = item.level.toString();
+    }
     map1[selectedLanguage.value.toString()] = selectedLevel.value;
     return map;
   }

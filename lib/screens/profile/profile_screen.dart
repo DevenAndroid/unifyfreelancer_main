@@ -34,83 +34,22 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // List<File> _files01 = [];
-  //var loading = null;
   int ratingValue = 0;
   final controller = Get.put(ProfileScreenController());
   String? time;
-
-  // @override
-  // void _pickMultipleFiles() async {
-  //   FilePickerResult? result =
-  //       await FilePicker.platform.pickFiles(allowMultiple: true);
-  //
-  //   if (result != null) {
-  //     List<File> _files = result.paths.map((path) => File(path!)).toList();
-  //     setState(() {
-  //       _files01 = _files;
-  //       loading = 1;
-  //     });
-  //   } else {
-  //     // User canceled the picker
-  //   }
-  // }
-
-  // FilePickerResult? uploadDocument1;
-  // String? uploadDocumentFileName1;
-  // PlatformFile? uploadDocumentPickedFile1;
-  // bool uploadDocumentLoading1 = false;
-  // File? uploadDocumentDisplay1;
-  // String? sendingDocumentInAPI1;
-  //
-  // void uploadDocumentFunction1() async {
-  //   try {
-  //     setState(() {
-  //       uploadDocumentLoading1 = true;
-  //     });
-  //     uploadDocument1 = await FilePicker.platform.pickFiles(
-  //         type: FileType.custom,
-  //         allowMultiple: false,
-  //         allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'docx', 'doc']);
-  //     if (uploadDocument1 != null) {
-  //       uploadDocumentFileName1 = uploadDocument1!.files.first.name;
-  //       uploadDocumentPickedFile1 = uploadDocument1!.files.first;
-  //       uploadDocumentDisplay1 =
-  //           File(uploadDocumentPickedFile1!.path.toString());
-  //
-  //       List<int> uploadDocument64 = uploadDocumentDisplay1!.readAsBytesSync();
-  //
-  //       sendingDocumentInAPI1 = base64Encode(uploadDocument64);
-  //
-  //       print("Base 64 image===> $sendingDocumentInAPI1");
-  //
-  //       if (kDebugMode) {
-  //         print("File name $uploadDocumentFileName1");
-  //       }
-  //     }
-  //
-  //     setState(() {
-  //       uploadDocumentLoading1 = false;
-  //     });
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print(e);
-  //     }
-  //   }
-  // }
-
   final profileController = Get.put(ProfileScreenController());
-
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _designationController = TextEditingController();
-  final TextEditingController _designationDescriptionController = TextEditingController();
+  final TextEditingController _designationDescriptionController =
+      TextEditingController();
 
   @override
   void initState() {
     super.initState();
     profileController.getData();
+    profileController.getLanguageData();
   }
 
   File imageFileToPick = File("");
@@ -122,19 +61,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] =profileController.model.value.data!.basicInfo!.description.toString();
-      editNameInfoRepo(mapData: map,
-          fieldName1: "profile_image",
-          file1: imageFileToPick,
-          context: context).then((value) {
-            imageFileToPick.delete();
-            imageFileToPick = File("");
-        if (value.status ==true) {profileController.getData();
+      map["first_name"] =
+          profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] =
+          profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] =
+          profileController.model.value.data!.basicInfo!.description.toString();
+      editNameInfoRepo(
+              mapData: map,
+              fieldName1: "profile_image",
+              file1: imageFileToPick,
+              context: context)
+          .then((value) {
+        imageFileToPick.delete();
+        imageFileToPick = File("");
+        if (value.status == true) {
+          profileController.getData();
         }
-        showToast(value.message
-            .toString());
+        showToast(value.message.toString());
       });
     } catch (e) {
       throw Exception(e);
@@ -144,72 +88,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
   RxBool showMoreCertificate = false.obs;
   RxBool showDescriptionCertificate = false.obs;
 
-
   updateProfileBasicDetails() {
-    Map<String, String>
-    map = {};
-    map["first_name"] =
-        _fNameController
-            .text
-            .trim();
-    map["last_name"] =
-        _lNameController
-            .text
-            .trim();
-    map["occcuption"] =
-        _descriptionController
-            .text
-            .trim();
+    Map<String, String> map = {};
+    map["first_name"] = _fNameController.text.trim();
+    map["last_name"] = _lNameController.text.trim();
+    map["occcuption"] = _descriptionController.text.trim();
     editNameInfoRepo(
-        mapData: map,
-        fieldName1:
-        "profile_image",
-        file1:
-        imageFileToPick,
-        context:
-        context)
+            mapData: map,
+            fieldName1: "profile_image",
+            file1: imageFileToPick,
+            context: context)
         .then((value) {
-      if (value.status ==
-          true) {
-        profileController
-            .getData();
+      if (value.status == true) {
+        profileController.getData();
         Get.back();
       }
-      showToast(value
-          .message
-          .toString());
+      showToast(value.message.toString());
     });
   }
 
-  showDialogueUpdateBasicInfo(){
-    _fNameController.text = profileController.model.value.data!.basicInfo!.firstName
-        .toString();
-    _lNameController.text = profileController.model.value.data!.basicInfo!.lastName.toString();
-    _descriptionController.text = profileController.model.value.data!.basicInfo!.occuption.toString();
+  showDialogueUpdateBasicInfo() {
+    _fNameController.text =
+        profileController.model.value.data!.basicInfo!.firstName.toString();
+    _lNameController.text =
+        profileController.model.value.data!.basicInfo!.lastName.toString();
+    _descriptionController.text =
+        profileController.model.value.data!.basicInfo!.occuption.toString();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        insetPadding:
-        EdgeInsets.symmetric(
-            horizontal: 20),
-        contentPadding:
-        EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10),
+        insetPadding: EdgeInsets.symmetric(horizontal: 20),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         content: SingleChildScrollView(
-          physics:
-          const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
-            mainAxisSize:
-            MainAxisSize.min,
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
                   Align(
-                    alignment: Alignment
-                        .topRight,
+                    alignment: Alignment.topRight,
                     child: SizedBox(
                       height: 15,
                       width: 20,
@@ -219,9 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       top: -15,
                       right: -15,
                       child: IconButton(
-                        onPressed: () =>
-                            Navigator.pop(
-                                context),
+                        onPressed: () => Navigator.pop(context),
                         icon: Icon(
                           Icons.clear,
                           size: 20,
@@ -236,10 +153,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "Edit Details",
                     style: TextStyle(
                         fontSize: 16,
-                        fontWeight:
-                        FontWeight.w600,
-                        color: AppTheme
-                            .textColor),
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor),
                   ),
                 ],
               ),
@@ -252,17 +167,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               BoxTextField(
                 obSecure: false.obs,
-                hintText:
-                "First Name".obs,
-                keyboardType:
-                TextInputType.text,
-                controller:
-                _fNameController,
+                hintText: "First Name".obs,
+                keyboardType: TextInputType.text,
+                controller: _fNameController,
                 onSaved: (value) {
                   setState(() {
-                    _fNameController
-                        .text =
-                        value.toString();
+                    _fNameController.text = value.toString();
                   });
                 },
               ),
@@ -276,15 +186,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               BoxTextField(
                 obSecure: false.obs,
                 hintText: "Last Name".obs,
-                keyboardType:
-                TextInputType.text,
-                controller:
-                _lNameController,
+                keyboardType: TextInputType.text,
+                controller: _lNameController,
                 onSaved: (value) {
                   setState(() {
-                    _lNameController
-                        .text =
-                        value.toString();
+                    _lNameController.text = value.toString();
                   });
                 },
               ),
@@ -297,18 +203,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               BoxTextField(
                 obSecure: false.obs,
-                hintText:
-                "Occupation".obs,
+                hintText: "Occupation".obs,
                 isMulti: true,
-                keyboardType:
-                TextInputType.text,
-                controller:
-                _descriptionController,
+                keyboardType: TextInputType.text,
+                controller: _descriptionController,
                 onSaved: (value) {
                   setState(() {
-                    _descriptionController
-                        .text =
-                        value.toString();
+                    _descriptionController.text = value.toString();
                   });
                 },
               ),
@@ -317,13 +218,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               CustomOutlineButton(
                 title: "Change",
-                backgroundColor:
-                AppTheme.primaryColor,
+                backgroundColor: AppTheme.primaryColor,
                 onPressed: () {
                   updateProfileBasicDetails();
                 },
-                textColor:
-                AppTheme.whiteColor,
+                textColor: AppTheme.whiteColor,
                 expandedValue: true,
               ),
               SizedBox(
@@ -397,7 +296,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               InkWell(
                                                   onTap: () {
                                                     pickImageFromDevice(
-                                                        imageSource: ImageSource.camera);
+                                                        imageSource:
+                                                            ImageSource.camera);
 
                                                     Navigator.pop(context);
                                                   },
@@ -414,7 +314,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               InkWell(
                                                   onTap: () {
                                                     pickImageFromDevice(
-                                                        imageSource: ImageSource.gallery);
+                                                        imageSource: ImageSource
+                                                            .gallery);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text(
@@ -462,12 +363,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    profileController.model.value.data!.basicInfo!
-                                            .firstName
+                                    profileController.model.value.data!
+                                            .basicInfo!.firstName
                                             .toString() +
                                         " " +
-                                        profileController
-                                            .model.value.data!.basicInfo!.lastName
+                                        profileController.model.value.data!
+                                            .basicInfo!.lastName
                                             .toString(),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -479,13 +380,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Wrap(
                                     children: List.generate(
                                         5,
-                                        (index) => double.parse(profileController
-                                                    .model
-                                                    .value
-                                                    .data!
-                                                    .basicInfo!
-                                                    .rating
-                                                    .toString()) >
+                                        (index) => double.parse(
+                                                    profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .basicInfo!
+                                                        .rating
+                                                        .toString()) >
                                                 index
                                             ? Icon(
                                                 Icons.star,
@@ -499,8 +401,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               )),
                                   ),
                                   Text(
-                                    profileController.model.value.data!.basicInfo!.occuption.toString().isEmpty ? "Occupation"
-                                        : profileController.model.value.data!.basicInfo!.occuption.toString(),
+                                    profileController.model.value.data!
+                                            .basicInfo!.occuption
+                                            .toString()
+                                            .isEmpty
+                                        ? "Occupation"
+                                        : profileController.model.value.data!
+                                            .basicInfo!.occuption
+                                            .toString(),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -517,8 +425,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         width: 5.w,
                                       ),
                                       Text(
-                                        profileController
-                                            .model.value.data!.basicInfo!.country
+                                        profileController.model.value.data!
+                                            .basicInfo!.country
                                             .toString(),
                                         style: TextStyle(
                                             fontSize: 14.sp,
@@ -739,578 +647,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 )),*/
+                      /// Earning Section
+                      earningSection(deviceWidth),
+                      /// Hours Language and Education
+                      hoursLanguageEducation(deviceWidth),
 
-                      Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          width: deviceWidth,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AppTheme.whiteColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Total Earning",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppTheme.darkBlueText
-                                                  .withOpacity(0.47)),
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          profileController.model.value.data!
-                                              .basicInfo!.totalEarning
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff0777FD)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Total Jobs",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppTheme.darkBlueText
-                                                  .withOpacity(0.47)),
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          profileController.model.value.data!
-                                              .basicInfo!.totalJobs
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xff6B428B)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Divider(
-                                color: AppTheme.pinkText.withOpacity(.29),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Total Hours",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppTheme.darkBlueText
-                                                  .withOpacity(0.47)),
-                                        ),
-                                        SizedBox(
-                                          height: 5.h,
-                                        ),
-                                        Text(
-                                          profileController.model.value.data!
-                                              .basicInfo!.totalHours
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xffF66C6C)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Pending Project",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppTheme.darkBlueText
-                                                  .withOpacity(0.47)),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                            profileController.model.value.data!
-                                                .basicInfo!.pendingProject
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.pinkText,
-                                            ))
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        width: deviceWidth,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: AppTheme.whiteColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 4,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Row(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text(
-                            //       "Video introduction",
-                            //       style: TextStyle(
-                            //           fontSize: 16.sp,
-                            //           fontWeight: FontWeight.w600,
-                            //           color: AppTheme.darkBlueText),
-                            //     ),
-                            //     SizedBox(
-                            //       width: 10.w,
-                            //     ),
-                            //     InkWell(
-                            //       onTap: () {},
-                            //       child: Container(
-                            //         padding: EdgeInsets.all(5),
-                            //         decoration: BoxDecoration(
-                            //             shape: BoxShape.circle,
-                            //             color: AppTheme.whiteColor,
-                            //             border: Border.all(
-                            //                 color: Color(0xff707070))),
-                            //         child: Icon(
-                            //           Icons.add,
-                            //           color: AppTheme.primaryColor,
-                            //           size: 15,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: 20.h,
-                            // ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Hours per week",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.darkBlueText),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                InkWell(
-                                  onTap: () =>
-                                      Get.toNamed(MyRouter.hoursPerWeekScreen),
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-
-                            Text(
-                              profileController.model.value.data!.hoursPerWeek
-                                  .toString(),
-                              style: TextStyle(
-                                  fontSize: 13.sp, color: AppTheme.textColor),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Language",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.darkBlueText),
-                                ),
-                                InkWell(
-                                  onTap: () =>
-                                      Get.toNamed(MyRouter.addLanguageScreen),
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 15),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () =>
-                                      Get.toNamed(MyRouter.editLanguageScreen),
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                           ListView.builder(
-                               shrinkWrap: true,physics: NeverScrollableScrollPhysics(),
-                               itemCount: profileController.model.value.data!.language!.length,
-                               itemBuilder: (context,index){
-                             return  Row(
-                               children: [
-                                 Text(
-                                   profileController.model.value.data!.language![index].language.toString().capitalizeFirst! + " : ",
-                                   style: TextStyle(
-                                       fontSize: 13.sp,
-                                       fontWeight: FontWeight.w600,
-                                       color: AppTheme.textColor),
-                                 ),
-                                 SizedBox(
-                                   width: 5,
-                                 ),
-                                 Text(
-                                   profileController.model.value.data!.language![index].level.toString(),
-                                   style: TextStyle(
-                                       fontSize: 13.sp,
-                                       color: AppTheme.textColor),
-                                 ),
-                               ],
-                             );
-                           }),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            /*  Text(
-                              "Verification",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "ID: ",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.textColor),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "Verified",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      color: AppTheme.textColor),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 5),
-                                  child: Icon(
-                                    Icons.verified,
-                                    color: AppTheme.primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              profileController
-                                      .model.value.data!.basicInfo!.firstName
-                                      .toString() +
-                                  " " +
-                                  profileController
-                                      .model.value.data!.basicInfo!.lastName
-                                      .toString(),
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff4D4D4D)),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),*/
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Education",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.darkBlueText),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Get.toNamed(MyRouter.addEducationScreen);
-                                  },
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 15),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),
-                                /* InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppTheme.whiteColor,
-                                        border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                ),*/
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: profileController
-                                  .model.value.data!.education!.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Text(
-                                      profileController.model.value.data!
-                                          .education![index].school
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xff4D4D4D)),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            profileController.model.value.data!
-                                                .education![index].degree
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppTheme.textColor
-                                                    .withOpacity(.63)),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Get.toNamed(
-                                                    MyRouter.addEducationScreen,
-                                                    arguments: index);
-                                              },
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 15),
-                                                padding: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: AppTheme.whiteColor,
-                                                    border: Border.all(
-                                                        color:
-                                                            Color(0xff707070))),
-                                                child: Icon(
-                                                  Icons.edit,
-                                                  color: AppTheme.primaryColor,
-                                                  size: 15,
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                deleteEducationInfoRepo(
-                                                        profileController
-                                                            .model
-                                                            .value
-                                                            .data!
-                                                            .education![index]
-                                                            .id
-                                                            .toString(),
-                                                        context)
-                                                    .then((value) {
-                                                  if (value.status == true) {
-                                                    profileController.model
-                                                        .value.data!.education!
-                                                        .removeAt(index);
-                                                    profileController.getData();
-                                                  }
-                                                  showToast(
-                                                      value.message.toString());
-                                                });
-                                              },
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 15),
-                                                padding: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: AppTheme.whiteColor,
-                                                    border: Border.all(
-                                                        color:
-                                                            Color(0xff707070))),
-                                                child: Icon(
-                                                  Icons.delete,
-                                                  color: AppTheme.primaryColor,
-                                                  size: 15,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Divider(
-                                      color: AppTheme.pinkText.withOpacity(.29),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      /// Occupation Work History  Skills and portfolio
                       Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           width: deviceWidth,
@@ -2484,10 +1826,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           shrinkWrap: true,
                                           physics:
                                               NeverScrollableScrollPhysics(),
-                                          itemCount: showMoreCertificate.value ?
-                                          profileController.model.value.data!.certificates!.length :
-                                          profileController.model.value.data!.certificates!.length < 4?
-                                          profileController.model.value.data!.certificates!.length : 4,
+                                          itemCount: showMoreCertificate.value
+                                              ? profileController.model.value
+                                                  .data!.certificates!.length
+                                              : profileController
+                                                          .model
+                                                          .value
+                                                          .data!
+                                                          .certificates!
+                                                          .length <
+                                                      4
+                                                  ? profileController
+                                                      .model
+                                                      .value
+                                                      .data!
+                                                      .certificates!
+                                                      .length
+                                                  : 4,
                                           itemBuilder: (context, index) {
                                             return Column(
                                               children: [
@@ -3018,5 +2373,483 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
       }),
     );
+  }
+
+  Container hoursLanguageEducation(double deviceWidth) {
+    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Hours per week",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.hoursPerWeekScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6.h,
+                          ),
+                          Text(
+                            profileController.model.value.data!.hoursPerWeek.toString(),
+                            style: TextStyle(
+                                fontSize: 13.sp, color: AppTheme.textColor),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Language",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.addLanguageScreen),
+                                child: Container(
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 15),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () =>
+                                    Get.toNamed(MyRouter.editLanguageScreen),
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: profileController
+                                  .model.value.data!.language!.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 4.h),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        profileController.model.value.data!
+                                                .language![index].language
+                                                .toString()
+                                                .capitalizeFirst! +
+                                            " : ",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.textColor),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        profileController.model.value.data!
+                                            .language![index].level
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: AppTheme.textColor),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Education",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed(MyRouter.addEducationScreen);
+                                },
+                                child: Container(
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 15),
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                              /* InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),*/
+                            ],
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: profileController
+                                .model.value.data!.education!.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    profileController.model.value.data!
+                                        .education![index].school
+                                        .toString().capitalizeFirst!,
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff4D4D4D)),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          profileController.model.value.data!
+                                              .education![index].degree
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.textColor
+                                                  .withOpacity(.63)),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  MyRouter.addEducationScreen,
+                                                  arguments: index);
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  EdgeInsets.only(right: 15),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                  border: Border.all(
+                                                      color:
+                                                          Color(0xff707070))),
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: AppTheme.primaryColor,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              deleteEducationInfoRepo(
+                                                      profileController
+                                                          .model
+                                                          .value
+                                                          .data!
+                                                          .education![index]
+                                                          .id
+                                                          .toString(),
+                                                      context)
+                                                  .then((value) {
+                                                if (value.status == true) {
+                                                  profileController.model
+                                                      .value.data!.education!
+                                                      .removeAt(index);
+                                                  profileController.getData();
+                                                }
+                                                showToast(
+                                                    value.message.toString());
+                                              });
+                                            },
+                                            child: Container(
+                                              margin:
+                                                  EdgeInsets.only(left: 15),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                  border: Border.all(
+                                                      color:
+                                                          Color(0xff707070))),
+                                              child: Icon(
+                                                Icons.delete,
+                                                color: AppTheme.primaryColor,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Divider(
+                                    color: AppTheme.pinkText.withOpacity(.29),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+  }
+
+  Container earningSection(double deviceWidth) {
+    return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        width: deviceWidth,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppTheme.whiteColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Total Earning",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText.withOpacity(0.47)),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        profileController
+                            .model.value.data!.basicInfo!.totalEarning
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff0777FD)),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Total Jobs",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText.withOpacity(0.47)),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        profileController.model.value.data!.basicInfo!.totalJobs
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff6B428B)),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.29),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Total Hours",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText.withOpacity(0.47)),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        profileController
+                            .model.value.data!.basicInfo!.totalHours
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xffF66C6C)),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Pending Project",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText.withOpacity(0.47)),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                          profileController
+                              .model.value.data!.basicInfo!.pendingProject
+                              .toString(),
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.pinkText,
+                          ))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
