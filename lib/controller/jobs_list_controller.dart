@@ -6,6 +6,9 @@ import '../repository/job_list_repository.dart';
 import '../repository/recent_jobs_list_repository.dart';
 
 class JobListController extends GetxController {
+
+
+
   Rx<ModelJobsList> modelJobList = ModelJobsList().obs;
   Rx<ModelJobsList> modeRecentJobList = ModelJobsList().obs;
   Rx<ModelJobsList> modelBestJobList = ModelJobsList().obs;

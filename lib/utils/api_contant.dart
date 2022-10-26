@@ -42,6 +42,7 @@ class ApiUrls {
   static const String jobsList = "${apiBaseUrl}jobs-list";
   static const String recentJobsList = "${apiBaseUrl}recent-jobs-list";
   static const String bestMatchJobsList = "${apiBaseUrl}best-match-jobs-list";
+  static const String sendProposal = "${apiBaseUrl}send-proposal";
 
 
 }
