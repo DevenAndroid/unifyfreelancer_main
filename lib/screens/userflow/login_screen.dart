@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseFirestore firebaseFireStore = FirebaseFirestore.instance;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
@@ -39,12 +41,14 @@ class _LoginScreenState extends State<LoginScreen> {
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
-    GoogleSignInAuthentication googleSignInAuthentication = await googleSignIn!.authentication;
-    final userCredentials = GoogleAuthProvider.credential(accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken
-    );
+    GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignIn!.authentication;
+    final userCredentials = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken);
     await FirebaseAuth.instance.signInWithCredential(userCredentials);
-    socialLoginApi(context,googleSignInAuthentication.accessToken.toString(),"google");
+    socialLoginApi(
+        context, googleSignInAuthentication.accessToken.toString(), "google");
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
@@ -53,31 +57,56 @@ class _LoginScreenState extends State<LoginScreen> {
     final appleProvider = AppleAuthProvider();
     if (kIsWeb) {
       await FirebaseAuth.instance.signInWithPopup(appleProvider).then((value) {
-        socialLoginApi(context,value.credential!.accessToken.toString(),"apple");
+        socialLoginApi(
+            context, value.credential!.accessToken.toString(), "apple");
       });
     } else {
-      await FirebaseAuth.instance.signInWithProvider(appleProvider).then((value) {
-        socialLoginApi(context,value.credential!.accessToken.toString(),"apple");
+      await FirebaseAuth.instance
+          .signInWithProvider(appleProvider)
+          .then((value) {
+        socialLoginApi(
+            context, value.credential!.accessToken.toString(), "apple");
       });
     }
   }
 
-  socialLoginApi(context,authToken,provider){
+  socialLoginApi(context, authToken, provider) {
     socialLoginRepo(
-        context: context,
-        accessToken: authToken,
-        provider: provider
-    ).then((value) async {
+            context: context, accessToken: authToken, provider: provider)
+        .then((value) async {
       showToast(value.message.toString());
       if (value.status == true) {
-        SharedPreferences pref =
-        await SharedPreferences
-            .getInstance();
+        SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
         pref.setBool("shownIntro", true);
+        // try {
+        //   firebaseFireStore
+        //       .collection("users")
+        //       .doc(value.data!.user.id.toString())
+        //       .set({"userId": value.data!.user.id.toString()}).catchError((e) {
+        //     showToast(e.toString());
+        //   });
+        //   firebaseFireStore
+        //       .collection("users")
+        //       .doc(value.data!.user.id.toString())
+        //       .collection("messages")
+        //       .doc(value.data!.user.firstName)
+        //       .set({"lastMessage": "Good Morning"});
+        //   firebaseFireStore
+        //       .collection("users")
+        //       .doc(value.data!.user.id.toString())
+        //       .collection("messages")
+        //       .doc(value.data!.user.firstName)
+        //       .collection("FirebaseMessages")
+        //       .add({
+        //     "message": "Good Morning",
+        //     "timeStamp": DateTime.now().millisecondsSinceEpoch
+        //   });
+        // } catch (e) {
+        //   showToast(e.toString());
+        // }
         Get.toNamed(MyRouter.bottomNavbar);
       }
-      log(value.message.toString());
     });
   }
 
@@ -207,22 +236,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
-                            login(
-                                usernameController.text,
-                                passwordController.text,
-                                context)
+                            login(usernameController.text,
+                                    passwordController.text, context)
                                 .then((value) async {
-                                showToast(value.message.toString(),);
+                              showToast(
+                                value.message.toString(),
+                              );
                               if (value.status == true) {
-                                SharedPreferences pref = await SharedPreferences.getInstance();
-                                pref.setString('cookie', jsonEncode(value.authToken));
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
+                                pref.setString(
+                                    'cookie', jsonEncode(value.authToken));
                                 pref.setBool("shownIntro", true);
                                 Get.offAllNamed(MyRouter.bottomNavbar);
                               }
                             });
                           }
                         }, deviceWidth, 50),
-
                         SizedBox(
                           height: 25.h,
                         ),
@@ -253,10 +283,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     right: AddSize.size30,
                                     bottom: AddSize.padding10),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      AddSize.size10),
-                                  border: Border.all(
-                                      color: Colors.grey),
+                                  borderRadius:
+                                      BorderRadius.circular(AddSize.size10),
+                                  border: Border.all(color: Colors.grey),
                                 ),
                                 child: Image.asset(
                                   AppAssets.googleIcon,
@@ -265,8 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                            if (Platform.isIOS)
-                              SizedBox(width: AddSize.size20),
+                            if (Platform.isIOS) SizedBox(width: AddSize.size20),
                             if (Platform.isIOS)
                               InkWell(
                                 onTap: () {
@@ -279,10 +307,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       right: AddSize.size30,
                                       bottom: AddSize.padding10),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        AddSize.size10),
-                                    border: Border.all(
-                                        color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.circular(AddSize.size10),
+                                    border: Border.all(color: Colors.grey),
                                   ),
                                   child: Image.asset(
                                     AppAssets.appleIcon,
