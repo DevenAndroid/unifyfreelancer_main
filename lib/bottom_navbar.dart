@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -24,6 +26,9 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   final controller = Get.put(BottomNavBarController());
   final profileController = Get.put(ProfileScreenController());
+
+  FirebaseFirestore dataBase = FirebaseFirestore.instance;
+
   final pages = [
     const HomeScreen(),
     const ProposalsScreen(),

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../controller/profie_screen_controller.dart';
 import '../../repository/add_portfolio_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
@@ -21,9 +22,10 @@ class AddPortFolioScreen extends StatefulWidget {
 }
 
 class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
+  final controller = Get.put(ProfileScreenController());
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   File imageFileToPick = File("");
 
@@ -37,9 +39,6 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
       throw Exception(e);
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -203,6 +202,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                       context: context,).then((value) {
                         if(value.status == true){
                           Get.back();
+                          controller.getData();
                         }
                         showToast(value.message.toString());
                     });

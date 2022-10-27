@@ -9,7 +9,7 @@ import '../utils/api_contant.dart';
 
 Future<ModelSkillListResponse> skillListRepo() async {
   try {
-    http.Response response = await http.get(Uri.parse(ApiUrls.skillList),
+    http.Response response = await http.post(Uri.parse(ApiUrls.skillList),
         headers: await getAuthHeader());
 
     if (response.statusCode == 200) {
