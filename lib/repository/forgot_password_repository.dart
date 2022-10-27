@@ -10,34 +10,42 @@ import '../utils/api_contant.dart';
 Future<ModelForgotPasswordResponse> forgotPassword(email, BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
-  var map = <String, dynamic>{};
-  //SharedPreferences pref = await SharedPreferences.getInstance();
-  map['email'] = email;
+  try {
+    var map = <String, dynamic>{};
+    map['email'] = email;
 
-  print(map);
+    print(map);
 
-  final headers = {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.acceptHeader: 'application/json',
-  };
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+    };
 
 
-  http.Response response = await http.post(Uri.parse(ApiUrls.forgotPassword),
-      body: jsonEncode(map), headers: headers);
+    http.Response response = await http.post(Uri.parse(ApiUrls.forgotPassword),
+        body: jsonEncode(map), headers: headers);
 
-  if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
+      Helpers.hideLoader(loader);
+      return ModelForgotPasswordResponse.fromJson(jsonDecode(response.body));
+    } else {
+      Helpers.hideLoader(loader);
+      return ModelForgotPasswordResponse(
+          data: null,
+          message: jsonDecode(response.body)["message"],
+          status: false);
+    }
+  } on SocketException {
     Helpers.hideLoader(loader);
-    return ModelForgotPasswordResponse.fromJson(jsonDecode(response.body));
-
-  } else if (response.statusCode == 400) {
-    Helpers.hideLoader(loader);
-    // return ModelLoginResponse.fromJson(jsonDecode(response.body));
     return ModelForgotPasswordResponse(
         data: null,
-        message: jsonDecode(response.body)["message"],
+        message: "No Internet Connection",
         status: false);
-  } else {
+  } catch (e){
     Helpers.hideLoader(loader);
-    throw Exception(response.body);
+    return ModelForgotPasswordResponse(
+        data: null,
+        message: "Something went wrong... $e",
+        status: false);
   }
 }

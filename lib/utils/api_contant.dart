@@ -47,6 +47,7 @@ class ApiUrls {
 
 }
  showToast(message) {
+  Fluttertoast.cancel();
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_LONG,

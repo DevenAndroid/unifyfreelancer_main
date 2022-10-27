@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../repository/forgot_password_repository.dart';
 import '../resources/app_theme.dart';
@@ -88,33 +89,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   CommonButton("Send", () {
                     if (_formKey.currentState!.validate()) {
                       forgotPassword(emailController.text, context)
-                          .then((value) async  {
-                            print(jsonEncode(value));
+                          .then((value) async {
+                        showToast(value.message.toString());
                         if (value.status == true) {
-
-                          Fluttertoast.showToast(
-                              msg: value.message.toString(),
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                              fontSize: 14.0);
                           Get.toNamed(MyRouter.verificationScreen,
-                              arguments: [emailController.text,""]);
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: value.message.toString(),
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                              fontSize: 14.0);
-
+                              arguments: [emailController.text, ""]);
                         }
                       });
-
                     }
                   }, deviceWidth, 50),
                 ],

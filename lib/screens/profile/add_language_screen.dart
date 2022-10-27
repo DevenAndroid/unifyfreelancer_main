@@ -38,12 +38,63 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
     "Native or Bilingual",
   ].obs;
 
+  RxList<Data> languageListDataTemp = <Data>[].obs;
+
   showBottomSheetForLanguage(context) {
+    languageListDataTemp.clear();
+    languageListDataTemp.addAll(languageListData);
     showFilterButtonSheet1(
         context: context,
+        maxHeight: AddSize.screenHeight*.86,
+        minimumHeight: AddSize.screenHeight*.85,
         titleText: "Select a language",
         widgets: Column(
           children: [
+            SizedBox(
+              height: 15,
+            ),
+            TextFormField(
+              onChanged: (value) {
+                if (value.trim() != "") {
+                  languageListDataTemp.clear();
+                  for (var e in languageListData) {
+                    if (e.name!.toLowerCase().contains(value.toLowerCase())) {
+                      languageListDataTemp.add(e);
+                    }
+                  }
+                } else {
+                  languageListDataTemp.addAll(languageListData);
+                }
+              },
+              decoration: InputDecoration(
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: AddSize.size16),
+                  filled: true,
+                  hintText: 'Search Language',
+                  hintStyle: const TextStyle(color: AppTheme.subText),
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide:
+                      const BorderSide(color: Colors.white, width: 0)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide:
+                      const BorderSide(color: Colors.white, width: 0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide:
+                      const BorderSide(color: Colors.white, width: 0)),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide:
+                      const BorderSide(color: Colors.white, width: 0)),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: AppTheme.subText.withOpacity(.3),
+                    size: AddSize.size30,
+                  )),
+            ),
             SizedBox(
               height: 15,
             ),
@@ -51,13 +102,13 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
               return ListView.builder(
                   padding: EdgeInsets.only(bottom: 20),
                   shrinkWrap: true,
-                  itemCount: languageListData.length,
+                  itemCount: languageListDataTemp.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Obx(() {
                       return RadioListTile(
                         title: Text(
-                          languageListData[index].name
+                          languageListDataTemp[index].name
                               .toString(),
                           style: TextStyle(
                               fontSize: 14,
@@ -69,7 +120,7 @@ class _AddLanguageScreenState extends State<AddLanguageScreen> {
                         dense: true,
                         visualDensity: VisualDensity(
                             horizontal: -4, vertical: -4),
-                        value: languageListData[index].name.toString(),
+                        value: languageListDataTemp[index].name.toString(),
                         groupValue: selectedLanguage.value,
                         onChanged: (value) {
                           setState(() {

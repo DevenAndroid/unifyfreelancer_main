@@ -68,7 +68,6 @@ class _BoxTextFieldState extends State<BoxTextField> {
         {}
         break;
     }
-
     return Obx(() {
       return TextFormField(
           onChanged: widget.onChanged,

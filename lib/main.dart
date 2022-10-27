@@ -17,7 +17,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: "/splash",
           getPages: MyRouter.route,
+
           theme: ThemeData(
               primarySwatch: primaryColorShades,
               fontFamily: 'Poppins',

@@ -26,7 +26,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     email = Get.arguments[0];
     isFromSignUp = Get.arguments[1].toString() == "fromSignUp" ? true : false;
@@ -110,13 +109,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   InkWell(
                     onTap: () {
                       resendOtp(email, context).then((value) async {
-                        if (value.status == true) {
-                          showToast(value.message.toString(),);;
-                          print(value.message);
-                        } else {
-                          showToast(value.message.toString(),);;
-                          print(value.message);
-                        }
+                        showToast(value.message.toString(),);
                       });
                     },
                     child: RichText(
@@ -143,17 +136,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   CommonButton("Verify", () {
                     print("value");
                     if (_formKey.currentState!.validate()) {
-                      print("value");
                       print(otp);
                       if (isFromSignUp == true) {
                         verifySignUp(email, otp, context).then((value) async {
                           print(value);
+                          showToast(value.message.toString(),);
                           if (value.status == true) {
                             Get.toNamed(MyRouter.loginScreen,);
-                              showToast(value.message.toString(),);
-
-                          } else {
-                            showToast(value.message.toString(),);
                           }
                         });
                       }
@@ -161,9 +150,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         verifySignUp(email, otp, context).then((value) async {
                           if(value.status == true){
                             Get.toNamed(MyRouter.newPasswordScreen,arguments: [email]);
-                            showToast(value.message.toString(),);
                           }
-                          else{}
                           showToast(value.message.toString(),);
                         });
 

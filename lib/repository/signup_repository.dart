@@ -21,41 +21,51 @@ Future<ModelSignUpResponse> signUp(
     BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
-  var map = <String, dynamic>{};
-  map['first_name'] = firstName;
-  map['last_name'] = lastName;
-  map['email'] = email;
-  map['password'] = password;
-  map['country'] = country;
-  map['user_type'] = userType;
-  map['referal_code'] = referalCode;
-  map['agree_terms'] = agreeTerms;
-  map['send_email'] = 0;
+  try {
+    var map = <String, dynamic>{};
+    map['first_name'] = firstName;
+    map['last_name'] = lastName;
+    map['email'] = email;
+    map['password'] = password;
+    map['country'] = country;
+    map['user_type'] = userType;
+    map['referal_code'] = referalCode;
+    map['agree_terms'] = agreeTerms;
+    map['send_email'] = 0;
 
-  final headers = {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.acceptHeader: 'application/json',
-  };
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+    };
 
-  log("Signup Request::=>" + map.toString());
+    log("Signup Request::=>" + map.toString());
 
-  http.Response response = await http.post(Uri.parse(ApiUrls.signUp),
-      body: jsonEncode(map), headers: headers);
+    http.Response response = await http.post(Uri.parse(ApiUrls.signUp),
+        body: jsonEncode(map), headers: headers);
 
 
-
-  if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
+      Helpers.hideLoader(loader);
+      return ModelSignUpResponse.fromJson(jsonDecode(response.body));
+    }
+    else {
+      Helpers.hideLoader(loader);
+      return ModelSignUpResponse(
+          data: null,
+          message: jsonDecode(response.body)["message"],
+          status: false);
+    }
+  } on SocketException {
     Helpers.hideLoader(loader);
-    return ModelSignUpResponse.fromJson(jsonDecode(response.body));
-  } else if (response.statusCode == 400) {
-    Helpers.hideLoader(loader);
-    // return ModelLoginResponse.fromJson(jsonDecode(response.body));
     return ModelSignUpResponse(
         data: null,
-        message: jsonDecode(response.body)["message"],
+        message: "No Internet Connection",
         status: false);
-  } else {
+  } catch (e){
     Helpers.hideLoader(loader);
-    throw Exception(response.body);
+    return ModelSignUpResponse(
+        data: null,
+        message: "Something went wrong...$e",
+        status: false);
   }
 }
