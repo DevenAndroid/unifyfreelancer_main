@@ -13,36 +13,46 @@ import '../models/model_verify_signup.dart';
 Future<ModelVerificationSignUp> verifySignUp(email,otp,context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
-  Map<String,dynamic> map = {};
-  map["email"] = email;
-  map["otp"] = otp;
+  try {
+    Map<String, dynamic> map = {};
+    map["email"] = email;
+    map["otp"] = otp;
 
-print(map);
-  final headers = {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.acceptHeader: 'application/json',
-  };
+    print(map);
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+    };
 
-
-  log("verify Request::=>" + map.toString());
-  final response = await http.post(
-      Uri.parse(ApiUrls.verifySignUp),
-    body:jsonEncode(map),
-    headers:  headers
-  );
-  if (response.statusCode == 200) {
+    final response = await http.post(
+        Uri.parse(ApiUrls.verifySignUp),
+        body: jsonEncode(map),
+        headers: headers
+    );
+    if (response.statusCode == 200) {
+      Helpers.hideLoader(loader);
+      return ModelVerificationSignUp.fromJson(jsonDecode(response.body));
+    } else {
+      Helpers.hideLoader(loader);
+      return ModelVerificationSignUp(
+          authToken: "",
+          data: null,
+          message: jsonDecode(response.body)["message"],
+          status: false);
+    }
+  } on SocketException {
     Helpers.hideLoader(loader);
-    return ModelVerificationSignUp.fromJson(jsonDecode(response.body));
-  } else if (response.statusCode == 400) {
-    Helpers.hideLoader(loader);
-    // return ModelLoginResponse.fromJson(jsonDecode(response.body));
     return ModelVerificationSignUp(
-        authToken:"",
+        authToken: "",
         data: null,
-        message: jsonDecode(response.body)["message"],
+        message: "No Internet Connection",
         status: false);
-  } else {
+  } catch (e){
     Helpers.hideLoader(loader);
-    throw Exception(response.body);
+    return ModelVerificationSignUp(
+        authToken: "",
+        data: null,
+        message: "Something went wrong...$e",
+        status: false);
   }
 }

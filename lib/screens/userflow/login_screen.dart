@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ import '../../repository/login_repository.dart';
 import '../../repository/social_login_repository.dart';
 import '../../resources/app_assets.dart';
 import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
 import '../../resources/strings.dart';
 import '../../routers/my_router.dart';
 import '../../utils/api_contant.dart';
@@ -28,11 +30,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var _formKey = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
-
 
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
@@ -72,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await SharedPreferences
             .getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
+        pref.setBool("shownIntro", true);
         Get.toNamed(MyRouter.bottomNavbar);
       }
       log(value.message.toString());
@@ -204,29 +207,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
-                            login(usernameController.text,
-                                    passwordController.text, context)
+                            login(
+                                usernameController.text,
+                                passwordController.text,
+                                context)
                                 .then((value) async {
+                                showToast(value.message.toString(),);
                               if (value.status == true) {
-                                showToast(
-                                  value.message.toString(),
-                                );
-                                SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
-                                pref.setString(
-                                    'cookie', jsonEncode(value.authToken));
-                                Get.toNamed(MyRouter.bottomNavbar);
-                                print("login Done");
-                                log(":::" +
-                                    jsonEncode(pref.getString('cookie')));
-                              } else {
-                                showToast(
-                                  value.message.toString(),
-                                );
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                pref.setString('cookie', jsonEncode(value.authToken));
+                                pref.setBool("shownIntro", true);
+                                Get.offAllNamed(MyRouter.bottomNavbar);
                               }
                             });
                           }
                         }, deviceWidth, 50),
+
                         SizedBox(
                           height: 25.h,
                         ),
@@ -246,41 +242,57 @@ class _LoginScreenState extends State<LoginScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            OutlinedButton(
-                              onPressed: ()=>loginWithGoogle(context),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0))),
-                              ),
-                              child: Image.asset(
-                                AppAssets.googleIcon,
-                                width: 20.w,
-                                height: 25.h,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20.w,
-                            ),
-                            OutlinedButton(
-                              onPressed: ()=>loginWithApple(
-                                context
-                              ),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0))),
-                              ),
-                              child: Image.asset(
-                                AppAssets.appleIcon,
-                                width: 20,
-                                height: 25,
+                            InkWell(
+                              onTap: () {
+                                loginWithGoogle(context);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: AddSize.size30,
+                                    top: AddSize.padding10,
+                                    right: AddSize.size30,
+                                    bottom: AddSize.padding10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      AddSize.size10),
+                                  border: Border.all(
+                                      color: Colors.grey),
+                                ),
+                                child: Image.asset(
+                                  AppAssets.googleIcon,
+                                  width: 30,
+                                  height: 30,
+                                ),
                               ),
                             ),
+                            if (Platform.isIOS)
+                              SizedBox(width: AddSize.size20),
+                            if (Platform.isIOS)
+                              InkWell(
+                                onTap: () {
+                                  loginWithApple(context);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: AddSize.size30,
+                                      top: AddSize.padding10,
+                                      right: AddSize.size30,
+                                      bottom: AddSize.padding10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        AddSize.size10),
+                                    border: Border.all(
+                                        color: Colors.grey),
+                                  ),
+                                  child: Image.asset(
+                                    AppAssets.appleIcon,
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                              )
                           ],
-                        )
+                        ),
                       ],
                     )),
               ),
@@ -292,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.center,
                       child: InkWell(
                         onTap: () {
-                          Get.offAndToNamed(MyRouter.signUpScreen);
+                          Get.toNamed(MyRouter.signUpScreen);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

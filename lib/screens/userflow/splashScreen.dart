@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,9 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       if (pref.getString('cookie') != null) {
         print("object" + pref.getString('cookie').toString());
-        Get.toNamed(MyRouter.bottomNavbar);
+        Get.offAllNamed(MyRouter.bottomNavbar);
       } else {
-        Get.offAllNamed(MyRouter.onBoardingScreen);
+        if(pref.getBool("shownIntro") == null){
+          Get.offAllNamed(MyRouter.onBoardingScreen);
+        } else {
+          Get.offAllNamed(MyRouter.loginScreen);
+        }
       }
     });
   }

@@ -235,10 +235,10 @@ class _AppDrawerScreenState extends State<AppDrawerScreen> {
                     color: AppTheme.textColor),
               ),
               onTap: () async {
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                preferences.clear();
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                await pref.clear();
                 Get.offAllNamed(MyRouter.loginScreen);
+                pref.setBool("shownIntro", true);
               }),
         ],
       ),

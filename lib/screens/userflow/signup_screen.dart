@@ -29,6 +29,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   var _formKey = GlobalKey<FormState>();
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -66,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 right: 0,
                 left: 0,
                 child: Container(
-                  height: AddSize.size300 * 1.2,
+                  height: AddSize.size300 * .86,
                   width: deviceWidth,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
@@ -88,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: AddSize.size300 * .9,
+                      height: AddSize.size300 * .65,
                     ),
                     Container(
                       padding: EdgeInsets.all(AddSize.padding18),
@@ -226,7 +227,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           TextFormField(
                             onTap: () {
-                              // searchList1.value = countryList1;
+                              FocusManager.instance.primaryFocus!.unfocus();
                               searchList1.clear();
                               for (var item in countryList.countrylist!) {
                                 searchList1.add(item.name.toString());
@@ -280,9 +281,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 searchList1.clear();
                                                 for (var item in countryList
                                                     .countrylist!) {
-                                                    searchList1.add(
-                                                        item.name.toString());
-
+                                                  searchList1.add(
+                                                      item.name.toString());
                                                 }
                                               }
                                               log("jsonEncode(searchList1)");
@@ -520,22 +520,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       "",
                                       context)
                                   .then((value) {
+                                showToast(value.message.toString());
+                                print(jsonEncode(value));
                                 if (value.status == true) {
-                                  print(jsonEncode(value));
-                                  Get.toNamed(MyRouter.verificationScreen,
+                                  Get.toNamed(
+                                      MyRouter.verificationScreen,
                                       arguments: [
                                         emailController.text,
-                                        "fromSignUp"
-                                      ]);
-                                  showToast(
-                                    value.message.toString(),
-                                  );
-                                } else {
-                                  showToast(
-                                    value.message.toString(),
-                                  );
+                                        "fromSignUp"]);
                                 }
-                                return null;
                               });
                             }
                           }, deviceWidth, 50),
@@ -561,11 +554,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 text: ' Login',
                                 style: const TextStyle(
                                     fontSize: 14, color: AppTheme.primaryColor
-                                    //decoration: TextDecoration.underline,
                                     ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Get.toNamed(MyRouter.loginScreen);
+                                    Get.back();
                                   }),
                           ],
                         ),

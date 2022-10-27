@@ -138,7 +138,7 @@ class OnBoardingScreen extends StatelessWidget {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          Get.toNamed(MyRouter.loginScreen);
+                                          Get.offAllNamed(MyRouter.loginScreen);
                                         },
                                         child: FittedBox(
                                           child: Text(

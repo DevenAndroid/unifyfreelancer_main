@@ -48,7 +48,7 @@ Future<ModelCommonResponse> editEmploymentInfoRepo({
       print(jsonDecode(response.body));
       return ModelCommonResponse(message: jsonDecode(response.body)["message"], status: false);
     }
-  } on SocketException catch (e) {
+  } on SocketException {
     Helpers.hideLoader(loader);
     return ModelCommonResponse(message: "No Internet Access", status: false);
   } catch (e) {

@@ -27,7 +27,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   @override
   void initState() {
     super.initState();
-    email =Get.arguments[0];
+    email = Get.arguments[0];
   }
 
   @override
@@ -81,27 +81,26 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     height: 10,
                   ),
                   BoxTextField(
-                      suffixIcon: eyeHide == false
-                          ? InkWell(
-                          onTap: () => setState(() {
-                            eyeHide = true.obs;
-                          }),
-                          child:
-                          Icon(Icons.remove_red_eye_outlined))
-                          : InkWell(
-                          onTap: () => setState(() {
-                            eyeHide = false.obs;
-                          }),
-                          child:
-                          Icon(Icons.visibility_off_outlined)),
-                      controller: passwordController,
-                      obSecure: eyeHide,
-                      hintText: "  New password".obs,
+                    suffixIcon: eyeHide == false
+                        ? InkWell(
+                            onTap: () => setState(() {
+                                  eyeHide = true.obs;
+                                }),
+                            child: Icon(Icons.remove_red_eye_outlined))
+                        : InkWell(
+                            onTap: () => setState(() {
+                                  eyeHide = false.obs;
+                                }),
+                            child: Icon(Icons.visibility_off_outlined)),
+                    controller: passwordController,
+                    obSecure: eyeHide,
+                    hintText: "  New password".obs,
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'password is required'),
                       MinLengthValidator(8,
                           errorText: 'password must be at least 8 digits long'),
-                    ]),),
+                    ]),
+                  ),
                   SizedBox(
                     height: 15,
                   ),
@@ -118,17 +117,15 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   BoxTextField(
                     suffixIcon: eyeHide2 == false
                         ? InkWell(
-                        onTap: () => setState(() {
-                          eyeHide2 = true.obs;
-                        }),
-                        child:
-                        Icon(Icons.remove_red_eye_outlined))
+                            onTap: () => setState(() {
+                                  eyeHide2 = true.obs;
+                                }),
+                            child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
-                        onTap: () => setState(() {
-                          eyeHide2 = false.obs;
-                        }),
-                        child:
-                        Icon(Icons.visibility_off_outlined)),
+                            onTap: () => setState(() {
+                                  eyeHide2 = false.obs;
+                                }),
+                            child: Icon(Icons.visibility_off_outlined)),
                     controller: confirmPasswordController,
                     obSecure: eyeHide2,
                     hintText: "  Confirm new password".obs,
@@ -148,13 +145,12 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   ),
                   CommonButton("Submit", () {
                     if (_formKey.currentState!.validate()) {
-                      resetPassword(email,passwordController.text.trim(),confirmPasswordController.text.trim(),context).then((value) async{
-                        if(value.status==true){
-                          showToast(value.message.toString());
+                      resetPassword(email, passwordController.text.trim(),
+                              confirmPasswordController.text.trim(), context)
+                          .then((value) async {
+                        showToast(value.message.toString());
+                        if (value.status == true) {
                           Get.toNamed(MyRouter.loginScreen);
-                        }
-                        else{
-                          showToast(value.message.toString());
                         }
                       });
                     }

@@ -15,11 +15,11 @@ Future<ModelCommonResponse> editPortfolioInfoRepo({
   required fieldName1,
   required File file1,
   required context,
-})
-async {
+}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   try {
+
     var request = http.MultipartRequest('POST', Uri.parse(ApiUrls.editPortfolioInfo));
 
     request.headers.addAll(await getAuthHeader());
@@ -35,7 +35,6 @@ async {
     Helpers.hideLoader(loader);
     if(response.statusCode == 200) {
       Helpers.hideLoader(loader);
-      // log(jsonDecode(response.body)["message"]);
       return ModelCommonResponse.fromJson(jsonDecode(await response.stream.bytesToString()));
     }
     else {

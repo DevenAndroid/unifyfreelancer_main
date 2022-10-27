@@ -561,7 +561,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                            editEmploymentInfoRepo(
-                             id: parentIndex == -10000 ? parentIndex : controller.model.value.data!.employment![parentIndex].id.toString(),
+                             id: parentIndex == -10000 ? parentIndex :
+                             controller.model.value.data!.employment![parentIndex].id.toString(),
                                subject: _titleController.text.trim(),
                                description:
                                _descriptionController.text.trim(),
