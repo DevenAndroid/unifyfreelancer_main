@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../repository/edit_testimonial_info_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
@@ -17,12 +18,14 @@ class AddTestimonialsScreen extends StatefulWidget {
 }
 
 class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
+
+  final controller = Get.put(ProfileScreenController());
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _fNameController = TextEditingController();
   TextEditingController _lNameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _linkedinController = TextEditingController();
+  // TextEditingController _linkedinController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _typeController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -126,7 +129,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   validator: MultiValidator(
                       [RequiredValidator(errorText: 'Email is required')]),
                 ),
-                SizedBox(
+               /* SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -146,7 +149,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   hintText: "http://".obs,
                   // validator: MultiValidator(
                   //     [RequiredValidator(errorText: 'Linkedin Url is required')]),
-                ),
+                ),*/
                 SizedBox(
                   height: 15,
                 ),
@@ -217,18 +220,21 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       editTestimonialInfoRepo(
-                              _fNameController.text.trim(),
-                              _lNameController.text.trim(),
-                              _emailController.text.trim(),
-                              _linkedinController.text.trim(),
-                              _titleController.text.trim(),
-                              _typeController.text.trim(),
-                              _descriptionController.text.trim(),
-                              context)
+                             first_name:  _fNameController.text.trim(),
+                            last_name:   _lNameController.text.trim(),
+                             email:  _emailController.text.trim(),
+                              // _linkedinController.text.trim(),
+                            title:   _titleController.text.trim(),
+                             type:  _typeController.text.trim(),
+                            description:   _descriptionController.text.trim(),
+                             context:  context)
                           .then((value) {
                         if (value.status == true) {
+                          controller.getData();
                           Get.back();
+
                         }
+
                         showToast(value.message.toString());
                       });
                     }

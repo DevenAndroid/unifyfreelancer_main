@@ -80,7 +80,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       hintText: "  Email ID".obs,
                       validator: MultiValidator([
                         RequiredValidator(
-                            errorText: 'username or email is required'),
+                            errorText: 'Email is required'),
                         EmailValidator(errorText: 'enter a valid email address')
                       ])),
                   SizedBox(

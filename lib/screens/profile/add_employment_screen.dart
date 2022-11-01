@@ -61,7 +61,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
       setState(() {
         acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
-
+        acceptTermsOrPrivacy == true ?  _toController.text = "": controller.model.value.data!.employment![parentIndex].endDate.toString();
       });
     }
   }
@@ -484,11 +484,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                       String formattedDate =
                                           DateFormat('yyyy-MM-dd')
                                               .format(pickedDate);
-                                      print(
-                                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                                      print(formattedDate); //formatted date output using intl package =>  2021-03-16
                                       setState(() {
-                                        dateInput2 =
-                                            formattedDate; //set output date to TextField value.
+                                        dateInput2 = formattedDate; //set output date to TextField value.
                                       });
                                     } else {}
                                   },

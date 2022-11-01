@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/custom_textfield.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../repository/edit_certificate_info_repository.dart';
 import '../../resources/app_theme.dart';
 
@@ -22,8 +23,9 @@ class AddCertificationsScreen extends StatefulWidget {
 }
 
 class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
+  final controller = Get.put(ProfileScreenController());
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _issueDate = TextEditingController();
+  TextEditingController _certificateController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
   var items = [
@@ -76,7 +78,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                DropdownButtonFormField<dynamic>(
+                /*DropdownButtonFormField<dynamic>(
                   isExpanded: true,
                   value: null,
                   validator: (value) {
@@ -154,6 +156,18 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 ),
                 SizedBox(
                   height: 20,
+                ),*/
+                CustomTextField(
+                    controller: _certificateController,
+                    obSecure: false.obs,
+                    keyboardType: TextInputType.text,
+                    hintText: "Add Certified Expert".obs,
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText: 'Certificate is required'),
+                    ])),
+                SizedBox(
+                  height: 20,
                 ),
                 CustomTextField(
                   isMulti: true,
@@ -195,8 +209,9 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                 backgroundColor: AppTheme.primaryColor,
                 onPressed: (){
                   if(_formKey.currentState!.validate()){
-                    editCertificateInfoRepo(item,_descriptionController.text.trim(),context).then((value) {
+                    editCertificateInfoRepo(_certificateController.text.trim(),_descriptionController.text.trim(),context).then((value) {
                       if(value.status==true){
+                        controller.getData();
                         Get.back();
                       }
                       showToast(value.message.toString());

@@ -124,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.firstName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'firstname is required'),
+                                    errorText: 'First name is required'),
                               ])),
                           SizedBox(
                             height: 12.h,
@@ -138,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.lastName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'lastname is required'),
+                                    errorText: 'Last name is required'),
                               ])),
                           SizedBox(
                             height: 12.h,
@@ -153,9 +153,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               validator: MultiValidator([
                                 RequiredValidator(
                                     errorText:
-                                        'firstname or email is required'),
+                                        'Email is required'),
                                 EmailValidator(
-                                    errorText: 'enter a valid email address')
+                                    errorText: 'Enter a valid email address')
                               ])),
                           SizedBox(
                             height: 12.h,
@@ -183,10 +183,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.password.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'password is required'),
+                                    errorText: 'Password is required'),
                                 MinLengthValidator(8,
                                     errorText:
-                                        'password must be at least 8 digits long'),
+                                        'Password must be at least 8 digits long'),
                               ]),
                             );
                           }),
@@ -213,7 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintText: "Confirm Password".obs,
                             validator: (value) {
                               if (value == "") {
-                                return "Confirm password required";
+                                return "Confirm password is required";
                               } else if (value.toString() !=
                                   passwordController.text.trim()) {
                                 return "Confirm password is not matching with password";
@@ -508,28 +508,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           CommonButton(AppStrings.buttonCreateAccount, () {
                             if (_formKey.currentState!.validate()) {
-                              signUp(
-                                      firstNameController.text,
-                                      lastNameController.text,
-                                      emailController.text,
-                                      passwordController.text,
-                                      countryController.text,
-                                      "freelancer",
-                                      "",
-                                      acceptTermsOrPrivacy == true ? 1 : 0,
-                                      "",
-                                      context)
-                                  .then((value) {
-                                showToast(value.message.toString());
-                                print(jsonEncode(value));
-                                if (value.status == true) {
-                                  Get.toNamed(
-                                      MyRouter.verificationScreen,
-                                      arguments: [
-                                        emailController.text,
-                                        "fromSignUp"]);
-                                }
-                              });
+                              if(acceptTermsOrPrivacy == true){
+                                signUp(
+                                    firstNameController.text,
+                                    lastNameController.text,
+                                    emailController.text,
+                                    passwordController.text,
+                                    countryController.text,
+                                    "freelancer",
+                                    "",
+                                    acceptTermsOrPrivacy == true ? 1 : 0,
+                                    "",
+                                    context)
+                                    .then((value) {
+                                  showToast(value.message.toString());
+                                  print(jsonEncode(value));
+                                  if (value.status == true) {
+                                    Get.toNamed(
+                                        MyRouter.verificationScreen,
+                                        arguments: [
+                                          emailController.text,
+                                          "fromSignUp"]);
+                                  }
+                                });
+                              }
+                              else{
+                                showToast("Please accept terms and conditions");
+                              }
                             }
                           }, deviceWidth, 50),
                         ],

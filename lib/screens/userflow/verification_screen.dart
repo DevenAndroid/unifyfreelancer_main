@@ -32,7 +32,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   var email;
-  var otp;
+  var otp = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     //set to true to show as box or false to show as dash
                     showFieldAsBox: true,
                     //runs when a code is typed in
-                    onCodeChanged: (String code) {},
+                    onCodeChanged: (String code) {
+                      otp = code;
+                    },
                     //runs when every textfield is filled
                     onSubmit: (String verificationCode) {
                       setState(() {
@@ -137,23 +140,28 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     print("value");
                     if (_formKey.currentState!.validate()) {
                       print(otp);
-                      if (isFromSignUp == true) {
-                        verifySignUp(email, otp, context).then((value) async {
-                          print(value);
-                          showToast(value.message.toString(),);
-                          if (value.status == true) {
-                            Get.toNamed(MyRouter.loginScreen,);
-                          }
-                        });
+                      if(otp.toString().length < 4 ){
+                        showToast("Please enter the otp");
                       }
                       else{
-                        verifySignUp(email, otp, context).then((value) async {
-                          if(value.status == true){
-                            Get.toNamed(MyRouter.newPasswordScreen,arguments: [email]);
-                          }
-                          showToast(value.message.toString(),);
-                        });
+                        if (isFromSignUp == true) {
+                          verifySignUp(email, otp, context).then((value) async {
+                            print(value);
+                            showToast(value.message.toString(),);
+                            if (value.status == true) {
+                              Get.toNamed(MyRouter.loginScreen,);
+                            }
+                          });
+                        }
+                        else{
+                          verifySignUp(email, otp, context).then((value) async {
+                            if(value.status == true){
+                              Get.toNamed(MyRouter.newPasswordScreen,arguments: [email]);
+                            }
+                            showToast(value.message.toString(),);
+                          });
 
+                        }
                       }
                     }
                   }, deviceWidth, 50),

@@ -104,8 +104,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                             padding: EdgeInsets.only(bottom: 30),
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () =>
-                                    Get.toNamed(MyRouter.jobDetailsScreen),
+                                onTap: () {},
                                 child: Container(
                                   margin: const EdgeInsets.only(
                                       top: 15, right: 10, left: 10),

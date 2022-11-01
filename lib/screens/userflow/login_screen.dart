@@ -173,6 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Icons.mail_outline,
                             ),
                             controller: usernameController,
+                            keyboardType: TextInputType.emailAddress,
                             obSecure: false.obs,
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([

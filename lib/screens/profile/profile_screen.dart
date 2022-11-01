@@ -424,13 +424,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       SizedBox(
                                         width: 5.w,
                                       ),
-                                      Text(
-                                        profileController.model.value.data!
-                                            .basicInfo!.country
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: AppTheme.textColor),
+                                      Expanded(
+                                        child: Text(
+                                          profileController.model.value.data!
+                                              .basicInfo!.country
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppTheme.textColor),
+                                        ),
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(left: 20),
@@ -1560,7 +1562,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  Row(
+                                                 /* Row(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
@@ -1600,7 +1602,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                   SizedBox(
                                                     height: 10,
-                                                  ),
+                                                  ),*/
                                                   Row(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -2129,7 +2131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .value
                                                         .data!
                                                         .employment![index]
-                                                        .startDate
+                                                        .endDate
                                                         .toString() !=
                                                     "null"
                                                 ? " - " +
