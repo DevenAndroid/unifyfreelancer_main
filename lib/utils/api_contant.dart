@@ -43,6 +43,9 @@ class ApiUrls {
   static const String recentJobsList = "${apiBaseUrl}recent-jobs-list";
   static const String bestMatchJobsList = "${apiBaseUrl}best-match-jobs-list";
   static const String sendProposal = "${apiBaseUrl}send-proposal";
+  static const String closeAccountReasonList = "${apiBaseUrl}close-account-reason-list";
+  static const String closeAccount = "${apiBaseUrl}close-account";
+  static const String timezoneList= "${apiBaseUrl}timezone_list";
 
 
 }

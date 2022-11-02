@@ -117,7 +117,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     },
                     child: RichText(
                       text: TextSpan(
-                          text: "if you Don't receive a code ",
+                          text: "if you Don't receive a code ?",
                           style: TextStyle(
                             color: AppTheme.textColor,
                             fontSize: 14,

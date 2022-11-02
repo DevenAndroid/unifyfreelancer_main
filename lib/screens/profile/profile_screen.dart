@@ -692,10 +692,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       showDialog(
                                         context: context,
                                         builder: (ctx) => AlertDialog(
-                                          insetPadding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
+                                          insetPadding: EdgeInsets.symmetric(horizontal: 20),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                           content: Form(
                                             key: _formKey,
                                             child: Column(
