@@ -45,7 +45,9 @@ class ApiUrls {
   static const String sendProposal = "${apiBaseUrl}send-proposal";
   static const String closeAccountReasonList = "${apiBaseUrl}close-account-reason-list";
   static const String closeAccount = "${apiBaseUrl}close-account";
-  static const String timezoneList= "${apiBaseUrl}timezone_list";
+  static const String timezoneList = "${apiBaseUrl}timezone_list";
+  static const String additionalAccount = "${apiBaseUrl}additional-account";
+  static const String editLocation = "${apiBaseUrl}edit-location";
 
 
 }

@@ -1399,10 +1399,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .value.data!.testimonial!.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return Expanded(
+                                            return profileController.model.value.data!.testimonial![index].status.toString() == "pending" ?
+                                            Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Message :",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                            FontWeight.w600,
+                                                            color: AppTheme
+                                                                .darkBlueText),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          profileController
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .testimonial![
+                                                          index]
+                                                              .message
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                              color: AppTheme
+                                                                  .darkBlueText),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Text(
+                                                        "Request :",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                            FontWeight.w600,
+                                                            color: AppTheme
+                                                                .darkBlueText),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          profileController
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .testimonial![
+                                                          index].requestSent
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                              color: AppTheme
+                                                                  .darkBlueText),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Text(
+                                                        "Status :",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                            FontWeight.w600,
+                                                            color: AppTheme
+                                                                .darkBlueText),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          profileController
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .testimonial![
+                                                          index]
+                                                              .status
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                              color: AppTheme
+                                                                  .darkBlueText),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Divider(
+                                                    color: AppTheme.pinkText
+                                                        .withOpacity(.29),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            )
+                                                : Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   SizedBox(
                                                     height: 20,
@@ -1414,7 +1551,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         style: TextStyle(
                                                             fontSize: 14.sp,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                            FontWeight.w600,
                                                             color: AppTheme
                                                                 .darkBlueText),
                                                       ),
@@ -1424,27 +1561,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       Expanded(
                                                         child: Text(
                                                           profileController
-                                                                  .model
-                                                                  .value
-                                                                  .data!
-                                                                  .testimonial![
-                                                                      index]
-                                                                  .firstName
-                                                                  .toString() +
+                                                              .model
+                                                              .value
+                                                              .data!
+                                                              .testimonial![
+                                                          index]
+                                                              .firstName
+                                                              .toString() +
                                                               " " +
                                                               profileController
                                                                   .model
                                                                   .value
                                                                   .data!
                                                                   .testimonial![
-                                                                      index]
+                                                              index]
                                                                   .lastName
                                                                   .toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color: AppTheme
                                                                   .darkBlueText),
                                                         ),
@@ -1452,14 +1589,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       InkWell(
                                                         onTap: () {
                                                           deleteTestimonialInfoRepo(
-                                                                  profileController
-                                                                      .model
-                                                                      .value
-                                                                      .data!
-                                                                      .testimonial![
-                                                                          index]
-                                                                      .id,
-                                                                  context)
+                                                              profileController
+                                                                  .model
+                                                                  .value
+                                                                  .data!
+                                                                  .testimonial![
+                                                              index]
+                                                                  .id,
+                                                              context)
                                                               .then((value) {
                                                             if (value.status ==
                                                                 true) {
@@ -1468,7 +1605,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   .value
                                                                   .data!
                                                                   .testimonial![
-                                                                      index]
+                                                              index]
                                                                   .id);
                                                               profileController
                                                                   .model
@@ -1476,7 +1613,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   .data!
                                                                   .testimonial!
                                                                   .removeAt(
-                                                                      index);
+                                                                  index);
                                                               profileController
                                                                   .getData();
                                                             }
@@ -1488,16 +1625,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 .value
                                                                 .data!
                                                                 .testimonial![
-                                                                    index]
+                                                            index]
                                                                 .id);
                                                           });
                                                         },
                                                         child: Container(
                                                           margin:
-                                                              EdgeInsets.only(
-                                                                  left: 15),
+                                                          EdgeInsets.only(
+                                                              left: 15),
                                                           padding:
-                                                              EdgeInsets.all(5),
+                                                          EdgeInsets.all(5),
                                                           decoration: BoxDecoration(
                                                               shape: BoxShape
                                                                   .circle,
@@ -1521,15 +1658,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                   Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         "Email :",
                                                         style: TextStyle(
                                                             fontSize: 14.sp,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                            FontWeight.w600,
                                                             color: AppTheme
                                                                 .darkBlueText),
                                                       ),
@@ -1543,14 +1680,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .value
                                                               .data!
                                                               .testimonial![
-                                                                  index]
+                                                          index]
                                                               .email
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color: AppTheme
                                                                   .darkBlueText),
                                                         ),
@@ -1560,58 +1697,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                 /* Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Linkedin Profile :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                                  index]
-                                                              .linkdinUrl
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),*/
                                                   Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         "Title :",
                                                         style: TextStyle(
                                                             fontSize: 14.sp,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                            FontWeight.w600,
                                                             color: AppTheme
                                                                 .darkBlueText),
                                                       ),
@@ -1625,14 +1721,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .value
                                                               .data!
                                                               .testimonial![
-                                                                  index]
+                                                          index]
                                                               .title
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color: AppTheme
                                                                   .darkBlueText),
                                                         ),
@@ -1644,15 +1740,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                   Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         "Type :",
                                                         style: TextStyle(
                                                             fontSize: 14.sp,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                            FontWeight.w600,
                                                             color: AppTheme
                                                                 .darkBlueText),
                                                       ),
@@ -1666,14 +1762,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .value
                                                               .data!
                                                               .testimonial![
-                                                                  index]
+                                                          index]
                                                               .type
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color: AppTheme
                                                                   .darkBlueText),
                                                         ),
@@ -1685,15 +1781,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                   Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    CrossAxisAlignment
+                                                        .start,
                                                     children: [
                                                       Text(
                                                         "Description :",
                                                         style: TextStyle(
                                                             fontSize: 14.sp,
                                                             fontWeight:
-                                                                FontWeight.w600,
+                                                            FontWeight.w600,
                                                             color: AppTheme
                                                                 .darkBlueText),
                                                       ),
@@ -1707,14 +1803,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .value
                                                               .data!
                                                               .testimonial![
-                                                                  index]
+                                                          index]
                                                               .description
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                              FontWeight
+                                                                  .w500,
                                                               color: AppTheme
                                                                   .darkBlueText),
                                                         ),
@@ -1731,6 +1827,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ],
                                               ),
                                             );
+
                                           },
                                         )),
                             ],

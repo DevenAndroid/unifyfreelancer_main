@@ -50,10 +50,7 @@ Future<ModelSignUpResponse> signUp(
     }
     else {
       Helpers.hideLoader(loader);
-      return ModelSignUpResponse(
-          data: null,
-          message: jsonDecode(response.body)["message"],
-          status: false);
+      return ModelSignUpResponse(data: null, message: jsonDecode(response.body)["message"], status: false);
     }
   } on SocketException {
     Helpers.hideLoader(loader);

@@ -25,6 +25,7 @@ class ContactInfoController extends GetxController{
       ){
     closeAccountReasonListRepo().then((value) {
       reasons = value;
+      print(value.status);
       if(value.status == true){
         statusOfReason.value = RxStatus.success();
       }

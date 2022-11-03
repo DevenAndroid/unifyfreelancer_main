@@ -24,6 +24,8 @@ class ModelFreelancerProfile {
 
 class Data {
   BasicInfo? basicInfo;
+  bool? isClient;
+  bool? isAgency;
   List<Skills>? skills;
   List<Portfolio>? portfolio;
   List<Testimonial>? testimonial;
@@ -36,6 +38,8 @@ class Data {
 
   Data(
       {this.basicInfo,
+        this.isClient,
+        this.isAgency,
         this.skills,
         this.portfolio,
         this.testimonial,
@@ -50,6 +54,8 @@ class Data {
     basicInfo = json['basic_info'] != null
         ? new BasicInfo.fromJson(json['basic_info'])
         : null;
+    isClient = json['is_client'];
+    isAgency = json['is_agency'];
     if (json['skills'] != null) {
       skills = <Skills>[];
       json['skills'].forEach((v) {
@@ -101,6 +107,8 @@ class Data {
     if (this.basicInfo != null) {
       data['basic_info'] = this.basicInfo!.toJson();
     }
+    data['is_client'] = this.isClient;
+    data['is_agency'] = this.isAgency;
     if (this.skills != null) {
       data['skills'] = this.skills!.map((v) => v.toJson()).toList();
     }
@@ -152,6 +160,8 @@ class BasicInfo {
   String? country;
   String? state;
   String? city;
+  String? zipCode;
+  String? isVerified;
 
   BasicInfo(
       {this.id,
@@ -174,7 +184,9 @@ class BasicInfo {
         this.phone,
         this.country,
         this.state,
-        this.city});
+        this.city,
+        this.zipCode,
+        this.isVerified});
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -198,6 +210,8 @@ class BasicInfo {
     country = json['country'];
     state = json['state'];
     city = json['city'];
+    zipCode = json['zip_code'];
+    isVerified = json['is_verified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -223,6 +237,8 @@ class BasicInfo {
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
+    data['zip_code'] = this.zipCode;
+    data['is_verified'] = this.isVerified;
     return data;
   }
 }
@@ -276,30 +292,36 @@ class Portfolio {
 
 class Testimonial {
   int? id;
+  String? message;
+  String? requestSent;
+  String? status;
   String? firstName;
   String? lastName;
   String? email;
-  String? linkdinUrl;
   String? title;
   String? type;
   String? description;
 
   Testimonial(
       {this.id,
+        this.message,
+        this.requestSent,
+        this.status,
         this.firstName,
         this.lastName,
         this.email,
-        this.linkdinUrl,
         this.title,
         this.type,
         this.description});
 
   Testimonial.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    message = json['message'];
+    requestSent = json['request_sent'];
+    status = json['status'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     email = json['email'];
-    linkdinUrl = json['linkdin_url'];
     title = json['title'];
     type = json['type'];
     description = json['description'];
@@ -308,10 +330,12 @@ class Testimonial {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['message'] = this.message;
+    data['request_sent'] = this.requestSent;
+    data['status'] = this.status;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
     data['email'] = this.email;
-    data['linkdin_url'] = this.linkdinUrl;
     data['title'] = this.title;
     data['type'] = this.type;
     data['description'] = this.description;
@@ -347,7 +371,7 @@ class Employment {
   String? city;
   String? country;
   String? startDate;
-  String? endDate;
+  Null? endDate;
   int? currentlyWorking;
   String? subject;
   String? description;

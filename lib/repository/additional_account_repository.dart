@@ -3,21 +3,20 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/Model_common_response.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> deleteEmploymentInfoRepo(id, context) async {
+Future<ModelCommonResponse> additionalAccountRepo(user_type, context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
-  var map = <String, dynamic>{};
-  map['id'] = id;
 
-  print(map);
+  Map map = <String, dynamic>{};
+  map["user_type"] = user_type;
+
   try {
     http.Response response = await http.post(
-        Uri.parse(ApiUrls.deleteEmploymentInfo),
+        Uri.parse(ApiUrls.additionalAccount),
         headers: await getAuthHeader(),
         body: jsonEncode(map));
 
@@ -25,16 +24,17 @@ Future<ModelCommonResponse> deleteEmploymentInfoRepo(id, context) async {
       Helpers.hideLoader(loader);
       print(jsonDecode(response.body));
       return ModelCommonResponse.fromJson(jsonDecode(response.body));
-    } else {
+    }
+    else {
       Helpers.hideLoader(loader);
       print(jsonDecode(response.body));
-      return ModelCommonResponse(
-          message: jsonDecode(response.body)["message"], status: false);
+      return ModelCommonResponse(message: jsonDecode(response.body)["message"], status: false);
     }
-  } on SocketException  {
+  } on SocketException {
     Helpers.hideLoader(loader);
     return ModelCommonResponse(message: "No Internet Access", status: false);
-  } catch (e) {
+  }
+  catch (e) {
     Helpers.hideLoader(loader);
     return ModelCommonResponse(message: e.toString(), status: false);
   }
