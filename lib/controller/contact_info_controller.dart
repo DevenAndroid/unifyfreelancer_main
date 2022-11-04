@@ -9,9 +9,10 @@ import '../utils/api_contant.dart';
 class ContactInfoController extends GetxController{
 
   Rx<RxStatus> statusOfReason = RxStatus.empty().obs;
+  Rx<RxStatus> statusOfTimezone = RxStatus.empty().obs;
 
-  ModelCloseAccountReasonList reasons = ModelCloseAccountReasonList();
-  ModelTimeZone timezoneList = ModelTimeZone();
+  Rx<ModelCloseAccountReasonList> reasons = ModelCloseAccountReasonList().obs;
+  Rx<ModelTimeZone> timezoneList = ModelTimeZone().obs;
 
   @override
   void onInit() {
@@ -24,7 +25,7 @@ class ContactInfoController extends GetxController{
   getData(
       ){
     closeAccountReasonListRepo().then((value) {
-      reasons = value;
+      reasons.value = value;
       print(value.status);
       if(value.status == true){
         statusOfReason.value = RxStatus.success();
@@ -38,8 +39,12 @@ class ContactInfoController extends GetxController{
 
   getTimezoneList(){
     timezoneListRepo().then((value) {
-      timezoneList = value;
+      timezoneList.value = value;
       if(value.status==true){
+        statusOfTimezone.value = RxStatus.success();
+      }
+      else{
+        statusOfTimezone.value = RxStatus.error();
       }
 
     });

@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -352,7 +353,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Positioned(
                                   right: 0,
                                   top: 0,
-                                  child: Image.asset("assets/icon/crown.png"))
+                                  child: SvgPicture.asset("assets/icon/crown2.svg",height: 16,width: 16,))
                             ]),
                             SizedBox(
                               width: 16.w,
@@ -1249,7 +1250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                height: 20,
+                                                height: 10,
                                               ),
                                               Row(
                                                 crossAxisAlignment:
@@ -1287,7 +1288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 ],
                                               ),
                                               SizedBox(
-                                                height: 20,
+                                                height: 10,
                                               ),
                                               Divider(
                                                 color: AppTheme.pinkText
@@ -2626,7 +2627,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               }),
                           SizedBox(
-                            height: 20.h,
+                            height: 10.h,
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2725,8 +2726,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   arguments: index);
                                             },
                                             child: Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 15),
                                               padding: EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,

@@ -371,7 +371,7 @@ class Employment {
   String? city;
   String? country;
   String? startDate;
-  Null? endDate;
+  dynamic endDate;
   int? currentlyWorking;
   String? subject;
   String? description;

@@ -79,7 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               color: Color(0xff596681),
               fontSize: 15,
             ),
-            contentPadding: const EdgeInsets.only(left: 10),
+            contentPadding: const EdgeInsets.only(left: 10,top: 10),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                   color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),

@@ -28,8 +28,6 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   var dateInput = "From, Date :";
   var dateInput2 = "To, Date :";
 
-  ModelCountryList countryList = ModelCountryList();
-  RxList searchList1 = <String>[].obs;
   TextEditingController _companyController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController countryController = TextEditingController();
@@ -42,14 +40,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   final controller  = Get.put(ProfileScreenController());
   int parentIndex = -10000;
 
-
+  ModelCountryList countryList = ModelCountryList();
+  RxList searchList1 = <String>[].obs;
 
   @override
   void initState() {
     super.initState();
     countryListRepo().then((value) => setState(() {
-          countryList = value;
-        }));
+      countryList = value;
+    }));
+
     if(Get.arguments != null ){
       parentIndex = Get.arguments;
       _companyController.text = controller.model.value.data!.employment![parentIndex].company.toString();
@@ -155,9 +155,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               width: 5,
                             ),
                             Expanded(
-                              child: TextFormField(
+                              child:     TextFormField(
                                 onTap: () {
-                                  // searchList1.value = countryList1;
+                                  FocusManager.instance.primaryFocus!.unfocus();
                                   searchList1.clear();
                                   for (var item in countryList.countrylist!) {
                                     searchList1.add(item.name.toString());
@@ -171,13 +171,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .7,
+                                        height: MediaQuery.of(context).size.height * .7,
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Align(
                                               alignment: Alignment.topRight,
@@ -204,10 +202,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                           .toString()
                                                           .toLowerCase()
                                                           .contains(value
-                                                              .toLowerCase())) {
-                                                        searchList1.add(item
-                                                            .name
-                                                            .toString());
+                                                          .toLowerCase())) {
+                                                        searchList1.add(
+                                                            item.name.toString());
                                                       }
                                                     }
                                                   } else {
@@ -222,8 +219,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                 },
                                                 decoration: InputDecoration(
                                                   filled: true,
-                                                  fillColor: AppTheme
-                                                      .primaryColor
+                                                  fillColor: AppTheme.primaryColor
                                                       .withOpacity(.05),
                                                   hintText: "Select country",
                                                   prefixIcon: Icon(Icons.flag),
@@ -231,31 +227,24 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                       color: Color(0xff596681),
                                                       fontSize: 15),
                                                   contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 14,
-                                                          horizontal: 20),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14,
+                                                      horizontal: 20),
+                                                  focusedBorder: OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: AppTheme
-                                                            .primaryColor
+                                                        color: AppTheme.primaryColor
                                                             .withOpacity(.15),
                                                         width: 1.0),
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                                    BorderRadius.circular(8),
                                                   ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
+                                                  enabledBorder: OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: AppTheme
-                                                            .primaryColor
+                                                        color: AppTheme.primaryColor
                                                             .withOpacity(.15),
                                                         width: 1.0),
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                                                    BorderRadius.circular(8),
                                                   ),
                                                   border: OutlineInputBorder(
                                                       borderSide: BorderSide(
@@ -264,8 +253,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                               .withOpacity(.15),
                                                           width: 1.0),
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0)),
+                                                      BorderRadius.circular(
+                                                          8.0)),
                                                 ),
                                               ),
                                             ),
@@ -273,45 +262,37 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               return Expanded(
                                                 child: ListView.builder(
                                                     physics:
-                                                        BouncingScrollPhysics(),
+                                                    BouncingScrollPhysics(),
                                                     shrinkWrap: true,
-                                                    itemCount:
-                                                        searchList1.length,
-                                                    itemBuilder:
-                                                        (context, index) {
+                                                    itemCount: searchList1.length,
+                                                    itemBuilder: (context, index) {
                                                       return Obx(() {
                                                         return InkWell(
                                                           onTap: () {
                                                             setState(() {
                                                               countryController
-                                                                      .text =
-                                                                  searchList1[
-                                                                          index]
+                                                                  .text =
+                                                                  searchList1[index]
                                                                       .toString();
                                                             });
-                                                            print(
-                                                                countryController
-                                                                    .text);
-                                                            Navigator.pop(
-                                                                context);
+                                                            print(countryController
+                                                                .text);
+                                                            Navigator.pop(context);
                                                           },
                                                           child: Padding(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          30,
-                                                                      vertical:
-                                                                          10),
+                                                                  horizontal:
+                                                                  30,
+                                                                  vertical: 10),
                                                               child: Text(
-                                                                searchList1[
-                                                                        index]
+                                                                searchList1[index]
                                                                     .toString(),
                                                                 style: TextStyle(
-                                                                    fontSize:
-                                                                        14,
+                                                                    fontSize: 14,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
+                                                                    FontWeight
+                                                                        .w600),
                                                               )),
                                                         );
                                                       });
@@ -328,36 +309,29 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 controller: countryController,
                                 decoration: InputDecoration(
                                   filled: true,
+
                                   fillColor: AppTheme.whiteColor,
                                   hintText: "Country",
-                                  labelStyle:
-                                      const TextStyle(color: Colors.black),
-                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  labelStyle: const TextStyle(color: Colors.black),
+                                  suffixIcon:  Icon(Icons.keyboard_arrow_down),
                                   hintStyle: const TextStyle(
                                     color: Color(0xff596681),
                                     fontSize: 15,
                                   ),
-                                  contentPadding:
-                                      const EdgeInsets.only(left: 10),
+                                  contentPadding: const EdgeInsets.only(left: 10),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: AppTheme.primaryColor
-                                            .withOpacity(.15),
-                                        width: 1.0),
+                                        color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: AppTheme.primaryColor
-                                            .withOpacity(.15),
-                                        width: 1.0),
+                                        color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: AppTheme.primaryColor
-                                              .withOpacity(.15),
-                                          width: 1.0),
+                                          color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
                                       borderRadius: BorderRadius.circular(8.0)),
                                 ),
                                 validator: MultiValidator([

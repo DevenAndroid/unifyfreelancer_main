@@ -16,9 +16,11 @@ import '../../models/model_countrylist.dart';
 import '../../popups/radio_buttons_contact_info.dart';
 import '../../repository/additional_account_repository.dart';
 import '../../repository/countrylist_repository.dart';
+import '../../repository/edit_contact_info_repository.dart';
 import '../../repository/edit_location_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../routers/my_router.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_outline_button.dart';
@@ -50,19 +52,21 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
         }));
     controller.getData();
     controller.getTimezoneList();
+    assignData();
+  }
 
-    timezoneValue.value =
-        fixStrings(profileController.model.value.data!.basicInfo!.timezone);
-    phoneController.text =
-        fixStrings(profileController.model.value.data!.basicInfo!.phone);
-    addressController.text =
-        fixStrings(profileController.model.value.data!.basicInfo!.address);
-    zipController.text =
-        fixStrings(profileController.model.value.data!.basicInfo!.zipCode);
-    cityController.text =
-        fixStrings(profileController.model.value.data!.basicInfo!.city);
-    countryController.text =
-        fixStrings(profileController.model.value.data!.basicInfo!.country);
+  assignData(){
+    if(profileController.status.value.isSuccess ){
+
+      fNameController.text = fixStrings(profileController.model.value.data!.basicInfo!.firstName);
+      lNameController.text = fixStrings(profileController.model.value.data!.basicInfo!.lastName);
+      emailController.text = fixStrings(profileController.model.value.data!.basicInfo!.email);
+      timezoneValue.value = fixStrings(profileController.model.value.data!.basicInfo!.timezone);
+      phoneController.text = fixStrings(profileController.model.value.data!.basicInfo!.phone);
+      addressController.text = fixStrings(profileController.model.value.data!.basicInfo!.address);
+      zipController.text = fixStrings(profileController.model.value.data!.basicInfo!.zipCode);
+      cityController.text = fixStrings(profileController.model.value.data!.basicInfo!.city);
+      countryController.text = fixStrings(profileController.model.value.data!.basicInfo!.country);}
   }
 
   String fixStrings(text) {
@@ -99,7 +103,8 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
           ),
         ),
         body: Obx(() {
-          return SingleChildScrollView(
+          return profileController.status.value.isSuccess ?
+            SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(10),
@@ -156,145 +161,144 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                         ],
                       ),
                       child: editProfile == true
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "First name",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff393939)),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                BoxTextField(
-                                  obSecure: false.obs,
-                                  controller: fNameController,
-                                  hintText: "First name".obs,
-                                  keyboardType: TextInputType.text,
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Divider(
-                                  color: AppTheme.primaryColor.withOpacity(.49),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  "Last name",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff393939)),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                BoxTextField(
-                                  obSecure: false.obs,
-                                  controller: lNameController,
-                                  hintText: "Last name".obs,
-                                  keyboardType: TextInputType.text,
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Divider(
-                                  color: AppTheme.primaryColor.withOpacity(.49),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff393939)),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                BoxTextField(
-                                  obSecure: false.obs,
-                                  controller: emailController,
-                                  hintText: "Email".obs,
-                                  keyboardType: TextInputType.emailAddress,
-                                ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: CustomOutlineButton(
-                                          title: 'Update',
-                                          backgroundColor:
-                                              AppTheme.primaryColor,
-                                          onPressed: () {},
-                                          expandedValue: false,
-                                          textColor: AppTheme.whiteColor,
-                                        )),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                        flex: 1,
-                                        child: CustomOutlineButton(
-                                          title: 'cancel',
-                                          backgroundColor: AppTheme.whiteColor,
-                                          onPressed: () {
-                                            setState(() {
-                                              editProfile = false;
-                                            });
-                                          },
-                                          expandedValue: false,
-                                          textColor: AppTheme.primaryColor,
-                                        )),
-                                  ],
-                                )
-                              ],
-                            )
+                          ? Form(
+                        key: _formKey1,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "First name",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff393939)),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  BoxTextField(
+                                    obSecure: false.obs,
+                                    controller: fNameController,
+                                    hintText: "First name".obs,
+                                    keyboardType: TextInputType.text,
+                                    validator: MultiValidator([
+                                      RequiredValidator(
+                                          errorText: 'First name is required'),
+                                    ]),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Divider(
+                                    color: AppTheme.primaryColor.withOpacity(.49),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    "Last name",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff393939)),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  BoxTextField(
+                                    obSecure: false.obs,
+                                    controller: lNameController,
+                                    hintText: "Last name".obs,
+                                    keyboardType: TextInputType.text,
+                                    validator: MultiValidator([
+                                      RequiredValidator(
+                                          errorText: 'Last name is required'),
+                                    ]),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Divider(
+                                    color: AppTheme.primaryColor.withOpacity(.49),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    "Email",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff393939)),
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  BoxTextField(
+                                    readOnly: true,
+                                    obSecure: false.obs,
+                                    controller: emailController,
+                                    hintText: "Email".obs,
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: MultiValidator([
+                                      RequiredValidator(
+                                          errorText: 'Email is required'),
+                                    ]),
+                                  ),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
+                                  Row(
+                                    children: [
+
+
+                                      Expanded(
+                                          flex: 1,
+                                          child: CustomOutlineButton(
+                                            title: 'cancel',
+                                            backgroundColor: AppTheme.whiteColor,
+                                            onPressed: () {
+                                              setState(() {
+                                                editProfile = false;
+                                              });
+                                            },
+                                            expandedValue: false,
+                                            textColor: AppTheme.primaryColor,
+                                          )),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                          flex: 1,
+                                          child: CustomOutlineButton(
+                                            title: 'Update',
+                                            backgroundColor:
+                                            AppTheme.primaryColor,
+                                            onPressed: () {
+                                              if(_formKey1.currentState!.validate()){
+                                                editContactInfoRepo(first_name: fNameController.text.trim(),
+                                                last_name:lNameController.text.trim(),
+                                                email: emailController.text.trim(),
+                                                context: context).then((value) {
+                                                  if(value.status == true){
+                                                    editProfile = false;
+                                                    profileController.getData();
+                                                  }
+                                                  showToast(value.message.toString());
+                                                });
+                                              }
+                                            },
+                                            expandedValue: false,
+                                            textColor: AppTheme.whiteColor,
+                                          )),
+                                    ],
+                                  )
+                                ],
+                              ),
+                          )
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                /*    ListTile(
-                        leading: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      "https://images.unsplash.com/photo-1520635360276-79f3dbd809f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"))),
-                        ),
-                        title: Text(
-                          "John Doe",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.greyTextColor2),
-                        ),
-                        subtitle: Text(
-                          "johndoe123@gmail.com",
-                          style: TextStyle(
-                              fontSize: 14.sp, color: Color(0xff6B6B6B)),
-                        ),
-                        trailing: Text(
-                          "f0ca1922",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff6B6B6B)),
-                        ),
-                      ),*/
                                 Row(
                                   children: [
                                     Container(
@@ -323,10 +327,8 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                         .basicInfo!
                                                         .profileImage ??
                                                     "",
-                                                errorWidget: (_, __, ___) =>
-                                                    SizedBox(),
-                                                placeholder: (_, __) =>
-                                                    SizedBox(),
+                                                errorWidget: (_, __, ___) => SizedBox(),
+                                                placeholder: (_, __) => SizedBox(),
                                                 fit: BoxFit.cover,
                                               )
                                             : SizedBox(),
@@ -363,12 +365,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                     color: AppTheme
                                                         .greyTextColor2),
                                               ),
-                                              Text(
-                                                "f0ca1922",
-                                                style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: Color(0xff6B6B6B)),
-                                              ),
+                                              // Text(
+                                              //   "f0ca1922",
+                                              //   style: TextStyle(
+                                              //       fontSize: 14.sp,
+                                              //       color: Color(0xff6B6B6B)),
+                                              // ),
                                             ],
                                           ),
                                           SizedBox(
@@ -398,38 +400,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                     onPressed: () {
                                       showDialog(
                                           context: context,
-                                          builder: (ctx) => controller
-                                                  .statusOfReason
-                                                  .value
-                                                  .isSuccess
-                                              ? RadioButtonsContactInfo()
-                                              : controller.statusOfReason.value
-                                                      .isError
-                                                  ? SizedBox(
-                                                      width: double.maxFinite,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                controller
-                                                                    .getData();
-                                                              },
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .change_circle_outlined,
-                                                                size: AddSize
-                                                                    .size30,
-                                                              ))
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    ));
+                                          builder: (ctx) => RadioButtonsContactInfo());
                                     })
                               ],
                             )),
@@ -537,7 +508,9 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                           onPressed: () {
                             additionalAccountRepo("agency", context)
                                 .then((value) {
-                              if (value.status == true) {}
+                              if (value.status == true) {
+
+                              }
                               showToast(value.message.toString());
                             });
                           },
@@ -600,7 +573,8 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                     child: editContact == true
                         ? Form(
                             key: _formKey1,
-                            child: Column(
+                            child:  controller.statusOfTimezone.value.isSuccess ?
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -667,13 +641,13 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                     icon: const Icon(Icons.keyboard_arrow_down,
                                         color: AppTheme.primaryColor),
                                     items: List.generate(
-                                        controller.timezoneList.data!.length,
+                                        controller.timezoneList.value.data!.length,
                                         (index) => DropdownMenuItem(
-                                              value: controller.timezoneList
+                                              value: controller.timezoneList.value
                                                   .data![index].timezone
                                                   .toString(),
                                               child: Text(
-                                                controller.timezoneList
+                                                controller.timezoneList.value
                                                     .data![index].timezone
                                                     .toString(),
                                                 style: TextStyle(
@@ -689,7 +663,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               // },
                                             )),
                                     onChanged: (newValue) {
-                                      timezoneValue = newValue;
+                                      timezoneValue.value = newValue;
                                     },
                                   );
                                 }),
@@ -1099,7 +1073,8 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                 print(jsonEncode(value));
                                                 if (value.status == true) {
                                                   setState(() {
-                                                    editContact == false;
+                                                    editContact = false;
+                                                    profileController.getData();
                                                   });
                                                 }
                                                 showToast(
@@ -1113,7 +1088,30 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                   ],
                                 )
                               ],
-                            ),
+                            )
+                      : controller.statusOfTimezone.value.isError  ? SizedBox(
+                      width: double.maxFinite,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            controller.timezoneList.value.message.toString(),
+                            // fontSize: AddSize.font16,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                controller.getTimezoneList();
+                              },
+                              icon: Icon(
+                                Icons.change_circle_outlined,
+                                size: AddSize.size30,
+                              ))
+                        ],
+                      ),
+                    )
+                        : Center(
+                      child: CircularProgressIndicator(),
+                    ),
                           )
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1208,6 +1206,30 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                 ],
               ),
             ),
+          ) :
+          profileController.status.value.isError  ? SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  profileController.model.value.message.toString(),
+                  // fontSize: AddSize.font16,
+                ),
+                IconButton(
+                    onPressed: () {
+                      profileController.getData();
+                      assignData();
+                    },
+                    icon: Icon(
+                      Icons.change_circle_outlined,
+                      size: AddSize.size30,
+                    ))
+              ],
+            ),
+          )
+              : Center(
+            child: CircularProgressIndicator(),
           );
         }));
   }

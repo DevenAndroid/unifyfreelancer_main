@@ -68,7 +68,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                           "Hours per week",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16,
+                              fontSize: 18,
                               color: AppTheme.textColor),
                         ),
                       ),
@@ -76,12 +76,22 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                         color: AppTheme.pinkText.withOpacity(.29),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Knowing how much can you work helps freelancer find the right jobs for you",
+                              "Knowing how much can you work helps freelancer find the right jobs for you.",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                  color: AppTheme.textColor),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              "I can currently work",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -116,82 +126,6 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                     },
                                   );
                                 }),
-                            /* RadioListTile(
-                              title: Text(
-                                "More than 30 hrs/week",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.settingsTextColor),
-                              ),
-                              contentPadding: const EdgeInsets.all(0),
-                              dense: true,
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              value: "More than 30 hrs/week",
-                              groupValue: time,
-                              onChanged: (value) {
-                                setState(() {
-                                  time = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text(
-                                "Less than 30 hrs/week",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.settingsTextColor),
-                              ),
-                              contentPadding: const EdgeInsets.all(0),
-                              dense: true,
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              value: "Less than 30 hrs/week",
-                              groupValue: time,
-                              onChanged: (value) {
-                                setState(() {
-                                  time = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text(
-                                "As needed - open to offer",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.settingsTextColor),
-                              ),
-                              contentPadding: const EdgeInsets.all(0),
-                              dense: true,
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              value: "As needed - open to offer",
-                              groupValue: time,
-                              onChanged: (value) {
-                                setState(() {
-                                  time = value.toString();
-                                });
-                              },
-                            ),
-                            RadioListTile(
-                              title: Text(
-                                "None",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.settingsTextColor),
-                              ),
-                              contentPadding: const EdgeInsets.all(0),
-                              dense: true,
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              value: "None",
-                              groupValue: time,
-                              onChanged: (value) {
-                                setState(() {
-                                  time = value.toString();
-                                });
-                              },
-                            ),*/
                           ],
                         ),
                       )

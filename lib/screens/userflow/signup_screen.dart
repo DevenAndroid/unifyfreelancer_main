@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-    TextEditingController countryController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
   bool acceptTermsOrPrivacy = false;

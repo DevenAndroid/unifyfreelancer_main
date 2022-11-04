@@ -78,11 +78,11 @@ class _RadioButtonsContactInfoState extends State<RadioButtonsContactInfo> {
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: controller.reasons.data!.length,
+                          itemCount: controller.reasons.value.data!.length,
                           itemBuilder: (BuildContext context, int index) {
                             return RadioListTile(
                                 title: Text(
-                                  controller.reasons.data![index].title
+                                  controller.reasons.value.data![index].title
                                       .toString(),
                                   style: TextStyle(
                                       fontSize: 14,
@@ -93,7 +93,7 @@ class _RadioButtonsContactInfoState extends State<RadioButtonsContactInfo> {
                                 dense: true,
                                 visualDensity: const VisualDensity(
                                     horizontal: -4, vertical: -4),
-                                value: controller.reasons.data![index].id
+                                value: controller.reasons.value.data![index].id
                                     .toString(),
                                 groupValue: reason,
                                 onChanged: (value) {
@@ -150,22 +150,28 @@ class _RadioButtonsContactInfoState extends State<RadioButtonsContactInfo> {
                   ),
               )
               : controller.statusOfReason.value.isError
-                  ? SizedBox(
-                      width: double.maxFinite,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                controller.getData();
-                              },
-                              icon: Icon(
-                                Icons.change_circle_outlined,
-                                size: AddSize.size30,
-                              ))
-                        ],
+                  ? SingleChildScrollView(
+                    child: SizedBox(
+                        width: double.maxFinite,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              controller.reasons.value.message.toString(),
+                              // fontSize: AddSize.font16,
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  controller.getData();
+                                },
+                                icon: Icon(
+                                  Icons.change_circle_outlined,
+                                  size: AddSize.size30,
+                                ))
+                          ],
+                        ),
                       ),
-                    )
+                  )
                   : Center(
                       child: CircularProgressIndicator(),
                     );

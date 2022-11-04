@@ -17,6 +17,7 @@ import '../Screens/settings_screen.dart';
 import '../Screens/unify_qualifications.dart';
 import '../Screens/userflow/onboarding_screen.dart';
 import '../bottom_navbar.dart';
+import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/profile/add_certifications.dart';
 import '../screens/profile/add_education_screen.dart';
@@ -87,6 +88,7 @@ class MyRouter {
   static var securityQuestionScreen = "/securityQuestionScreen";
   static var changePasswordScreen = "/changePasswordScreen";
   static var changeHourlyRateScreen = "/changeHourlyRateScreen";
+  static var agencyAccountScreen = "/agencyAccountScreen";
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
@@ -132,5 +134,6 @@ class MyRouter {
     GetPage(name: MyRouter.securityQuestionScreen, page: () => const SecurityQuestionScreen()),
     GetPage(name: MyRouter.changePasswordScreen, page: () => const ChangePasswordScreen()),
     GetPage(name: MyRouter.changeHourlyRateScreen, page: () => const ChangeHourlyRateScreen()),
+    GetPage(name: MyRouter.agencyAccountScreen, page: () => const AgencyAccountScreen()),
   ];
 }

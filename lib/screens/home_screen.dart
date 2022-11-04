@@ -26,12 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     StackButtons(titleText: 'Backend Developer', positionPoint: 150),
   ];*/
 
-  List<String> stackButtonsList = [
-    'Support Agent',
-    'Designer',
-    'IOS Developer',
-    'Backend Developer'
-  ];
+
 
   @override
   void initState() {
@@ -165,8 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           shrinkWrap: true,
                                           physics:
                                               const BouncingScrollPhysics(),
-                                          itemCount: controller
-                                              .modelJobList.value.data!.length,
+                                          itemCount: controller.modelJobList.value.data!.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return Container(
@@ -175,32 +169,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     right: 10,
                                                     left: 10),
                                                 width: deviceWidth,
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                decoration: BoxDecoration(
-                                                  color: AppTheme.whiteColor,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
+                                                padding: const EdgeInsets.all(10),
+                                                decoration: BoxDecoration(color: AppTheme.whiteColor,
+                                                  borderRadius: const BorderRadius.all(
                                                     Radius.circular(20),
                                                   ),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.2),
+                                                      color: Colors.grey.withOpacity(0.2),
                                                       spreadRadius: 2,
                                                       blurRadius: 4,
-                                                      offset: const Offset(0,
-                                                          3), // changes position of shadow
+                                                      offset: const Offset(0, 3), // changes position of shadow
                                                     ),
                                                   ],
                                                 ),
                                                 child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     SizedBox(
                                                       height: deviceWidth * .01,
@@ -279,8 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   controller
                                                                       .modelJobList
                                                                       .value
-                                                                      .data![
-                                                                          index]
+                                                                      .data![index]
                                                                       .price
                                                                       .toString(),
                                                               style: TextStyle(
@@ -348,12 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               BouncingScrollPhysics(),
                                                           scrollDirection:
                                                               Axis.horizontal,
-                                                          itemCount: controller
-                                                              .modelJobList
-                                                              .value
-                                                              .data![index]
-                                                              .skills!
-                                                              .length,
+                                                          itemCount: controller.modelJobList.value.data![index].skills!.length,
                                                           itemBuilder: (context,
                                                               index2) {
                                                             return Container(
@@ -466,6 +446,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   IconButton(
                                                       onPressed: () {
                                                         controller.getData();
+                                                        controller.getDataRecentJob();
+                                                        controller.getDataBestJob();
                                                       },
                                                       icon: Icon(
                                                         Icons
@@ -480,7 +462,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   CircularProgressIndicator(),
                                             ),
                                 ),
-
                                 SizedBox(
                                   child: controller.status3.value.isSuccess
                                       ? ListView.builder(
@@ -665,15 +646,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       width: deviceWidth,
                                                       height: 45.h,
                                                       child: ListView.builder(
-                                                          physics:
-                                                              BouncingScrollPhysics(),
-                                                          scrollDirection:
-                                                              Axis.horizontal,
-                                                          itemCount:
-                                                              stackButtonsList
-                                                                  .length,
-                                                          itemBuilder: (context,
-                                                              index2) {
+                                                          physics: BouncingScrollPhysics(),
+                                                          scrollDirection: Axis.horizontal,
+                                                          itemCount: controller.modelBestJobList.value.data![index].skills!.length,
+                                                          itemBuilder: (context, index2) {
                                                             return Container(
                                                                 margin: EdgeInsets
                                                                     .only(
@@ -711,7 +687,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         .data![
                                                                             index]
                                                                         .skills![
-                                                                            index2]
+                                                                            index2].name
                                                                         .toString(),
                                                                     style: TextStyle(
                                                                         color: AppTheme
@@ -783,6 +759,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   IconButton(
                                                       onPressed: () {
                                                         controller.getData();
+                                                        controller.getDataRecentJob();
+                                                        controller.getDataBestJob();
                                                       },
                                                       icon: Icon(
                                                         Icons
@@ -1108,6 +1086,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         IconButton(
                                             onPressed: () {
                                               controller.getData();
+                                              controller.getDataRecentJob();
+                                              controller.getDataBestJob();
                                             },
                                             icon: Icon(
                                               Icons

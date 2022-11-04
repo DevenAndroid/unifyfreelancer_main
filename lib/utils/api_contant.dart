@@ -48,6 +48,7 @@ class ApiUrls {
   static const String timezoneList = "${apiBaseUrl}timezone_list";
   static const String additionalAccount = "${apiBaseUrl}additional-account";
   static const String editLocation = "${apiBaseUrl}edit-location";
+  static const String editContactInfo = "${apiBaseUrl}edit-contact-info";
 
 
 }
