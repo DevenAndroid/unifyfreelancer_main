@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -840,10 +840,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 15,
                               ),
                               Text(
-                                profileController
-                                        .model.value.data!.basicInfo!.occuption
-                                        .toString()
-                                        .isEmpty
+                                profileController.model.value.data!.basicInfo!.occuption.toString().isEmpty
                                     ? "Enter your occupation"
                                     : profileController
                                         .model.value.data!.basicInfo!.occuption
@@ -857,10 +854,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 5.h,
                               ),
                               Text(
-                                profileController.model.value.data!.basicInfo!
-                                        .description
-                                        .toString()
-                                        .isEmpty
+                                profileController.model.value.data!.basicInfo!.description.toString().isEmpty
                                     ? "Description"
                                     : profileController.model.value.data!
                                         .basicInfo!.description

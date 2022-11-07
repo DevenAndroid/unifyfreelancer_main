@@ -154,6 +154,7 @@ class BasicInfo {
   int? totalJobs;
   int? totalHours;
   int? pendingProject;
+  String? amount;
   String? timezone;
   String? address;
   String? phone;
@@ -179,6 +180,7 @@ class BasicInfo {
         this.totalJobs,
         this.totalHours,
         this.pendingProject,
+        this.amount,
         this.timezone,
         this.address,
         this.phone,
@@ -204,6 +206,7 @@ class BasicInfo {
     totalJobs = json['total_jobs'];
     totalHours = json['total_hours'];
     pendingProject = json['pending_project'];
+    amount = json['amount'];
     timezone = json['timezone'];
     address = json['address'];
     phone = json['phone'];
@@ -231,6 +234,7 @@ class BasicInfo {
     data['total_jobs'] = this.totalJobs;
     data['total_hours'] = this.totalHours;
     data['pending_project'] = this.pendingProject;
+    data['amount'] = this.amount;
     data['timezone'] = this.timezone;
     data['address'] = this.address;
     data['phone'] = this.phone;
@@ -371,7 +375,7 @@ class Employment {
   String? city;
   String? country;
   String? startDate;
-  dynamic endDate;
+  String? endDate;
   int? currentlyWorking;
   String? subject;
   String? description;

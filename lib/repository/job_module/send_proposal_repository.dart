@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 
-import '../models/Model_common_response.dart';
-import '../resources/helper.dart';
-import '../utils/api_contant.dart';
+import '../../models/Model_common_response.dart';
+import '../../resources/helper.dart';
+import '../../utils/api_contant.dart';
 
 
 Future<ModelCommonResponse> sendProposalRepo({

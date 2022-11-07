@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
 import '../models/model_job_list.dart';
-import '../repository/best_match_jobs_list_repository.dart';
-import '../repository/job_list_repository.dart';
-import '../repository/recent_jobs_list_repository.dart';
+import '../repository/job_module/best_match_jobs_list_repository.dart';
+import '../repository/job_module/my_feed_job_list_repository.dart';
+import '../repository/job_module/recent_jobs_list_repository.dart';
 
 class JobListController extends GetxController {
   Rx<ModelJobsList> modelJobList = ModelJobsList().obs;

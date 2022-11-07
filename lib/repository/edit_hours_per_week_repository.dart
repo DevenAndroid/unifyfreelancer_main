@@ -8,11 +8,12 @@ import 'package:http/http.dart' as http;
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> editHoursPerWeekRepo(hours_id,context) async {
+Future<ModelCommonResponse> editHoursPerWeekRepo({hours_id,hours_price,context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
   map['hours_id'] = hours_id;
+  map['hours_price'] = hours_price;
   print(map);
   try {
     http.Response response = await http.post(Uri.parse(ApiUrls.editHoursPerWeek),

@@ -7,12 +7,13 @@ import '../models/Model_common_response.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> additionalAccountRepo(user_type, context) async {
+Future<ModelCommonResponse> additionalAccountRepo({user_type,agency_name, context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
 
   Map map = <String, dynamic>{};
   map["user_type"] = user_type;
+  map["agency_name"] = agency_name;
 
   try {
     http.Response response = await http.post(

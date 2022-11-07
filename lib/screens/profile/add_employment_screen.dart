@@ -25,8 +25,8 @@ class AddEmploymentScreen extends StatefulWidget {
 class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   final _formKey = GlobalKey<FormState>();
   var acceptTermsOrPrivacy = true;
-  var dateInput = "From, Date :";
-  var dateInput2 = "To, Date :";
+  int dateInput = 0;
+  int dateInput2 = 0;
 
   TextEditingController _companyController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
@@ -42,6 +42,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
 
   ModelCountryList countryList = ModelCountryList();
   RxList searchList1 = <String>[].obs;
+
+  final dateFormat = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
@@ -65,6 +67,12 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       });
     }
   }
+
+  ///
+  /// dateInput = editDataTimeStamp
+  /// textController = D
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -385,26 +393,21 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1950),
-                                //DateTime.now() - not to allow to choose before today.
-                                lastDate: DateTime(2100));
-
+                                lastDate: DateTime.now());
                             if (pickedDate != null) {
-                              print(
-                                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate =
-                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                              _fromController.text =
-                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                              print(
-                                  formattedDate); //formatted date output using intl package =>  2021-03-16
+                              print(pickedDate);
+                              // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              _fromController.text = dateFormat.format(pickedDate);
+                              print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
-                                dateInput =
-                                    formattedDate; //set output date to TextField value.
+                                dateInput = pickedDate.millisecondsSinceEpoch;
                               });
-                            } else {}
+                            } else {
+                              return null;
+                            }
                           },
                           obSecure: false.obs,
-                          hintText: dateInput.toString().obs,
+                          hintText: "Select Date".obs,
                           suffixIcon: Icon(
                             Icons.calendar_month_outlined,
                             size: 22,
@@ -447,25 +450,21 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   onTap: () async {
                                     DateTime? pickedDate = await showDatePicker(
                                         context: context,
-                                        initialDate: DateTime.now(),
+                                        initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMicrosecondsSinceEpoch(dateInput2),
                                         firstDate: DateTime(1950),
                                         //DateTime.now() - not to allow to choose before today.
-                                        lastDate: DateTime(2100));
+                                        lastDate: DateTime.now());
 
                                     if (pickedDate != null) {
-                                      print(
-                                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                                      String formattedDate =
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(pickedDate);
-                                      print(formattedDate); //formatted date output using intl package =>  2021-03-16
+                                      print(pickedDate);
+                                      _toController.text = dateFormat.format(pickedDate);
                                       setState(() {
-                                        dateInput2 = formattedDate; //set output date to TextField value.
+                                        dateInput2 = pickedDate.millisecondsSinceEpoch; //set output date to TextField value.
                                       });
                                     } else {}
                                   },
                                   obSecure: false.obs,
-                                  hintText: dateInput2.toString().obs,
+                                  hintText: "To".obs,
                                   suffixIcon: Icon(
                                     Icons.calendar_month_outlined,
                                     size: 22,

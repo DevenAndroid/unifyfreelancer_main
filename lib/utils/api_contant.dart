@@ -49,6 +49,8 @@ class ApiUrls {
   static const String additionalAccount = "${apiBaseUrl}additional-account";
   static const String editLocation = "${apiBaseUrl}edit-location";
   static const String editContactInfo = "${apiBaseUrl}edit-contact-info";
+  static const String savedJobList = "${apiBaseUrl}freelancer-saved-job";
+  static const String singleJob = "${apiBaseUrl}single-job";
 
 
 }

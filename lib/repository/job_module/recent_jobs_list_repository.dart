@@ -3,12 +3,12 @@ import 'dart:io';
 
 
 import 'package:http/http.dart' as http;
-import '../models/model_job_list.dart';
-import '../utils/api_contant.dart';
+import '../../models/model_job_list.dart';
+import '../../utils/api_contant.dart';
 
-Future<ModelJobsList> jobListRepo() async {
+Future<ModelJobsList> recentJobsListRepo() async {
   try {
-    http.Response response = await http.get(Uri.parse(ApiUrls.jobsList),
+    http.Response response = await http.get(Uri.parse(ApiUrls.recentJobsList),
         headers: await getAuthHeader());
 
     if (response.statusCode == 200) {

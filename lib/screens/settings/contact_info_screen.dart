@@ -471,11 +471,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                           expandedValue: false,
                           textColor: AppTheme.primaryColor,
                           onPressed: () {
-                            additionalAccountRepo("client", context)
+                          /*  additionalAccountRepo("client", context)
                                 .then((value) {
                               if (value.status == true) {}
                               showToast(value.message.toString());
-                            });
+                            });*/
+                            Get.toNamed(MyRouter.createClientAccount);
                           },
                         ),
                         SizedBox(
@@ -506,13 +507,14 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                           expandedValue: false,
                           textColor: AppTheme.primaryColor,
                           onPressed: () {
-                            additionalAccountRepo("agency", context)
+                           /* additionalAccountRepo("agency", context)
                                 .then((value) {
                               if (value.status == true) {
 
                               }
                               showToast(value.message.toString());
-                            });
+                            });*/
+                            Get.toNamed(MyRouter.agencyAccountScreen);
                           },
                         ),
                       ],
