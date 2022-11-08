@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -353,7 +352,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Positioned(
                                   right: 0,
                                   top: 0,
-                                  child: SvgPicture.asset("assets/icon/crown2.svg",height: 16,width: 16,))
+                                  child: SvgPicture.asset(
+                                    "assets/icon/crown2.svg",
+                                    height: 16,
+                                    width: 16,
+                                  ))
                             ]),
                             SizedBox(
                               width: 16.w,
@@ -650,8 +653,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 )),*/
+
                       /// Earning Section
                       earningSection(deviceWidth),
+
                       /// Hours Language and Education
                       hoursLanguageEducation(deviceWidth),
 
@@ -693,8 +698,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       showDialog(
                                         context: context,
                                         builder: (ctx) => AlertDialog(
-                                          insetPadding: EdgeInsets.symmetric(horizontal: 20),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                          insetPadding: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 10),
                                           content: Form(
                                             key: _formKey,
                                             child: Column(
@@ -839,8 +846,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(
                                 height: 15,
                               ),
-                              Text(
-                                profileController.model.value.data!.basicInfo!.occuption.toString().isEmpty
+
+                              SizedBox(
+                                child: profileController
+                                        .model.value.data!.basicInfo!.occuption
+                                        .toString()
+                                        .isEmpty
+                                    ? SizedBox()
+                                    : Text(
+                                        profileController.model.value.data!
+                                            .basicInfo!.occuption
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.darkBlueText),
+                                      ),
+                              ),
+                              /*         Text(
+                                profileController
+                                        .model.value.data!.basicInfo!.occuption
+                                        .toString()
+                                        .isEmpty
                                     ? "Enter your occupation"
                                     : profileController
                                         .model.value.data!.basicInfo!.occuption
@@ -849,12 +876,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w600,
                                     color: AppTheme.darkBlueText),
-                              ),
+                              ),*/
                               SizedBox(
                                 height: 5.h,
                               ),
                               Text(
-                                profileController.model.value.data!.basicInfo!.description.toString().isEmpty
+                                profileController.model.value.data!.basicInfo!
+                                        .description
+                                        .toString()
+                                        .isEmpty
                                     ? "Description"
                                     : profileController.model.value.data!
                                         .basicInfo!.description
@@ -1394,435 +1424,475 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .value.data!.testimonial!.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return profileController.model.value.data!.testimonial![index].status.toString() == "pending" ?
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        "Message :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .message
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                            return profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .testimonial![index]
+                                                        .status
+                                                        .toString() ==
+                                                    "pending"
+                                                ? Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 20,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Request :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index].requestSent
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Message :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .message
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Status :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .status
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        SizedBox(
+                                                          height: 10,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Divider(
-                                                    color: AppTheme.pinkText
-                                                        .withOpacity(.29),
-                                                  ),
-
-                                                ],
-                                              ),
-                                            )
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Request :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .requestSent
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Status :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .status
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Divider(
+                                                          color: AppTheme
+                                                              .pinkText
+                                                              .withOpacity(.29),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 : Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "Name :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .firstName
-                                                              .toString() +
-                                                              " " +
-                                                              profileController
-                                                                  .model
-                                                                  .value
-                                                                  .data!
-                                                                  .testimonial![
-                                                              index]
-                                                                  .lastName
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 20,
                                                         ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          deleteTestimonialInfoRepo(
-                                                              profileController
-                                                                  .model
-                                                                  .value
-                                                                  .data!
-                                                                  .testimonial![
-                                                              index]
-                                                                  .id,
-                                                              context)
-                                                              .then((value) {
-                                                            if (value.status ==
-                                                                true) {
-                                                              print(profileController
-                                                                  .model
-                                                                  .value
-                                                                  .data!
-                                                                  .testimonial![
-                                                              index]
-                                                                  .id);
-                                                              profileController
-                                                                  .model
-                                                                  .value
-                                                                  .data!
-                                                                  .testimonial!
-                                                                  .removeAt(
-                                                                  index);
-                                                              profileController
-                                                                  .getData();
-                                                            }
-                                                            showToast(value
-                                                                .message
-                                                                .toString());
-                                                            print(profileController
-                                                                .model
-                                                                .value
-                                                                .data!
-                                                                .testimonial![
-                                                            index]
-                                                                .id);
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          margin:
-                                                          EdgeInsets.only(
-                                                              left: 15),
-                                                          padding:
-                                                          EdgeInsets.all(5),
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: AppTheme
-                                                                  .whiteColor,
-                                                              border: Border.all(
-                                                                  color: Color(
-                                                                      0xff707070))),
-                                                          child: Icon(
-                                                            Icons.delete,
-                                                            color: AppTheme
-                                                                .primaryColor,
-                                                            size: 15,
-                                                          ),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Name :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                        .model
+                                                                        .value
+                                                                        .data!
+                                                                        .testimonial![
+                                                                            index]
+                                                                        .firstName
+                                                                        .toString() +
+                                                                    " " +
+                                                                    profileController
+                                                                        .model
+                                                                        .value
+                                                                        .data!
+                                                                        .testimonial![
+                                                                            index]
+                                                                        .lastName
+                                                                        .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                deleteTestimonialInfoRepo(
+                                                                        profileController
+                                                                            .model
+                                                                            .value
+                                                                            .data!
+                                                                            .testimonial![
+                                                                                index]
+                                                                            .id,
+                                                                        context)
+                                                                    .then(
+                                                                        (value) {
+                                                                  if (value
+                                                                          .status ==
+                                                                      true) {
+                                                                    print(profileController
+                                                                        .model
+                                                                        .value
+                                                                        .data!
+                                                                        .testimonial![
+                                                                            index]
+                                                                        .id);
+                                                                    profileController
+                                                                        .model
+                                                                        .value
+                                                                        .data!
+                                                                        .testimonial!
+                                                                        .removeAt(
+                                                                            index);
+                                                                    profileController
+                                                                        .getData();
+                                                                  }
+                                                                  showToast(value
+                                                                      .message
+                                                                      .toString());
+                                                                  print(profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .id);
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            15),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(5),
+                                                                decoration: BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: AppTheme
+                                                                        .whiteColor,
+                                                                    border: Border.all(
+                                                                        color: Color(
+                                                                            0xff707070))),
+                                                                child: Icon(
+                                                                  Icons.delete,
+                                                                  color: AppTheme
+                                                                      .primaryColor,
+                                                                  size: 15,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Email :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .email
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        SizedBox(
+                                                          height: 10,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Title :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .title
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Email :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .email
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Type :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .type
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        SizedBox(
+                                                          height: 10,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Text(
-                                                        "Description :",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                            FontWeight.w600,
-                                                            color: AppTheme
-                                                                .darkBlueText),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Expanded(
-                                                        child: Text(
-                                                          profileController
-                                                              .model
-                                                              .value
-                                                              .data!
-                                                              .testimonial![
-                                                          index]
-                                                              .description
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Title :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .title
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Divider(
-                                                    color: AppTheme.pinkText
-                                                        .withOpacity(.29),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Type :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .type
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              "Description :",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: AppTheme
+                                                                      .darkBlueText),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                profileController
+                                                                    .model
+                                                                    .value
+                                                                    .data!
+                                                                    .testimonial![
+                                                                        index]
+                                                                    .description
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Divider(
+                                                          color: AppTheme
+                                                              .pinkText
+                                                              .withOpacity(.29),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
                                           },
                                         )),
                             ],
@@ -2469,191 +2539,199 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Container hoursLanguageEducation(double deviceWidth) {
     return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      width: deviceWidth,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppTheme.whiteColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(
-                                0, 3), // changes position of shadow
-                          ),
-                        ],
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      width: deviceWidth,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Hours per week",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              InkWell(
+                onTap: () => Get.toNamed(MyRouter.hoursPerWeekScreen),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.edit,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 6.h,
+          ),
+          Text(
+            profileController.model.value.data!.hoursPerWeek.toString(),
+            style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
+          ),
+
+          Row(
+            children: [
+              Text(
+                "Hourly Price :",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13.sp,
+                    color: AppTheme.textColor),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "\$ " +
+                    profileController.model.value.data!.basicInfo!.amount
+                        .toString(),
+                style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Language",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              InkWell(
+                onTap: () => Get.toNamed(MyRouter.addLanguageScreen),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () => Get.toNamed(MyRouter.editLanguageScreen),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.edit,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: profileController.model.value.data!.language!.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 4.h),
+                  child: Row(
+                    children: [
+                      Text(
+                        profileController
+                                .model.value.data!.language![index].language
+                                .toString()
+                                .capitalizeFirst! +
+                            " : ",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textColor),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Hours per week",
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.darkBlueText),
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              InkWell(
-                                onTap: () =>
-                                    Get.toNamed(MyRouter.hoursPerWeekScreen),
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.whiteColor,
-                                      border: Border.all(
-                                          color: Color(0xff707070))),
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: AppTheme.primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 6.h,
-                          ),
-                          Text(
-                            profileController.model.value.data!.hoursPerWeek.toString(),
-                            style: TextStyle(
-                                fontSize: 13.sp, color: AppTheme.textColor),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Language",
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.darkBlueText),
-                              ),
-                              InkWell(
-                                onTap: () =>
-                                    Get.toNamed(MyRouter.addLanguageScreen),
-                                child: Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 15),
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.whiteColor,
-                                      border: Border.all(
-                                          color: Color(0xff707070))),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: AppTheme.primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () =>
-                                    Get.toNamed(MyRouter.editLanguageScreen),
-                                child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.whiteColor,
-                                      border: Border.all(
-                                          color: Color(0xff707070))),
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: AppTheme.primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: profileController
-                                  .model.value.data!.language!.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 4.h),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        profileController.model.value.data!
-                                                .language![index].language
-                                                .toString()
-                                                .capitalizeFirst! +
-                                            " : ",
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.textColor),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        profileController.model.value.data!
-                                            .language![index].level
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: AppTheme.textColor),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Education",
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.darkBlueText),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(MyRouter.addEducationScreen);
-                                },
-                                child: Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 15),
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.whiteColor,
-                                      border: Border.all(
-                                          color: Color(0xff707070))),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: AppTheme.primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
-                              /* InkWell(
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        profileController
+                            .model.value.data!.language![index].level
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: 13.sp, color: AppTheme.textColor),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Education",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(MyRouter.addEducationScreen);
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+              /* InkWell(
                                 onTap: () {},
                                 child: Container(
                                   padding: EdgeInsets.all(5),
@@ -2669,127 +2747,112 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),*/
-                            ],
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: profileController
-                                .model.value.data!.education!.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Text(
-                                    profileController.model.value.data!
-                                        .education![index].school
-                                        .toString().capitalizeFirst!,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xff4D4D4D)),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          profileController.model.value.data!
-                                              .education![index].degree
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppTheme.textColor
-                                                  .withOpacity(.63)),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                  MyRouter.addEducationScreen,
-                                                  arguments: index);
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppTheme.whiteColor,
-                                                  border: Border.all(
-                                                      color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
-                                                Icons.edit,
-                                                color: AppTheme.primaryColor,
-                                                size: 15,
-                                              ),
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              deleteEducationInfoRepo(
-                                                      profileController
-                                                          .model
-                                                          .value
-                                                          .data!
-                                                          .education![index]
-                                                          .id
-                                                          .toString(),
-                                                      context)
-                                                  .then((value) {
-                                                if (value.status == true) {
-                                                  profileController.model
-                                                      .value.data!.education!
-                                                      .removeAt(index);
-                                                  profileController.getData();
-                                                }
-                                                showToast(
-                                                    value.message.toString());
-                                              });
-                                            },
-                                            child: Container(
-                                              margin:
-                                                  EdgeInsets.only(left: 15),
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppTheme.whiteColor,
-                                                  border: Border.all(
-                                                      color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: AppTheme.primaryColor,
-                                                size: 15,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5.h,
-                                  ),
-                                  Divider(
-                                    color: AppTheme.pinkText.withOpacity(.29),
-                                  ),
-                                ],
-                              );
+            ],
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: profileController.model.value.data!.education!.length,
+            itemBuilder: (context, index) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    profileController.model.value.data!.education![index].school
+                        .toString()
+                        .capitalizeFirst!,
+                    style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff4D4D4D)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          profileController
+                              .model.value.data!.education![index].degree
+                              .toString(),
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.textColor.withOpacity(.63)),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(MyRouter.addEducationScreen,
+                                  arguments: index);
                             },
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.whiteColor,
+                                  border: Border.all(color: Color(0xff707070))),
+                              child: Icon(
+                                Icons.edit,
+                                color: AppTheme.primaryColor,
+                                size: 15,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              deleteEducationInfoRepo(
+                                      profileController.model.value.data!
+                                          .education![index].id
+                                          .toString(),
+                                      context)
+                                  .then((value) {
+                                if (value.status == true) {
+                                  profileController.model.value.data!.education!
+                                      .removeAt(index);
+                                  profileController.getData();
+                                }
+                                showToast(value.message.toString());
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(left: 15),
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.whiteColor,
+                                  border: Border.all(color: Color(0xff707070))),
+                              child: Icon(
+                                Icons.delete,
+                                color: AppTheme.primaryColor,
+                                size: 15,
+                              ),
+                            ),
                           ),
                         ],
-                      ),
-                    );
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Divider(
+                    color: AppTheme.pinkText.withOpacity(.29),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Container earningSection(double deviceWidth) {

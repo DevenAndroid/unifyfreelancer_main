@@ -246,8 +246,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value.status == true) {
                                 SharedPreferences pref =
                                     await SharedPreferences.getInstance();
-                                pref.setString(
-                                    'cookie', jsonEncode(value.authToken));
+                                pref.setString('cookie', jsonEncode(value.authToken));
+
                                 pref.setBool("shownIntro", true);
                                 Get.offAllNamed(MyRouter.bottomNavbar);
                               }

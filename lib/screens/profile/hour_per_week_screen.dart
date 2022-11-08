@@ -63,8 +63,8 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
         body: Obx(() {
           return status.value.isSuccess
               ? Form(
-            key: _formKey,
-                child: SingleChildScrollView(
+                  key: _formKey,
+                  child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,8 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                       dense: true,
                                       visualDensity: VisualDensity(
                                           horizontal: -4, vertical: -4),
-                                      value: timeList.data![index].id.toString(),
+                                      value:
+                                          timeList.data![index].id.toString(),
                                       groupValue: time,
                                       onChanged: (value) {
                                         setState(() {
@@ -133,37 +134,54 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                       },
                                     );
                                   }),
-
                               SizedBox(
                                 height: 30,
                               ),
                               Text(
-                                "Enter your hourly price",
+                                "Hourly price",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                     fontSize: 14,
                                     color: AppTheme.textColor),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
-                              CustomTextField(
-                                prefix: Icon(Icons.attach_money),
-                                controller: _priceController,
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.number,
-                                hintText: "Hourly price".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Hourly price is required'),
-                                ]),),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomTextField(
+                                      prefix: Icon(Icons.attach_money),
+                                      controller: _priceController,
+                                      obSecure: false.obs,
+                                      keyboardType: TextInputType.number,
+                                      hintText: "5.00".obs,
+                                      validator: MultiValidator([
+                                        RequiredValidator(
+                                            errorText:
+                                                'Hourly price is required'),
+                                      ]),
+                                    ),
+                                  ),
+                                  Text(
+                                    " / hour",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        color: AppTheme.textColor),
+                                  ),
+                                  SizedBox(
+                                    width: 30,
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         )
                       ],
                     ),
                   ),
-              )
+                )
               : status.value.isError
                   ? SizedBox(
                       width: double.maxFinite,
@@ -211,8 +229,12 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                         title: 'Save',
                         backgroundColor: AppTheme.primaryColor,
                         onPressed: () {
-                          if(_formKey.currentState!.validate()){
-                            editHoursPerWeekRepo(hours_id: time,hours_price: _priceController.text.trim(),context:  context).then((value) {
+                          if (_formKey.currentState!.validate()) {
+                            editHoursPerWeekRepo(
+                                    hours_id: time,
+                                    hours_price: _priceController.text.trim(),
+                                    context: context)
+                                .then((value) {
                               if (value.status == true) {
                                 Get.back();
                                 controller.getData();

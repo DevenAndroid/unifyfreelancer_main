@@ -51,6 +51,9 @@ class ApiUrls {
   static const String editContactInfo = "${apiBaseUrl}edit-contact-info";
   static const String savedJobList = "${apiBaseUrl}freelancer-saved-job";
   static const String singleJob = "${apiBaseUrl}single-job";
+  static const String savedJobs = "${apiBaseUrl}saved-jobs";
+  static const String removeSavedJobs = "${apiBaseUrl}remove-saved-jobs";
+  static const String allProposal = "${apiBaseUrl}all-proposal";
 
 
 }

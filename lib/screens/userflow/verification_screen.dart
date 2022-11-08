@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -112,6 +114,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   InkWell(
                     onTap: () {
                       resendOtp(email, context).then((value) async {
+                        print(jsonEncode(value));
+                        if(value.status == true){
+                        }
                         showToast(value.message.toString(),);
                       });
                     },

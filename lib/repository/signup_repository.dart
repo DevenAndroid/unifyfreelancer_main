@@ -43,6 +43,8 @@ Future<ModelSignUpResponse> signUp(
     http.Response response = await http.post(Uri.parse(ApiUrls.signUp),
         body: jsonEncode(map), headers: headers);
 
+    log("Signup Status Code::=>" + response.statusCode.toString());
+    log("Signup Status Code::=>" + response.body);
 
     if (response.statusCode == 200) {
       Helpers.hideLoader(loader);

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../models/model_job_list.dart';
 import '../repository/job_module/best_match_jobs_list_repository.dart';
@@ -32,6 +33,7 @@ class JobListController extends GetxController {
       } else {
         status2.value = RxStatus.error();
       }
+
     });
   }
 
@@ -42,6 +44,7 @@ class JobListController extends GetxController {
         status3.value = RxStatus.success();
       } else {
         status3.value = RxStatus.error();
+        showToast(value.message.toString());
       }
     });
   }

@@ -10,6 +10,7 @@ Future<ModelJobsList> bestMatchJobsListRepo() async {
   try {
     http.Response response = await http.get(Uri.parse(ApiUrls.bestMatchJobsList),
         headers: await getAuthHeader());
+    print("Best match api responseBest match api response ::::"+response.body);
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
