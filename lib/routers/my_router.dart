@@ -40,6 +40,7 @@ import '../screens/settings/get_paid_screen.dart';
 import '../screens/settings/my_teams_screen.dart';
 import '../screens/settings/password_and_security_screen.dart';
 import '../screens/settings/profile_setting_screen.dart';
+import '../screens/submit_proposal_screen.dart';
 import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
 import '../screens/forgot_password_screen.dart';
@@ -91,6 +92,7 @@ class MyRouter {
   static var changeHourlyRateScreen = "/changeHourlyRateScreen";
   static var agencyAccountScreen = "/agencyAccountScreen";
   static var createClientAccount = "/createClientAccount";
+  static var submitProposalScreen = "/submitProposalScreen";
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
@@ -138,5 +140,6 @@ class MyRouter {
     GetPage(name: MyRouter.changeHourlyRateScreen, page: () => const ChangeHourlyRateScreen()),
     GetPage(name: MyRouter.agencyAccountScreen, page: () => const AgencyAccountScreen()),
     GetPage(name: MyRouter.createClientAccount, page: () => const CreateClientAccount()),
+    GetPage(name: MyRouter.submitProposalScreen, page: () => const SubmitProposalScreen()),
   ];
 }

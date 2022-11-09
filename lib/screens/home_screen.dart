@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .toString(),
                                         style: TextStyle(
                                           fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           color: AppTheme.pinkText,
                                         ),
                                         maxLines: 1,
@@ -296,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.modelJobList.value.data![index].type
                                     .toString(),
                                 style: TextStyle(
-                                  fontSize: 18.sp,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.darkBlueText,
                                 ),
@@ -304,10 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: deviceHeight * .01,
                               ),
-                              Text(
-                                  controller.modelJobList.value.data![index]
-                                      .description
-                                      .toString(),
+                              Text(controller.modelJobList.value.data![index].description.toString(),
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w300,
@@ -323,16 +320,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "\$" +
-                                            controller.modelJobList.value
-                                                .data![index].price
-                                                .toString(),
+                                      Text("\$" + controller.modelJobList.value.data![index].price.toString(),
                                         style: TextStyle(
-                                            fontSize: 20.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
                                             color: AppTheme.darkBlueText),
                                       ),
@@ -345,7 +337,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  CustomOutlineButton(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(controller.modelJobList.value.data![index].budgetType.toString(),
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.darkBlueText),
+                                      ),
+                                      Text(
+                                        "Project type",
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xff6B6B6B)),
+                                      ),
+                                    ],
+                                  ),
+                                  //Send proposal button
+                                  /*CustomOutlineButton(
                                       title: "Send Proposal",
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
@@ -357,15 +368,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ]);
                                         print(controller.modelJobList.value
                                             .data![index].id);
-                                      }),
+                                      }),*/
                                 ],
                               ),
                               SizedBox(
                                 height: deviceHeight * .01,
                               ),
                               SizedBox(
-                                child: controller.modelJobList.value
-                                            .data![index].skills!.length ==
+                                child: controller.modelJobList.value.data![index].skills!.length ==
                                         0
                                     ? SizedBox()
                                     : Column(
@@ -384,12 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     BouncingScrollPhysics(),
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: controller
-                                                    .modelJobList
-                                                    .value
-                                                    .data![index]
-                                                    .skills!
-                                                    .length,
+                                                itemCount: controller.modelJobList.value.data![index].skills!.length,
                                                 itemBuilder: (context, index2) {
                                                   return Container(
                                                       margin: EdgeInsets.only(
@@ -439,49 +444,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .primaryColor),
                                                         ),
                                                       )
-
-                                                      /*CustomOutlineButton(
-                                                        title: stackButtonsList[index],
-                                                        backgroundColor: AppTheme.whiteColor,
-                                                        textColor: AppTheme.primaryColor,
-                                                        expandedValue: false,
-                                                        onPressed: () {},
-                                                      ),*/
                                                       );
                                                 }),
-                                            /*
-                                              Stack(
-                                                children:
-                                                List.generate(stackButtonsList.length, (index11)
-                                                => Positioned(left: stackButtonsList[index11].positionPoint,
-                                                      child: CustomOutlineButton(backgroundColor: AppTheme.whiteColor,
-                                                        textColor: AppTheme.primaryColor, title: stackButtonsList[index11].titleText.toString(),
-                                                        onPressed: () {
-                                                          String titleName = "";
-                                                          double positionName = 0;
-                                                          titleName = stackButtonsList[index11].titleText!;
-                                                          positionName =
-                                                              stackButtonsList[
-                                                                      index11]
-                                                                  .positionPoint!;
-                                                          stackButtonsList
-                                                              .removeAt(index11);
-                                                          stackButtonsList.add(
-                                                              StackButtons(
-                                                                  titleText:
-                                                                      titleName,
-                                                                  positionPoint:
-                                                                      positionName));
-                                                          setState(() {});
-                                                        },
-                                                      )),
-                                                ),
-                                                // children: [
-                                                // ],
-                                              ),*/
-                                          ),
-                                          SizedBox(
-                                            height: deviceHeight * .01,
+
                                           ),
                                         ],
                                       ),
@@ -581,7 +546,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w600,
                                       color: AppTheme.pinkText,
                                     ),
                                     maxLines: 1,
@@ -651,7 +616,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             controller.modelBestJobList.value.data![index].type
                                 .toString(),
                             style: TextStyle(
-                              fontSize: 18.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.darkBlueText,
                             ),
@@ -686,7 +651,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .data![index].price
                                             .toString(),
                                     style: TextStyle(
-                                        fontSize: 20.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w600,
                                         color: AppTheme.darkBlueText),
                                   ),
@@ -699,7 +664,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                              CustomOutlineButton(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                        controller.modelBestJobList.value
+                                            .data![index].budgetType
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                  Text(
+                                    "Project type",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xff6B6B6B)),
+                                  ),
+                                ],
+                              ),
+
+                              //Send proposal button
+                              /*CustomOutlineButton(
                                   title: "Send Proposal",
                                   backgroundColor: AppTheme.whiteColor,
                                   textColor: AppTheme.primaryColor,
@@ -711,7 +699,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ]);
                                     print(controller.modelBestJobList.value
                                         .data![index].id);
-                                  }),
+                                  }),*/
                             ],
                           ),
                           SizedBox(
@@ -830,9 +818,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   // ],
                                                 ),*/
                                       ),
-                                      SizedBox(
-                                        height: deviceHeight * .01,
-                                      ),
                                     ],
                                   ),
                           )
@@ -932,7 +917,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w600,
                                       color: AppTheme.pinkText,
                                     ),
                                     maxLines: 1,
@@ -1002,7 +987,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             controller.modeRecentJobList.value.data![index].type
                                 .toString(),
                             style: TextStyle(
-                              fontSize: 18.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.darkBlueText,
                             ),
@@ -1036,7 +1021,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .data![index].price
                                             .toString(),
                                     style: TextStyle(
-                                        fontSize: 20.sp,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w600,
                                         color: AppTheme.darkBlueText),
                                   ),
@@ -1049,7 +1034,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                              CustomOutlineButton(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                        controller.modeRecentJobList.value
+                                            .data![index].budgetType
+                                            .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                  Text(
+                                    "Project type",
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xff6B6B6B)),
+                                  ),
+                                ],
+                              ),
+
+                              //send proposal button
+                             /* CustomOutlineButton(
                                 title: "Send Proposal",
                                 backgroundColor: AppTheme.whiteColor,
                                 textColor: AppTheme.primaryColor,
@@ -1062,15 +1070,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   print(controller
                                       .modeRecentJobList.value.data![index].id);
                                 },
-                              ),
+                              ),*/
                             ],
                           ),
                           SizedBox(
                             height: deviceHeight * .01,
                           ),
                           SizedBox(
-                              child: controller.modeRecentJobList.value
-                                          .data![index].skills!.length ==
+                              child: controller.modeRecentJobList.value.data![index].skills!.length ==
                                       0
                                   ? SizedBox()
                                   : Column(
@@ -1180,9 +1187,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   // children: [
                                                   // ],
                                                 ),*/
-                                        ),
-                                        SizedBox(
-                                          height: deviceHeight * .01,
                                         ),
                                       ],
                                     ))

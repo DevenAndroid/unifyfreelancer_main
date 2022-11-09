@@ -7,7 +7,7 @@ import '../../utils/api_contant.dart';
 
 Future<ModelJobsList> savedJobListRepo() async {
   try {
-    http.Response response = await http.get(Uri.parse(ApiUrls.savedJobList),
+    http.Response response = await http.post(Uri.parse(ApiUrls.savedJobList),
         headers: await getAuthHeader());
 
     if (response.statusCode == 200) {

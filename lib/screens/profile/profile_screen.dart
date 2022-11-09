@@ -61,18 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] =
-          profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] =
-          profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] =
-          profileController.model.value.data!.basicInfo!.description.toString();
-      editNameInfoRepo(
-              mapData: map,
-              fieldName1: "profile_image",
-              file1: imageFileToPick,
-              context: context)
-          .then((value) {
+      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] = profileController.model.value.data!.basicInfo!.description.toString();
+      editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context).then((value) {
         imageFileToPick.delete();
         imageFileToPick = File("");
         if (value.status == true) {

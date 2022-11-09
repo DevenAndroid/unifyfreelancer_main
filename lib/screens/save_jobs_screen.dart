@@ -105,7 +105,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                     .toString(),
                                                 style: TextStyle(
                                                   fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.w600,
                                                   color: AppTheme.pinkText,
                                                 ),
                                                 maxLines: 1,
@@ -191,7 +191,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                               .model.value.data![index].type
                                               .toString(),
                                           style: TextStyle(
-                                            fontSize: 18.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
                                             color: AppTheme.darkBlueText,
                                           ),
@@ -247,7 +247,33 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                 ),
                                               ],
                                             ),
-                                            CustomOutlineButton(
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                      controller.model.value
+                                                          .data![index].budgetType
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 20.sp,
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                      color: AppTheme
+                                                          .darkBlueText),
+                                                ),
+                                                Text(
+                                                  "Budget",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                      color: const Color(
+                                                          0xff6B6B6B)),
+                                                ),
+                                              ],
+                                            ),
+                                            /*CustomOutlineButton(
                                                 title: "Send Proposal",
                                                 backgroundColor:
                                                     AppTheme.whiteColor,
@@ -262,7 +288,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                       ]);
                                                   print(controller.model.value
                                                       .data![index].id);
-                                                }),
+                                                }),*/
                                           ],
                                         ),
                                         SizedBox(
@@ -342,10 +368,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                                         ));
                                                                   }),
                                                         ),
-                                                        SizedBox(
-                                                          height: deviceHeight *
-                                                              .01,
-                                                        ),
+
                                                       ],
                                                     ),
                                         ),

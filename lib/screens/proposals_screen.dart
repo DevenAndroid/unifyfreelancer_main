@@ -109,107 +109,115 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
   interview(List<SubmittedProposal>? item, message) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return controller.status.value.isSuccess
-        ? item!.length == 0
-            ? Center(
-                child: Text(message,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.darkBlueText,
-                    )))
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: item!.length,
-                padding: EdgeInsets.only(bottom: 30),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Get.toNamed(MyRouter.jobDetailsScreen, arguments: [item[index].projectId
-                      ]);
-                      print([item[index].projectId]);
-                    },
-                    child: Container(
-                      margin:
-                          const EdgeInsets.only(top: 15, right: 10, left: 10),
-                      width: deviceWidth,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
-                      decoration: BoxDecoration(
-                        color: AppTheme.whiteColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
+    return Obx(() {
+      return controller.status.value.isSuccess
+          ? item!.length == 0
+              ? Center(
+                  child: Text(message,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.darkBlueText,
+                      )))
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: item!.length,
+                  padding: EdgeInsets.only(bottom: 30),
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        Get.toNamed(MyRouter.jobDetailsScreen,
+                            arguments: [item[index].projectId]);
+                        print([item[index].projectId]);
+                      },
+                      child: Container(
+                        margin:
+                            const EdgeInsets.only(top: 15, right: 10, left: 10),
+                        width: deviceWidth,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        decoration: BoxDecoration(
+                          color: AppTheme.whiteColor,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(
-                                0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            item[index].name.toString(),
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppTheme.darkBlueText),
-                          ),
-                          SizedBox(
-                            height: deviceHeight * .01,
-                          ),
-                          Text(
-                            item![index].projectDescription.toString(),
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: AppTheme.greyTextColor),
-                          ),
-                          SizedBox(
-                            height: deviceHeight * .01,
-                          ),
-                          Text(
-                            item![index].time.toString(),
-                            style: TextStyle(
-                                fontSize: 12, color: AppTheme.greyTextColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              )
-        : controller.status.value.isError
-            ? SizedBox(
-                width: double.maxFinite,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      controller.model.value.message.toString(),
-                      // fontSize: AddSize.font16,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          controller.getData();
-                        },
-                        icon: Icon(
-                          Icons.change_circle_outlined,
-                          size: AddSize.size30,
-                        ))
-                  ],
-                ),
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              );
-  }
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              item[index].name.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.darkBlueText),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(
+                              height: deviceHeight * .01,
+                            ),
+                            Text(
+                              item![index].projectDescription.toString(),
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.greyTextColor),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(
+                              height: deviceHeight * .01,
+                            ),
+                            Text(
+                              item![index].time.toString(),
+                              style: TextStyle(
+                                  fontSize: 12, color: AppTheme.greyTextColor),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
 
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )
+          : controller.status.value.isError
+              ? SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.model.value.message.toString(),
+                        // fontSize: AddSize.font16,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            controller.getData();
+                          },
+                          icon: Icon(
+                            Icons.change_circle_outlined,
+                            size: AddSize.size30,
+                          ))
+                    ],
+                  ),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
+    });
+  }
 }
