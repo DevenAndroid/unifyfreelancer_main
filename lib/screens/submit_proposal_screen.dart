@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../Controller/jobs_detail_controller.dart';
 import '../popups/radio_buttons_job_details.dart';
@@ -55,10 +56,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     }
   }
 
-  // for(var i = 1; i++, i<=100){
-  // TextEditingController _description = TextEditingController();
-  //
-  // }
+
+  int dateInput = 0;
+  final dateFormat = DateFormat('yyyy-MM-dd');
 
   final controller = Get.put(JobsDetailController());
 
@@ -891,6 +891,23 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         color: const Color(0xff180D31)),
                   ),
                   CustomTextField(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1950),
+                          lastDate: DateTime(2100));
+                      if (pickedDate != null) {
+                        print(pickedDate);
+                        // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        _dueDateController.text = dateFormat.format(pickedDate);
+                        print(pickedDate.millisecondsSinceEpoch);setState(() {dateInput = pickedDate.millisecondsSinceEpoch;
+                        });
+                      } else {
+                        return null;
+                      }
+                    },
+                    suffixIcon: Icon(Icons.calendar_month_outlined,size: 20,color: AppTheme.primaryColor,),
                      controller: _dueDateController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.emailAddress,

@@ -126,7 +126,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                 ),
                 height: 20.h,
                 width: 20.w,
-                child: SvgPicture.asset("assets/icon/heart.svg")),
+                child: SvgPicture.asset("assets/icon/heart.svg",color: AppTheme.primaryColor,)),
           ),
         )
             : const SizedBox()

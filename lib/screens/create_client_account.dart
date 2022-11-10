@@ -27,6 +27,10 @@ class _CreateClientAccountState extends State<CreateClientAccount> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset("assets/images/Unify.png",height: 125,width: 125,),
+          SizedBox(
+            height: 20,
+          ),
           Text(
             "Get our new app for clients!",
             style: TextStyle(

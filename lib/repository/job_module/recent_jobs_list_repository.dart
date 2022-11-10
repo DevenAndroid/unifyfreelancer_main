@@ -8,7 +8,7 @@ import '../../utils/api_contant.dart';
 
 Future<ModelJobsList> recentJobsListRepo() async {
   try {
-    http.Response response = await http.get(Uri.parse(ApiUrls.recentJobsList),
+    http.Response response = await http.post(Uri.parse(ApiUrls.recentJobsList),
         headers: await getAuthHeader());
 
     if (response.statusCode == 200) {

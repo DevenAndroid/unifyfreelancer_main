@@ -765,29 +765,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                showDialog(
-                                                    context: context,
+                                                showDialog(context: context,
                                                     builder: (ctx) => Dialog(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
+                                                          child: Column(mainAxisSize: MainAxisSize.min,
                                                             children: [
                                                               Container(
-                                                                  width:
-                                                                      deviceWidth,
+                                                                  width: deviceWidth,
                                                                   height: 80,
-                                                                  color: AppTheme
-                                                                      .primaryColor,
+                                                                  color: AppTheme.primaryColor,
                                                                   child: Center(
-                                                                      child:
-                                                                          Text(
+                                                                      child: Text(
                                                                     "Date Range",
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: AppTheme
-                                                                            .whiteColor),
+                                                                        fontSize: 18,
+                                                                        color: AppTheme.whiteColor),
                                                                   ))),
                                                               Container(
                                                                 width: MediaQuery.of(

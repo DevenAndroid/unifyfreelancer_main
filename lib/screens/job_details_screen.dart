@@ -18,7 +18,6 @@ class JobDetailsScreen extends StatefulWidget {
 }
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
-
   final _formKey = GlobalKey<FormState>();
   String? time;
 
@@ -62,8 +61,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           ),
         ),
         body: Obx(() {
-          return status.value.isSuccess ?
-          Form(
+          return status.value.isSuccess
+              ? Form(
                   key: _formKey,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -336,28 +335,37 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
-                                Text(
-                                  model.value.data!.description.toString(),
+                                Text(model.value.data!.description.toString(),
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w500,
                                         color: const Color(0xff170048)),
-                                    maxLines: descTextShowFlag ? 100 : 6
+                                    maxLines: descTextShowFlag ? 10000 : 6),
+                                SizedBox(
+                                  height: 5,
                                 ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        InkWell(
-                            onTap: (){ setState(() {
-                              descTextShowFlag = !descTextShowFlag;
-                            }); },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                descTextShowFlag ? Text("Show Less",style: TextStyle(color: AppTheme.primaryColor),)
-                                    :  Text("Show More",style: TextStyle(color: AppTheme.primaryColor))])),
-
-
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        descTextShowFlag = !descTextShowFlag;
+                                      });
+                                    },
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          descTextShowFlag
+                                              ? Text(
+                                                  "Show Less",
+                                                  style: TextStyle(
+                                                      color: AppTheme
+                                                          .primaryColor),
+                                                )
+                                              : Text("Show More",
+                                                  style: TextStyle(
+                                                      color: AppTheme
+                                                          .primaryColor))
+                                        ])),
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
@@ -917,14 +925,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     } else {
                                       showToast("Please add a file");
                                     }*/
-                                    Get.toNamed(MyRouter.submitProposalScreen,arguments: [
-                                    model.value.data!.name.toString(),
-                                    model.value.data!.description.toString(),
-                                      model.value.data!.price.toString(),
-
-
-
-                                    ]);
+                                    Get.toNamed(MyRouter.submitProposalScreen,
+                                        arguments: [
+                                          model.value.data!.name.toString(),
+                                          model.value.data!.description
+                                              .toString(),
+                                          model.value.data!.price.toString(),
+                                        ]);
                                   },
                                   title: "Send Proposal",
                                   textColor: AppTheme.whiteColor,
@@ -934,14 +941,12 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
-
-
                               ],
                             ))),
                   ),
-                ) :
-          status.value.isError ?
-          SizedBox(
+                )
+              : status.value.isError
+                  ? SizedBox(
                       width: double.maxFinite,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -960,8 +965,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               ))
                         ],
                       ),
-                    ) :
-          Center(
+                    )
+                  : Center(
                       child: CircularProgressIndicator(),
                     );
         }));

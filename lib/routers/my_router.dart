@@ -17,6 +17,7 @@ import '../Screens/settings_screen.dart';
 import '../Screens/unify_qualifications.dart';
 import '../Screens/userflow/onboarding_screen.dart';
 import '../bottom_navbar.dart';
+import '../screens/add_milestone_screen.dart';
 import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/create_client_account.dart';
@@ -93,6 +94,7 @@ class MyRouter {
   static var agencyAccountScreen = "/agencyAccountScreen";
   static var createClientAccount = "/createClientAccount";
   static var submitProposalScreen = "/submitProposalScreen";
+  static var addMilestoneScreen = "/addMilestoneScreen";
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
@@ -141,5 +143,6 @@ class MyRouter {
     GetPage(name: MyRouter.agencyAccountScreen, page: () => const AgencyAccountScreen()),
     GetPage(name: MyRouter.createClientAccount, page: () => const CreateClientAccount()),
     GetPage(name: MyRouter.submitProposalScreen, page: () => const SubmitProposalScreen()),
+    GetPage(name: MyRouter.addMilestoneScreen, page: () => const AddMilestoneScreen()),
   ];
 }

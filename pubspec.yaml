@@ -42,6 +42,7 @@ dependencies:
   google_sign_in:
   cloud_firestore: ^4.0.2
   cached_network_image:
+  another_stepper: ^1.1.5
 
 
 

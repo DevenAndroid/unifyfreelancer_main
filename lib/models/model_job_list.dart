@@ -40,6 +40,7 @@ class Data {
   String? status;
   String? experienceLevel;
   String? categories;
+  bool? is_saved;
   List<Skills>? skills;
 
   Data(
@@ -70,6 +71,7 @@ class Data {
     status = json['status'];
     experienceLevel = json['experience_level'];
     categories = json['categories'];
+    is_saved = json['is_saved'];
     if (json['skills'] != null) {
       skills = <Skills>[];
       json['skills'].forEach((v) {
@@ -92,6 +94,7 @@ class Data {
     data['status'] = this.status;
     data['experience_level'] = this.experienceLevel;
     data['categories'] = this.categories;
+    data['is_saved'] = this.is_saved;
     if (this.skills != null) {
       data['skills'] = this.skills!.map((v) => v.toJson()).toList();
     }

@@ -28,7 +28,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
     super.initState();
   }
 
-  bool like = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                         ? Center(
                             child: Text("No data found",
                                 style: TextStyle(
-                                  fontSize: 18.sp,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.darkBlueText,
                                 )))
@@ -112,45 +112,43 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
+                                            Icon(
+                                              Icons.thumb_down_alt_outlined,
+                                              size: 22.sp,
+                                              color: AppTheme.primaryColor,
+                                            ),
                                             SizedBox(
-                                              child: like == false
+                                              width: 5.w,
+                                            ),
+                                            SizedBox(
+                                              child:  controller.model.value
+                                                  .data![index].is_saved == false
                                                   ? InkWell(
                                                       onTap: () {
                                                         setState(() {
-                                                          like = true;
                                                           savedJobsRepo(
-                                                                  job_id: int.parse(
-                                                                      controller
-                                                                          .model
-                                                                          .value
-                                                                          .data![
-                                                                              index]
-                                                                          .id
-                                                                          .toString()),
-                                                                  context:
-                                                                      context)
+                                                                  job_id: int.parse(controller.model.value.data![index].id.toString()),
+                                                                  context: context)
                                                               .then((value) {
-                                                            if (value.status ==
-                                                                true) {
-                                                              controller
-                                                                  .getData();
+                                                            if (value.status == true) {
+
                                                             }
                                                             showToast(value
                                                                 .message
                                                                 .toString());
+                                                            controller.getData();
                                                           });
                                                         });
                                                       },
                                                       child: Icon(
                                                         Icons.favorite_border,
-                                                        size: 25,
+                                                        size: 22,
                                                         color: AppTheme
                                                             .primaryColor,
                                                       ))
                                                   : InkWell(
                                                       onTap: () {
                                                         setState(() {
-                                                          like = false;
                                                           removeSavedJobsRepo(
                                                                   job_id: int.parse(
                                                                       controller
@@ -168,15 +166,14 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                               controller
                                                                   .getData();
                                                             }
-                                                            showToast(value
-                                                                .message
-                                                                .toString());
+                                                            showToast(value.message.toString());
+                                                            controller.getData();
                                                           });
                                                         });
                                                       },
                                                       child: Icon(
                                                         Icons.favorite,
-                                                        size: 25,
+                                                        size: 22,
                                                         color: AppTheme
                                                             .primaryColor,
                                                       )),
@@ -230,7 +227,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                           .data![index].price
                                                           .toString(),
                                                   style: TextStyle(
-                                                      fontSize: 20.sp,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       color: AppTheme
@@ -256,14 +253,14 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                           .data![index].budgetType
                                                           .toString(),
                                                   style: TextStyle(
-                                                      fontSize: 20.sp,
+                                                      fontSize: 14.sp,
                                                       fontWeight:
                                                       FontWeight.w600,
                                                       color: AppTheme
                                                           .darkBlueText),
                                                 ),
                                                 Text(
-                                                  "Budget",
+                                                  "Project type",
                                                   style: TextStyle(
                                                       fontSize: 12.sp,
                                                       fontWeight:
