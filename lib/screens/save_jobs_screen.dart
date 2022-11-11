@@ -122,7 +122,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                             ),
                                             SizedBox(
                                               child:  controller.model.value
-                                                  .data![index].is_saved == false
+                                                  .data![index].isSaved == false
                                                   ? InkWell(
                                                       onTap: () {
                                                         setState(() {

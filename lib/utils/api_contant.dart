@@ -54,7 +54,8 @@ class ApiUrls {
   static const String removeSavedJobs = "${apiBaseUrl}remove-saved-jobs";
   static const String allProposal = "${apiBaseUrl}all-proposal";
   static const String dislikeReasons = "${apiBaseUrl}dislike-reasons";
-  static const String removeDislikeJob = "${apiBaseUrl}remove-dislike-job";
+  static const String dislikeJob = "${apiBaseUrl}dislike-job";
+  static const String contracts = "${apiBaseUrl}contracts";
 
 
 }
@@ -70,7 +71,7 @@ class ApiUrls {
       fontSize: 14);
 }
 
-getAuthHeader() async{
+Future getAuthHeader() async{
   SharedPreferences pref = await SharedPreferences.getInstance();
   print(pref.getString("cookie")!.toString().replaceAll('\"', ''));
   return {
