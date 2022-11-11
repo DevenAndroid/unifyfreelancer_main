@@ -96,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Center(
                             child: TabBar(
                               labelColor: AppTheme.primaryColor,
-                              labelStyle: TextStyle(fontWeight: FontWeight.w600),
+                              labelStyle:
+                                  TextStyle(fontWeight: FontWeight.w600),
                               unselectedLabelColor: AppTheme.blackColor,
                               padding: EdgeInsets.zero,
                               isScrollable: true,
@@ -109,7 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               automaticIndicatorColorAdjustment: true,
-                              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+                              unselectedLabelStyle:
+                                  const TextStyle(fontWeight: FontWeight.w400),
                               tabs: [
                                 Tab(
                                   child: Text(
@@ -229,10 +231,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis),
                                   ),
-                                  Icon(
-                                    Icons.thumb_down_alt_outlined,
-                                    size: 22.sp,
-                                    color: AppTheme.primaryColor,
+                                  InkWell(
+                                    onTap: () {
+                                      showFilterButtonSheet(
+                                          context: context,
+                                          titleText: "Dislike reasons",
+                                          widgets: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const Divider(
+                                                color: Color(0xff6D2EF1),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+
+                                                },
+                                                child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemCount: controller
+                                                        .dislikeReasons
+                                                        .value
+                                                        .data!
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            controller
+                                                                .dislikeReasons
+                                                                .value
+                                                                .data![index]
+                                                                .name
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          )
+                                                        ],
+                                                      );
+                                                    }),
+                                              )
+                                            ],
+                                          ));
+                                    },
+                                    child: Icon(
+                                      Icons.thumb_down_alt_outlined,
+                                      size: 22.sp,
+                                      color: AppTheme.primaryColor,
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 5.w,
@@ -253,11 +313,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .toString()),
                                                       context: context)
                                                   .then((value) {
-                                                if (value.status == true) {
-                                                }
+                                                if (value.status == true) {}
                                                 controller.getData();
-                                                showToast(value.message.toString());
-
+                                                showToast(
+                                                    value.message.toString());
                                               });
                                             },
                                             child: Icon(
@@ -278,7 +337,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       context: context)
                                                   .then((value) {
                                                 if (value.status == true) {}
-                                                showToast(value.message.toString());
+                                                showToast(
+                                                    value.message.toString());
                                                 controller.getData();
                                               });
                                             },
@@ -388,9 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: deviceHeight * .01,
                               ),
                               SizedBox(
-                                child: controller.modelJobList.value
-                                            .data![index].skills!.length ==
-                                        0
+                                child: controller.modelJobList.value.data![index].skills!.length == 0
                                     ? SizedBox()
                                     : Column(
                                         children: [
@@ -595,10 +653,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .toString()),
                                                       context: context)
                                                   .then((value) {
-                                                if (value.status == true) {
-
-                                                }
-                                                showToast(value.message.toString());
+                                                if (value.status == true) {}
+                                                showToast(
+                                                    value.message.toString());
                                                 controller.getDataBestJob();
                                               });
                                             },
@@ -620,10 +677,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .toString()),
                                                         context: context)
                                                     .then((value) {
-                                                  if (value.status == true) {
-
-                                                  }
-                                                  showToast(value.message.toString());
+                                                  if (value.status == true) {}
+                                                  showToast(
+                                                      value.message.toString());
                                                   controller.getDataBestJob();
                                                 });
                                               });
@@ -984,9 +1040,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .toString()),
                                                         context: context)
                                                     .then((value) {
-                                                  if (value.status == true) {
-                                                  }
-                                                  showToast(value.message.toString());
+                                                  if (value.status == true) {}
+                                                  showToast(
+                                                      value.message.toString());
                                                   controller.getDataRecentJob();
                                                 });
                                               });
@@ -1009,9 +1065,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .toString()),
                                                         context: context)
                                                     .then((value) {
-                                                  if (value.status == true) {
-                                                  }
-                                                  showToast(value.message.toString());
+                                                  if (value.status == true) {}
+                                                  showToast(
+                                                      value.message.toString());
                                                   controller.getDataRecentJob();
                                                 });
                                               });

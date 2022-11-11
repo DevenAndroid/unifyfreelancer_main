@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../resources/app_theme.dart';
 import '../resources/size.dart';
 
@@ -54,6 +53,8 @@ class ApiUrls {
   static const String savedJobs = "${apiBaseUrl}saved-jobs";
   static const String removeSavedJobs = "${apiBaseUrl}remove-saved-jobs";
   static const String allProposal = "${apiBaseUrl}all-proposal";
+  static const String dislikeReasons = "${apiBaseUrl}dislike-reasons";
+  static const String removeDislikeJob = "${apiBaseUrl}remove-dislike-job";
 
 
 }
@@ -111,6 +112,7 @@ showFilterButtonSheet(
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
@@ -121,7 +123,7 @@ showFilterButtonSheet(
                     titleText,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 16,
                       color: AppTheme.textColor
                     ),
 
