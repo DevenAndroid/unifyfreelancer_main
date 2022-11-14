@@ -541,7 +541,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     Container(
                       decoration: BoxDecoration(
                           border: Border(
-                            left: BorderSide(width: AddSize.size100*.04, color: Colors. lightBlue. shade600),
+                            left: BorderSide(width: AddSize.size100*.04, color: AppTheme.pinkText.withOpacity(.33)),
                           )
                       ),
                       margin:  EdgeInsets.only(left: AddSize.size100*.21),
@@ -581,12 +581,24 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           const SizedBox(
                             height: 30,
                           ),
+
                         ],
                       ),
                     ),
+
                   ],
                 );
               }),
+          SizedBox(
+            height: 10,
+          ),
+          Divider(
+            thickness: 1,
+            color: AppTheme.primaryColor.withOpacity(.13),
+          ),
+          SizedBox(
+            height: 10,
+          ),
 
         ]);
   }

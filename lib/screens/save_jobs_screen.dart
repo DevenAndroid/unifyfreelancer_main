@@ -112,14 +112,6 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                            Icon(
-                                              Icons.thumb_down_alt_outlined,
-                                              size: 22.sp,
-                                              color: AppTheme.primaryColor,
-                                            ),
-                                            SizedBox(
-                                              width: 5.w,
-                                            ),
                                             SizedBox(
                                               child:  controller.model.value
                                                   .data![index].isSaved == false

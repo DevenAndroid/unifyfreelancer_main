@@ -78,27 +78,27 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextField(
-                    controller: _nameController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Title".obs,
+                  controller: _nameController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.text,
+                  hintText: "Title".obs,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Title is required'),
-                  ]),),
+                    RequiredValidator(errorText: 'Title is required'),
+                  ]),
+                ),
                 SizedBox(
                   height: 20,
                 ),
                 CustomTextField(
-                    controller: _descriptionController,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.text,
-                    hintText: "Description".obs,
-                    isMulti: true,
+                  controller: _descriptionController,
+                  obSecure: false.obs,
+                  keyboardType: TextInputType.text,
+                  hintText: "Description".obs,
+                  isMulti: true,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Description is required'),
-                  ]),),
+                    RequiredValidator(errorText: 'Description is required'),
+                  ]),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -166,48 +166,33 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Expanded(
               child: CustomOutlineButton(
-                title: 'Select Template',
-                backgroundColor: AppTheme.whiteColor,
-                onPressed: () {
-                  pickImageFromDevice(imageSource: ImageSource.gallery);
-                },
-                textColor: AppTheme.primaryColor,
-                expandedValue: false,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomOutlineButton(
-                title: 'Save',
+                title: 'Upload',
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: (){
-                  if(_formKey.currentState!.validate() && imageFileToPick.path != ""){
-                    Map<String,String> map = {};
+                onPressed: () {
+                  if (_formKey.currentState!.validate() &&
+                      imageFileToPick.path != "") {
+                    Map<String, String> map = {};
                     map["title"] = _nameController.text.trim();
                     map["description"] = _descriptionController.text.trim();
                     editPortfolioInfoRepo(
                       mapData: map,
                       fieldName1: "image",
                       file1: imageFileToPick,
-                      context: context,).then((value) {
-                        if(value.status == true){
-                          Get.back();
-                          controller.getData();
-                        }
-                        showToast(value.message.toString());
+                      context: context,
+                    ).then((value) {
+                      if (value.status == true) {
+                        Get.back();
+                        controller.getData();
+                      }
+                      showToast(value.message.toString());
                     });
-                  }
-                  else{
+                  } else {
                     showToast("Please add a image");
                   }
                 },
@@ -215,8 +200,8 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                 expandedValue: false,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

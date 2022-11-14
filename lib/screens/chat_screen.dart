@@ -18,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: CustomAppbar(
-            isLikeButton: true,
+            isLikeButton: false,
             isProfileImage: false,
             titleText: "Messages",
           ),
@@ -82,12 +82,18 @@ class _ChatScreenState extends State<ChatScreen> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            Text(
-                              "Derby, United Kingdom",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Color(0xff2F2643)),
+                            Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Derby, United Kingdom",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color(0xff2F2643)),
+                                ),
+                                Icon(Icons.call,color: AppTheme.primaryColor,)
+                              ],
                             ),
                           ],
                         ),

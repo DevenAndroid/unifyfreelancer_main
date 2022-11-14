@@ -221,9 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                        controller.modelJobList.value
-                                            .data![index].name
-                                            .toString(),
+                                        controller.modelJobList.value.data![index].name.toString(),
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
@@ -256,6 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       children: [
                                                         InkWell(
                                                           onTap: () {
+                                                            Get.back();
                                                             dislikeJobRepo(
                                                                     job_id: controller.modelJobList.value.data![index].id.toString(),
                                                                     reason_id: controller.dislikeReasons.value.data![index].id.toString(),
@@ -263,24 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       print("remove job response::::"+value.message.toString());
                                                               if (value.status == true) {}
                                                               showToast(value.message.toString());
-                                                              Get.back();
                                                               controller.getData();
                                                             });
                                                           },
                                                           child: Text(
-                                                            controller
-                                                                .dislikeReasons
-                                                                .value
-                                                                .data![index]
-                                                                .name
-                                                                .toString(),
+                                                            controller.dislikeReasons.value.data![index].name.toString(),
                                                             style: TextStyle(
                                                               fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText,
+                                                              fontWeight: FontWeight.w500,
+                                                              color: AppTheme.darkBlueText,
                                                             ),
                                                           ),
                                                         ),
@@ -303,8 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 5.w,
                                   ),
                                   SizedBox(
-                                    child: controller.modelJobList.value
-                                                .data![index].isSaved ==
+                                    child: controller.modelJobList.value.data![index].isSaved ==
                                             false
                                         ? InkWell(
                                             onTap: () {
@@ -320,8 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .then((value) {
                                                 if (value.status == true) {}
                                                 controller.getData();
-                                                showToast(
-                                                    value.message.toString());
+                                                showToast(value.message.toString());
                                               });
                                             },
                                             child: Icon(
@@ -342,9 +330,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       context: context)
                                                   .then((value) {
                                                 if (value.status == true) {}
-                                                showToast(
-                                                    value.message.toString());
                                                 controller.getData();
+                                                showToast(value.message.toString());
+
                                               });
                                             },
                                             child: Icon(
@@ -637,7 +625,67 @@ class _HomeScreenState extends State<HomeScreen> {
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      showFilterButtonSheet(
+                                          context: context,
+                                          titleText: "Dislike reasons",
+                                          widgets: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              const Divider(
+                                                color: Color(0xff6D2EF1),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics: NeverScrollableScrollPhysics(),
+                                                  itemCount: controller.dislikeReasons.value.data!.length,
+                                                  itemBuilder: (context, index) {
+                                                    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            Get.back();
+                                                            dislikeJobRepo(
+                                                                job_id: controller.modeRecentJobList.value.data![index].id.toString(),
+                                                                reason_id: controller.dislikeReasons.value.data![index].id.toString(),
+                                                                context: context).then((value) {
+                                                              print("remove recent job response::::"+value.message.toString());
+                                                              if (value.status == true) {}
+                                                              showToast(value.message.toString());
+
+                                                              controller.getDataRecentJob();
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            controller
+                                                                .dislikeReasons
+                                                                .value
+                                                                .data![index]
+                                                                .name
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 15,
+                                                        )
+                                                      ],
+                                                    );
+                                                  })
+                                            ],
+                                          ));
+                                    },
                                     child: Icon(
                                       Icons.thumb_down_alt_outlined,
                                       size: 22.sp,
@@ -665,8 +713,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context: context)
                                                     .then((value) {
                                                   if (value.status == true) {}
-                                                  showToast(
-                                                      value.message.toString());
+                                                  showToast(value.message.toString());
                                                   controller.getDataRecentJob();
                                                 });
                                               });
@@ -690,9 +737,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context: context)
                                                     .then((value) {
                                                   if (value.status == true) {}
-                                                  showToast(
-                                                      value.message.toString());
                                                   controller.getDataRecentJob();
+                                                  showToast(value.message.toString());
+
                                                 });
                                               });
                                             },
@@ -1028,10 +1075,73 @@ class _HomeScreenState extends State<HomeScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                         ),
-                        Icon(
-                          Icons.thumb_down_alt_outlined,
-                          size: 22.sp,
-                          color: AppTheme.primaryColor,
+                        InkWell(
+                          onTap: () {
+                            showFilterButtonSheet(
+                                context: context,
+                                titleText: "Dislike reasons",
+                                widgets: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    const Divider(
+                                      color: Color(0xff6D2EF1),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: controller.dislikeReasons.value.data!.length,
+                                        itemBuilder: (context, index) {
+                                          return Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  Get.back();
+                                                  dislikeJobRepo(
+                                                      job_id: controller.modelBestJobList.value.data![index].id.toString(),
+                                                      reason_id: controller.dislikeReasons.value.data![index].id.toString(),
+                                                      context: context).then((value) {
+                                                    print("remove job response::::"+value.message.toString());
+                                                    if (value.status == true) {}
+                                                    showToast(value.message.toString());
+
+                                                    controller.getDataBestJob();
+                                                  });
+                                                },
+                                                child: Text(
+                                                  controller
+                                                      .dislikeReasons
+                                                      .value
+                                                      .data![index]
+                                                      .name
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500,
+                                                    color: AppTheme
+                                                        .darkBlueText,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              )
+                                            ],
+                                          );
+                                        })
+                                  ],
+                                ));
+                          },
+                          child: Icon(
+                            Icons.thumb_down_alt_outlined,
+                            size: 22.sp,
+                            color: AppTheme.primaryColor,
+                          ),
                         ),
                         SizedBox(
                           width: 5.w,
@@ -1077,9 +1187,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context: context)
                                       .then((value) {
                                     if (value.status == true) {}
-                                    showToast(
-                                        value.message.toString());
                                     controller.getDataBestJob();
+                                    showToast(value.message.toString());
+
                                   });
                                 });
                               },
