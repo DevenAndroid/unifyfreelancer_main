@@ -98,7 +98,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
         style: TextStyle(
             fontWeight: FontWeight.w600,
             color: AppTheme.textColor,
-            fontSize: 20.sp),
+            fontSize: 18.sp),
       ),
       actions: [
         widget.isLikeButton == true

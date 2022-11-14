@@ -30,6 +30,7 @@ import '../screens/profile/add_portfolio_screen.dart';
 import '../screens/profile/add_testimonials_screen.dart';
 import '../screens/profile/edit_language_screen.dart';
 import '../screens/profile/hour_per_week_screen.dart';
+import '../screens/request_milestone_changes.dart';
 import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
@@ -95,6 +96,7 @@ class MyRouter {
   static var createClientAccount = "/createClientAccount";
   static var submitProposalScreen = "/submitProposalScreen";
   static var addMilestoneScreen = "/addMilestoneScreen";
+  static var requestMilestoneChangesScreen = "/requestMilestoneChangesScreen";
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
@@ -144,5 +146,6 @@ class MyRouter {
     GetPage(name: MyRouter.createClientAccount, page: () => const CreateClientAccount()),
     GetPage(name: MyRouter.submitProposalScreen, page: () => const SubmitProposalScreen()),
     GetPage(name: MyRouter.addMilestoneScreen, page: () => const AddMilestoneScreen()),
+    GetPage(name: MyRouter.requestMilestoneChangesScreen, page: () => const RequestMilestoneChangesScreen()),
   ];
 }

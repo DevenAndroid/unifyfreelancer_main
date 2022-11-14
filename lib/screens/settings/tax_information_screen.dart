@@ -456,19 +456,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(
-                                          flex: 1,
-                                          child: CustomOutlineButton(
-                                            title: 'Save',
-                                            backgroundColor:
-                                                AppTheme.primaryColor,
-                                            onPressed: () {},
-                                            expandedValue: false,
-                                            textColor: AppTheme.whiteColor,
-                                          )),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
+
                                       Expanded(
                                           flex: 1,
                                           child: CustomOutlineButton(
@@ -483,6 +471,20 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                             expandedValue: false,
                                             textColor: AppTheme.primaryColor,
                                           )),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                          flex: 1,
+                                          child: CustomOutlineButton(
+                                            title: 'Save',
+                                            backgroundColor:
+                                            AppTheme.primaryColor,
+                                            onPressed: () {},
+                                            expandedValue: false,
+                                            textColor: AppTheme.whiteColor,
+                                          )),
+
                                     ],
                                   )
                                 ],
@@ -827,22 +829,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child:
-                                                            CustomOutlineButton(
-                                                          title: 'Save',
-                                                          backgroundColor:
-                                                              AppTheme
-                                                                  .primaryColor,
-                                                          onPressed: () {},
-                                                          expandedValue: false,
-                                                          textColor: AppTheme
-                                                              .whiteColor,
-                                                        )),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
+
                                                     Expanded(
                                                         flex: 1,
                                                         child:
@@ -860,6 +847,23 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                           textColor: AppTheme
                                                               .primaryColor,
                                                         )),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child:
+                                                        CustomOutlineButton(
+                                                          title: 'Save',
+                                                          backgroundColor:
+                                                          AppTheme
+                                                              .primaryColor,
+                                                          onPressed: () {},
+                                                          expandedValue: false,
+                                                          textColor: AppTheme
+                                                              .whiteColor,
+                                                        )),
+
                                                   ],
                                                 )
                                               ],
@@ -1280,22 +1284,8 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child:
-                                                          CustomOutlineButton(
-                                                        title: 'Save',
-                                                        backgroundColor:
-                                                            AppTheme
-                                                                .primaryColor,
-                                                        onPressed: () {},
-                                                        expandedValue: false,
-                                                        textColor:
-                                                            AppTheme.whiteColor,
-                                                      )),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
+
+
                                                   Expanded(
                                                       flex: 1,
                                                       child:
@@ -1311,6 +1301,22 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         expandedValue: false,
                                                         textColor: AppTheme
                                                             .primaryColor,
+                                                      )),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                      CustomOutlineButton(
+                                                        title: 'Save',
+                                                        backgroundColor:
+                                                        AppTheme
+                                                            .primaryColor,
+                                                        onPressed: () {},
+                                                        expandedValue: false,
+                                                        textColor:
+                                                        AppTheme.whiteColor,
                                                       )),
                                                 ],
                                               )
@@ -1430,22 +1436,8 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Expanded(
-                                                      flex: 1,
-                                                      child:
-                                                          CustomOutlineButton(
-                                                        title: 'Save',
-                                                        backgroundColor:
-                                                            AppTheme
-                                                                .primaryColor,
-                                                        onPressed: () {},
-                                                        expandedValue: false,
-                                                        textColor:
-                                                            AppTheme.whiteColor,
-                                                      )),
-                                                  SizedBox(
-                                                    width: 5,
-                                                  ),
+
+
                                                   Expanded(
                                                       flex: 1,
                                                       child:
@@ -1461,6 +1453,22 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         expandedValue: false,
                                                         textColor: AppTheme
                                                             .primaryColor,
+                                                      )),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child:
+                                                      CustomOutlineButton(
+                                                        title: 'Save',
+                                                        backgroundColor:
+                                                        AppTheme
+                                                            .primaryColor,
+                                                        onPressed: () {},
+                                                        expandedValue: false,
+                                                        textColor:
+                                                        AppTheme.whiteColor,
                                                       )),
                                                 ],
                                               )
