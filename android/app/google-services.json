@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "691890923145",
+    "firebase_url": "https://unifyclientapp-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "unifyclientapp",
     "storage_bucket": "unifyclientapp.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "691890923145-e4an0mb9ldao36jlb8p9odtt7sd87e00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eoxysit.unifyfreelancer",
+            "certificate_hash": "bfa708e211d74ae327a2278871b44723500474a4"
+          }
+        },
         {
           "client_id": "691890923145-ft7jqrr50p9aceoticbra1qcskglulei.apps.googleusercontent.com",
           "client_type": 1,
@@ -57,6 +66,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "691890923145-6nh4fgbkir74hanqqbmego8uodbdejdj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.unifyclient",
+            "certificate_hash": "c05a63d10f89e84ada21921971f3530b7de406f6"
+          }
+        },
         {
           "client_id": "691890923145-e33ltabe0tvg0u52g9j6e8895plvq0l0.apps.googleusercontent.com",
           "client_type": 1,

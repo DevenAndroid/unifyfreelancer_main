@@ -31,11 +31,12 @@ import '../screens/profile/add_testimonials_screen.dart';
 import '../screens/profile/edit_language_screen.dart';
 import '../screens/profile/hour_per_week_screen.dart';
 import '../screens/request_milestone_changes.dart';
+import '../screens/search_jobs.dart';
 import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
 import '../screens/profile/edit_skills_screen.dart';
-import '../screens/new_password_screen.dart';
+import '../screens/userflow/new_password_screen.dart';
 import '../screens/settings/billing_and_payment_screen.dart';
 import '../screens/settings/contact_info_screen.dart';
 import '../screens/settings/get_paid_screen.dart';
@@ -45,7 +46,7 @@ import '../screens/settings/profile_setting_screen.dart';
 import '../screens/submit_proposal_screen.dart';
 import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
-import '../screens/forgot_password_screen.dart';
+import '../screens/userflow/forgot_password_screen.dart';
 import '../screens/userflow/verification_screen.dart';
 
 class MyRouter {
@@ -97,6 +98,7 @@ class MyRouter {
   static var submitProposalScreen = "/submitProposalScreen";
   static var addMilestoneScreen = "/addMilestoneScreen";
   static var requestMilestoneChangesScreen = "/requestMilestoneChangesScreen";
+  static var searchJobScreen = "/searchJobScreen";
 
   static var route = [
     GetPage(name: '/', page: () => const SplashScreen()),
@@ -147,5 +149,6 @@ class MyRouter {
     GetPage(name: MyRouter.submitProposalScreen, page: () => const SubmitProposalScreen()),
     GetPage(name: MyRouter.addMilestoneScreen, page: () => const AddMilestoneScreen()),
     GetPage(name: MyRouter.requestMilestoneChangesScreen, page: () => const RequestMilestoneChangesScreen()),
+    GetPage(name: MyRouter.searchJobScreen, page: () => const SearchJobScreen()),
   ];
 }

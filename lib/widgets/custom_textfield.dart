@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 
@@ -20,6 +21,7 @@ class CustomTextField extends StatefulWidget {
   final RxString hintText;
   final Widget? suffixIcon;
   final Widget? prefix;
+  List<TextInputFormatter>? inputFormatters1 = [];
 
   CustomTextField({
     this.controller,
@@ -38,7 +40,8 @@ class CustomTextField extends StatefulWidget {
     this.onEditingCompleted,
     this.onChanged,
     this.onSaved,
-    this.labelText,
+    this.labelText, this.inputFormatters1 ,
+
   });
 
   @override
@@ -55,6 +58,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextFormField(
+        inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
           obscureText: widget.obSecure!.value,

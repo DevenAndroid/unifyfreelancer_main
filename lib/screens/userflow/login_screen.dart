@@ -178,9 +178,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'username or email is required'),
+                                  errorText: 'Username or email is required'),
                               EmailValidator(
-                                  errorText: 'enter a valid email address')
+                                  errorText: 'Enter a valid email address')
                             ])),
                         SizedBox(
                           height: 16.h,
@@ -206,10 +206,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'password is required'),
+                                  errorText: 'Password is required'),
                               MinLengthValidator(8,
                                   errorText:
-                                      'password must be at least 8 digits long'),
+                                      'Password must be at least 8 digits long'),
                             ]),
                           );
                         }),

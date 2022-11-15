@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/repository/hours_per_week_repository.dart';
@@ -151,6 +152,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                 children: [
                                   Expanded(
                                     child: CustomTextField(
+                                      inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                                       prefix: Icon(Icons.attach_money),
                                       controller: _priceController,
                                       obSecure: false.obs,
