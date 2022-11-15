@@ -421,13 +421,12 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         Row(
                           children: [
                             Checkbox(
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 value: acceptTermsOrPrivacy,
                                 activeColor: AppTheme.primaryColor,
                                 onChanged: (newValue) {
-                                  setState(() {
-                                    acceptTermsOrPrivacy = newValue!;
+                                  setState(() {acceptTermsOrPrivacy = newValue!;
+                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : controller.model.value.data!.employment![parentIndex].endDate.toString();
                                   });
                                 }),
                             SizedBox(

@@ -116,7 +116,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                   tabs: [
                                     Tab(
                                       child: Text(
-                                        "All",
+                                        "All (${controller.model.value.data!.all!.length.toString()})",
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                         ),
@@ -124,7 +124,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     ),
                                     Tab(
                                       child: Text(
-                                        "Hourly (5)",
+                                        "Hourly (${controller.model.value.data!.hourly!.length.toString()})",
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                         ),
@@ -132,7 +132,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     ),
                                     Tab(
                                       child: Text(
-                                        "Active Milestones (5)",
+                                        "Active Milestones (${controller.model.value.data!.activeMilestone!.length.toString()})",
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                         ),
@@ -140,7 +140,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     ),
                                     Tab(
                                       child: Text(
-                                        "Awaiting Milestones",
+                                        "Awaiting Milestones (${controller.model.value.data!.awaitingMilestone!.length.toString()})",
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                         ),

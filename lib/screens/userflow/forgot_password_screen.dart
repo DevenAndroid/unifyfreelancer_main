@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
-import '../repository/forgot_password_repository.dart';
-import '../resources/app_theme.dart';
-import '../widgets/box_textfield.dart';
-import '../widgets/common_button.dart';
-import '../widgets/custom_appbar.dart';
+import '../../repository/forgot_password_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../widgets/box_textfield.dart';
+import '../../widgets/common_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);

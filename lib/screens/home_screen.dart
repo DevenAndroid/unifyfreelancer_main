@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final controller = Get.put(JobListController());
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   child: TextFormField(
-                    readOnly: true,
+                    controller: _searchController,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintStyle: TextStyle(
@@ -71,17 +72,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         hintText: 'Search for job',
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
-                        suffixIcon: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: SvgPicture.asset(
-                              'assets/icon/Search.svg',
-                              color: AppTheme.whiteColor,
-                            ))),
+                        suffixIcon: InkWell(
+                          onTap: (){
+                            Get.toNamed(MyRouter.searchJobScreen,arguments: [_searchController.text.toString()]);
+                          },
+                          child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                color: AppTheme.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: SvgPicture.asset(
+                                'assets/icon/Search.svg',
+                                color: AppTheme.whiteColor,
+                              )),
+                        )),
+                    onFieldSubmitted: (value){
+                      if(value.isNotEmpty){
+                        Get.toNamed(MyRouter.searchJobScreen,arguments: [value.toString()]);
+                      }
+
+                    },
                   ),
                 ),
                 SizedBox(

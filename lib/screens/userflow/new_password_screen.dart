@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
-import '../repository/reset_password_repository.dart';
-import '../resources/app_theme.dart';
-import '../widgets/box_textfield.dart';
-import '../widgets/common_button.dart';
-import '../widgets/custom_appbar.dart';
+import '../../repository/reset_password_repository.dart';
+import '../../resources/app_theme.dart';
+import '../../widgets/box_textfield.dart';
+import '../../widgets/common_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({Key? key}) : super(key: key);
@@ -85,20 +85,22 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide = true.obs;
+                                  eyeHide2 = true.obs;
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide = false.obs;
+                                  eyeHide2 = false.obs;
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: passwordController,
                     obSecure: eyeHide,
                     hintText: "  New password".obs,
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'password is required'),
-                      MinLengthValidator(8,
-                          errorText: 'password must be at least 8 digits long'),
+                      RequiredValidator(errorText: 'Password is required'),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
+                      MaxLengthValidator(16, errorText: 'Max length is 16 '),
                     ]),
                   ),
                   SizedBox(
@@ -119,11 +121,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = true.obs;
+                                  eyeHide = true.obs;
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = false.obs;
+                                  eyeHide = false.obs;
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: confirmPasswordController,
