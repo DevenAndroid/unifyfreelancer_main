@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "691890923145-7m0k108l06mnuj4moslpgef8rife1519.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eoxysit.unifyfreelancer",
+            "certificate_hash": "205c7d0d77c9701d6bf996964859863de86a5c0e"
+          }
+        },
+        {
           "client_id": "691890923145-ee7vns2ne08439levgbsthdva5i9oef5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -8,7 +8,10 @@ import '../resources/app_theme.dart';
 import '../resources/size.dart';
 
 class ApiUrls {
-  static const String apiBaseUrl = 'https://unify.eoxyslive.com/api/';
+  static const String apiBaseUrl = 'https://unify-backend-staging.eoxyslive.com/api/';
+  // Staging Base Url https://unify-backend-staging.eoxyslive.com
+
+
   static const String login = "${apiBaseUrl}login";
   static const String signUp = "${apiBaseUrl}signup";
   static const String verifySignUp = "${apiBaseUrl}verifysignup";
