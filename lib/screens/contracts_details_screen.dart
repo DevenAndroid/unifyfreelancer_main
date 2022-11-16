@@ -517,7 +517,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: AddSize.size100*.46,
                           width: AddSize.size100*.46,
                           alignment: Alignment.center,
-                          child: index1 <2 ?
+                          child: index1 < 2 ?
                           Icon(Icons.check,color: Colors.white,size: AddSize.size25,) :
                           Padding(
                             padding: EdgeInsets.only(top: AddSize.size10*.5),
