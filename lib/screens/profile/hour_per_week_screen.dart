@@ -89,6 +89,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            /// for pushing
                             children: [
                               Text(
                                 "Knowing how much can you work helps freelancer find the right jobs for you.",
