@@ -8,7 +8,7 @@ import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../resources/helper.dart';
 
-Future<ModelSignUpResponse> signUp(
+Future<ModelSignUpResponse> signUp({
     firstName,
     lastName,
     email,
@@ -18,7 +18,7 @@ Future<ModelSignUpResponse> signUp(
     referalCode,
     agreeTerms,
     sendEmail,
-    BuildContext context) async {
+  context }) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   try {
