@@ -33,7 +33,7 @@ class Page3 extends StatelessWidget {
               height: AddSize.size20,
             ),
             Text(
-              "Different people come to upwork for different reasons we want to highlight to opportunities that fit your goals best - while still showing you all ",
+              "Different people come to upwork for different reasons we want to highlight to opportunities that fit your goals best - while still showing you all possibilities. which of these feels most right for you ? ",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppTheme.darkBlueText,
