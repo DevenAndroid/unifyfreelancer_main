@@ -15,7 +15,15 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  final controller = PageController();
+  final PageController pageController = PageController();
+  RxDouble currentIndex = 1.0.obs;
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      currentIndex.value = pageController.page!+1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +64,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         ),
       ),
       body: PageView(
-        controller: controller,
+        controller: pageController,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: [
