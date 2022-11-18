@@ -16,6 +16,7 @@ class Page3 extends StatelessWidget {
       height: AddSize.screenHeight,
       width: AddSize.screenWidth,
       child: SingleChildScrollView(
+        physics:  BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
