@@ -44,7 +44,7 @@ import '../screens/settings/my_teams_screen.dart';
 import '../screens/settings/password_and_security_screen.dart';
 import '../screens/settings/profile_setting_screen.dart';
 import '../screens/submit_proposal_screen.dart';
-import '../screens/userflow/questions.dart';
+import '../screens/questions_screens/questions_main_screen.dart';
 import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
 import '../screens/userflow/forgot_password_screen.dart';
