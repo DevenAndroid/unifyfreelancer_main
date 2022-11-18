@@ -348,11 +348,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 height: deviceHeight * .02,
               ),
               Text(
-                "Hired by: " +
-                    controller.model.value.data!.all![index].client!.firstName
-                        .toString() +
-                    controller.model.value.data!.all![index].client!.lastName
-                        .toString(),
+                "Hired by: " + controller.model.value.data!.all![index].client!.firstName.toString() +
+                    controller.model.value.data!.all![index].client!.lastName.toString(),
                 style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,

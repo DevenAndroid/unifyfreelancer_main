@@ -8,14 +8,18 @@ import '../../models/proposal_screen_model.dart';
 Future<ModelProposal> allProposalRepo() async {
   try {
     http.Response response = await http.get(Uri.parse(ApiUrls.allProposal), headers: await getAuthHeader());
-    print(response.body);
+    print("32132132231231321    "+response.body);
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       return ModelProposal.fromJson(jsonDecode(response.body));
-    } else {
+    }
+    else if(response.statusCode == 400){
+      return ModelProposal(message: "No submit proposals", status: false, data: null);
+    }
+    else {
       print(jsonDecode(response.body));
-      return ModelProposal(message: jsonDecode(response.body)["message"], status: false,data: null);
+      return ModelProposal(message: jsonDecode(response.body)["message"], status: false,data: null );
     }
   } on SocketException catch (e) {
     return ModelProposal(message: "No Internet Access", status: false,data: null);

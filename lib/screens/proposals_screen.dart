@@ -24,7 +24,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Obx(() {
-  return Column(
+        return Column(
         children: [
           SizedBox(height: 10.h),
           DefaultTabController(

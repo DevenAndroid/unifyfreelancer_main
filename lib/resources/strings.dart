@@ -18,9 +18,9 @@ class AppStrings {
 
   //Signup Screen Strings
   static const String signUpYourAccount = "SIGNUP YOUR ACCOUNT";
-  static const String firstName = "First Name";
-  static const String lastName = "Last Name";
-  static const String emailID = "Email ID";
+  static const String firstName = "First name";
+  static const String lastName = "Last name";
+  static const String emailID = "Email id";
   static const String understandAndAgree =
       "Yes, I Understand and agree to the User Agreement";
   static const String unifyTermsOfService = "Unify Terms of Service";
