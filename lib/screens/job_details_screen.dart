@@ -38,6 +38,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       if (value.status == true) {
         status.value = RxStatus.success();
         descText = model.value.data!.description.toString();
+        textLength = descText.length;
       } else {
         status.value = RxStatus.error();
       }
@@ -46,6 +47,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
   String descText = "";
   bool descTextShowFlag = false;
+  int textLength = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -342,30 +344,31 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                         color: const Color(0xff170048)),
                                     maxLines: descTextShowFlag ? 10000 : 6),
                                 SizedBox(
-                                  height: 5,
-                                ),
-                                InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        descTextShowFlag = !descTextShowFlag;
-                                      });
-                                    },
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          descTextShowFlag
-                                              ? Text(
-                                                  "Show Less",
-                                                  style: TextStyle(
-                                                      color: AppTheme
-                                                          .primaryColor),
-                                                )
-                                              : Text("Show More",
-                                                  style: TextStyle(
-                                                      color: AppTheme
-                                                          .primaryColor))
-                                        ])),
+                                    child: textLength <= 200
+                                        ? SizedBox()
+                                        : InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                descTextShowFlag =
+                                                    !descTextShowFlag;
+                                              });
+                                            },
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: <Widget>[
+                                                  descTextShowFlag
+                                                      ? Text(
+                                                          "Show Less",
+                                                          style: TextStyle(
+                                                              color: AppTheme
+                                                                  .primaryColor),
+                                                        )
+                                                      : Text("Show More",
+                                                          style: TextStyle(
+                                                              color: AppTheme
+                                                                  .primaryColor))
+                                                ]))),
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
