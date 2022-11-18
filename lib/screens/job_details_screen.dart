@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,17 +17,17 @@ class JobDetailsScreen extends StatefulWidget {
 }
 
 class _JobDetailsScreenState extends State<JobDetailsScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String? time;
 
+  final GlobalKey _formKey = GlobalKey<FormState>();
+  String? time;
   Rx<RxStatus> status = RxStatus.empty().obs;
   Rx<ModelSingleJob> model = ModelSingleJob().obs;
-  var id = 0;
+  var id = "0";
 
   @override
   void initState() {
     super.initState();
-    id = int.parse(Get.arguments[0] ?? 0);
+    id = Get.arguments[0] ?? "0";
     getData();
   }
 
@@ -928,13 +927,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     } else {
                                       showToast("Please add a file");
                                     }*/
-                                    Get.toNamed(MyRouter.submitProposalScreen,
-                                        arguments: [
-                                          model.value.data!.name.toString(),
-                                          model.value.data!.description
-                                              .toString(),
-                                          model.value.data!.price.toString(),
-                                        ]);
+                                    Get.toNamed(
+                                        MyRouter.submitProposalScreen,
+                                        arguments: model.value);
                                   },
                                   title: "Send Proposal",
                                   textColor: AppTheme.whiteColor,

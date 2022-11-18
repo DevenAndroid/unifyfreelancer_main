@@ -1,13 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
 import '../Controller/jobs_detail_controller.dart';
+import '../models/model_single_job.dart';
 import '../popups/radio_buttons_job_details.dart';
 import '../resources/app_theme.dart';
 import '../widgets/common_outline_button.dart';
@@ -22,23 +22,20 @@ class SubmitProposalScreen extends StatefulWidget {
 }
 
 class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
-  String? name;
-  String? description;
-  String? price;
+  // String? name;
+  // String? description;
+  // String? price;
   String type = "By project";
 
-
   List milestone = [];
+  Rx<ModelSingleJob> model = ModelSingleJob().obs;
 
   @override
   void initState() {
     super.initState();
-    name = Get.arguments[0];
-    description = Get.arguments[1];
-    price = Get.arguments[2];
+    model.value = Get.arguments;
   }
 
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _bidController = TextEditingController();
   final TextEditingController _receiveController = TextEditingController();
   final TextEditingController _letterController = TextEditingController();
@@ -56,7 +53,6 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     }
   }
 
-
   int dateInput = 0;
   final dateFormat = DateFormat('yyyy-MM-dd');
 
@@ -65,7 +61,6 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
-    var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -86,7 +81,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                 height: 10,
               ),
               Text(
-                name!,
+                model.value.data!.name.toString(),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
@@ -96,7 +91,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                 height: deviceHeight * .02,
               ),
               Text(
-                description!,
+                model.value.data!.description.toString(),
                 style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
@@ -122,7 +117,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                 height: deviceHeight * .01,
               ),
               Text(
-                "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
+                "Client's budget: \$${model.value.data!.price.toString()} USD",
                 style: TextStyle(
                     fontSize: 13.sp,
                     color: const Color(0xff180D31),
@@ -131,6 +126,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
               SizedBox(
                 height: deviceHeight * .02,
               ),
+              // fixed,  hourly
+
               RadioListTile(
                   title: Text(
                     "By project",
@@ -148,14 +145,14 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                   ),
                   contentPadding: const EdgeInsets.all(0),
                   dense: true,
-                  visualDensity:
-                      const VisualDensity(horizontal: -4, vertical: -4),
+                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
                   value: "By project",
                   groupValue: type,
                   onChanged: (value) {
+                    print(jsonEncode(model.value));
+                    print(type);
                     setState(() {
                       type = value.toString();
-                      print(type);
                     });
                   }),
               RadioListTile(
