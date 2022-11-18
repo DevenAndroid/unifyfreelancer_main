@@ -44,6 +44,7 @@ import '../screens/settings/my_teams_screen.dart';
 import '../screens/settings/password_and_security_screen.dart';
 import '../screens/settings/profile_setting_screen.dart';
 import '../screens/submit_proposal_screen.dart';
+import '../screens/questions_screens/questions_main_screen.dart';
 import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
 import '../screens/userflow/forgot_password_screen.dart';
@@ -99,9 +100,10 @@ class MyRouter {
   static var addMilestoneScreen = "/addMilestoneScreen";
   static var requestMilestoneChangesScreen = "/requestMilestoneChangesScreen";
   static var searchJobScreen = "/searchJobScreen";
+  static var questionsScreen = "/questionsScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SplashScreen()),
+    GetPage(name: '/', page: () => const QuestionsScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
@@ -150,5 +152,6 @@ class MyRouter {
     GetPage(name: MyRouter.addMilestoneScreen, page: () => const AddMilestoneScreen()),
     GetPage(name: MyRouter.requestMilestoneChangesScreen, page: () => const RequestMilestoneChangesScreen()),
     GetPage(name: MyRouter.searchJobScreen, page: () => const SearchJobScreen()),
+    GetPage(name: MyRouter.questionsScreen, page: () => const QuestionsScreen()),
   ];
 }

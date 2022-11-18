@@ -34,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController invitationController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
@@ -212,7 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         }),
                                     child: Icon(Icons.visibility_off_outlined)),
                             // controller: confirmPasswordController,
-                            hintText: "Confirm Password".obs,
+                            hintText: "Confirm password".obs,
                             validator: (value) {
                               if (value == "") {
                                 return "Confirm password is required";
@@ -223,6 +224,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 return null;
                               }
                             },
+                          ),
+                          SizedBox(
+                            height: 12.h,
+                          ),
+                          BoxTextField(
+                              obSecure: false.obs,
+                              prefix: Icon(
+                                Icons.adaptive.share,
+                              ),
+                              controller: invitationController,
+                              hintText: "Invitation code".obs,
                           ),
                           SizedBox(
                             height: 12.h,
@@ -427,7 +439,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             children: [
                               Checkbox(
                                   materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  MaterialTapTargetSize.shrinkWrap,
                                   value: acceptTermsOrPrivacy,
                                   activeColor: AppTheme.primaryColor,
                                   onChanged: (newValue) {
@@ -512,16 +524,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (_formKey.currentState!.validate()) {
                               if(acceptTermsOrPrivacy == true){
                                 signUp(
-                                    firstNameController.text,
-                                    lastNameController.text,
-                                    emailController.text,
-                                    passwordController.text,
-                                    countryController.text,
-                                    "freelancer",
-                                    "",
-                                    acceptTermsOrPrivacy == true ? 1 : 0,
-                                    "",
-                                    context)
+                                  firstName: firstNameController.text.trim(),
+                                    lastName: lastNameController.text.trim(),
+                                   email:  emailController.text.trim(),
+                                   password:  passwordController.text.trim(),
+                                   referalCode: invitationController.text.trim(),
+                                   country:  countryController.text.trim(),
+                                    userType: "freelancer",
+                                  agreeTerms:   acceptTermsOrPrivacy == true ? 1 : 0,
+                                   sendEmail: "",
+                                   context:  context)
                                     .then((value) {
                                   showToast(value.message.toString());
                                   print(jsonEncode(value));
