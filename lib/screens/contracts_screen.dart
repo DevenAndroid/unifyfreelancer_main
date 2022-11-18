@@ -350,6 +350,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               Text(
                 "Hired by: " + controller.model.value.data!.all![index].client!.firstName.toString() +
                     controller.model.value.data!.all![index].client!.lastName.toString(),
+
                 style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,
