@@ -33,20 +33,10 @@ class Page3 extends StatelessWidget {
               height: AddSize.size20,
             ),
             Text(
-              "Different people come to upwork for different reasons we want to highlight to opportunities that fit your goals best - while still showing you all ",
+              "Different people come to unify for different reasons. We want to highlight to opportunities that fit your goals best - while still showing you all possibilities. which of these feels most right for you ? ",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppTheme.darkBlueText,
-                  fontSize: AddSize.font14),
-            ),
-            SizedBox(
-              height: AddSize.size10*.1,
-            ),
-            Text(
-              "(We won't share your answer with anyone else, including potential clients.)",
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textColor,
                   fontSize: AddSize.font14),
             ),
             SizedBox(
