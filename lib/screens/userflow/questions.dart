@@ -95,6 +95,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       height: AddSize.screenHeight,
       width: AddSize.screenWidth,
       child: SingleChildScrollView(
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
