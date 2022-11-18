@@ -14,7 +14,16 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  final controller = PageController();
+  PageController pageController = PageController();
+  RxDouble currentIndex = 1.0.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      currentIndex.value = pageController.page!+1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +57,31 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         ),
         bottom: PreferredSize(
           preferredSize: Size(AddSize.screenWidth, AddSize.size50),
-          child: Container(
-            height: AddSize.size10,
-            color: AppTheme.primaryColor,
-          ),
+          child: Obx(() {
+            return Container(
+              height: AddSize.size10*.8,
+              decoration: BoxDecoration(
+                color: AppTheme.whiteColor,
+                borderRadius: BorderRadius.circular(AddSize.size5),
+              ),
+              padding: EdgeInsets.only(right: AddSize.screenWidth - (currentIndex.value / 20) * AddSize.screenWidth),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(AddSize.size5),
+                ),
+              ),
+            );
+          }),
         ),
       ),
       body: PageView(
-        controller: controller,
+        controller: pageController,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: [
           page1(),
-          page2(),
+          page2()
         ],
       ),
     );
@@ -91,7 +112,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             Row(
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     right: AddSize.padding20,
                   ),
                   child: Icon(Icons.person),
@@ -120,7 +141,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      right: AddSize.padding20,
+                    right: AddSize.padding20,
                   ),
                   child: Icon(Icons.mail_lock_outlined),
                 ),
@@ -147,7 +168,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             Row(
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     right: AddSize.padding20,
                   ),
                   child: Icon(Icons.monetization_on),
@@ -158,7 +179,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: AppTheme.textColor,
-                        fontSize:AddSize.font14 ),
+                        fontSize: AddSize.font14),
                   ),
                 ),
               ],
@@ -225,7 +246,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   fontSize: AddSize.font14),
             ),
             SizedBox(
-              height: AddSize.size10*.1,
+              height: AddSize.size10 * .1,
             ),
             Text(
               "(We won't share your answer with anyone else, including potential clients.)",
@@ -233,7 +254,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   fontWeight: FontWeight.w500,
                   color: AppTheme.textColor,
                   fontSize: AddSize.font14),
-            ),SizedBox(
+            ), SizedBox(
               height: AddSize.size20,
             ),
             ListTile(
