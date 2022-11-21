@@ -5,6 +5,9 @@ import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page1.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page2.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page3.dart';
+import 'package:unifyfreelancer/screens/questions_screens/page4.dart';
+import 'package:unifyfreelancer/screens/questions_screens/page5.dart';
+import 'package:unifyfreelancer/screens/questions_screens/page6.dart';
 import '../../resources/app_theme.dart';
 
 class QuestionsScreen extends StatefulWidget {
@@ -71,6 +74,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page1(),
           Page2(),
           Page3(),
+          Page4(),
+          Page5(),
+          Page6()
         ],
       ),
     );
