@@ -5,10 +5,15 @@ import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page1.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page2.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page3.dart';
+
+import 'package:unifyfreelancer/screens/questions_screens/profile_image_screen.dart';
+
 import 'package:unifyfreelancer/screens/questions_screens/page4.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page5.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page6.dart';
+
 import '../../resources/app_theme.dart';
+import 'add_language_screen.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({Key? key}) : super(key: key);
@@ -20,11 +25,12 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   final PageController pageController = PageController();
   RxDouble currentIndex = 1.0.obs;
+
   @override
   void initState() {
     super.initState();
     pageController.addListener(() {
-      currentIndex.value = pageController.page!+1;
+      currentIndex.value = pageController.page! + 1;
     });
   }
 
@@ -60,10 +66,23 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         ),
         bottom: PreferredSize(
           preferredSize: Size(AddSize.screenWidth, AddSize.size50),
-          child: Container(
-            height: AddSize.size10,
-            color: AppTheme.primaryColor,
-          ),
+          child: Obx(() {
+            return Container(
+              height: AddSize.size10,
+              decoration: BoxDecoration(
+                color: AppTheme.whiteColor,
+                borderRadius: BorderRadius.circular(AddSize.size10),
+              ),
+              padding: EdgeInsets.only(right: AddSize.screenWidth - currentIndex
+                  .value / 20 * AddSize.screenWidth),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(AddSize.size10),
+                ),
+              ),
+            );
+          }),
         ),
       ),
       body: PageView(
@@ -74,142 +93,147 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page1(),
           Page2(),
           Page3(),
+
+          ProfileImage(),
+          AddLanguageQuestionScreen()
+
           Page4(),
           Page5(),
           Page6()
+
         ],
       ),
     );
   }
 
-  // page1() {
-  //   return Container(
-  //     padding: EdgeInsets.all(12),
-  //     height: AddSize.screenHeight,
-  //     width: AddSize.screenWidth,
-  //     child: SingleChildScrollView(
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           SizedBox(
-  //             height: AddSize.size10,
-  //           ),
-  //           Text(
-  //             "Hey ZabuZa. Ready for your next big opportunity's ?",
-  //             style: TextStyle(
-  //                 fontWeight: FontWeight.w600,
-  //                 color: AppTheme.darkBlueText,
-  //                 fontSize: AddSize.font20),
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size50,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Padding(
-  //                 padding:  EdgeInsets.only(
-  //                   right: AddSize.padding20,
-  //                 ),
-  //                 child: Icon(Icons.person),
-  //               ),
-  //               Expanded(
-  //                 child: Text(
-  //                   "Answer a few questions and start building your profile",
-  //                   style: TextStyle(
-  //                       fontWeight: FontWeight.w500,
-  //                       color: AppTheme.textColor,
-  //                       fontSize: AddSize.font14),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           Divider(
-  //             color: AppTheme.primaryColor.withOpacity(.49),
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Padding(
-  //                 padding: EdgeInsets.only(
-  //                     right: AddSize.padding20,
-  //                 ),
-  //                 child: Icon(Icons.mail_lock_outlined),
-  //               ),
-  //               Expanded(
-  //                 child: Text(
-  //                   "Apply for open roles or list services for clients to  buy",
-  //                   style: TextStyle(
-  //                       fontWeight: FontWeight.w500,
-  //                       color: AppTheme.textColor,
-  //                       fontSize: AddSize.font14),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           Divider(
-  //             color: AppTheme.primaryColor.withOpacity(.49),
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           Row(
-  //             children: [
-  //               Padding(
-  //                 padding:  EdgeInsets.only(
-  //                   right: AddSize.padding20,
-  //                 ),
-  //                 child: Icon(Icons.monetization_on),
-  //               ),
-  //               Expanded(
-  //                 child: Text(
-  //                   "Get paid safely and know we're there to help",
-  //                   style: TextStyle(
-  //                       fontWeight: FontWeight.w500,
-  //                       color: AppTheme.textColor,
-  //                       fontSize:AddSize.font14 ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           Divider(
-  //             color: AppTheme.primaryColor.withOpacity(.49),
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size125,
-  //           ),
-  //           Text(
-  //             "It only takes 5 -10 minutes and you can edit it later, We'll save as you go",
-  //             style: TextStyle(
-  //                 fontWeight: FontWeight.w500,
-  //                 color: AppTheme.textColor,
-  //                 fontSize: AddSize.font12),
-  //           ),
-  //           SizedBox(
-  //             height: AddSize.size20,
-  //           ),
-  //           CustomOutlineButton(
-  //             title: "Get Started",
-  //             backgroundColor: AppTheme.primaryColor,
-  //             textColor: AppTheme.whiteColor,
-  //             expandedValue: true,
-  //             onPressed: () {},
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+// page1() {
+//   return Container(
+//     padding: EdgeInsets.all(12),
+//     height: AddSize.screenHeight,
+//     width: AddSize.screenWidth,
+//     child: SingleChildScrollView(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           SizedBox(
+//             height: AddSize.size10,
+//           ),
+//           Text(
+//             "Hey ZabuZa. Ready for your next big opportunity's ?",
+//             style: TextStyle(
+//                 fontWeight: FontWeight.w600,
+//                 color: AppTheme.darkBlueText,
+//                 fontSize: AddSize.font20),
+//           ),
+//           SizedBox(
+//             height: AddSize.size50,
+//           ),
+//           Row(
+//             children: [
+//               Padding(
+//                 padding:  EdgeInsets.only(
+//                   right: AddSize.padding20,
+//                 ),
+//                 child: Icon(Icons.person),
+//               ),
+//               Expanded(
+//                 child: Text(
+//                   "Answer a few questions and start building your profile",
+//                   style: TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: AppTheme.textColor,
+//                       fontSize: AddSize.font14),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           Divider(
+//             color: AppTheme.primaryColor.withOpacity(.49),
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           Row(
+//             children: [
+//               Padding(
+//                 padding: EdgeInsets.only(
+//                     right: AddSize.padding20,
+//                 ),
+//                 child: Icon(Icons.mail_lock_outlined),
+//               ),
+//               Expanded(
+//                 child: Text(
+//                   "Apply for open roles or list services for clients to  buy",
+//                   style: TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: AppTheme.textColor,
+//                       fontSize: AddSize.font14),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           Divider(
+//             color: AppTheme.primaryColor.withOpacity(.49),
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           Row(
+//             children: [
+//               Padding(
+//                 padding:  EdgeInsets.only(
+//                   right: AddSize.padding20,
+//                 ),
+//                 child: Icon(Icons.monetization_on),
+//               ),
+//               Expanded(
+//                 child: Text(
+//                   "Get paid safely and know we're there to help",
+//                   style: TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: AppTheme.textColor,
+//                       fontSize:AddSize.font14 ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           Divider(
+//             color: AppTheme.primaryColor.withOpacity(.49),
+//           ),
+//           SizedBox(
+//             height: AddSize.size125,
+//           ),
+//           Text(
+//             "It only takes 5 -10 minutes and you can edit it later, We'll save as you go",
+//             style: TextStyle(
+//                 fontWeight: FontWeight.w500,
+//                 color: AppTheme.textColor,
+//                 fontSize: AddSize.font12),
+//           ),
+//           SizedBox(
+//             height: AddSize.size20,
+//           ),
+//           CustomOutlineButton(
+//             title: "Get Started",
+//             backgroundColor: AppTheme.primaryColor,
+//             textColor: AppTheme.whiteColor,
+//             expandedValue: true,
+//             onPressed: () {},
+//           )
+//         ],
+//       ),
+//     ),
+//   );
+// }
 //   RxInt curreentIndex = 1.obs;
 //
 //   page2() {
