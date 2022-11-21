@@ -8,7 +8,9 @@ import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/new_helper.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 
+import '../../controller/question_controller.dart';
 import '../../resources/size.dart';
+import '../../widgets/common_outline_button.dart';
 
 class ProfileImage extends StatefulWidget {
   ProfileImage({Key? key}) : super(key: key);
@@ -75,6 +77,8 @@ class _ProfileImageState extends State<ProfileImage> {
       ),
     );
   }
+
+  final controller = Get.put(QuestionController());
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +217,36 @@ class _ProfileImageState extends State<ProfileImage> {
             ),
           );
         }),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
+        child: Row(
+          children: [
+            Expanded(
+              child: CustomOutlineButton(
+                title: "Back",
+                backgroundColor: AppTheme.whiteColor,
+                textColor: AppTheme.primaryColor,
+                expandedValue: false,
+                onPressed: () {
+                  controller.previousPage();
+                },
+              ),
+            ),
+            SizedBox(width: AddSize.size20,),
+            Expanded(
+              child: CustomOutlineButton(
+                title: "Next",
+                backgroundColor: AppTheme.primaryColor,
+                textColor: AppTheme.whiteColor,
+                expandedValue: false,
+                onPressed: () {
+                  controller.nextPage();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:unifyfreelancer/screens/questions_screens/page4.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page5.dart';
 import 'package:unifyfreelancer/screens/questions_screens/page6.dart';
 
+import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import 'add_language_screen.dart';
 
@@ -23,16 +24,8 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  final PageController pageController = PageController();
-  RxDouble currentIndex = 1.0.obs;
 
-  @override
-  void initState() {
-    super.initState();
-    pageController.addListener(() {
-      currentIndex.value = pageController.page! + 1;
-    });
-  }
+  final controller = Get.put(QuestionController());
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +50,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: AppTheme.textColor,
-              fontSize: AddSize.font20),
+              fontSize: AddSize.font20
+          ),
         ),
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10),
+            bottom: Radius.circular(AddSize.size10),
           ),
         ),
         bottom: PreferredSize(
@@ -73,8 +67,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-              padding: EdgeInsets.only(right: AddSize.screenWidth - currentIndex
-                  .value / 20 * AddSize.screenWidth),
+              padding: EdgeInsets.only(
+                  right: AddSize.screenWidth -
+                      controller.currentIndex.value / 20 * AddSize.screenWidth),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -86,21 +81,18 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         ),
       ),
       body: PageView(
-        controller: pageController,
+        controller: controller.pageController,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: [
           Page1(),
           Page2(),
           Page3(),
-
-          ProfileImage(),
-          AddLanguageQuestionScreen()
-
           Page4(),
           Page5(),
-          Page6()
-
+          Page6(),
+          ProfileImage(),
+          AddLanguageQuestionScreen(),
         ],
       ),
     );
@@ -321,5 +313,3 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 //     );
 //   }
 }
-
-

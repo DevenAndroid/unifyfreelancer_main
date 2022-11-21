@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/common_outline_button.dart';
 
-class Page6 extends StatelessWidget {
+class Page6 extends StatefulWidget {
    Page6({Key? key}) : super(key: key);
+
+  @override
+  State<Page6> createState() => _Page6State();
+}
+
+class _Page6State extends State<Page6> {
    RxBool acceptTermsOrPrivacy = false.obs;
+
+   final controller = Get.put(QuestionController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,38 +172,35 @@ class Page6 extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
+        child: Row(
+          children: [
+            Expanded(
               child: CustomOutlineButton(
-                title: 'Back',
+                title: "Back",
                 backgroundColor: AppTheme.whiteColor,
-                onPressed: () {
-                  Get.back();
-                },
                 textColor: AppTheme.primaryColor,
                 expandedValue: false,
+                onPressed: () {
+                  controller.previousPage();
+                },
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+            SizedBox(width: AddSize.size20,),
+            Expanded(
               child: CustomOutlineButton(
-                title: 'Next',
+                title: "Next",
                 backgroundColor: AppTheme.primaryColor,
-                onPressed: () {
-                },
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
+                onPressed: () {
+                  controller.nextPage();
+                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

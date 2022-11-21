@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
+import '../../controller/question_controller.dart';
 import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../profile/edit_language_screen.dart';
 
@@ -110,55 +112,89 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
     return map;
   }
 
+  final controller = Get.put(QuestionController());
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: AddSize.size10,
-            ),
-            Text(
-              "If you have relevant work experience, add it here",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.darkBlueText,
-                  fontSize: AddSize.font20),
-            ),
-            SizedBox(
-              height: AddSize.size15,
-            ),
-            Text(
-              "Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. just head on the next page",
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.textColor,
-                  fontSize: AddSize.font12),
-            ),
-            SizedBox(
-              height: AddSize.size20,
-            ),
-            englishLanguage(),
-            // Obx(() {
-            //   return ListView.builder(
-            //       itemCount: languageList.length,
-            //       shrinkWrap: true,
-            //       physics: NeverScrollableScrollPhysics(),
-            //       itemBuilder: (context, index) {
-            //         return Obx(() {
-            //           return otherLanguageFields(
-            //               language: languageList[index].language
-            //                   .toString(),
-            //               index: index,
-            //               level: languageList[index].level.toString());
-            //         });
-            //       });
-            // })
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: AddSize.size10,
+              ),
+              Text(
+                "If you have relevant work experience, add it here",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText,
+                    fontSize: AddSize.font20),
+              ),
+              SizedBox(
+                height: AddSize.size15,
+              ),
+              Text(
+                "Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. just head on the next page",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textColor,
+                    fontSize: AddSize.font12),
+              ),
+              SizedBox(
+                height: AddSize.size20,
+              ),
+              englishLanguage(),
+              // Obx(() {
+              //   return ListView.builder(
+              //       itemCount: languageList.length,
+              //       shrinkWrap: true,
+              //       physics: NeverScrollableScrollPhysics(),
+              //       itemBuilder: (context, index) {
+              //         return Obx(() {
+              //           return otherLanguageFields(
+              //               language: languageList[index].language
+              //                   .toString(),
+              //               index: index,
+              //               level: languageList[index].level.toString());
+              //         });
+              //       });
+              // })
 
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
+        child: Row(
+          children: [
+            Expanded(
+              child: CustomOutlineButton(
+                title: "Back",
+                backgroundColor: AppTheme.whiteColor,
+                textColor: AppTheme.primaryColor,
+                expandedValue: false,
+                onPressed: () {
+                  controller.previousPage();
+                },
+              ),
+            ),
+            SizedBox(width: AddSize.size20,),
+            Expanded(
+              child: CustomOutlineButton(
+                title: "Next",
+                backgroundColor: AppTheme.primaryColor,
+                textColor: AppTheme.whiteColor,
+                expandedValue: false,
+                onPressed: () {
+                  controller.nextPage();
+                },
+              ),
+            ),
           ],
         ),
       ),
