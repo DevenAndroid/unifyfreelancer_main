@@ -51,7 +51,7 @@ class _Page6State extends State<Page6> {
                       color: AppTheme.textColor,
                       fontSize: AddSize.font12),
                 ),
-              /*  SizedBox(
+                SizedBox(
                   height: AddSize.size20,
                 ),
                 Container(
@@ -65,7 +65,7 @@ class _Page6State extends State<Page6> {
                       Row(
                         children: [
                           Text(
-                            "Flutter developer",
+                            "Oxford University",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textColor,
@@ -110,14 +110,14 @@ class _Page6State extends State<Page6> {
                         height: AddSize.size20,
                       ),
                       Text(
-                        "Eoxysit",
+                        "Bachelor of engineering",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textColor,
                             fontSize: AddSize.font16),
                       ),
                       Text(
-                        "November 2016 - Present",
+                        "(BEng), Computer Science 2016-2017",
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             color: AppTheme.textColor,
@@ -125,7 +125,7 @@ class _Page6State extends State<Page6> {
                       ),
                     ],
                   ),
-                ),*/
+                ),
                 SizedBox(
                   height: AddSize.size15,
                 ),

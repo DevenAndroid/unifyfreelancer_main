@@ -11,15 +11,14 @@ import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../profile/edit_language_screen.dart';
 
-class AddLanguageQuestionScreen extends StatefulWidget {
-  const AddLanguageQuestionScreen({Key? key}) : super(key: key);
+class Page7 extends StatefulWidget {
+  const Page7({Key? key}) : super(key: key);
 
   @override
-  State<AddLanguageQuestionScreen> createState() => _AddLanguageQuestionScreenState();
+  State<Page7> createState() => _Page7State();
 }
 
-class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
-
+class _Page7State extends State<Page7> {
   final RxList level = [
     "Basic",
     "Conversational",
@@ -47,9 +46,10 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
 
   RxList<AAA> languageList = <AAA>[].obs;
   final TextEditingController englishLevelController = TextEditingController();
-  showBottomSheetForLevel(context,index1) {
+
+  showBottomSheetForLevel(context, index1) {
     RxString selectedLevel = "".obs;
-    if(index1 != -5) {
+    if (index1 != -5) {
       selectedLevel.value = languageList[index1].level.toString();
     } else {
       selectedLevel.value = englishLevelController.text;
@@ -85,7 +85,7 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
                     onChanged: (value) {
                       setState(() {
                         selectedLevel.value = value.toString();
-                        if(index1 != -5){
+                        if (index1 != -5) {
                           languageList[index1].level = value.toString();
                         } else {
                           englishLevelController.text = value.toString();
@@ -102,11 +102,11 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
   final GlobalKey<FormState> formKey = GlobalKey();
 
   getMapData() {
-    Map<String, dynamic>map = {};
-    Map<String, dynamic>map1 = {};
+    Map<String, dynamic> map = {};
+    Map<String, dynamic> map1 = {};
     map["languages"] = map1;
     map1["English"] = englishLevelController.text;
-    for(var item in languageList){
+    for (var item in languageList) {
       map1[item.language.toString()] = item.level;
     }
     return map;
@@ -128,7 +128,7 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
                 height: AddSize.size10,
               ),
               Text(
-                "If you have relevant work experience, add it here",
+                "Looking good. Next, tell us which languages you speak.",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkBlueText,
@@ -138,7 +138,7 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
                 height: AddSize.size15,
               ),
               Text(
-                "Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. just head on the next page",
+                "Unify is global, so clients are often interested to know what languages you speak. English is a must, but do you speak any other languages?",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppTheme.textColor,
@@ -163,41 +163,48 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
               //         });
               //       });
               // })
+// <<<<<<< HEAD:lib/screens/questions_screens/add_language_screen.dart
 
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
-        child: Row(
-          children: [
-            Expanded(
-              child: CustomOutlineButton(
-                title: "Back",
-                backgroundColor: AppTheme.whiteColor,
-                textColor: AppTheme.primaryColor,
-                expandedValue: false,
-                onPressed: () {
-                  controller.previousPage();
-                },
-              ),
-            ),
-            SizedBox(width: AddSize.size20,),
-            Expanded(
-              child: CustomOutlineButton(
-                title: "Next",
-                backgroundColor: AppTheme.primaryColor,
-                textColor: AppTheme.whiteColor,
-                expandedValue: false,
-                onPressed: () {
-                  controller.nextPage();
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+
+      // ),
+    bottomNavigationBar: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: "Back",
+                      backgroundColor: AppTheme.whiteColor,
+                      textColor: AppTheme.primaryColor,
+                      expandedValue: false,
+                      onPressed: () {
+                        controller.previousPage();
+                      },
+                    ),
+                  ),
+                  SizedBox(width: AddSize.size20,),
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: "Next",
+                      backgroundColor: AppTheme.primaryColor,
+                      textColor: AppTheme.whiteColor,
+                      expandedValue: false,
+                      onPressed: () {
+                        controller.nextPage();
+                      },
+                    ),
+                  ),
+                ],
+      // =======
+      //             ],
+                ),
+    )
+      // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
+      //         ),
     );
   }
 
@@ -225,8 +232,8 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
                   height: 5,
                 ),
                 CustomTextField(
-                  onTap: (){
-                    showBottomSheetForLevel(context,index);
+                  onTap: () {
+                    showBottomSheetForLevel(context, index);
                   },
                   controller: levelController,
                   readOnly: true,
@@ -265,62 +272,77 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                "Language",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.titleText,
-                    fontWeight: FontWeight.w600),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.pinkText.withOpacity(.04),
+            borderRadius: BorderRadius.circular(5)
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Language",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-            SizedBox(width: AddSize.size16,),
-            Expanded(
-              child: Text(
-                "Proficiency level",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.titleText,
-                    fontWeight: FontWeight.w600),
+              SizedBox(
+                width: AddSize.size16,
               ),
-            ),
-          ],
+              Expanded(
+                child: Text(
+                  "Proficiency level",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
         ),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: CustomTextField(
-                readOnly: true,
-                enabled: false,
-                obSecure: false.obs,
-                keyboardType: TextInputType.emailAddress,
-                hintText: "English".obs,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "English",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.titleText,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-            SizedBox(width: AddSize.size16,),
-            Expanded(
-              child: CustomTextField(
-              readOnly: true,
-              obSecure: false.obs,
-              onTap: (){
-                showBottomSheetForLevel(context, -5);
-              },
-              controller: null,
-              validator: MultiValidator([
-                RequiredValidator(errorText: "Language level required")
-              ]),
-              keyboardType: TextInputType.emailAddress,
-              hintText: "".obs,
-              suffixIcon: Icon(Icons.keyboard_arrow_down),
-            ),
-            )
-          ],
+              SizedBox(
+                width: AddSize.size16,
+              ),
+              Expanded(
+                child: CustomTextField(
+                  readOnly: true,
+                  obSecure: false.obs,
+                  onTap: () {
+                    showBottomSheetForLevel(context, -5);
+                  },
+                  controller: null,
+                  validator: MultiValidator(
+                      [RequiredValidator(errorText: "Language level required")]),
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: "".obs,
+                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                ),
+              )
+            ],
+          ),
         ),
+
+
         SizedBox(
           height: 10,
         ),
@@ -354,9 +376,20 @@ class _AddLanguageQuestionScreenState extends State<AddLanguageQuestionScreen> {
         Divider(
           color: AppTheme.pinkText.withOpacity(.29),
         ),
+
         SizedBox(
-          height: 15,
-        )
+          height: AddSize.size15,
+        ),
+        CustomOutlineButton(
+          title: '+  Add a language',
+          backgroundColor: AppTheme.whiteColor,
+          onPressed: () {},
+          textColor: AppTheme.primaryColor,
+          expandedValue: true,
+        ),
+        SizedBox(
+          height: AddSize.size20,
+        ),
       ],
     );
   }

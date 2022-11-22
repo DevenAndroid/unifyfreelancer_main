@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:unifyfreelancer/resources/size.dart';
-import 'package:unifyfreelancer/screens/questions_screens/page1.dart';
-import 'package:unifyfreelancer/screens/questions_screens/page2.dart';
-import 'package:unifyfreelancer/screens/questions_screens/page3.dart';
-
 import 'package:unifyfreelancer/screens/questions_screens/profile_image_screen.dart';
-
-import 'package:unifyfreelancer/screens/questions_screens/page4.dart';
-import 'package:unifyfreelancer/screens/questions_screens/page5.dart';
-import 'package:unifyfreelancer/screens/questions_screens/page6.dart';
 
 import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
-import 'add_language_screen.dart';
+import '../../resources/size.dart';
+import 'hourly_charge_question.dart';
+import 'page1.dart';
+import 'page10.dart';
+import 'page2.dart';
+import 'page3.dart';
+import 'page4.dart';
+import 'page5.dart';
+import 'page6.dart';
+import 'page7.dart';
+import 'page8.dart';
+import 'page9.dart';
+import 'profile_preview.dart';
+import 'profile_questions.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({Key? key}) : super(key: key);
@@ -46,7 +50,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               color: Color(0xff756C87),
             )),
         title: Text(
-          "Freelancer",
+          "Create profile",
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: AppTheme.textColor,
@@ -67,9 +71,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-              padding: EdgeInsets.only(
-                  right: AddSize.screenWidth -
-                      controller.currentIndex.value / 20 * AddSize.screenWidth),
+// <<<<<<< HEAD
+//               padding: EdgeInsets.only(
+//                   right: AddSize.screenWidth -
+//                       controller.currentIndex.value / 20 * AddSize.screenWidth),
+// =======
+              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 17 * AddSize.screenWidth),
+// >>>>>>> dev_branch
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -91,8 +99,18 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page4(),
           Page5(),
           Page6(),
+// <<<<<<< HEAD
+// =======
+          Page7(),
+          Page8(),
+          Page9(),
+          Page10(),
+          HourlyChargeQuestion(),
+          ProfileQuestions(),
+          ProfilePreview(),
           ProfileImage(),
-          AddLanguageQuestionScreen(),
+          // AddLanguageQuestionScreen(),
+// >>>>>>> dev_branch
         ],
       ),
     );
