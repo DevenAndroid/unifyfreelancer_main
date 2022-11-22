@@ -287,7 +287,9 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
           CustomOutlineButton(title: "Upload Photo",
               backgroundColor: AppTheme.whiteColor,
               textColor: AppTheme.primaryColor,
-              onPressed: (){}),
+              onPressed: (){
+                showPickImageSheet();
+              }),
           SizedBox(
             height: AddSize.size30,
           ),

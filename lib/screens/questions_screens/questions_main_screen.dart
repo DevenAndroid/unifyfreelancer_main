@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:unifyfreelancer/screens/questions_screens/profile_image_screen.dart';
-
 import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
@@ -76,7 +74,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 //                   right: AddSize.screenWidth -
 //                       controller.currentIndex.value / 20 * AddSize.screenWidth),
 // =======
-              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 17 * AddSize.screenWidth),
+              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 13 * AddSize.screenWidth),
 // >>>>>>> dev_branch
               child: Container(
                 decoration: BoxDecoration(
@@ -108,7 +106,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           HourlyChargeQuestion(),
           ProfileQuestions(),
           ProfilePreview(),
-          ProfileImage(),
+         // ProfileImage(),
           // AddLanguageQuestionScreen(),
 // >>>>>>> dev_branch
         ],
