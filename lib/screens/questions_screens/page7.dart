@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
+import '../../controller/question_controller.dart';
 import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
@@ -111,6 +112,8 @@ class _Page7State extends State<Page7> {
     return map;
   }
 
+  final controller = Get.put(QuestionController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,43 +163,48 @@ class _Page7State extends State<Page7> {
               //         });
               //       });
               // })
+// <<<<<<< HEAD:lib/screens/questions_screens/add_language_screen.dart
+
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomOutlineButton(
-                title: 'Back',
-                backgroundColor: AppTheme.whiteColor,
-                onPressed: () {
-                  Get.back();
-                },
-                textColor: AppTheme.primaryColor,
-                expandedValue: false,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomOutlineButton(
-                title: 'Next',
-                backgroundColor: AppTheme.primaryColor,
-                onPressed: () {
-                },
-                textColor: AppTheme.whiteColor,
-                expandedValue: false,
-              ),
-            ),
-          ),
-        ],
-      ),
+
+      // ),
+    bottomNavigationBar: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: "Back",
+                      backgroundColor: AppTheme.whiteColor,
+                      textColor: AppTheme.primaryColor,
+                      expandedValue: false,
+                      onPressed: () {
+                        controller.previousPage();
+                      },
+                    ),
+                  ),
+                  SizedBox(width: AddSize.size20,),
+                  Expanded(
+                    child: CustomOutlineButton(
+                      title: "Next",
+                      backgroundColor: AppTheme.primaryColor,
+                      textColor: AppTheme.whiteColor,
+                      expandedValue: false,
+                      onPressed: () {
+                        controller.nextPage();
+                      },
+                    ),
+                  ),
+                ],
+      // =======
+      //             ],
+                ),
+    )
+      // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
+      //         ),
     );
   }
 

@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_countrylist.dart';
 import '../../repository/add_employment_repository.dart';
@@ -28,13 +26,13 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   int dateInput = 0;
   int dateInput2 = 0;
 
-  TextEditingController _companyController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _fromController = TextEditingController();
-  TextEditingController _toController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _companyController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _fromController = TextEditingController();
+  final TextEditingController _toController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
 
   final controller  = Get.put(ProfileScreenController());

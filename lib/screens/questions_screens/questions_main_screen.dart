@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/screens/questions_screens/profile_image_screen.dart';
 
+import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import 'hourly_charge_question.dart';
@@ -26,16 +28,8 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  final PageController pageController = PageController();
-  RxDouble currentIndex = 1.0.obs;
 
-  @override
-  void initState() {
-    super.initState();
-    pageController.addListener(() {
-      currentIndex.value = pageController.page! + 1;
-    });
-  }
+  final controller = Get.put(QuestionController());
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +54,12 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: AppTheme.textColor,
-              fontSize: AddSize.font20),
+              fontSize: AddSize.font20
+          ),
         ),
-        shape: const RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10),
+            bottom: Radius.circular(AddSize.size10),
           ),
         ),
         bottom: PreferredSize(
@@ -76,7 +71,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-              padding: EdgeInsets.only(right: AddSize.screenWidth - currentIndex.value / 17 * AddSize.screenWidth),
+// <<<<<<< HEAD
+//               padding: EdgeInsets.only(
+//                   right: AddSize.screenWidth -
+//                       controller.currentIndex.value / 20 * AddSize.screenWidth),
+// =======
+              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 17 * AddSize.screenWidth),
+// >>>>>>> dev_branch
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -88,7 +89,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         ),
       ),
       body: PageView(
-        controller: pageController,
+        controller: controller.pageController,
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         children: [
@@ -98,6 +99,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page4(),
           Page5(),
           Page6(),
+// <<<<<<< HEAD
+// =======
           Page7(),
           Page8(),
           Page9(),
@@ -105,6 +108,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           HourlyChargeQuestion(),
           ProfileQuestions(),
           ProfilePreview(),
+          ProfileImage(),
+          // AddLanguageQuestionScreen(),
+// >>>>>>> dev_branch
         ],
       ),
     );
@@ -325,5 +331,3 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 //     );
 //   }
 }
-
-
