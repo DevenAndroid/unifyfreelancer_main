@@ -56,7 +56,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               color: Color(0xff756C87),
             )),
         title: Text(
-          "Freelancer",
+          "Create profile",
           style: TextStyle(
               fontWeight: FontWeight.w600,
               color: AppTheme.textColor,
