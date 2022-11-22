@@ -34,31 +34,3 @@ Future<ModelEditDesignationInfo> editDesignationInfoRepo(title,description,conte
     return ModelEditDesignationInfo(message: e.toString(), status: false);
   }
 }
-
-Future<ModelEditDesignationInfo> questionDesignation(title,description,context) async {
-  OverlayEntry loader = Helpers.overlayLoaderWithAnimation(context);
-  Overlay.of(context)!.insert(loader);
-  var map = <String, dynamic>{};
-  map['title'] = title;
-  map['description'] = description;
-  try {
-    http.Response response = await http.post(Uri.parse(ApiUrls.editDesignationInfo),
-        headers: await getAuthHeader(),body: jsonEncode(map) );
-
-    if (response.statusCode == 200) {
-      Helpers.hideLoader(loader);
-      return ModelEditDesignationInfo.fromJson(jsonDecode(response.body));
-    } else {
-      Helpers.hideLoader(loader);
-      return ModelEditDesignationInfo(
-          message: jsonDecode(response.body)["message"], status: false);
-    }
-  } on SocketException catch (e) {
-    Helpers.hideLoader(loader);
-    return ModelEditDesignationInfo(
-        message: "No Internet Access", status: false);
-  } catch (e) {
-    Helpers.hideLoader(loader);
-    return ModelEditDesignationInfo(message: e.toString(), status: false);
-  }
-}

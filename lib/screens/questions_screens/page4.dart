@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/repository/edit_designation_info_repository.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
@@ -10,7 +14,7 @@ import '../../widgets/custom_textfield.dart';
 
 class Page4 extends StatelessWidget {
   Page4({Key? key}) : super(key: key);
-  final controller = Get.put(QuestionController());
+  final controller = Get.put(ProfileScreenController());
   final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
@@ -51,7 +55,7 @@ class Page4 extends StatelessWidget {
                   height: AddSize.size20,
                 ),
                 CustomTextField(
-                  controller: controller.textEditingController,
+                  controller: controller.titleController,
                   validator: (value){
                     if(value!.trim().isEmpty){
                       return "Example: Full StackDeveloper | Web & Mobile";
@@ -61,6 +65,22 @@ class Page4 extends StatelessWidget {
                   },
                   obSecure: false.obs,
                   hintText: "Example: Full StackDeveloper | Web & Mobile".obs,
+                ),
+                SizedBox(
+                  height: AddSize.size20,
+                ),
+                CustomTextField(
+                  isMulti: true,
+                  controller: controller.descriptionController,
+                  validator: (value){
+                    if(value!.trim().isEmpty){
+                      return "Description required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  obSecure: false.obs,
+                  hintText: "Description...".obs,
                 ),
                 SizedBox(
                   height: AddSize.size20,
@@ -94,8 +114,12 @@ class Page4 extends StatelessWidget {
                   expandedValue: false,
                   onPressed: () {
                     if(formKey.currentState!.validate()) {
-                      questionDesignation(controller.textEditingController.text.trim(), "", context).then((value){
-                        controller.nextPage();
+                      editDesignationInfoRepo(controller.titleController.text.trim(),
+                          controller.descriptionController.text.trim(), context).then((value){
+                        log(jsonEncode(value));
+                        if(value.status == true) {
+                          controller.nextPage();
+                        }
                       });
                     }
                   },

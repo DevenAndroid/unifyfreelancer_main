@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/profie_screen_controller.dart';
 import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
@@ -16,7 +17,7 @@ class Page6 extends StatefulWidget {
 class _Page6State extends State<Page6> {
    RxBool acceptTermsOrPrivacy = false.obs;
 
-   final controller = Get.put(QuestionController());
+   final controller = Get.put(ProfileScreenController());
 
   @override
   Widget build(BuildContext context) {

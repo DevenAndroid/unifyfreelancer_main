@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../controller/question_controller.dart';
+import '../../controller/profie_screen_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/common_outline_button.dart';
@@ -9,7 +8,7 @@ import '../../widgets/common_outline_button.dart';
 class Page1 extends StatelessWidget {
   Page1({Key? key}) : super(key: key);
 
-  final controller = Get.put(QuestionController());
+  final controller = Get.put(ProfileScreenController());
 
   @override
   Widget build(BuildContext context) {
