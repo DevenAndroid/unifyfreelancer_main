@@ -56,6 +56,8 @@ class ApiUrls {
   static const String dislikeReasons = "${apiBaseUrl}dislike-reasons";
   static const String dislikeJob = "${apiBaseUrl}dislike-job";
   static const String contracts = "${apiBaseUrl}contracts";
+  static const String categoryList = "${apiBaseUrl}category-list";
+  static const String addCategory = "${apiBaseUrl}add-category";
 
 
 }
