@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import '../../models/model_countrylist.dart';
@@ -18,7 +17,6 @@ import '../../routers/my_router.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/box_textfield.dart';
 import '../../widgets/common_button.dart';
-import '../../widgets/custom_dialogue.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -529,8 +527,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                    email:  emailController.text.trim(),
                                    password:  passwordController.text.trim(),
                                    referalCode: invitationController.text.trim(),
-                                   country:  countryController.text.trim(),
-                                    userType: "freelancer",
+                                   country:  countryController.text.trim(), userType: "freelancer",
                                   agreeTerms:   acceptTermsOrPrivacy == true ? 1 : 0,
                                    sendEmail: "",
                                    context:  context)

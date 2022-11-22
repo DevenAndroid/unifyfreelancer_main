@@ -66,7 +66,7 @@ class ApiUrls {
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: AppTheme.blackColor,
+      backgroundColor: AppTheme.primaryColor,
       textColor: AppTheme.whiteColor,
       fontSize: 14);
 }
