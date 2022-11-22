@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+// <<<<<<< HEAD
 import '../../controller/profie_screen_controller.dart';
 import '../../repository/countrylist_repository.dart';
+// =======
+import '../../controller/question_controller.dart';
+// >>>>>>> dev_branch
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import 'hourly_charge_question.dart';
@@ -81,8 +85,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 17 * AddSize.screenWidth),
-
+              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 13 * AddSize.screenWidth),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -113,9 +116,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           HourlyChargeQuestion(),
           ProfileQuestions(),
           ProfilePreview(),
-          // ProfileImage(),
-          // AddLanguageQuestionScreen(),
-// >>>>>>> dev_branch
         ],
       ),
     );
