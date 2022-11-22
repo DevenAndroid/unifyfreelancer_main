@@ -47,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
     await FirebaseAuth.instance.signInWithCredential(userCredentials);
-    socialLoginApi(
-        context, googleSignInAuthentication.accessToken.toString(), "google");
+    socialLoginApi(context, googleSignInAuthentication.accessToken.toString(), "google");
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
@@ -71,10 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   socialLoginApi(context, authToken, provider) {
-    socialLoginRepo(
-            context: context, accessToken: authToken, provider: provider)
-        .then((value) async {
+    socialLoginRepo(context: context, accessToken: authToken, provider: provider).then((value) async {
       showToast(value.message.toString());
+      log(jsonEncode(value));
       if (value.status == true) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));

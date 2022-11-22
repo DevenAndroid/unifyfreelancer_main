@@ -8,18 +8,10 @@ import '../models/model_freelancer_profile.dart';
 import '../utils/api_contant.dart';
 
 Future<ModelFreelancerProfile> freelancerProfileRepo() async {
-
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  final header =  {
-    HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.acceptHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer ${pref.getString("cookie")!.toString().replaceAll('\"', '')}'
-  };
-  print(pref.getString("cookie")!.toString().replaceAll('\"', ''));
   try {
     http.Response response = await http.get(
         Uri.parse(ApiUrls.getFreelancerProfile),
-        headers: header);
+        headers: await getAuthHeader());
 
     if (response.statusCode == 200) {
       return ModelFreelancerProfile.fromJson(jsonDecode(response.body));

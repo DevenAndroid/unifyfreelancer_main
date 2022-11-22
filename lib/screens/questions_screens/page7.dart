@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-
-import '../../controller/question_controller.dart';
+import '../../controller/profie_screen_controller.dart';
 import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
@@ -112,100 +111,100 @@ class _Page7State extends State<Page7> {
     return map;
   }
 
-  final controller = Get.put(QuestionController());
+  final controller = Get.put(ProfileScreenController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: AddSize.size10,
-              ),
-              Text(
-                "Looking good. Next, tell us which languages you speak.",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              SizedBox(
-                height: AddSize.size15,
-              ),
-              Text(
-                "Unify is global, so clients are often interested to know what languages you speak. English is a must, but do you speak any other languages?",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: AppTheme.textColor,
-                    fontSize: AddSize.font12),
-              ),
-              SizedBox(
-                height: AddSize.size20,
-              ),
-              englishLanguage(),
-              // Obx(() {
-              //   return ListView.builder(
-              //       itemCount: languageList.length,
-              //       shrinkWrap: true,
-              //       physics: NeverScrollableScrollPhysics(),
-              //       itemBuilder: (context, index) {
-              //         return Obx(() {
-              //           return otherLanguageFields(
-              //               language: languageList[index].language
-              //                   .toString(),
-              //               index: index,
-              //               level: languageList[index].level.toString());
-              //         });
-              //       });
-              // })
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: AddSize.size10,
+                ),
+                Text(
+                  "Looking good. Next, tell us which languages you speak.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                SizedBox(
+                  height: AddSize.size15,
+                ),
+                Text(
+                  "Unify is global, so clients are often interested to know what languages you speak. English is a must, but do you speak any other languages?",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.textColor,
+                      fontSize: AddSize.font12),
+                ),
+                SizedBox(
+                  height: AddSize.size20,
+                ),
+                englishLanguage(),
+                // Obx(() {
+                //   return ListView.builder(
+                //       itemCount: languageList.length,
+                //       shrinkWrap: true,
+                //       physics: NeverScrollableScrollPhysics(),
+                //       itemBuilder: (context, index) {
+                //         return Obx(() {
+                //           return otherLanguageFields(
+                //               language: languageList[index].language
+                //                   .toString(),
+                //               index: index,
+                //               level: languageList[index].level.toString());
+                //         });
+                //       });
+                // })
 // <<<<<<< HEAD:lib/screens/questions_screens/add_language_screen.dart
-
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-
-      // ),
-    bottomNavigationBar: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomOutlineButton(
-                      title: "Back",
-                      backgroundColor: AppTheme.whiteColor,
-                      textColor: AppTheme.primaryColor,
-                      expandedValue: false,
-                      onPressed: () {
-                        controller.previousPage();
-                      },
-                    ),
-                  ),
-                  SizedBox(width: AddSize.size20,),
-                  Expanded(
-                    child: CustomOutlineButton(
-                      title: "Next",
-                      backgroundColor: AppTheme.primaryColor,
-                      textColor: AppTheme.whiteColor,
-                      expandedValue: false,
-                      onPressed: () {
-                        controller.nextPage();
-                      },
-                    ),
-                  ),
-                ],
-      // =======
-      //             ],
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16)
+              .copyWith(bottom: AddSize.padding14),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomOutlineButton(
+                  title: "Back",
+                  backgroundColor: AppTheme.whiteColor,
+                  textColor: AppTheme.primaryColor,
+                  expandedValue: false,
+                  onPressed: () {
+                    controller.previousPage();
+                  },
                 ),
-    )
-      // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
-      //         ),
-    );
+              ),
+              SizedBox(
+                width: AddSize.size20,
+              ),
+              Expanded(
+                child: CustomOutlineButton(
+                  title: "Next",
+                  backgroundColor: AppTheme.primaryColor,
+                  textColor: AppTheme.whiteColor,
+                  expandedValue: false,
+                  onPressed: () {
+                    controller.nextPage();
+                  },
+                ),
+              ),
+            ],
+            // =======
+            //             ],
+          ),
+        )
+        // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
+        //         ),
+        );
   }
 
   otherLanguageFields({
@@ -273,11 +272,10 @@ class _Page7State extends State<Page7> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
-            color: AppTheme.pinkText.withOpacity(.04),
-            borderRadius: BorderRadius.circular(5)
-          ),
+              color: AppTheme.pinkText.withOpacity(.04),
+              borderRadius: BorderRadius.circular(5)),
           child: Row(
             children: [
               Expanded(
@@ -331,8 +329,9 @@ class _Page7State extends State<Page7> {
                     showBottomSheetForLevel(context, -5);
                   },
                   controller: null,
-                  validator: MultiValidator(
-                      [RequiredValidator(errorText: "Language level required")]),
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: "Language level required")
+                  ]),
                   keyboardType: TextInputType.emailAddress,
                   hintText: "".obs,
                   suffixIcon: Icon(Icons.keyboard_arrow_down),
@@ -341,7 +340,6 @@ class _Page7State extends State<Page7> {
             ],
           ),
         ),
-
 
         SizedBox(
           height: 10,

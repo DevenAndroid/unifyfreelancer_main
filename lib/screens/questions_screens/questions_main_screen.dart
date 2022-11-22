@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:unifyfreelancer/screens/questions_screens/profile_image_screen.dart';
-
-import '../../controller/question_controller.dart';
+import '../../controller/profie_screen_controller.dart';
+import '../../repository/countrylist_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import 'hourly_charge_question.dart';
@@ -29,7 +28,18 @@ class QuestionsScreen extends StatefulWidget {
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
 
-  final controller = Get.put(QuestionController());
+  final controller = Get.put(ProfileScreenController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.pageController.addListener(() {
+      controller.currentIndex.value = controller.pageController.page! + 1;
+    });
+    countryListRepo().then((value) {
+      controller.countryList.value = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +81,8 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-// <<<<<<< HEAD
-//               padding: EdgeInsets.only(
-//                   right: AddSize.screenWidth -
-//                       controller.currentIndex.value / 20 * AddSize.screenWidth),
-// =======
               padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 17 * AddSize.screenWidth),
-// >>>>>>> dev_branch
+
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -108,7 +113,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           HourlyChargeQuestion(),
           ProfileQuestions(),
           ProfilePreview(),
-          ProfileImage(),
+          // ProfileImage(),
           // AddLanguageQuestionScreen(),
 // >>>>>>> dev_branch
         ],

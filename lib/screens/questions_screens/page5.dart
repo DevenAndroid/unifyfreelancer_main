@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../controller/question_controller.dart';
+import '../../controller/profie_screen_controller.dart';
+import '../../models/model_freelancer_profile.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/common_outline_button.dart';
@@ -18,11 +19,17 @@ class Page5 extends StatefulWidget {
 class _Page5State extends State<Page5> {
   RxBool acceptTermsOrPrivacy = false.obs;
 
-  final controller = Get.put(QuestionController());
+  final controller = Get.put(ProfileScreenController());
 
-  final dateFormat = DateFormat('yyyy-MM-dd');
+  final dateFormat = DateFormat('yyyy-MMM-dd');
 
-  showDialogue(){
+ String getFormatDate(String value){
+    return value != "" ? dateFormat.format(DateTime.parse(value)) : value;
+  }
+
+  showDialogue({
+   required Employment item,
+}){
     final TextEditingController companyController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
     final TextEditingController countryController = TextEditingController();
@@ -32,6 +39,15 @@ class _Page5State extends State<Page5> {
     final TextEditingController descriptionController = TextEditingController();
     int dateInput = 0;
     int dateInput2 = 0;
+
+    companyController.text = item.company ?? "";
+    cityController.text = item.city ?? "";
+    countryController.text = item.country ?? "";
+    titleController.text = item.subject ?? "";
+    fromController.text = getFormatDate(item.startDate ?? "");
+    toController.text = getFormatDate(item.endDate ?? "");
+    descriptionController.text = item.description ?? "";
+
     showDialog(context: context, builder: (context){
       return Dialog(
         insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
@@ -337,7 +353,10 @@ class _Page5State extends State<Page5> {
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
-                                  initialDate: DateTime.now(),
+                                  initialDate:
+                                  dateInput == 0 ?
+                                  DateTime.now() :
+                                  DateTime.fromMillisecondsSinceEpoch(dateInput),
                                   firstDate: DateTime(1950),
                                   lastDate: DateTime.now());
                               if (pickedDate != null) {
@@ -396,7 +415,9 @@ class _Page5State extends State<Page5> {
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
-                                    initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMicrosecondsSinceEpoch(dateInput2),
+                                    initialDate: dateInput2 == 0  ?
+                                    DateTime.now() :
+                                    DateTime.fromMillisecondsSinceEpoch(dateInput2),
                                     firstDate: DateTime(1950),
                                     //DateTime.now() - not to allow to choose before today.
                                     lastDate: DateTime.now());
@@ -542,7 +563,10 @@ class _Page5State extends State<Page5> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Freelancers who add their experience are twice as likely to win work. But if you're just starting out, you can still create a great profile. just head on the next page",
+                  "Freelancers who add their experience are "
+                      "twice as likely to win work. But if you're just"
+                      " starting out, you can still create a great profile. "
+                      "just head on the next page",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -551,77 +575,14 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-                Container(
-                  padding: EdgeInsets.all(AddSize.padding16),
-                  decoration: BoxDecoration(
-                      color: AppTheme.whiteColor
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Flutter developer",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.textColor,
-                                fontSize: AddSize.font18),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: AddSize.size15),
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: EdgeInsets.all(AddSize.size5),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppTheme.whiteColor,
-                                    border: Border.all(color: Color(0xff707070))),
-                                child: Icon(
-                                  Icons.edit,
-                                  color: AppTheme.primaryColor,
-                                  size: AddSize.size15,
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: (){},
-                            child: Container(
-                              padding: EdgeInsets.all(AddSize.size5),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
-                                Icons.delete,
-                                color: AppTheme.primaryColor,
-                                size: AddSize.size15,
-                              ),
-                            ),
-                          ),
-                        ],
+                ListView.builder(
+                  itemCount: controller.model.value.data!.employment!.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context,index) =>
+                      employmentData(
+                      controller.model.value.data!.employment![index]
                       ),
-                      SizedBox(
-                        height: AddSize.size20,
-                      ),
-                      Text(
-                        "Eoxysit",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.textColor,
-                            fontSize: AddSize.font16),
-                      ),
-                      Text(
-                        "November 2016 - Present",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: AppTheme.textColor,
-                            fontSize: AddSize.font14),
-                      ),
-                    ],
-                  ),
                 ),
                 SizedBox(
                   height: AddSize.size15,
@@ -630,7 +591,9 @@ class _Page5State extends State<Page5> {
                   title: '+  Add Experience',
                   backgroundColor: AppTheme.whiteColor,
                   onPressed: () {
-                    showDialogue();
+                    showDialogue(
+                      item: Employment()
+                    );
                   },
                   textColor: AppTheme.primaryColor,
                   expandedValue: true,
@@ -702,5 +665,84 @@ class _Page5State extends State<Page5> {
         ),
       ),
     );
+  }
+
+  Container employmentData(Employment item) {
+    return Container(
+                padding: EdgeInsets.all(AddSize.padding16),
+                decoration: BoxDecoration(
+                    color: AppTheme.whiteColor
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          item.subject.toString().capitalize!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.textColor,
+                              fontSize: AddSize.font18),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: AddSize.size15),
+                          child: InkWell(
+                            onTap: () {
+                              showDialogue(
+                                item: item
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(AddSize.size5),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppTheme.whiteColor,
+                                  border: Border.all(color: Color(0xff707070))),
+                              child: Icon(
+                                Icons.edit,
+                                color: AppTheme.primaryColor,
+                                size: AddSize.size15,
+                              ),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: (){},
+                          child: Container(
+                            padding: EdgeInsets.all(AddSize.size5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme.whiteColor,
+                                border: Border.all(color: Color(0xff707070))),
+                            child: Icon(
+                              Icons.delete,
+                              color: AppTheme.primaryColor,
+                              size: AddSize.size15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: AddSize.size10,
+                    ),
+                    Text(
+                      item.description.toString().capitalizeFirst!,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textColor,
+                          fontSize: AddSize.font14),
+                    ),
+                    Text(
+                      "${item.startDate} - ${item.endDate ?? ""}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.textColor,
+                          fontSize: AddSize.font14),
+                    ),
+                  ],
+                ),
+              );
   }
 }
