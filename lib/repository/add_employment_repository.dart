@@ -60,7 +60,7 @@ Future<ModelCommonResponse> editEmploymentInfoRepo({
 Future<ModelCommonResponse> questionEmployment({
   required id,
   required subject,
-  required description,
+  // required description,
   required company,
   required city,
   required country,
@@ -76,7 +76,7 @@ Future<ModelCommonResponse> questionEmployment({
     map['id'] = id;
   }
   map['subject'] = subject;
-  map['description'] = description;
+  // map['description'] = description;
   map['company'] = company;
   map['city'] = city;
   map['country'] = country;
