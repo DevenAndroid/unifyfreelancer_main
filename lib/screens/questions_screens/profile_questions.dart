@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -19,6 +20,7 @@ import '../../repository/edit_location_repository.dart';
 import '../../repository/edit_name_info_repository.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';
+import '../../widgets/add_text.dart';
 import '../../widgets/custom_textfield.dart';
 
 class ProfileQuestions extends StatefulWidget {
@@ -34,8 +36,8 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
     // TODO: implement initState
     super.initState();
     countryListRepo().then((value) => setState(() {
-      countryList = value;
-    }));
+          countryList = value;
+        }));
   }
 
   final List<String> photoList = [
@@ -49,7 +51,6 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
   Rx<File> profileImage = File("").obs;
   ModelCountryList countryList = ModelCountryList();
   RxList searchList1 = <String>[].obs;
-
 
   showPickImageSheet() {
     showCupertinoModalPopup<void>(
@@ -99,96 +100,201 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
     );
   }
 
-  showDialogue(){
-
-
-    showDialog(context: context, builder: (context){
-      return Dialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
-        child: Form(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-
-
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.all(AddSize.size10),
-                        child: CustomOutlineButton(
-                          title: 'Cancel',
-                          backgroundColor: AppTheme.whiteColor,
-                          onPressed: () {
-                            Get.back();
-                          },
-                          textColor: AppTheme.primaryColor,
-                          expandedValue: false,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.all(AddSize.size10),
-                        child: CustomOutlineButton(
-                          title: 'Save',
-                          backgroundColor: AppTheme.primaryColor,
-                          onPressed: () {
-                            // if (_formKey.currentState!.validate()) {
-                            //   editEmploymentInfoRepo(
-                            //       id: parentIndex == -10000 ? parentIndex :
-                            //       controller.model.value.data!.employment![parentIndex].id.toString(),
-                            //       subject: _titleController.text.trim(),
-                            //       description:
-                            //       _descriptionController.text.trim(),
-                            //       company: _companyController.text.trim(),
-                            //       city: _cityController.text.trim(),
-                            //       country: countryController.text.trim(),
-                            //       start_date: _fromController.text.trim(),
-                            //       end_date: _toController.text.trim(),
-                            //       currently_working:
-                            //       acceptTermsOrPrivacy == true ? 1 : 0,
-                            //       context: context)
-                            //       .then((value) {
-                            //     if (value.status == true) {
-                            //       Get.back();
-                            //       controller.getData();
-                            //     }
-                            //     showToast(value.message.toString());
-                            //   });
-                            // }
-                          },
-                          textColor: AppTheme.whiteColor,
-                          expandedValue: false,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+  showDialogue() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: AddSize.padding16,
             ),
-          ),
-        ),
-      );
-    });
+            child: Obx(() {
+              return Form(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Add Profile Photo",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText,
+                              fontSize: AddSize.font20),
+                        ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Stack(
+                                children: [
+                                  SizedBox(
+                                    width: AddSize.screenWidth,
+                                    height: AddSize.size200 * .90,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey.shade300),
+                                      margin:
+                                          EdgeInsets.only(top: AddSize.size10),
+                                      child: profileImage.value.path == ""
+                                          ? Icon(
+                                              Icons.person_add_alt_1,
+                                              color: Colors.white,
+                                              size: AddSize.size30,
+                                            )
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(1000),
+                                              child: Image.file(
+                                                profileImage.value,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                      height: AddSize.size200 * .72,
+                                      width: AddSize.size200 * .72,
+                                    ),
+                                  ),
+                                  if (profileImage.value.path != "")
+                                    Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                            onPressed: () {
+                                              profileImage.value.delete();
+                                              profileImage.value = File("");
+                                            },
+                                            icon: Icon(
+                                              Icons.clear_rounded,
+                                              size: AddSize.size25,
+                                            )))
+                                ],
+                              ),
+                              CustomOutlineButton(
+                                  title: "Select Profile Image",
+                                  backgroundColor: AppTheme.whiteColor,
+                                  textColor: AppTheme.primaryColor,
+                                  onPressed: () {
+                                    showPickImageSheet();
+                                  }),
+                              SizedBox(
+                                height: AddSize.size30,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: AddText(
+                                  text: "Your photo should:",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: AddSize.size16,
+                                ),
+                              ),
+                              SizedBox(
+                                height: AddSize.size20,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      photoList.length,
+                                      (index) => Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: AddSize.size10 * .8),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: AddSize.size14,
+                                                ),
+                                                Icon(
+                                                  Icons.circle,
+                                                  size: AddSize.size10 * .8,
+                                                  color: AppTheme.primaryColor,
+                                                ),
+                                                AddText(
+                                                  text: photoList[index],
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: AddSize.size15,
+                                                  height: 1.3,
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                ),
+                              )
+                            ]),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.all(AddSize.size10),
+                                child: CustomOutlineButton(
+                                  title: 'Cancel',
+                                  backgroundColor: AppTheme.whiteColor,
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  textColor: AppTheme.primaryColor,
+                                  expandedValue: false,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.all(AddSize.size10),
+                                child: CustomOutlineButton(
+                                  title: 'Save',
+                                  backgroundColor: AppTheme.primaryColor,
+                                  onPressed: () {
+                                    if (profileImage.value.path != "") {
+                                      Map<String, String> map = {};
+                                      map["first_name"] = controller.model.value
+                                          .data!.basicInfo!.firstName
+                                          .toString();
+                                      editNameInfoRepo(
+                                              mapData: map,
+                                              fieldName1: "profile_image",
+                                              file1: profileImage.value,
+                                              context: context)
+                                          .then((value) {
+                                        if (value.status == true) {
+                                          Get.back();
+                                        }
+                                        showToast(value.message.toString());
+                                        controller.getData();
+                                      });
+                                    } else {
+                                      showToast("Please select a image");
+                                    } /*else {
+                                    profilePart = true;
+                                    check();
+                                  }*/
+                                  },
+                                  textColor: AppTheme.whiteColor,
+                                  expandedValue: false,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          );
+        });
   }
-
-
 
   final _formKey = GlobalKey<FormState>();
   final controller = Get.put(ProfileScreenController());
 
-  bool profilePart = false;
-  bool formPart = false;
-
-  check(){
-    if(profilePart == true && formPart == true ){
-      controller.nextPage();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,8 +331,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-               formData(),
-
+                formData(),
                 Row(
                   children: [
                     Expanded(
@@ -253,35 +358,24 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           backgroundColor: AppTheme.primaryColor,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              if(profileImage.value.path != ""){
-                                Map<String, String> map = {};
-                                map["first_name"] = controller.model.value.data!.basicInfo!.firstName.toString();
-                                editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: profileImage.value, context: context).then((value) {
-                                  if (value.status == true) {
-                                    profilePart = true;
-                                    check();
-                                  }
-                                  showToast(value.message.toString());
-                                });
-
-                              }
-                              else{
-                                profilePart = true;
-                                check();
-                              }
-
                               editLocationRepo(
-                                  phone: controller.phoneController.text.trim(),
-                                  zip_code: controller.zipController.text.trim(),
-                                  address: controller.addressController.text.trim(),
-                                  city: controller.cityController.text.trim(),
-                                  country: controller.countryController.text.trim(),
-                                  context: context).then((value) {
+                                      phone: controller.phoneController.text
+                                          .trim(),
+                                      zip_code:
+                                          controller.zipController.text.trim(),
+                                      address: controller.addressController.text
+                                          .trim(),
+                                      city:
+                                          controller.cityController.text.trim(),
+                                      country: controller.countryController.text
+                                          .trim(),
+                                      context: context)
+                                  .then((value) {
                                 print(jsonEncode(value));
                                 if (value.status == true) {
                                   controller.nextPage();
-                                  formPart = true;
-                                  check();
+                                  /*    formPart = true;
+                                  check();*/
                                 }
                                 showToast(value.message.toString());
                               });
@@ -295,47 +389,6 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   ],
                 ),
 
-                /*Align(
-                  alignment: Alignment.centerLeft,
-                  child: AddText(
-                    text: "Your photo should:",
-                    fontWeight: FontWeight.w600,
-                    fontSize: AddSize.size15,
-                  ),
-                ),
-                SizedBox(
-                  height: AddSize.size25,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                        photoList.length,
-                        (index) => Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: AddSize.size10 * .8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: AddSize.size14,
-                                  ),
-                                  Icon(
-                                    Icons.circle,
-                                    size: AddSize.size10 * .8,
-                                  ),
-                                  AddText(
-                                    text: photoList[index],
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AddSize.size15,
-                                    height: 1.3,
-                                  ),
-                                ],
-                              ),
-                            )),
-                  ),
-                )*/
               ],
             ),
           );
@@ -345,7 +398,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
   }
 
   formData() {
-    return   Form(
+    return Form(
       key: _formKey,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -361,8 +414,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 4,
-              offset: const Offset(
-                  0, 3), // changes position of shadow
+              offset: const Offset(0, 3), // changes position of shadow
             ),
           ],
         ),
@@ -379,46 +431,32 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey.shade300),
+                        shape: BoxShape.circle, color: Colors.grey.shade300),
                     margin: EdgeInsets.only(top: AddSize.size10),
-                    child: profileImage.value.path == ""
-                        ? Icon(
-                      Icons.person_add_alt_1,
-                      color: Colors.white,
-                      size: AddSize.size30,
-                    )
-                        : ClipRRect(
-                      borderRadius: BorderRadius.circular(1000),
-                      child: Image.file(
-                        profileImage.value,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    child: ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child:  CachedNetworkImage(
+                              imageUrl: controller.profileImage.value ?? "" ,
+                              errorWidget: (_,__,___) => SizedBox(),
+                              placeholder: (_,__) => SizedBox(),
+                              fit: BoxFit.cover,
+                            )/*Image.file(
+                              profileImage.value,
+                              fit: BoxFit.cover,
+                            ),*/
+                          ),
                     height: AddSize.size200 * .72,
                     width: AddSize.size200 * .72,
                   ),
                 ),
-                if (profileImage.value.path != "")
-                  Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                          onPressed: () {
-                            profileImage.value.delete();
-                            profileImage.value = File("");
-                          },
-                          icon: Icon(
-                            Icons.clear_rounded,
-                            size: AddSize.size25,
-                          )))
               ],
             ),
-
-            CustomOutlineButton(title: "Upload Photo",
+            CustomOutlineButton(
+                title: "Upload Photo",
                 backgroundColor: AppTheme.whiteColor,
                 textColor: AppTheme.primaryColor,
-                onPressed: (){
-                  showPickImageSheet();
+                onPressed: () {
+                  showDialogue();
                 }),
             SizedBox(
               height: AddSize.size30,
@@ -455,14 +493,12 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           height: MediaQuery.of(context).size.height * .7,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Align(
                                 alignment: Alignment.topRight,
                                 child: IconButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context),
+                                  onPressed: () => Navigator.pop(context),
                                   icon: Icon(
                                     Icons.clear,
                                     color: AppTheme.blackColor,
@@ -470,80 +506,68 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(10)
-                                    .copyWith(top: 0),
+                                padding: EdgeInsets.all(10).copyWith(top: 0),
                                 child: TextFormField(
                                   onChanged: (value) {
                                     if (value != "") {
                                       searchList1.clear();
                                       // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
-                                      for (var item in countryList
-                                          .countrylist!) {
+                                      for (var item
+                                          in countryList.countrylist!) {
                                         if (item.name
                                             .toString()
                                             .toLowerCase()
-                                            .contains(value
-                                            .toLowerCase())) {
-                                          searchList1.add(
-                                              item.name.toString());
+                                            .contains(value.toLowerCase())) {
+                                          searchList1.add(item.name.toString());
                                         }
                                       }
                                     } else {
                                       searchList1.clear();
-                                      for (var item in countryList
-                                          .countrylist!) {
-                                        searchList1.add(
-                                            item.name.toString());
+                                      for (var item
+                                          in countryList.countrylist!) {
+                                        searchList1.add(item.name.toString());
                                       }
                                     }
                                     log("jsonEncode(searchList1)");
                                   },
                                   decoration: InputDecoration(
                                     filled: true,
-                                    fillColor: AppTheme.primaryColor
-                                        .withOpacity(.05),
+                                    fillColor:
+                                        AppTheme.primaryColor.withOpacity(.05),
                                     hintText: "Select country",
                                     prefixIcon: Icon(Icons.flag),
                                     hintStyle: const TextStyle(
-                                        color: Color(0xff596681),
-                                        fontSize: 15),
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        vertical: 14,
-                                        horizontal: 20),
+                                        color: Color(0xff596681), fontSize: 15),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 14, horizontal: 20),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: AppTheme.primaryColor
                                               .withOpacity(.15),
                                           width: 1.0),
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: AppTheme.primaryColor
                                               .withOpacity(.15),
                                           width: 1.0),
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                     border: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: AppTheme
-                                                .primaryColor
+                                            color: AppTheme.primaryColor
                                                 .withOpacity(.15),
                                             width: 1.0),
                                         borderRadius:
-                                        BorderRadius.circular(
-                                            8.0)),
+                                            BorderRadius.circular(8.0)),
                                   ),
                                 ),
                               ),
                               Obx(() {
                                 return Expanded(
                                   child: ListView.builder(
-                                      physics:
-                                      BouncingScrollPhysics(),
+                                      physics: BouncingScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: searchList1.length,
                                       itemBuilder: (context, index) {
@@ -552,28 +576,24 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                                             onTap: () {
                                               setState(() {
                                                 controller.countryController
-                                                    .text =
+                                                        .text =
                                                     searchList1[index]
                                                         .toString();
                                               });
-                                              print(controller.countryController
-                                                  .text);
+                                              print(controller
+                                                  .countryController.text);
                                               Navigator.pop(context);
                                             },
                                             child: Padding(
-                                                padding: EdgeInsets
-                                                    .symmetric(
-                                                    horizontal:
-                                                    30,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 30,
                                                     vertical: 10),
                                                 child: Text(
-                                                  searchList1[index]
-                                                      .toString(),
+                                                  searchList1[index].toString(),
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
-                                                      FontWeight
-                                                          .w600),
+                                                          FontWeight.w600),
                                                 )),
                                           );
                                         });
@@ -593,8 +613,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Country is required'),
+                    RequiredValidator(errorText: 'Country is required'),
                   ]),
                 ),
                 SizedBox(
@@ -616,8 +635,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Street address is required'),
+                    RequiredValidator(errorText: 'Street address is required'),
                   ]),
                 ),
                 SizedBox(
@@ -639,8 +657,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'City is required'),
+                    RequiredValidator(errorText: 'City is required'),
                   ]),
                 ),
                 SizedBox(
@@ -662,8 +679,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Zip/Postal code is required'),
+                    RequiredValidator(errorText: 'Zip/Postal code is required'),
                   ]),
                 ),
                 SizedBox(
@@ -685,11 +701,9 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(
-                        errorText: 'Phone number is required'),
+                    RequiredValidator(errorText: 'Phone number is required'),
                   ]),
                 ),
-
                 SizedBox(
                   height: AddSize.size15,
                 ),

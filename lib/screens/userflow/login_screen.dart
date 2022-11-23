@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignIn!.authentication;
+    await googleSignIn!.authentication;
     final userCredentials = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
@@ -143,10 +143,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 left: 16.0,
                 bottom: 40.h,
                 child: Container(
-                    // height: 400.h,
-                    // margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  // height: 400.h,
+                  // margin: EdgeInsets.symmetric(horizontal: 16.0),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -191,15 +191,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             suffixIcon: eyeHide == false
                                 ? InkWell(
-                                    onTap: () => setState(() {
-                                          eyeHide = true.obs;
-                                        }),
-                                    child: Icon(Icons.remove_red_eye_outlined))
+                                onTap: () => setState(() {
+                                  eyeHide = true.obs;
+                                }),
+                                child: Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
-                                    onTap: () => setState(() {
-                                          eyeHide = false.obs;
-                                        }),
-                                    child: Icon(Icons.visibility_off_outlined)),
+                                onTap: () => setState(() {
+                                  eyeHide = false.obs;
+                                }),
+                                child: Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([
@@ -207,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   errorText: 'Password is required'),
                               MinLengthValidator(8,
                                   errorText:
-                                      'Password must be at least 8 digits long'),
+                                  'Password must be at least 8 digits long'),
                             ]),
                           );
                         }),
@@ -236,14 +236,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
                             login(usernameController.text,
-                                    passwordController.text, context)
+                                passwordController.text, context)
                                 .then((value) async {
                               showToast(
                                 value.message.toString(),
                               );
                               if (value.status == true) {
                                 SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
 
                                 pref.setBool("shownIntro", true);
@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     bottom: AddSize.padding10),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.circular(AddSize.size10),
+                                  BorderRadius.circular(AddSize.size10),
                                   border: Border.all(color: Colors.grey),
                                 ),
                                 child: Image.asset(
@@ -307,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       bottom: AddSize.padding10),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadius.circular(AddSize.size10),
+                                    BorderRadius.circular(AddSize.size10),
                                     border: Border.all(color: Colors.grey),
                                   ),
                                   child: Image.asset(

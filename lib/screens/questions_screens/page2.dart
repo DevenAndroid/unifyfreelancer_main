@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../controller/profie_screen_controller.dart';
@@ -18,6 +19,18 @@ class _Page2State extends State<Page2> {
   RxInt currentIndex = 1.obs;
 
   final controller = Get.put(ProfileScreenController());
+
+  List content = [
+    "Nope: it's new to me",
+    "I've tried it but still might need tips",
+    "Yep, I've freelanced for years"
+  ] ;
+
+  List icons = [
+    'assets/icon/leaves.svg',
+    'assets/icon/idea.svg',
+    'assets/icon/star.svg',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,26 +88,39 @@ class _Page2State extends State<Page2> {
                         child: InkWell(
                           onTap: (){
                             currentIndex.value = index;
+                            controller.nextPage();
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(AddSize.size5),
-                                border: Border.all(color: currentIndex.value == index ? AppTheme.primaryColor : Colors.transparent,width: AddSize.size10*.22)
-                            ),
-                            child: ListTile(
-                              visualDensity: VisualDensity(horizontal: -4, vertical: 0),
-                              leading: Icon(Icons.favorite_border,color: AppTheme.blackColor,),
-                              title: Text(
-                                "Nope: its new to me",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.blackColor,
-                                    fontSize: AddSize.font12),
+                          child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(AddSize.size5),
+                                  border: Border.all(color: currentIndex.value == index ? AppTheme.primaryColor : Colors.transparent,width: AddSize.size10*.22)
                               ),
-                              trailing: AnimatedContainer(
-                                duration: Duration(seconds: 20),
-                                child: Icon(Icons.check,color: AppTheme.primaryColor,size: currentIndex.value == index
-                                    ? AddSize.size20 : 0,),
+                              child: ListTile(
+                                visualDensity: VisualDensity(horizontal: -4, vertical: 0),
+                                leading: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    icons[index],
+                                    color: AppTheme.primaryColor,
+                                  ),
+                                ),
+                                title: Text(
+                                 content[index].toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppTheme.blackColor,
+                                      fontSize: AddSize.font12),
+                                ),
+                                trailing: AnimatedContainer(
+                                  duration: Duration(seconds: 20),
+                                  child: Icon(Icons.check,color: AppTheme.primaryColor,size: currentIndex.value == index
+                                      ? AddSize.size20 : 0,),
+                                ),
                               ),
                             ),
                           ),

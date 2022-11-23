@@ -636,7 +636,7 @@ class _Page6State extends State<Page6> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-                Row(
+                /*Row(
                   children: [
                     Checkbox(
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -662,7 +662,7 @@ class _Page6State extends State<Page6> {
                 ),
                 SizedBox(
                   height: AddSize.size20,
-                ),
+                ),*/
               ],
             ),
           ),
