@@ -44,7 +44,7 @@ class _Page5State extends State<Page5> {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController fromController = TextEditingController();
     final TextEditingController toController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
+    // final TextEditingController descriptionController = TextEditingController();
     final GlobalKey<FormState> _formKey = GlobalKey();
     var dateInput = "";
     var dateInput2 = "";
@@ -55,7 +55,7 @@ class _Page5State extends State<Page5> {
     titleController.text = item.subject ?? "";
     fromController.text = getFormatDate(item.startDate ?? "");
     toController.text = getFormatDate(item.endDate ?? "");
-    descriptionController.text = item.description ?? "";
+    // descriptionController.text = item.description ?? "";
     dateInput = item.startDate ?? "";
     dateInput2 = item.endDate ?? "";
     endDatePresent.value = item.endDate == null ? true : false;
@@ -551,20 +551,20 @@ class _Page5State extends State<Page5> {
                               SizedBox(
                                 height: AddSize.size5,
                               ),
-                              CustomTextField(
-                                controller: descriptionController,
-                                isMulti: true,
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: "Description".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Description is required'),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
+                              // CustomTextField(
+                              //   controller: descriptionController,
+                              //   isMulti: true,
+                              //   obSecure: false.obs,
+                              //   keyboardType: TextInputType.emailAddress,
+                              //   hintText: "Description".obs,
+                              //   validator: MultiValidator([
+                              //     RequiredValidator(
+                              //         errorText: 'Description is required'),
+                              //   ]),
+                              // ),
+                              // SizedBox(
+                              //   height: AddSize.size15,
+                              // ),
                             ])),
                     Row(
                       children: [
@@ -595,8 +595,7 @@ class _Page5State extends State<Page5> {
                                   questionEmployment(
                                       id: item.id ?? "",
                                       subject: titleController.text.trim(),
-                                      description:
-                                      descriptionController.text.trim(),
+                                      // description: descriptionController.text.trim(),
                                       company:
                                       companyController.text.trim(),
                                       city: cityController.text.trim(),
