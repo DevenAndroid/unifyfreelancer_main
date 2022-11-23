@@ -25,6 +25,7 @@ class ProfileScreenController extends GetxController {
   RxDouble currentIndex = 1.0.obs;
   Rx<ModelCountryList> countryList = ModelCountryList().obs;
   RxList searchList1 = <String>[].obs;
+  RxBool acceptTermsOrPrivacy = false.obs;
 
   nextPage(){
     pageController.nextPage(
@@ -42,6 +43,7 @@ class ProfileScreenController extends GetxController {
     getLanguageData();
   }
   getData() {
+    // status.value = RxStatus.empty();
     freelancerProfileRepo().then((value) {
       log("Profile Data......  "+jsonEncode(value));
       model.value = value;
