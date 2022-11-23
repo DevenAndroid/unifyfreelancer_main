@@ -103,7 +103,7 @@ class MyRouter {
   static var questionsScreen = "/questionsScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const LoginScreen()),
+    GetPage(name: '/', page: () => const QuestionsScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),

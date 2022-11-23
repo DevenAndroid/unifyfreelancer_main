@@ -13,7 +13,6 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
-
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
 import '../../repository/delete_employment_info_repository.dart';
@@ -85,11 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
     map["occcuption"] = _descriptionController.text.trim();
-    editNameInfoRepo(
-            mapData: map,
-            fieldName1: "profile_image",
-            file1: imageFileToPick,
-            context: context)
+    editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context)
         .then((value) {
       if (value.status == true) {
         profileController.getData();

@@ -583,12 +583,16 @@ class ProfilePreview extends StatelessWidget {
           SizedBox(
             height: AddSize.size10,
           ),
-          Text(
-            "Languages",
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font20),
+          Row(
+            children: [
+              Text(
+                "Languages",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText,
+                    fontSize: AddSize.font20),
+              ),
+            ],
           ),
           Row(
             children: [
