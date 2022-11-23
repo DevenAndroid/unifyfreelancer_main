@@ -99,6 +99,85 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
     );
   }
 
+  showDialogue(){
+
+
+    showDialog(context: context, builder: (context){
+      return Dialog(
+        insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16),
+        child: Form(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+
+
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.all(AddSize.size10),
+                        child: CustomOutlineButton(
+                          title: 'Cancel',
+                          backgroundColor: AppTheme.whiteColor,
+                          onPressed: () {
+                            Get.back();
+                          },
+                          textColor: AppTheme.primaryColor,
+                          expandedValue: false,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.all(AddSize.size10),
+                        child: CustomOutlineButton(
+                          title: 'Save',
+                          backgroundColor: AppTheme.primaryColor,
+                          onPressed: () {
+                            // if (_formKey.currentState!.validate()) {
+                            //   editEmploymentInfoRepo(
+                            //       id: parentIndex == -10000 ? parentIndex :
+                            //       controller.model.value.data!.employment![parentIndex].id.toString(),
+                            //       subject: _titleController.text.trim(),
+                            //       description:
+                            //       _descriptionController.text.trim(),
+                            //       company: _companyController.text.trim(),
+                            //       city: _cityController.text.trim(),
+                            //       country: countryController.text.trim(),
+                            //       start_date: _fromController.text.trim(),
+                            //       end_date: _toController.text.trim(),
+                            //       currently_working:
+                            //       acceptTermsOrPrivacy == true ? 1 : 0,
+                            //       context: context)
+                            //       .then((value) {
+                            //     if (value.status == true) {
+                            //       Get.back();
+                            //       controller.getData();
+                            //     }
+                            //     showToast(value.message.toString());
+                            //   });
+                            // }
+                          },
+                          textColor: AppTheme.whiteColor,
+                          expandedValue: false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+
+
   final _formKey = GlobalKey<FormState>();
   final controller = Get.put(ProfileScreenController());
 
