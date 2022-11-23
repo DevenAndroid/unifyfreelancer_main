@@ -73,6 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(
+            counter: Offstage(),
             filled: true,
             enabled: widget.enabled,
             fillColor: AppTheme.whiteColor,

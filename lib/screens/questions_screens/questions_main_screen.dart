@@ -85,7 +85,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                 color: AppTheme.whiteColor,
                 borderRadius: BorderRadius.circular(AddSize.size10),
               ),
-              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 13 * AddSize.screenWidth),
+              padding: EdgeInsets.only(right: AddSize.screenWidth - controller.currentIndex.value / 12 * AddSize.screenWidth),
               child: Container(
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
@@ -109,7 +109,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page6(),
           Page7(),
           Page8(),
-          Page9(),
+         // Page9(),
           Page10(),
           HourlyChargeQuestion(),
           ProfileQuestions(),

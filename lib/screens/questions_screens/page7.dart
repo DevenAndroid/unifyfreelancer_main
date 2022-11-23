@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
@@ -378,10 +379,69 @@ class _Page7State extends State<Page7> {
         SizedBox(
           height: AddSize.size15,
         ),
+        ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: controller.model.value.data!.language!.length,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: EdgeInsets.only(bottom: 10),
+                elevation: 0.5,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        controller
+                            .model.value.data!.language![index].language
+                            .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font14),
+                      ),
+                      Text(
+                        controller
+                            .model.value.data!.language![index].level
+                            .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.textColor,
+                            fontSize: AddSize.font14),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          //   showDeleteDialog();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(AddSize.size5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.whiteColor,
+                              border:
+                              Border.all(color: Color(0xff707070))),
+                          child: Icon(
+                            Icons.delete,
+                            color: AppTheme.primaryColor,
+                            size: AddSize.size15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+        SizedBox(
+          height: AddSize.size15,
+        ),
         CustomOutlineButton(
           title: '+  Add a language',
           backgroundColor: AppTheme.whiteColor,
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed(MyRouter.addLanguageScreen);
+          },
           textColor: AppTheme.primaryColor,
           expandedValue: true,
         ),
