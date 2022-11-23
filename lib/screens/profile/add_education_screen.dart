@@ -67,8 +67,6 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     }
   }
 
-
-
   Rx time = "".obs;
   Rx time2 = "".obs;
   Rx selectedDegree = "".obs;
@@ -81,19 +79,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
   TextEditingController _areaController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  getData(){
+  getData() {
     degreeListRepo().then((value) {
-      degree.value = value ;
-      if(value.status == true){
-        setState(() {
-
-        });
-        if(kDebugMode){
-          print(value);
-        }
-
+      degree.value = value;
+      if (value.status == true) {
+        setState(() {});
       }
-
     });
   }
 
@@ -341,7 +332,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                             return Obx(() {
                                               return RadioListTile(
                                                 title: Text(
-                                                  degree.value.data![index].title.toString(),
+                                                  degree
+                                                      .value.data![index].title
+                                                      .toString(),
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
@@ -355,7 +348,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
                                                     vertical: -4),
-                                                value:  degree.value.data![index].title.toString(),
+                                                value: degree
+                                                    .value.data![index].title
+                                                    .toString(),
                                                 groupValue:
                                                     selectedDegree.value,
                                                 onChanged: (value) {
@@ -447,17 +442,18 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             editEducationInfoRepo(
-                                    load == -100
+                                    id: load == -100
                                         ? load
                                         : controller.model.value.data!
                                             .education![load].id,
-                                    _schoolController.text.trim(),
-                                    _fromController.text.trim(),
-                                    _toController.text.trim(),
-                                    _degreeController.text.trim(),
-                                    _areaController.text.trim(),
-                                    _descriptionController.text.trim(),
-                                    context)
+                                    school: _schoolController.text.trim(),
+                                    start_year: _fromController.text.trim(),
+                                    end_year: _toController.text.trim(),
+                                    degree: _degreeController.text.trim(),
+                                    area_study: _areaController.text.trim(),
+                                    description:
+                                        _descriptionController.text.trim(),
+                                    context: context)
                                 .then((value) {
                               if (value.status == true) {
                                 Get.back();

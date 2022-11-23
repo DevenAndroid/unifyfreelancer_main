@@ -2334,13 +2334,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       context)
                                                   .then((value) {
                                                 if (value.status == true) {
-                                                  profileController.model.value
-                                                      .data!.employment!
-                                                      .removeAt(index);
+                                                  profileController.model.value.data!.employment!.removeAt(index);
                                                   profileController.getData();
                                                 }
-                                                showToast(
-                                                    value.message.toString());
+                                                showToast(value.message.toString());
                                               });
                                             },
                                             child: Container(
