@@ -25,6 +25,7 @@ class ProfileScreenController extends GetxController {
   RxDouble currentIndex = 1.0.obs;
   Rx<ModelCountryList> countryList = ModelCountryList().obs;
   RxList searchList1 = <String>[].obs;
+  RxString profileImage = "".obs;
 
   RxBool acceptTermsOrPrivacy = false.obs;
 
@@ -34,6 +35,7 @@ class ProfileScreenController extends GetxController {
   final zipController = TextEditingController();
   final addressController = TextEditingController();
   final cityController = TextEditingController();
+
 
 
   nextPage(){
@@ -66,6 +68,8 @@ class ProfileScreenController extends GetxController {
         zipController .text = value.data!.basicInfo!.zipCode.toString();
         addressController.text = value.data!.basicInfo!.address.toString();
         cityController .text = value.data!.basicInfo!.city.toString();
+        profileImage.value = value.data!.basicInfo!.profileImage.toString();
+
       }
       else{
         status.value = RxStatus.error();

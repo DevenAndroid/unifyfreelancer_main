@@ -63,7 +63,8 @@ class _Page5State extends State<Page5> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16,vertical: AddSize.size100*.8),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .8),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -71,10 +72,7 @@ class _Page5State extends State<Page5> {
                 child: Column(
                   children: [
                     Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.all(AddSize.size10),
                         margin: EdgeInsets.all(AddSize.size10),
                         decoration: BoxDecoration(
@@ -93,6 +91,30 @@ class _Page5State extends State<Page5> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
+                              Text(
+                                "Title",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.titleText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              CustomTextField(
+                                controller: titleController,
+                                obSecure: false.obs,
+                                keyboardType: TextInputType.emailAddress,
+                                hintText: "Web developer".obs,
+                                validator: MultiValidator([
+                                  RequiredValidator(
+                                      errorText: 'Title is required'),
+                                ]),
+                              ),
+                              SizedBox(
+                                height: AddSize.size15,
+                              ),
                               Text(
                                 "Company",
                                 style: TextStyle(
@@ -149,8 +171,8 @@ class _Page5State extends State<Page5> {
                                         FocusManager.instance.primaryFocus!
                                             .unfocus();
                                         controller.searchList1.clear();
-                                        for (var item in controller.countryList
-                                            .value.countrylist!) {
+                                        for (var item in controller
+                                            .countryList.value.countrylist!) {
                                           controller.searchList1
                                               .add(item.name.toString());
                                         }
@@ -165,19 +187,18 @@ class _Page5State extends State<Page5> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return SizedBox(
-                                              height: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .height *
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
                                                   .7,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Align(
                                                     alignment:
-                                                    Alignment.topRight,
+                                                        Alignment.topRight,
                                                     child: IconButton(
                                                       onPressed: () =>
                                                           Navigator.pop(
@@ -185,13 +206,13 @@ class _Page5State extends State<Page5> {
                                                       icon: Icon(
                                                         Icons.clear,
                                                         color:
-                                                        AppTheme.blackColor,
+                                                            AppTheme.blackColor,
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding: EdgeInsets.all(
-                                                        AddSize.size10)
+                                                            AddSize.size10)
                                                         .copyWith(top: 0),
                                                     child: TextFormField(
                                                       onChanged: (value) {
@@ -200,93 +221,92 @@ class _Page5State extends State<Page5> {
                                                               .clear();
                                                           // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                           for (var item
-                                                          in controller
-                                                              .countryList
-                                                              .value
-                                                              .countrylist!) {
+                                                              in controller
+                                                                  .countryList
+                                                                  .value
+                                                                  .countrylist!) {
                                                             if (item.name
                                                                 .toString()
                                                                 .toLowerCase()
                                                                 .contains(value
-                                                                .toLowerCase())) {
+                                                                    .toLowerCase())) {
                                                               controller
                                                                   .searchList1
                                                                   .add(item.name
-                                                                  .toString());
+                                                                      .toString());
                                                             }
                                                           }
                                                         } else {
                                                           controller.searchList1
                                                               .clear();
                                                           for (var item
-                                                          in controller
-                                                              .countryList
-                                                              .value
-                                                              .countrylist!) {
+                                                              in controller
+                                                                  .countryList
+                                                                  .value
+                                                                  .countrylist!) {
                                                             controller
                                                                 .searchList1
                                                                 .add(item.name
-                                                                .toString());
+                                                                    .toString());
                                                           }
                                                         }
                                                       },
                                                       decoration:
-                                                      InputDecoration(
+                                                          InputDecoration(
                                                         filled: true,
                                                         fillColor: AppTheme
                                                             .primaryColor
                                                             .withOpacity(.05),
                                                         hintText:
-                                                        "Select country",
+                                                            "Select country",
                                                         prefixIcon:
-                                                        Icon(Icons.flag),
+                                                            Icon(Icons.flag),
                                                         hintStyle:
-                                                        const TextStyle(
-                                                            color: Color(
-                                                                0xff596681),
-                                                            fontSize: 15),
+                                                            const TextStyle(
+                                                                color: Color(
+                                                                    0xff596681),
+                                                                fontSize: 15),
                                                         contentPadding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                            vertical: 14,
-                                                            horizontal: 20),
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 14,
+                                                                horizontal: 20),
                                                         focusedBorder:
-                                                        OutlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide: BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor
                                                                   .withOpacity(
-                                                                  .15),
+                                                                      .15),
                                                               width: 1.0),
                                                           borderRadius: BorderRadius
                                                               .circular(AddSize
-                                                              .size10 *
-                                                              .8),
+                                                                      .size10 *
+                                                                  .8),
                                                         ),
                                                         enabledBorder:
-                                                        OutlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderSide: BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor
                                                                   .withOpacity(
-                                                                  .15),
+                                                                      .15),
                                                               width: 1.0),
                                                           borderRadius: BorderRadius
                                                               .circular(AddSize
-                                                              .size10 *
-                                                              .8),
+                                                                      .size10 *
+                                                                  .8),
                                                         ),
                                                         border: OutlineInputBorder(
                                                             borderSide: BorderSide(
                                                                 color: AppTheme
                                                                     .primaryColor
                                                                     .withOpacity(
-                                                                    .15),
+                                                                        .15),
                                                                 width: 1.0),
                                                             borderRadius: BorderRadius
-                                                                .circular(
-                                                                AddSize
-                                                                    .size10 *
+                                                                .circular(AddSize
+                                                                        .size10 *
                                                                     .8)),
                                                       ),
                                                     ),
@@ -295,7 +315,7 @@ class _Page5State extends State<Page5> {
                                                     return Expanded(
                                                       child: ListView.builder(
                                                           physics:
-                                                          BouncingScrollPhysics(),
+                                                              BouncingScrollPhysics(),
                                                           shrinkWrap: true,
                                                           itemCount: controller
                                                               .searchList1
@@ -307,7 +327,7 @@ class _Page5State extends State<Page5> {
                                                                 onTap: () {
                                                                   setState(() {
                                                                     countryController
-                                                                        .text =
+                                                                            .text =
                                                                         controller
                                                                             .searchList1[index]
                                                                             .toString();
@@ -319,25 +339,22 @@ class _Page5State extends State<Page5> {
                                                                       context);
                                                                 },
                                                                 child: Padding(
-                                                                    padding: EdgeInsets
-                                                                        .symmetric(
+                                                                    padding: EdgeInsets.symmetric(
                                                                         horizontal:
-                                                                        AddSize
-                                                                            .size30,
+                                                                            AddSize
+                                                                                .size30,
                                                                         vertical:
-                                                                        AddSize
-                                                                            .size10),
+                                                                            AddSize.size10),
                                                                     child: Text(
                                                                       controller
                                                                           .searchList1[
-                                                                      index]
+                                                                              index]
                                                                           .toString(),
                                                                       style: TextStyle(
                                                                           fontSize: AddSize
                                                                               .font14,
                                                                           fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
+                                                                              FontWeight.w600),
                                                                     )),
                                                               );
                                                             });
@@ -359,7 +376,7 @@ class _Page5State extends State<Page5> {
                                         labelStyle: const TextStyle(
                                             color: Colors.black),
                                         suffixIcon:
-                                        Icon(Icons.keyboard_arrow_down),
+                                            Icon(Icons.keyboard_arrow_down),
                                         hintStyle: TextStyle(
                                           color: Color(0xff596681),
                                           fontSize: AddSize.size15,
@@ -398,29 +415,7 @@ class _Page5State extends State<Page5> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "Title",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              CustomTextField(
-                                controller: titleController,
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.emailAddress,
-                                hintText: "Web developer".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Title is required'),
-                                ]),
-                              ),
+
                               SizedBox(
                                 height: 15,
                               ),
@@ -450,8 +445,7 @@ class _Page5State extends State<Page5> {
                                         dateFormat.format(pickedDate);
                                     setState(() {
                                       dateInput =
-                                      "${pickedDate.year}-${pickedDate
-                                          .month}-${pickedDate.day}";
+                                          "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
                                     });
                                   }
                                 },
@@ -472,7 +466,7 @@ class _Page5State extends State<Page5> {
                                   Obx(() {
                                     return Checkbox(
                                         materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
+                                            MaterialTapTargetSize.shrinkWrap,
                                         value: endDatePresent.value,
                                         activeColor: AppTheme.primaryColor,
                                         onChanged: (newValue) {
@@ -499,42 +493,41 @@ class _Page5State extends State<Page5> {
                                 return SizedBox(
                                   child: endDatePresent == false
                                       ? CustomTextField(
-                                    controller: toController,
-                                    readOnly: true,
-                                    onTap: () async {
-                                      DateTime? pickedDate =
-                                      await showDatePicker(
-                                          context: context,
-                                          initialDate: dateInput2 ==
-                                              ""
-                                              ? DateTime.now()
-                                              : DateTime.parse(
-                                              dateInput2),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime.now());
-                                      if (pickedDate != null) {
-                                        toController.text =
-                                            dateFormat.format(pickedDate);
-                                        setState(() {
-                                          dateInput2 =
-                                          "${pickedDate.year}-${pickedDate
-                                              .month}-${pickedDate.day}";
-                                        });
-                                      }
-                                    },
-                                    obSecure: false.obs,
-                                    hintText: "To".obs,
-                                    suffixIcon: Icon(
-                                      Icons.calendar_month_outlined,
-                                      size: AddSize.size22,
-                                      color: AppTheme.primaryColor,
-                                    ),
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText:
-                                          'To, date is required'),
-                                    ]),
-                                  )
+                                          controller: toController,
+                                          readOnly: true,
+                                          onTap: () async {
+                                            DateTime? pickedDate =
+                                                await showDatePicker(
+                                                    context: context,
+                                                    initialDate: dateInput2 ==
+                                                            ""
+                                                        ? DateTime.now()
+                                                        : DateTime.parse(
+                                                            dateInput2),
+                                                    firstDate: DateTime(1950),
+                                                    lastDate: DateTime.now());
+                                            if (pickedDate != null) {
+                                              toController.text =
+                                                  dateFormat.format(pickedDate);
+                                              setState(() {
+                                                dateInput2 =
+                                                    "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                              });
+                                            }
+                                          },
+                                          obSecure: false.obs,
+                                          hintText: "To".obs,
+                                          suffixIcon: Icon(
+                                            Icons.calendar_month_outlined,
+                                            size: AddSize.size22,
+                                            color: AppTheme.primaryColor,
+                                          ),
+                                          validator: MultiValidator([
+                                            RequiredValidator(
+                                                errorText:
+                                                    'To, date is required'),
+                                          ]),
+                                        )
                                       : SizedBox(),
                                 );
                               }),
@@ -593,6 +586,7 @@ class _Page5State extends State<Page5> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   questionEmployment(
+
                                       id: item.id ?? "",
                                       subject: titleController.text.trim(),
                                       // description: descriptionController.text.trim(),
@@ -606,6 +600,7 @@ class _Page5State extends State<Page5> {
                                       currently_working:
                                       endDatePresent == true ? 1 : 0,
                                       context: context)
+
                                       .then((value) {
                                     if (value.status == true) {
                                       Get.back();
@@ -651,7 +646,7 @@ class _Page5State extends State<Page5> {
                         foregroundColor: AppTheme.primaryColor,
                         backgroundColor: AppTheme.primaryColor,
                         padding:
-                        EdgeInsets.symmetric(horizontal: AddSize.size20)),
+                            EdgeInsets.symmetric(horizontal: AddSize.size20)),
                     child: AddText(
                       text: "Cancel",
                       color: Colors.white,
@@ -676,7 +671,7 @@ class _Page5State extends State<Page5> {
                         foregroundColor: Colors.red,
                         backgroundColor: Colors.red,
                         padding:
-                        EdgeInsets.symmetric(horizontal: AddSize.size20)),
+                            EdgeInsets.symmetric(horizontal: AddSize.size20)),
                     child: AddText(
                       text: "Delete",
                       color: Colors.white,
@@ -767,9 +762,9 @@ class _Page5State extends State<Page5> {
                 ),
                 Text(
                   "Freelancers who add their experience are "
-                      "twice as likely to win work. But if you're just"
-                      " starting out, you can still create a great profile. "
-                      "just head on the next page",
+                  "twice as likely to win work. But if you're just"
+                  " starting out, you can still create a great profile. "
+                  "just head on the next page",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -778,20 +773,18 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-
                 if (controller.status.value.isSuccess)
                   ListView.builder(
                     itemCount: controller.model.value.data!.employment!.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                        employmentData(
-                            controller.model.value.data!.employment![index]),
+                    itemBuilder: (context, index) => employmentData(
+                        controller.model.value.data!.employment![index]),
                   ),
-
                 SizedBox(
                   height: AddSize.size15,
                 ),
+
                 CustomOutlineButton(
                   title: '+  Add Experience',
                   backgroundColor: AppTheme.whiteColor,
@@ -804,7 +797,7 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-                Row(
+                /*Row(
                   children: [
                     Obx(() {
                       return Checkbox(
@@ -832,7 +825,7 @@ class _Page5State extends State<Page5> {
                 ),
                 SizedBox(
                   height: AddSize.size20,
-                ),
+                ),*/
               ],
             ),
           ),
@@ -888,9 +881,7 @@ class _Page5State extends State<Page5> {
             children: [
               Expanded(
                 child: Text(
-                  item.subject
-                      .toString()
-                      .capitalize!,
+                  item.subject.toString().capitalize!,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.textColor,
@@ -940,20 +931,16 @@ class _Page5State extends State<Page5> {
             height: AddSize.size10,
           ),
           Text(
-            item.description
-                .toString()
-                .capitalizeFirst!,
+            item.description.toString().capitalizeFirst!,
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textColor,
                 fontSize: AddSize.font14),
           ),
           Text(
-            "${item.startDate != null ? dateFormat.format(
-                DateTime.parse(item.startDate!)) : ""}"
-                " ${item.endDate != null ? "to" : ""}"
-                " ${item.endDate != null ? dateFormat.format(
-                DateTime.parse(item.endDate!)) : ""}",
+            "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
+            " ${item.endDate != null ? "to" : ""}"
+            " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: AppTheme.textColor,

@@ -26,7 +26,7 @@ class Page1 extends StatelessWidget {
                 height: AddSize.size10,
               ),
               Text(
-                "Hey ZabuZa. Ready for your next big opportunity's ?",
+                "Hey ${controller.model.value.data!.basicInfo!.firstName.toString()}, Ready for your next big opportunity's ?",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkBlueText,
@@ -37,11 +37,19 @@ class Page1 extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding:  EdgeInsets.only(
-                      right: AddSize.padding20,
+
+                  Container(
+                    margin: EdgeInsets.only(right: AddSize.padding20),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppTheme.primaryColor.withOpacity(.15),
                     ),
-                    child: Icon(Icons.person),
+                    child: Icon(
+                      Icons.person,
+                      color: AppTheme.primaryColor,
+                      size: 20,
+                    ),
                   ),
                   Expanded(
                     child: Text(
@@ -65,11 +73,19 @@ class Page1 extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: AddSize.padding20,
+
+                  Container(
+                    margin: EdgeInsets.only(right: AddSize.padding20),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.primaryColor.withOpacity(.15),
                     ),
-                    child: Icon(Icons.mail_lock_outlined),
+                    child: Icon(
+                      Icons.mail_lock,
+                      color: AppTheme.primaryColor,
+                      size: 20,
+                    ),
                   ),
                   Expanded(
                     child: Text(
@@ -93,11 +109,18 @@ class Page1 extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Padding(
-                    padding:  EdgeInsets.only(
-                      right: AddSize.padding20,
+                  Container(
+                    margin: EdgeInsets.only(right: AddSize.padding20),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.primaryColor.withOpacity(.15),
                     ),
-                    child: Icon(Icons.monetization_on),
+                    child: Icon(
+                      Icons.monetization_on,
+                      color: AppTheme.primaryColor,
+                      size: 20,
+                    ),
                   ),
                   Expanded(
                     child: Text(

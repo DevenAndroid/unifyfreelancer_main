@@ -771,13 +771,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     if (_formKey.currentState!
                                                         .validate()) {
                                                       editDesignationInfoRepo(
-                                                              _designationController
+                                                             title:  _designationController
                                                                   .text
                                                                   .trim(),
-                                                              _designationDescriptionController
+                                                             description:  _designationDescriptionController
                                                                   .text
                                                                   .trim(),
-                                                              context)
+                                                            context:   context)
                                                           .then((value) {
                                                         if (value.status ==
                                                             true) {
