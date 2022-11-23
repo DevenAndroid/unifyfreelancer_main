@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final ValueChanged<String>? onChanged;
   final FormFieldSetter<String>? onSaved;
+  final   ValueChanged<String>? onFieldSubmitted;
   final bool isMulti;
   final bool autofocus;
   final bool enabled;
@@ -21,6 +22,7 @@ class CustomTextField extends StatefulWidget {
   final RxString hintText;
   final Widget? suffixIcon;
   final Widget? prefix;
+
   List<TextInputFormatter>? inputFormatters1 = [];
 
   CustomTextField({
@@ -40,7 +42,7 @@ class CustomTextField extends StatefulWidget {
     this.onEditingCompleted,
     this.onChanged,
     this.onSaved,
-    this.labelText, this.inputFormatters1 ,
+    this.labelText, this.inputFormatters1, this.onFieldSubmitted ,
 
   });
 
@@ -58,6 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextFormField(
+        onFieldSubmitted: widget.onFieldSubmitted ,
         inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,

@@ -8,7 +8,7 @@ import '../models/Model_common_response.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelCommonResponse> editLocationRepo({phone,timezone,address,city,country,zip_code,context}) async {
+Future<ModelCommonResponse> editLocationRepo({required phone,timezone,required address,required city,required country,required zip_code,context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
 

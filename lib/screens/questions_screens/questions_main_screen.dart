@@ -107,8 +107,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           Page4(),
           Page5(),
           Page6(),
-// <<<<<<< HEAD
-// =======
           Page7(),
           Page8(),
           Page9(),

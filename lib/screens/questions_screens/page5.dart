@@ -553,6 +553,13 @@ class _Page5State extends State<Page5> {
                   height: AddSize.size10,
                 ),
                 Text(
+                  controller.model.value.data!.basicInfo!.firstName.toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Text(
                   "If you have relevant work experience, add it here",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -575,6 +582,7 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
+                if(controller.model.value.data != null)
                 ListView.builder(
                   itemCount: controller.model.value.data!.employment!.length,
                   shrinkWrap: true,
