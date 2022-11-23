@@ -103,14 +103,14 @@ class MyRouter {
   static var questionsScreen = "/questionsScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const LoginScreen()),
+    GetPage(name: '/', page: () => const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.forgotPasswordScreen, page: () => const ForgotPasswordScreen()),
     GetPage(name: MyRouter.verificationScreen, page: () => const VerificationScreen()),
     GetPage(name: MyRouter.newPasswordScreen, page: () => const NewPasswordScreen()),
-    GetPage(name: MyRouter.bottomNavbar, page: () => const QuestionsScreen()),
+    GetPage(name: MyRouter.bottomNavbar, page: () => const BottomNavbar()),
     GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
     GetPage(name: MyRouter.saveJobsScreen, page: () => const SaveJobsScreen()),
     GetPage(name: MyRouter.jobDetailsScreen, page: () => const JobDetailsScreen()),
