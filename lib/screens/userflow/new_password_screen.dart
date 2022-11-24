@@ -100,7 +100,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Password is required'),
                       MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
-                      MaxLengthValidator(16, errorText: 'Max length is 16 '),
+                      MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
+                      //  PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: "Password should contain a special charecter"),
+                      PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
+                          errorText: "Password should contain a Capital and small letter with special character"),
                     ]),
                   ),
                   SizedBox(

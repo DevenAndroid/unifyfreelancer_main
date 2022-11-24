@@ -58,6 +58,7 @@ class ApiUrls {
   static const String contracts = "${apiBaseUrl}contracts";
   static const String categoryList = "${apiBaseUrl}category-list";
   static const String addCategory = "${apiBaseUrl}add-category";
+  static const String submitProfile = "${apiBaseUrl}submit-profile";
 
 
 }

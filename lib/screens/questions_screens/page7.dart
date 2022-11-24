@@ -275,13 +275,13 @@ class _Page7State extends State<Page7> {
         Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
-              color: AppTheme.pinkText.withOpacity(.04),
+              color: AppTheme.primaryColor.withOpacity(.04),
               borderRadius: BorderRadius.circular(5)),
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  "Language",
+                  "Languages",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -291,7 +291,25 @@ class _Page7State extends State<Page7> {
               SizedBox(
                 width: AddSize.size16,
               ),
-              Expanded(
+              InkWell(
+                onTap: () {
+                 Get.toNamed(MyRouter.editLanguageScreen);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(AddSize.size5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border:
+                      Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.edit,
+                    color: AppTheme.primaryColor,
+                    size: AddSize.size15,
+                  ),
+                ),
+              ),
+             /* Expanded(
                 child: Text(
                   "Proficiency level",
                   style: TextStyle(
@@ -299,11 +317,11 @@ class _Page7State extends State<Page7> {
                       color: AppTheme.titleText,
                       fontWeight: FontWeight.w600),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
-        SizedBox(
+        /*SizedBox(
           height: 10,
         ),
         Padding(
@@ -344,7 +362,7 @@ class _Page7State extends State<Page7> {
 
         SizedBox(
           height: 10,
-        ),
+        ),*/
         // Text(
         //   "Proficiency level",
         //   style: TextStyle(
@@ -372,9 +390,9 @@ class _Page7State extends State<Page7> {
         // SizedBox(
         //   height: 15,
         // ),
-        Divider(
+        /*Divider(
           color: AppTheme.pinkText.withOpacity(.29),
-        ),
+        ),*/
 
         SizedBox(
           height: AddSize.size15,
@@ -403,14 +421,13 @@ class _Page7State extends State<Page7> {
                       ),
                       Text(
                         controller
-                            .model.value.data!.language![index].level
-                            .toString(),
+                            .model.value.data!.language![index].level.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: AppTheme.textColor,
                             fontSize: AddSize.font14),
                       ),
-                      InkWell(
+                     /* InkWell(
                         onTap: () {
                           //   showDeleteDialog();
                         },
@@ -427,7 +444,7 @@ class _Page7State extends State<Page7> {
                             size: AddSize.size15,
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

@@ -99,7 +99,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       body: PageView(
         controller: controller.pageController,
         scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         children: [
           Page1(),
           Page2(),

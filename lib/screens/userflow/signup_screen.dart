@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -238,6 +239,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Obx(() {
                                 return BoxTextField(
                                   obSecure: eyeHide,
+                                  textSize: AddSize.size12,
                                   prefix: Icon(
                                     Icons.lock_outline,
                                   ),
@@ -258,10 +260,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       Icon(Icons.visibility_off_outlined)),
                                   controller: passwordController,
                                   hintText: AppStrings.password.obs,
-                                  validator: MultiValidator([
+                                 /* validator: MultiValidator([
                                     RequiredValidator(errorText: 'Password is required'),
                                     MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
                                     MaxLengthValidator(16, errorText: 'Max length is 16 '),
+                                  ]),*/
+                                  validator: MultiValidator([
+                                    RequiredValidator(errorText: 'Password is required'),
+                                    MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
+                                    MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
+                                    PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
+                                        errorText: "Password should contain a Capital and \nsmall letter with special character"),
                                   ]),
                                 );
                               }),
@@ -304,9 +313,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               BoxTextField(
                                 obSecure: false.obs,
-                                prefix: Icon(
-                                  Icons.adaptive.share,
-                                ),
+                                prefix: Image.asset('assets/icon/email_icon.png',height: 20,width: 20,),
                                 controller: invitationController,
                                 hintText: "Invitation code".obs,
                               ),
@@ -626,12 +633,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               }, deviceWidth, 50),
 
                               SizedBox(
-                                height: 15.h,
+                                height: 25.h,
                               ),
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  AppStrings.orLoginWith,
+                                  AppStrings.orSignupWith,
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
@@ -639,7 +646,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               SizedBox(
-                                height: 12.h,
+                                height: 20.h,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

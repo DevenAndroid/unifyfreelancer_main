@@ -38,6 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
 
+/*  int minLength = 8;
+  int maxLength = 16;*/
+
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
@@ -103,10 +106,26 @@ class _LoginScreenState extends State<LoginScreen> {
         // } catch (e) {
         //   showToast(e.toString());
         // }
-        Get.toNamed(MyRouter.bottomNavbar);
+        if(value.data!.user!.isProfileComplete == true){
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
+        else{
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
       }
     });
   }
+
+/*  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+  //A function that validate user entered password
+  bool validatePassword(String pass){
+    String _password = pass.trim();
+    if( _password.length <= 8 && pass_valid.hasMatch(_password)){
+      return true;
+    }else{
+      return false;
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -202,13 +221,65 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
+                           /*   validator: (String? password) {
+                                if (password!.length < minLength ||
+                                    password.isEmpty ||
+                                    password!.length == minLength) {
+                                  return 'Password must be at least 8-16 characters long';
+                                } else {
+                                  if (!password
+                                      .contains(RegExp(r"[a-z]"))) {
+                                    return 'Password must be at least 1 small letter';
+                                  } else {
+                                    if (!password
+                                        .contains(RegExp(r"[A-Z]"))) {
+                                      return 'Password must be at least 1 capital letter';
+                                    } else {
+                                      if (!password
+                                          .contains(RegExp(r"[0-9]"))) {
+                                        return 'Password must be at least 1 digit value';
+                                      } else {
+                                        if (!password.contains(RegExp(
+                                            r'[!@#$%^&*(),.?":{}|<>]_'))) {
+                                          return 'Password must be at least 1 special character';
+                                        }
+                                        else {
+                                          if(password.contains(RegExp(r"[a-z]")) && password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]_')) && password
+                                              .contains(RegExp(r"[A-Z]")) && password
+                                              .contains(RegExp(r"[0-9]"))) {
+                                            return null;
+                                          }
+                                        }
+
+
+                                      }
+                                    }
+                                  }
+                                }
+                              }*/
+                            /*validator: (value){
+                              if(value!.isEmpty){
+                                return "Please enter password";
+                              }else{
+                                //call function to check password
+                                bool result = validatePassword(value);
+                                if(result){
+                                  // create account event
+                                  return null;
+                                }else{
+                                  return "Password should contain Capital, small letter & Number & Special";
+                                }
+                              }
+                            },*/
                             validator: MultiValidator([
-                              RequiredValidator(
-                                  errorText: 'Password is required'),
-                              MinLengthValidator(8,
-                                  errorText:
-                                  'Password must be at least 8 digits long'),
+                              RequiredValidator(errorText: 'Password is required'),
+                              MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
+                              MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
+                              //  PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: "Password should contain a special charecter"),
+                              PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
+                                  errorText: "Password should contain a Capital and \nsmall letter with special character"),
                             ]),
+
                           );
                         }),
                         SizedBox(
@@ -238,16 +309,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             login(usernameController.text,
                                 passwordController.text, context)
                                 .then((value) async {
-                              showToast(
-                                value.message.toString(),
+                              showToast(value.message.toString(),
                               );
                               if (value.status == true) {
                                 SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
-
                                 pref.setBool("shownIntro", true);
-                                Get.offAllNamed(MyRouter.bottomNavbar);
+                                if(value.data!.user!.isProfileComplete == true){
+                                  Get.offAllNamed(MyRouter.questionsScreen);
+                                }
+                                else{
+                                  Get.offAllNamed(MyRouter.questionsScreen);
+                                }
                               }
                             });
                           }

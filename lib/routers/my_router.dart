@@ -110,7 +110,7 @@ class MyRouter {
     GetPage(name: MyRouter.forgotPasswordScreen, page: () => const ForgotPasswordScreen()),
     GetPage(name: MyRouter.verificationScreen, page: () => const VerificationScreen()),
     GetPage(name: MyRouter.newPasswordScreen, page: () => const NewPasswordScreen()),
-    GetPage(name: MyRouter.bottomNavbar, page: () => const QuestionsScreen()),
+    GetPage(name: MyRouter.bottomNavbar, page: () => const BottomNavbar()),
     GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
     GetPage(name: MyRouter.saveJobsScreen, page: () => const SaveJobsScreen()),
     GetPage(name: MyRouter.jobDetailsScreen, page: () => const JobDetailsScreen()),

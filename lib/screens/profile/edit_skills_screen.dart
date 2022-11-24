@@ -23,7 +23,6 @@ class EditSkillsScreen extends StatefulWidget {
 
 class _EditSkillsScreenState extends State<EditSkillsScreen> {
   final controller = Get.put(ProfileScreenController());
-
   ModelSkillListResponse skillList = ModelSkillListResponse();
   RxList<Data> selectedList = <Data>[].obs;
   RxList<Data> tempList = <Data>[].obs;

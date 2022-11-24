@@ -35,6 +35,8 @@ class ProfileScreenController extends GetxController {
   final zipController = TextEditingController();
   final addressController = TextEditingController();
   final cityController = TextEditingController();
+  final designationController = TextEditingController();
+  final designationDescriptionController = TextEditingController();
 
 
 
@@ -69,7 +71,8 @@ class ProfileScreenController extends GetxController {
         addressController.text = value.data!.basicInfo!.address.toString();
         cityController .text = value.data!.basicInfo!.city.toString();
         profileImage.value = value.data!.basicInfo!.profileImage.toString();
-
+        designationController.text =  value.data!.basicInfo!.occuption.toString();
+        designationDescriptionController.text =  value.data!.basicInfo!.description.toString();
       }
       else{
         status.value = RxStatus.error();

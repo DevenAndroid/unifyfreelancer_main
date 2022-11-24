@@ -13,6 +13,7 @@ class AppStrings {
   static const String password = "Password";
   static const String forgotPassword = "Forgot Password?";
   static const String orLoginWith = "Or login with...";
+  static const String orSignupWith = "Or Signup with...";
   static const String newToUnify = "New To Unify?";
   static const String register = "Register";
 

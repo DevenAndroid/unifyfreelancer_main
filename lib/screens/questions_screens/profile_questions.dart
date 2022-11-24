@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -674,6 +675,9 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
+                  inputFormatters1:  [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   controller: controller.zipController,
                   obSecure: false.obs,
                   hintText: "".obs,
@@ -696,6 +700,9 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
+                  inputFormatters1:  [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   controller: controller.phoneController,
                   obSecure: false.obs,
                   hintText: "".obs,
