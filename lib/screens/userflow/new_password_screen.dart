@@ -97,13 +97,19 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     controller: passwordController,
                     obSecure: eyeHide,
                     hintText: "  New password".obs,
+                  /*  validator: MultiValidator([
+                      RequiredValidator(errorText: 'Password is required'),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters with symbol & letter. '),
+                      MaxLengthValidator(16, errorText: "Password maximum length is 16"),
+                      PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
+                          errorText: "Password must be at least 8 characters with symbol & letter. "),
+                    ]),*/
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Password is required'),
-                      MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
-                      MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
-                      //  PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: "Password should contain a special charecter"),
-                      PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
-                          errorText: "Password should contain a Capital and small letter with special character"),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters with symbol \n& letter. '),
+                      MaxLengthValidator(16, errorText: "Password maximum length is 16"),
+                      PatternValidator(r"(?=.*[a-zA-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
+                          errorText: "Password must be at least 8 characters with symbol \n& letter. "),
                     ]),
                   ),
                   SizedBox(

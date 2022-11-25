@@ -9,6 +9,7 @@ import '../../models/model_skill_list_response.dart';
 import '../../repository/skill_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/add_text.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
@@ -256,7 +257,12 @@ class _Page8State extends State<Page8> {
                     title: 'Next',
                     backgroundColor: AppTheme.primaryColor,
                     onPressed: () {
-                      controller.nextPage();
+                      if (controller.model.value.data!.skills!.isNotEmpty ) {
+                        controller.nextPage();
+                      }
+                      else{
+                        showToast("Please add at least one education");
+                      }
                     },
                     textColor: AppTheme.whiteColor,
                     expandedValue: false,

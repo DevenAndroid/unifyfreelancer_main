@@ -7,6 +7,7 @@ import '../../models/model_language_list.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../profile/edit_language_screen.dart';
@@ -194,7 +195,12 @@ class _Page7State extends State<Page7> {
                   textColor: AppTheme.whiteColor,
                   expandedValue: false,
                   onPressed: () {
-                    controller.nextPage();
+                    if (controller.model.value.data!.language!.isNotEmpty ) {
+                      controller.nextPage();
+                    }
+                    else{
+                      showToast("Please add at least one education");
+                    }
                   },
                 ),
               ),

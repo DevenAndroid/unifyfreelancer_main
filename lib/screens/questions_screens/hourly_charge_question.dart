@@ -153,6 +153,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                         obSecure: false.obs,
                         hintText: "".obs,
                         prefix: Icon(Icons.attach_money),
+
                       ),
                     ),
                     Text(

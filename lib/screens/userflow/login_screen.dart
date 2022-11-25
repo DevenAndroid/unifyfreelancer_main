@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +10,6 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../repository/login_repository.dart';
 import '../../repository/social_login_repository.dart';
 import '../../resources/app_assets.dart';
@@ -38,8 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
 
-/*  int minLength = 8;
-  int maxLength = 16;*/
 
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
@@ -116,16 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-/*  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
-  //A function that validate user entered password
-  bool validatePassword(String pass){
-    String _password = pass.trim();
-    if( _password.length <= 8 && pass_valid.hasMatch(_password)){
-      return true;
-    }else{
-      return false;
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Username or email is required'),
+                                  errorText: 'Please enter email id'),
                               EmailValidator(
                                   errorText: 'Enter a valid email address')
                             ])),
@@ -221,64 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
-                           /*   validator: (String? password) {
-                                if (password!.length < minLength ||
-                                    password.isEmpty ||
-                                    password!.length == minLength) {
-                                  return 'Password must be at least 8-16 characters long';
-                                } else {
-                                  if (!password
-                                      .contains(RegExp(r"[a-z]"))) {
-                                    return 'Password must be at least 1 small letter';
-                                  } else {
-                                    if (!password
-                                        .contains(RegExp(r"[A-Z]"))) {
-                                      return 'Password must be at least 1 capital letter';
-                                    } else {
-                                      if (!password
-                                          .contains(RegExp(r"[0-9]"))) {
-                                        return 'Password must be at least 1 digit value';
-                                      } else {
-                                        if (!password.contains(RegExp(
-                                            r'[!@#$%^&*(),.?":{}|<>]_'))) {
-                                          return 'Password must be at least 1 special character';
-                                        }
-                                        else {
-                                          if(password.contains(RegExp(r"[a-z]")) && password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]_')) && password
-                                              .contains(RegExp(r"[A-Z]")) && password
-                                              .contains(RegExp(r"[0-9]"))) {
-                                            return null;
-                                          }
-                                        }
-
-
-                                      }
-                                    }
-                                  }
-                                }
-                              }*/
-                            /*validator: (value){
-                              if(value!.isEmpty){
-                                return "Please enter password";
-                              }else{
-                                //call function to check password
-                                bool result = validatePassword(value);
-                                if(result){
-                                  // create account event
-                                  return null;
-                                }else{
-                                  return "Password should contain Capital, small letter & Number & Special";
-                                }
-                              }
-                            },*/
-                            validator: MultiValidator([
+                           /* validator: MultiValidator([
                               RequiredValidator(errorText: 'Password is required'),
                               MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
                               MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
                               //  PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: "Password should contain a special charecter"),
                               PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
                                   errorText: "Password should contain a Capital and \nsmall letter with special character"),
-                            ]),
+                            ]),*/
 
                           );
                         }),

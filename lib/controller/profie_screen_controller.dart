@@ -26,8 +26,8 @@ class ProfileScreenController extends GetxController {
   Rx<ModelCountryList> countryList = ModelCountryList().obs;
   RxList searchList1 = <String>[].obs;
   RxString profileImage = "".obs;
-
-  RxBool acceptTermsOrPrivacy = false.obs;
+  RxInt questionIndex2 = (-1).obs;
+  RxInt questionIndex3 = (-1).obs;
 
   final priceController = TextEditingController();
   final countryController = TextEditingController();

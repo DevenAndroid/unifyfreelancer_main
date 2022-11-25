@@ -694,7 +694,12 @@ class _Page6State extends State<Page6> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
+                  if (controller.model.value.data!.education!.isNotEmpty ) {
                   controller.nextPage();
+                }
+                else{
+                  showToast("Please add at least one education");
+                }
                 },
               ),
             ),

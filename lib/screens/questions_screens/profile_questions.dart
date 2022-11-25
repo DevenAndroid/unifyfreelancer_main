@@ -675,9 +675,6 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
-                  inputFormatters1:  [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
                   controller: controller.zipController,
                   obSecure: false.obs,
                   hintText: "".obs,

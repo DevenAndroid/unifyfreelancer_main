@@ -856,10 +856,13 @@ class _Page5State extends State<Page5> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                  if (controller.model.value.data!.employment!.isNotEmpty ||
-                      controller.acceptTermsOrPrivacy.value) {
+                  if (controller.model.value.data!.employment!.isNotEmpty ) {
                     controller.nextPage();
                   }
+                  else{
+                    showToast("Please add at least one experience");
+                  }
+
                 },
               ),
             ),
