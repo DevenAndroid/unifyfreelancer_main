@@ -163,6 +163,7 @@ class BasicInfo {
   String? city;
   String? zipCode;
   String? isVerified;
+  String? category;
 
   BasicInfo(
       {this.id,
@@ -183,6 +184,7 @@ class BasicInfo {
         this.amount,
         this.timezone,
         this.address,
+        this.category,
         this.phone,
         this.country,
         this.state,
@@ -209,6 +211,7 @@ class BasicInfo {
     amount = json['amount'];
     timezone = json['timezone'];
     address = json['address'];
+    category = json['category'];
     phone = json['phone'];
     country = json['country'];
     state = json['state'];
@@ -237,6 +240,7 @@ class BasicInfo {
     data['amount'] = this.amount;
     data['timezone'] = this.timezone;
     data['address'] = this.address;
+    data['category'] = this.category;
     data['phone'] = this.phone;
     data['country'] = this.country;
     data['state'] = this.state;

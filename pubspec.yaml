@@ -42,6 +42,7 @@ dependencies:
   another_stepper: ^1.1.6
   loading_animation_widget: ^1.2.0+3
   url_launcher: ^6.1.7
+  flutter_stripe: ^7.0.0
 
 dev_dependencies:
   flutter_test:

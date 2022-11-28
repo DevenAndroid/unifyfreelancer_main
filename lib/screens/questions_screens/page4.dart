@@ -39,17 +39,17 @@ class Page4 extends StatelessWidget {
                     height: AddSize.size10,
                   ),
                   Text(
-                    "Got it. Now, add a title to tell the world what you do",
+                    "Ok Great! Now we need a headline",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
                         fontSize: AddSize.font20),
                   ),
                   SizedBox(
-                    height: AddSize.size15,
+                    height: AddSize.size10,
                   ),
                   Text(
-                    "It's the very first thing clients see, so make it count. Stand out by describing your expertise in your own words.",
+                    "This will be the first thing a client sees when looking for a freelancer. It'll also allow them to quickly get an overview of your skills. Be unique!",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: AppTheme.textColor,
@@ -68,12 +68,9 @@ class Page4 extends StatelessWidget {
                     }
                   },*/
                     validator: MultiValidator([
-                      RequiredValidator(
-                          errorText:
-                              'Example: Full StackDeveloper | Web & Mobile'),
-                      MinLengthValidator(5, errorText: 'Minimum length is 5'),
-                      MaxLengthValidator(50,
-                          errorText: "Maximum length is 100"),
+                      RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                      MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
+                      MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                     ]),
                     obSecure: false.obs,
                     hintText: "Example: Full StackDeveloper | Web & Mobile".obs,
@@ -91,8 +88,8 @@ class Page4 extends StatelessWidget {
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Description required'),
                       MinLengthValidator(100,
-                          errorText: 'Minimum length is 100'),
-                      MaxLengthValidator(5000, errorText: "Max Length is 100"),
+                          errorText: 'Minimum length is 100 characters'),
+                      MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
                     ]),
                     obSecure: false.obs,
                     hintText: "Description...".obs,
@@ -150,7 +147,10 @@ class Page4 extends StatelessWidget {
                           if (value.status == true) {
                             controller.nextPage();
                           }
-                       //   showToast(value.message.toString());
+                          else {
+                            showToast(value.message.toString());
+                          }
+
                         });
                       }
                     },

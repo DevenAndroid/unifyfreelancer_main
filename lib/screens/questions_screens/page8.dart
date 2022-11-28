@@ -242,7 +242,7 @@ class _Page8State extends State<Page8> {
                     title: 'Back',
                     backgroundColor: AppTheme.whiteColor,
                     onPressed: () {
-                      Get.back();
+                     controller.previousPage();
                     },
                     textColor: AppTheme.primaryColor,
                     expandedValue: false,
@@ -261,7 +261,7 @@ class _Page8State extends State<Page8> {
                         controller.nextPage();
                       }
                       else{
-                        showToast("Please add at least one education");
+                        showToast("Please add at least one skill");
                       }
                     },
                     textColor: AppTheme.whiteColor,

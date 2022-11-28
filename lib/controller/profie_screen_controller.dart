@@ -37,6 +37,7 @@ class ProfileScreenController extends GetxController {
   final cityController = TextEditingController();
   final designationController = TextEditingController();
   final designationDescriptionController = TextEditingController();
+  final serviceController = TextEditingController();
 
 
 
@@ -56,7 +57,6 @@ class ProfileScreenController extends GetxController {
     getLanguageData();
   }
   getData() {
-    // status.value = RxStatus.empty();
     freelancerProfileRepo().then((value) {
       log("Profile Data......  "+jsonEncode(value));
       model.value = value;
@@ -73,6 +73,7 @@ class ProfileScreenController extends GetxController {
         profileImage.value = value.data!.basicInfo!.profileImage.toString();
         designationController.text =  value.data!.basicInfo!.occuption.toString();
         designationDescriptionController.text =  value.data!.basicInfo!.description.toString();
+        serviceController.text =  value.data!.basicInfo!.category.toString();
       }
       else{
         status.value = RxStatus.error();

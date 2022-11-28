@@ -9,6 +9,9 @@ import '../resources/size.dart';
 
 class ApiUrls {
   static const String apiBaseUrl = 'https://unify.eoxyslive.com/api/';
+
+  static const String stripeApiKey = "pk_test_51M7YBGEAU8g6XRhsSzwgw2cS4DwXnFyL6C8HiT3GkOTY4GVOpbyjff7PCITznuAi5GV9xic6sDlLZd4p2t9fKnPZ00zZi7dmqe";
+
   static const String login = "${apiBaseUrl}login";
   static const String signUp = "${apiBaseUrl}signup";
   static const String verifySignUp = "${apiBaseUrl}verifysignup";
@@ -59,6 +62,8 @@ class ApiUrls {
   static const String categoryList = "${apiBaseUrl}category-list";
   static const String addCategory = "${apiBaseUrl}add-category";
   static const String submitProfile = "${apiBaseUrl}submit-profile";
+  static const String subscriptionPlansUrl = "${apiBaseUrl}subscription-list";
+  static const String stripePayUrl = "${apiBaseUrl}subscription-payment";
 
 
 }

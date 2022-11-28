@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_language_list.dart';
+import '../../repository/Add_language_repository.dart';
 import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
@@ -20,100 +21,124 @@ class Page7 extends StatefulWidget {
 }
 
 class _Page7State extends State<Page7> {
-  final RxList level = [
-    "Basic",
-    "Conversational",
-    "Fluent",
-    "Native or Bilingual",
-  ].obs;
 
-  ModelLanguageList languages = ModelLanguageList();
+  // final RxList level = [
+  //   "Basic",
+  //   "Conversational",
+  //   "Fluent",
+  //   "Native or Bilingual",
+  // ].obs;
 
-  getLanguageData() {
-    languagesListRepo().then((value) {
-      languages = value;
-      if (value.status == true) {
-        print(languages);
-      }
-    });
-  }
+  // ModelLanguageList languages = ModelLanguageList();
+
+  // getLanguageData() {
+  //   languagesListRepo().then((value) {
+  //     languages = value;
+  //     if (value.status == true) {
+  //       print(languages);
+  //     }
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // languageList.clear();
+  // getLanguageData();
+  // }
+
+  // RxList<AAA> languageList = <AAA>[].obs;
+
+  // final TextEditingController englishLevelController = TextEditingController();
+
+  // showBottomSheetForLevel(context, index1) {
+  //   RxString selectedLevel = "".obs;
+  //   if (index1 != -5) {
+  //     selectedLevel.value = languageList[index1].level.toString();
+  //   } else {
+  //     selectedLevel.value = englishLevelController.text;
+  //   }
+  //
+  //   showFilterButtonSheet1(
+  //       context: context,
+  //       titleText: "To (or expected graduation year)",
+  //       widgets: Column(
+  //         children: [
+  //           SizedBox(
+  //             height: 15,
+  //           ),
+  //           ListView.builder(
+  //               padding: EdgeInsets.only(bottom: 20),
+  //               shrinkWrap: true,
+  //               itemCount: level.length,
+  //               physics: NeverScrollableScrollPhysics(),
+  //               itemBuilder: (context, index) {
+  //                 return RadioListTile(
+  //                   title: Text(
+  //                     level[index].toString(),
+  //                     style: TextStyle(
+  //                         fontSize: 14,
+  //                         color: AppTheme.darkBlueText,
+  //                         fontWeight: FontWeight.w500),
+  //                   ),
+  //                   contentPadding: const EdgeInsets.all(0),
+  //                   dense: true,
+  //                   visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+  //                   value: level[index].toString(),
+  //                   groupValue: selectedLevel.value,
+  //                   onChanged: (value) {
+  //                     setState(() {
+  //                       selectedLevel.value = value.toString();
+  //                       if (index1 != -5) {
+  //                         languageList[index1].level = value.toString();
+  //                       } else {
+  //                         englishLevelController.text = value.toString();
+  //                       }
+  //                       Get.back();
+  //                     });
+  //                   },
+  //                 );
+  //               }),
+  //         ],
+  //       ));
+  // }
+
+  // final GlobalKey<FormState> formKey = GlobalKey();
+
+  // getMapData() {
+  //   Map<String, dynamic> map = {};
+  //   Map<String, dynamic> map1 = {};
+  //   map["languages"] = map1;
+  //   map1["English"] = englishLevelController.text;
+  //   for (var item in languageList) {
+  //     map1[item.language.toString()] = item.level;
+  //   }
+  //   return map;
+  // }
+
+  final controller = Get.put(ProfileScreenController());
 
   @override
   void initState() {
     super.initState();
-    languageList.clear();
-    getLanguageData();
-  }
-
-  RxList<AAA> languageList = <AAA>[].obs;
-  final TextEditingController englishLevelController = TextEditingController();
-
-  showBottomSheetForLevel(context, index1) {
-    RxString selectedLevel = "".obs;
-    if (index1 != -5) {
-      selectedLevel.value = languageList[index1].level.toString();
-    } else {
-      selectedLevel.value = englishLevelController.text;
+    if(controller.model.value.data!.language!.isEmpty){
+      editFirstTime(getMapData()).then((value) {
+        if (value.status == true) {
+          controller.getData();
+        }
+      });
     }
-
-    showFilterButtonSheet1(
-        context: context,
-        titleText: "To (or expected graduation year)",
-        widgets: Column(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            ListView.builder(
-                padding: EdgeInsets.only(bottom: 20),
-                shrinkWrap: true,
-                itemCount: level.length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return RadioListTile(
-                    title: Text(
-                      level[index].toString(),
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.darkBlueText,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    contentPadding: const EdgeInsets.all(0),
-                    dense: true,
-                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                    value: level[index].toString(),
-                    groupValue: selectedLevel.value,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedLevel.value = value.toString();
-                        if (index1 != -5) {
-                          languageList[index1].level = value.toString();
-                        } else {
-                          englishLevelController.text = value.toString();
-                        }
-                        Get.back();
-                      });
-                    },
-                  );
-                }),
-          ],
-        ));
   }
 
-  final GlobalKey<FormState> formKey = GlobalKey();
 
   getMapData() {
-    Map<String, dynamic> map = {};
-    Map<String, dynamic> map1 = {};
+    Map<String, dynamic>map = {};
+    Map<String, dynamic>map1 = {};
     map["languages"] = map1;
-    map1["English"] = englishLevelController.text;
-    for (var item in languageList) {
-      map1[item.language.toString()] = item.level;
-    }
+    map1["English"] = "Basic";
     return map;
   }
 
-  final controller = Get.put(ProfileScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -195,11 +220,11 @@ class _Page7State extends State<Page7> {
                   textColor: AppTheme.whiteColor,
                   expandedValue: false,
                   onPressed: () {
-                    if (controller.model.value.data!.language!.isNotEmpty ) {
+                    if (controller.model.value.data!.language!.isNotEmpty) {
                       controller.nextPage();
                     }
-                    else{
-                      showToast("Please add at least one education");
+                    else {
+                      showToast("Please add your english proficiency");
                     }
                   },
                 ),
@@ -209,70 +234,70 @@ class _Page7State extends State<Page7> {
             //             ],
           ),
         )
-        // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
-        //         ),
-        );
-  }
-
-  otherLanguageFields({
-    required language,
-    required level,
-    required index,
-  }) {
-    final TextEditingController levelController = TextEditingController();
-    levelController.text = level;
-    return Padding(
-      padding: EdgeInsets.only(bottom: AddSize.size20),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                CustomTextField(
-                    readOnly: true,
-                    enabled: false,
-                    obSecure: false.obs,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: "$language".obs),
-                SizedBox(
-                  height: 5,
-                ),
-                CustomTextField(
-                  onTap: () {
-                    showBottomSheetForLevel(context, index);
-                  },
-                  controller: levelController,
-                  readOnly: true,
-                  obSecure: false.obs,
-                  keyboardType: TextInputType.emailAddress,
-                  hintText: "".obs,
-                  suffixIcon: Icon(Icons.keyboard_arrow_down),
-                ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              languageList.removeAt(index);
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 15),
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme.whiteColor,
-                  border: Border.all(color: Color(0xff707070))),
-              child: Icon(
-                Icons.delete,
-                color: AppTheme.primaryColor,
-                size: 15,
-              ),
-            ),
-          ),
-        ],
-      ),
+      // >>>>>>> dev_branch:lib/screens/questions_screens/page7.dart
+      //         ),
     );
   }
+
+  // otherLanguageFields({
+  //   required language,
+  //   required level,
+  //   required index,
+  // }) {
+  //   final TextEditingController levelController = TextEditingController();
+  //   levelController.text = level;
+  //   return Padding(
+  //     padding: EdgeInsets.only(bottom: AddSize.size20),
+  //     child: Row(
+  //       children: [
+  //         Expanded(
+  //           child: Column(
+  //             children: [
+  //               CustomTextField(
+  //                   readOnly: true,
+  //                   enabled: false,
+  //                   obSecure: false.obs,
+  //                   keyboardType: TextInputType.emailAddress,
+  //                   hintText: "$language".obs),
+  //               SizedBox(
+  //                 height: 5,
+  //               ),
+  //               CustomTextField(
+  //                 onTap: () {
+  //                   showBottomSheetForLevel(context, index);
+  //                 },
+  //                 controller: levelController,
+  //                 readOnly: true,
+  //                 obSecure: false.obs,
+  //                 keyboardType: TextInputType.emailAddress,
+  //                 hintText: "".obs,
+  //                 suffixIcon: Icon(Icons.keyboard_arrow_down),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         InkWell(
+  //           onTap: () {
+  //             languageList.removeAt(index);
+  //           },
+  //           child: Container(
+  //             margin: EdgeInsets.only(left: 15),
+  //             padding: EdgeInsets.all(5),
+  //             decoration: BoxDecoration(
+  //                 shape: BoxShape.circle,
+  //                 color: AppTheme.whiteColor,
+  //                 border: Border.all(color: Color(0xff707070))),
+  //             child: Icon(
+  //               Icons.delete,
+  //               color: AppTheme.primaryColor,
+  //               size: 15,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Column englishLanguage() {
     return Column(
@@ -299,7 +324,7 @@ class _Page7State extends State<Page7> {
               ),
               InkWell(
                 onTap: () {
-                 Get.toNamed(MyRouter.editLanguageScreen);
+                  Get.toNamed(MyRouter.editLanguageScreen);
                 },
                 child: Container(
                   padding: EdgeInsets.all(AddSize.size5),
@@ -315,7 +340,7 @@ class _Page7State extends State<Page7> {
                   ),
                 ),
               ),
-             /* Expanded(
+              /* Expanded(
                 child: Text(
                   "Proficiency level",
                   style: TextStyle(
@@ -403,37 +428,40 @@ class _Page7State extends State<Page7> {
         SizedBox(
           height: AddSize.size15,
         ),
-        ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: controller.model.value.data!.language!.length,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: EdgeInsets.only(bottom: 10),
-                elevation: 0.5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        controller
-                            .model.value.data!.language![index].language
-                            .toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText,
-                            fontSize: AddSize.font14),
-                      ),
-                      Text(
-                        controller
-                            .model.value.data!.language![index].level.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.textColor,
-                            fontSize: AddSize.font14),
-                      ),
-                     /* InkWell(
+        Obx(() {
+          return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: controller.model.value.data!.language!.length,
+              itemBuilder: (context, index) {
+                return Obx(() {
+                  return Card(
+                    margin: EdgeInsets.only(bottom: 10),
+                    elevation: 0.5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            controller
+                                .model.value.data!.language![index].language
+                                .toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.darkBlueText,
+                                fontSize: AddSize.font14),
+                          ),
+                          Text(
+                            controller
+                                .model.value.data!.language![index].level
+                                .toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: AppTheme.textColor,
+                                fontSize: AddSize.font14),
+                          ),
+                          /* InkWell(
                         onTap: () {
                           //   showDeleteDialog();
                         },
@@ -451,11 +479,13 @@ class _Page7State extends State<Page7> {
                           ),
                         ),
                       ),*/
-                    ],
-                  ),
-                ),
-              );
-            }),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+              });
+        }),
         SizedBox(
           height: AddSize.size15,
         ),

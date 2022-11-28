@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //   showToast(e.toString());
         // }
         if(value.data!.user!.isProfileComplete == true){
-          Get.offAllNamed(MyRouter.questionsScreen);
+          Get.offAllNamed(MyRouter.bottomNavbar);
         }
         else{
           Get.offAllNamed(MyRouter.questionsScreen);

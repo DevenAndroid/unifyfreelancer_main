@@ -343,7 +343,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           title: 'Back',
                           backgroundColor: AppTheme.whiteColor,
                           onPressed: () {
-                            Get.back();
+                           controller.previousPage();
                           },
                           textColor: AppTheme.primaryColor,
                           expandedValue: false,
@@ -360,25 +360,22 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               editLocationRepo(
-                                      phone: controller.phoneController.text
-                                          .trim(),
-                                      zip_code:
-                                          controller.zipController.text.trim(),
-                                      address: controller.addressController.text
-                                          .trim(),
-                                      city:
-                                          controller.cityController.text.trim(),
-                                      country: controller.countryController.text
-                                          .trim(),
-                                      context: context)
-                                  .then((value) {
+                                      phone: controller.phoneController.text.trim(),
+                                      zip_code: controller.zipController.text.trim(),
+                                      address: controller.addressController.text.trim(),
+                                      city: controller.cityController.text.trim(),
+                                      country: controller.countryController.text.trim(),
+                                      context: context).then((value) {
                                 print(jsonEncode(value));
                                 if (value.status == true) {
                                   controller.nextPage();
                                   /*    formPart = true;
                                   check();*/
                                 }
-                                showToast(value.message.toString());
+                                else{
+                                     showToast(value.message.toString());
+                                }
+
                               });
                             }
                           },
@@ -706,6 +703,8 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Phone number is required'),
+                    MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
+                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 10 digits'),
                   ]),
                 ),
                 SizedBox(

@@ -102,9 +102,16 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
 
                           });
                         },
-                        inputFormatters1: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                        onChanged: (value){
+                          setState(() {
+                            print(value);
+                            price = double.parse(value);
+                            _unifyFeeController.text = ((price! * 10) / 100).toString();
+                            _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
+
+                          });
+                        },
+                        inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                         controller: controller.priceController,
                         obSecure: false.obs,
                         hintText: "".obs,
@@ -218,7 +225,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                           title: 'Back',
                           backgroundColor: AppTheme.whiteColor,
                           onPressed: () {
-                            Get.back();
+                           controller.previousPage();
                           },
                           textColor: AppTheme.primaryColor,
                           expandedValue: false,
@@ -242,7 +249,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                                 if (value.status == true) {
                                   controller.nextPage();
                                 }
-                                showToast(value.message.toString());
+                              //  showToast(value.message.toString());
                               });
                             }
                           },

@@ -63,8 +63,7 @@ class _Page5State extends State<Page5> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .8),
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16,vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -91,7 +90,6 @@ class _Page5State extends State<Page5> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               Text(
                                 "Title",
                                 style: TextStyle(
@@ -149,6 +147,7 @@ class _Page5State extends State<Page5> {
                                 height: AddSize.size5,
                               ),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: CustomTextField(
@@ -415,7 +414,6 @@ class _Page5State extends State<Page5> {
                                   ),
                                 ],
                               ),
-
                               SizedBox(
                                 height: 15,
                               ),
@@ -433,6 +431,7 @@ class _Page5State extends State<Page5> {
                                 controller: fromController,
                                 readOnly: true,
                                 onTap: () async {
+                                  print(dateInput);
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
                                       initialDate: dateInput == ""
@@ -445,12 +444,13 @@ class _Page5State extends State<Page5> {
                                         dateFormat.format(pickedDate);
                                     setState(() {
                                       dateInput =
-                                          "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                          "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                      print(dateInput);
                                     });
                                   }
                                 },
                                 obSecure: false.obs,
-                                hintText: "Select Date".obs,
+                                hintText: "From".obs,
                                 suffixIcon: Icon(
                                   Icons.calendar_month_outlined,
                                   size: AddSize.size22,
@@ -511,7 +511,7 @@ class _Page5State extends State<Page5> {
                                                   dateFormat.format(pickedDate);
                                               setState(() {
                                                 dateInput2 =
-                                                    "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                                    "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                               });
                                             }
                                           },
@@ -522,12 +522,20 @@ class _Page5State extends State<Page5> {
                                             size: AddSize.size22,
                                             color: AppTheme.primaryColor,
                                           ),
-                                          validator: MultiValidator([
-                                            RequiredValidator(
-                                                errorText:
-                                                    'To, date is required'),
-                                          ]),
-                                        )
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'To, date is required';
+                                            } else if (DateTime.parse(dateInput)
+                                                    .compareTo(DateTime.parse(
+                                                        dateInput2)) <
+                                                0) {
+                                              return null;
+                                            } else {
+                                              return "End date must be grater then start date";
+                                            }
+                                          }
+                                          )
                                       : SizedBox(),
                                 );
                               }),
@@ -585,28 +593,29 @@ class _Page5State extends State<Page5> {
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  questionEmployment(
-                                          id: item.id ?? "",
-                                          subject: titleController.text.trim(),
-                                          description:
-                                              descriptionController.text.trim(),
-                                          company:
-                                              companyController.text.trim(),
-                                          city: cityController.text.trim(),
-                                          country:
-                                              countryController.text.trim(),
-                                          start_date: dateInput,
-                                          end_date: dateInput2,
-                                          currently_working:
-                                              endDatePresent == true ? 1 : 0,
-                                          context: context)
-                                      .then((value) {
-                                    if (value.status == true) {
-                                      Get.back();
-                                      controller.getData();
-                                    }
-                                    showToast(value.message.toString());
-                                  });
+                                  if (DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0) {
+                                    questionEmployment(
+                                            id: item.id ?? "",
+                                            subject: titleController.text.trim(),
+                                            description: descriptionController.text.trim(),
+                                            company: companyController.text.trim(),
+                                            city: cityController.text.trim(),
+                                            country: countryController.text.trim(),
+                                            start_date: dateInput,
+                                            end_date: dateInput2,
+                                            currently_working: endDatePresent == true ? 1 : 0,
+                                            context: context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.back();
+                                        controller.getData();
+                                      }
+                                      showToast(value.message.toString());
+                                    });
+                                  } else {
+                                    showToast(
+                                        "End date must be grater then start date");
+                                  }
                                 }
                               },
                               textColor: AppTheme.whiteColor,
@@ -783,7 +792,6 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-
                 CustomOutlineButton(
                   title: '+  Add Experience',
                   backgroundColor: AppTheme.whiteColor,
@@ -856,13 +864,11 @@ class _Page5State extends State<Page5> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                  if (controller.model.value.data!.employment!.isNotEmpty ) {
+                  if (controller.model.value.data!.employment!.isNotEmpty) {
                     controller.nextPage();
-                  }
-                  else{
+                  } else {
                     showToast("Please add at least one experience");
                   }
-
                 },
               ),
             ),

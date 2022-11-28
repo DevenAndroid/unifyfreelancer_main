@@ -164,7 +164,7 @@ class _Page6State extends State<Page6> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16,vertical: AddSize.size100*.8),
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16,vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -216,7 +216,7 @@ class _Page6State extends State<Page6> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Dates Attended (Optional)",
+                                "Start date",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -338,16 +338,10 @@ class _Page6State extends State<Page6> {
                                                                 FontWeight
                                                                     .w500),
                                                       ),
-                                                      contentPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
+                                                      contentPadding: const EdgeInsets.all(0),
                                                       dense: true,
-                                                      visualDensity:
-                                                          VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                      value: yearsList[index]
-                                                          .toString(),
+                                                      visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                                      value: yearsList[index].toString(),
                                                       groupValue: time.value,
                                                       onChanged: (value) {
                                                           time.value = value.toString();
@@ -517,28 +511,40 @@ class _Page6State extends State<Page6> {
                               title: 'Save',
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  questionEducation(
-                                          id: item.id ?? "",
-                                          school: _schoolController.text.trim(),
-                                          start_year:
-                                              _fromController.text.trim(),
-                                          end_year: _toController.text.trim(),
-                                          degree: _degreeController.text.trim(),
-                                          area_study:
-                                              _areaController.text.trim(),
-                                          description: _descriptionController
-                                              .text
-                                              .trim(),
-                                          context: context)
-                                      .then((value) {
-                                    if (value.status == true) {
-                                      Get.back();
-                                      controller.getData();
-                                    }
-                                    showToast(value.message.toString());
-                                  });
+                                if(int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())
+                                ){
+                                  if (_formKey.currentState!.validate()) {
+                                    questionEducation(
+                                        id: item.id ?? "",
+                                        school: _schoolController.text.trim(),
+                                        start_year: _fromController.text.trim(),
+                                        end_year: _toController.text.trim(),
+                                        degree: _degreeController.text.trim(),
+                                        area_study: _areaController.text.trim(),
+                                        description: _descriptionController
+                                            .text
+                                            .trim(),
+                                        context: context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.back();
+                                        controller.getData();
+                                      }
+                                      showToast(value.message.toString());
+                                    });
+                                  } else{
+                                    showToast("End year must be grater then start year");
+                                  }
+
                                 }
+
+
+
+
+
+
+
+                               
                               },
                               textColor: AppTheme.whiteColor,
                               expandedValue: false,

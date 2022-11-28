@@ -704,7 +704,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         dateFormat.format(pickedDate);
                                     setState(() {
                                       dateInput =
-                                          "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                      "${pickedDate.year}-${pickedDate.month < 10 ? "0"+pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0"+pickedDate.day.toString() : pickedDate.day}";
                                     });
                                   }
                                 },
@@ -770,7 +770,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   dateFormat.format(pickedDate);
                                               setState(() {
                                                 dateInput2 =
-                                                    "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                                "${pickedDate.year}-${pickedDate.month < 10 ? "0"+pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0"+pickedDate.day.toString() : pickedDate.day}";
                                               });
                                             }
                                           },
@@ -843,7 +843,37 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               title: 'Save',
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {
+                                if(DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0){
+                                  if (_formKey.currentState!.validate()) {
+                                    questionEmployment(
+                                        id: item.id ?? "",
+                                        subject: titleController.text.trim(),
+                                        description:
+                                        descriptionController.text.trim(),
+                                        company:
+                                        companyController.text.trim(),
+                                        city: cityController.text.trim(),
+                                        country:
+                                        countryController.text.trim(),
+                                        start_date: dateInput,
+                                        end_date: dateInput2,
+                                        currently_working:
+                                        endDatePresent == true ? 1 : 0,
+                                        context: context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.back();
+                                        controller.getData();
+                                      }
+                                      showToast(value.message.toString());
+                                    });
+                                  }
+                                }
+                                else{
+                                  showToast("End date must be grater then start date");
+                                }
+
+                              /*  if (_formKey.currentState!.validate()) {
                                   questionEmployment(
                                           id: item.id ?? "",
                                           subject: titleController.text.trim(),
@@ -866,7 +896,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                     }
                                     showToast(value.message.toString());
                                   });
-                                }
+                                }*/
                               },
                               textColor: AppTheme.whiteColor,
                               expandedValue: false,
@@ -1122,7 +1152,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
         builder: (context) {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .8),
+                horizontal: AddSize.padding16),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -1485,7 +1515,34 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               title: 'Save',
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {
+                                if(int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())
+                                ){
+                                  if (_formKey.currentState!.validate()) {
+                                    questionEducation(
+                                        id: item.id ?? "",
+                                        school: _schoolController.text.trim(),
+                                        start_year: _fromController.text.trim(),
+                                        end_year: _toController.text.trim(),
+                                        degree: _degreeController.text.trim(),
+                                        area_study: _areaController.text.trim(),
+                                        description: _descriptionController
+                                            .text
+                                            .trim(),
+                                        context: context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.back();
+                                        controller.getData();
+                                      }
+                                      showToast(value.message.toString());
+                                    });
+                                  }
+                                }
+                                else{
+                                  showToast("End year must be grater then start year");
+                                }
+
+                              /*  if (_formKey.currentState!.validate()) {
                                   questionEducation(
                                           id: item.id ?? "",
                                           school: _schoolController.text.trim(),
@@ -1506,7 +1563,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                     }
                                     showToast(value.message.toString());
                                   });
-                                }
+                                }*/
                               },
                               textColor: AppTheme.whiteColor,
                               expandedValue: false,
@@ -1703,8 +1760,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                             textColor: AppTheme.primaryColor,
                             onPressed: () {
                               submitProfileRepo().then((value) {
-                                if(value.status==true){
-                                  Get.offAllNamed(MyRouter.bottomNavbar);
+                                if (value.status == true) {
+                                  Get.offAllNamed(MyRouter.subscriptionScreen);
                                 }
                                 showToast(value.message.toString());
                               });
@@ -1995,8 +2052,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 obSecure: false.obs,
                                 hintText: "Website design and development".obs,
                                 validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Please enter designation'),
+                                  RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                                  MinLengthValidator(5, errorText: 'Minimum length is 5'),
+                                  MaxLengthValidator(50, errorText: "Maximum length is 100"),
                                 ]),
                               ),
                               SizedBox(
@@ -2305,14 +2363,28 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 color: AppTheme.darkBlueText,
                 fontSize: AddSize.font20),
           ),
-          Text(
-            controller.model.value.data!.basicInfo!.city.toString() +
-                "," +
+          Row(
+            children: [
+              Text(
+                controller.model.value.data!.basicInfo!.city
+                        .toString()
+                        .isNotEmpty
+                    ? controller.model.value.data!.basicInfo!.city.toString() +
+                        ","
+                    : "",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff878787),
+                    fontSize: AddSize.font14),
+              ),
+              Text(
                 controller.model.value.data!.basicInfo!.country.toString(),
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Color(0xff878787),
-                fontSize: AddSize.font14),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff878787),
+                    fontSize: AddSize.font14),
+              ),
+            ],
           ),
           SizedBox(
             height: AddSize.size10,
@@ -2386,8 +2458,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             backgroundColor: AppTheme.primaryColor,
             onPressed: () {
               submitProfileRepo().then((value) {
-                if(value.status==true){
-                  Get.offAllNamed(MyRouter.bottomNavbar);
+                if (value.status == true) {
+                  Get.offAllNamed(MyRouter.subscriptionScreen);
                 }
                 showToast(value.message.toString());
               });
@@ -2483,12 +2555,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       fontSize: AddSize.font14),
                 ),
                 Text(
-                  controller.model.value.data!.education![index1].endYear
+                  controller.model.value.data!.employment![index1].endDate
                           .toString()
                           .isNotEmpty
                       ? "-" +
                           controller
-                              .model.value.data!.education![index1].endYear
+                              .model.value.data!.employment![index1].endDate
                               .toString()
                       : "",
                   style: TextStyle(
@@ -2499,7 +2571,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               ],
             ),
             SizedBox(
-              height: AddSize.size5,
+              height: AddSize.size20,
             ),
           ],
         );
@@ -2582,7 +2654,6 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 Text(
                   controller.model.value.data!.education![index].areaStudy
                           .toString() +
-                      ", " +
                       controller.model.value.data!.education![index].startYear
                           .toString(),
                   style: TextStyle(
