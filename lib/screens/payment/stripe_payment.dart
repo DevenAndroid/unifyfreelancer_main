@@ -134,11 +134,15 @@ class _StripPaymentState extends State<StripPayment> {
                         log(value.card.toString());
                         stripePayRepo(
                             subscriptionId: data.id.toString(),
-                            stripeToken: value.card!.id.toString(), context: context
+                            stripeToken: value.id.toString(), context: context
                         ).then((value) {
+                          if(value.status == true){
+                            Get.toNamed(MyRouter.bottomNavbar);
+
+                          }
                           log(jsonEncode(value));
                           showToast(value.message);
-                          Get.offAllNamed(MyRouter.bottomNavbar);
+
                         }
 
                         );

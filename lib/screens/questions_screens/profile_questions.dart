@@ -704,7 +704,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Phone number is required'),
                     MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
-                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 10 digits'),
+                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
                   ]),
                 ),
                 SizedBox(

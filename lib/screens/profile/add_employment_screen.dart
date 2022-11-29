@@ -22,7 +22,7 @@ class AddEmploymentScreen extends StatefulWidget {
 
 class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   final _formKey = GlobalKey<FormState>();
-  var acceptTermsOrPrivacy = true;
+  bool acceptTermsOrPrivacy = true;
   int dateInput = 0;
   int dateInput2 = 0;
 
@@ -144,6 +144,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 5,
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: CustomTextField(
@@ -405,7 +406,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             }
                           },
                           obSecure: false.obs,
-                          hintText: "Select Date".obs,
+                          hintText: "Form".obs,
                           suffixIcon: Icon(
                             Icons.calendar_month_outlined,
                             size: 22,
@@ -423,8 +424,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 value: acceptTermsOrPrivacy,
                                 activeColor: AppTheme.primaryColor,
                                 onChanged: (newValue) {
-                                  setState(() {acceptTermsOrPrivacy = newValue!;
-                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : controller.model.value.data!.employment![parentIndex].endDate.toString();
+                                  setState(() {
+                                    acceptTermsOrPrivacy = newValue!;
+                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
                                   });
                                 }),
                             SizedBox(
@@ -447,7 +449,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   onTap: () async {
                                     DateTime? pickedDate = await showDatePicker(
                                         context: context,
-                                        initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMicrosecondsSinceEpoch(dateInput2),
+                                        initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
                                         firstDate: DateTime(1950),
                                         //DateTime.now() - not to allow to choose before today.
                                         lastDate: DateTime.now());
@@ -467,6 +469,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                     size: 22,
                                     color: AppTheme.primaryColor,
                                   ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'To, date is required';
+                                } else if (DateTime.fromMillisecondsSinceEpoch(dateInput).compareTo(DateTime.fromMillisecondsSinceEpoch(dateInput2)) < 0) {
+                                  return null;
+                                } else {
+                                  return "End date must be grater then start date";
+                                }
+                              }
                                   /* validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'To, date is required'),
@@ -478,7 +490,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Description (Optional)",
+                          "Description",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,

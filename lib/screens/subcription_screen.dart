@@ -159,9 +159,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       decoration: BoxDecoration(
           boxShadow: blurBoxShadow,
           color: AppTheme.whiteColor,
+          border: Border.all(color: AppTheme.primaryColor),
           borderRadius: BorderRadius.circular(10)),
       padding: EdgeInsets.all(AddSize.size20),
-      margin: EdgeInsets.only(right: AddSize.size20),
+      margin: EdgeInsets.only(bottom: AddSize.size10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -255,7 +256,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                     Expanded(
                       child:
-                      buildAddText(services[index].description.toString()),
+                      buildAddText(services[index].description.toString().capitalizeFirst),
                     )
                   ],
                 ),

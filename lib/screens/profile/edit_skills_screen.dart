@@ -173,7 +173,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
       }
     }
     print(value);
-    return value < 16 ? false : true;
+    return value <15 ? false : true;
   }
 
   filterSelectedSkills() {

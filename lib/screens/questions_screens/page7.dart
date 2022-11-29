@@ -154,7 +154,7 @@ class _Page7State extends State<Page7> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  "Looking good. Next, tell us which languages you speak.",
+                  "Bilingual? What languages do you speak?",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -164,7 +164,7 @@ class _Page7State extends State<Page7> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Unify is global, so clients are often interested to know what languages you speak. English is a must, but do you speak any other languages?",
+                  "We are a global platform and clients are often looking for expertise in their native languages. Add more information here.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,

@@ -13,6 +13,7 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
+import '../../repository/add_category_repository.dart';
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
 import '../../repository/delete_employment_info_repository.dart';
@@ -60,10 +61,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] = profileController.model.value.data!.basicInfo!.description.toString();
-      editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context).then((value) {
+      map["first_name"] =
+          profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] =
+          profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] =
+          profileController.model.value.data!.basicInfo!.description.toString();
+      editNameInfoRepo(
+              mapData: map,
+              fieldName1: "profile_image",
+              file1: imageFileToPick,
+              context: context)
+          .then((value) {
         imageFileToPick.delete();
         imageFileToPick = File("");
         if (value.status == true) {
@@ -84,7 +93,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
     map["occcuption"] = _descriptionController.text.trim();
-    editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context)
+    editNameInfoRepo(
+            mapData: map,
+            fieldName1: "profile_image",
+            file1: imageFileToPick,
+            context: context)
         .then((value) {
       if (value.status == true) {
         profileController.getData();
@@ -771,13 +784,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     if (_formKey.currentState!
                                                         .validate()) {
                                                       editDesignationInfoRepo(
-                                                             title:  _designationController
-                                                                  .text
-                                                                  .trim(),
-                                                             description:  _designationDescriptionController
-                                                                  .text
-                                                                  .trim(),
-                                                            context:   context)
+                                                              title:
+                                                                  _designationController
+                                                                      .text
+                                                                      .trim(),
+                                                              description:
+                                                                  _designationDescriptionController
+                                                                      .text
+                                                                      .trim(),
+                                                              context: context)
                                                           .then((value) {
                                                         if (value.status ==
                                                             true) {
@@ -2334,10 +2349,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       context)
                                                   .then((value) {
                                                 if (value.status == true) {
-                                                  profileController.model.value.data!.employment!.removeAt(index);
+                                                  profileController.model.value
+                                                      .data!.employment!
+                                                      .removeAt(index);
                                                   profileController.getData();
                                                 }
-                                                showToast(value.message.toString());
+                                                showToast(
+                                                    value.message.toString());
                                               });
                                             },
                                             child: Container(
@@ -2574,13 +2592,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           SizedBox(
-            height: 6.h,
+            height: 5.h,
           ),
           Text(
             profileController.model.value.data!.hoursPerWeek.toString(),
             style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
           ),
-
           Row(
             children: [
               Text(
@@ -2600,6 +2617,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
               ),
             ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Service",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              InkWell(
+                onTap: () => services(),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text(
+            profileController.serviceController.text.toString(),
+            style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
           ),
           SizedBox(
             height: 10.h,
@@ -2684,6 +2753,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
           SizedBox(
             height: 10.h,
           ),
@@ -2986,6 +3061,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
+          ],
+        ));
+  }
+
+  void services() {
+    return showFilterButtonSheet(
+        context: context,
+        titleText: "Select a service",
+        widgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.49),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.modelOfService.value.data!.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.back();
+
+                        addCategoryRepo(
+                                category_id: controller
+                                    .modelOfService.value.data![index].id
+                                    .toString(),
+                                context: context)
+                            .then((value) {
+                          if (value.status == true) {
+                            controller.getData();
+                          }
+                          //  showToast(value.message.toString());
+                        });
+                      },
+                      child: Text(
+                        controller.modelOfService.value.data![index].name
+                            .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font16),
+                      ),
+                    ),
+                  );
+                })
           ],
         ));
   }

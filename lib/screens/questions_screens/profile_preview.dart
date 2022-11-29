@@ -9,10 +9,12 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_degree_list.dart';
 import '../../models/model_freelancer_profile.dart';
+import '../../repository/add_category_repository.dart';
 import '../../repository/add_employment_repository.dart';
 import '../../repository/degree_list_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
@@ -252,6 +254,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       map["first_name"] = controller.model.value
                                           .data!.basicInfo!.firstName
                                           .toString();
+                                      map["last_name"] = controller
+                                          .model.value.data!.basicInfo!.lastName
+                                          .toString();
+                                      map["occcuption"] = controller.model.value
+                                          .data!.basicInfo!.occuption
+                                          .toString();
                                       editNameInfoRepo(
                                               mapData: map,
                                               fieldName1: "profile_image",
@@ -325,7 +333,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
         builder: (context) {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .8),
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -704,12 +712,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         dateFormat.format(pickedDate);
                                     setState(() {
                                       dateInput =
-                                      "${pickedDate.year}-${pickedDate.month < 10 ? "0"+pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0"+pickedDate.day.toString() : pickedDate.day}";
+                                          "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                     });
                                   }
                                 },
                                 obSecure: false.obs,
-                                hintText: "Select Date".obs,
+                                hintText: "From".obs,
                                 suffixIcon: Icon(
                                   Icons.calendar_month_outlined,
                                   size: AddSize.size22,
@@ -770,7 +778,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   dateFormat.format(pickedDate);
                                               setState(() {
                                                 dateInput2 =
-                                                "${pickedDate.year}-${pickedDate.month < 10 ? "0"+pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0"+pickedDate.day.toString() : pickedDate.day}";
+                                                    "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                               });
                                             }
                                           },
@@ -781,12 +789,24 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                             size: AddSize.size22,
                                             color: AppTheme.primaryColor,
                                           ),
-                                          validator: MultiValidator([
+                                          /*validator: MultiValidator([
                                             RequiredValidator(
                                                 errorText:
                                                     'To, date is required'),
-                                          ]),
-                                        )
+                                          ]),*/
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'To, date is required';
+                                            } else if (DateTime.parse(dateInput)
+                                                    .compareTo(DateTime.parse(
+                                                        dateInput2)) <
+                                                0) {
+                                              return null;
+                                            } else {
+                                              return "End date must be grater then start date";
+                                            }
+                                          })
                                       : SizedBox(),
                                 );
                               }),
@@ -843,7 +863,32 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               title: 'Save',
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
-                                if(DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0){
+                                if (_formKey.currentState!.validate()) {
+                                  questionEmployment(
+                                          id: item.id ?? "",
+                                          subject: titleController.text.trim(),
+                                          description:
+                                              descriptionController.text.trim(),
+                                          company:
+                                              companyController.text.trim(),
+                                          city: cityController.text.trim(),
+                                          country:
+                                              countryController.text.trim(),
+                                          start_date: dateInput,
+                                          end_date: dateInput2,
+                                          currently_working:
+                                              endDatePresent == true ? 1 : 0,
+                                          context: context)
+                                      .then((value) {
+                                    if (value.status == true) {
+                                      Get.back();
+                                      controller.getData();
+                                    } else {
+                                      showToast(value.message.toString());
+                                    }
+                                  });
+                                }
+                                /*if(DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0){
                                   if (_formKey.currentState!.validate()) {
                                     questionEmployment(
                                         id: item.id ?? "",
@@ -871,9 +916,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 }
                                 else{
                                   showToast("End date must be grater then start date");
-                                }
+                                }*/
 
-                              /*  if (_formKey.currentState!.validate()) {
+                                /*  if (_formKey.currentState!.validate()) {
                                   questionEmployment(
                                           id: item.id ?? "",
                                           subject: titleController.text.trim(),
@@ -951,8 +996,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           controller.model.value.data!.employment!.remove(item);
                           controller.getData();
                           Get.back();
+                        } else {
+                          showToast(value.message.toString());
                         }
-                        showToast(value.message.toString());
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -1000,8 +1046,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           controller.model.value.data!.employment!.remove(item);
                           controller.getData();
                           Get.back();
+                        } else {
+                          showToast(value.message.toString());
                         }
-                        showToast(value.message.toString());
                       });
                     },
                     child: AddText(
@@ -1058,8 +1105,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           controller.model.value.data!.employment!.remove(item);
                           controller.getData();
                           Get.back();
+                        } else {
+                          showToast(value.message.toString());
                         }
-                        showToast(value.message.toString());
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -1107,8 +1155,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           controller.model.value.data!.employment!.remove(item);
                           controller.getData();
                           Get.back();
+                        } else {
+                          showToast(value.message.toString());
                         }
-                        showToast(value.message.toString());
                       });
                     },
                     child: AddText(
@@ -1152,7 +1201,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
         builder: (context) {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16),
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -1204,7 +1253,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Dates Attended (Optional)",
+                                "Start date",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -1286,7 +1335,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Proficiency level",
+                                "End date",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -1296,76 +1345,87 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 height: AddSize.size5,
                               ),
                               CustomTextField(
-                                onTap: () {
-                                  showFilterButtonSheet(
-                                      context: context,
-                                      titleText:
-                                          "To (or expected graduation year)",
-                                      widgets: Obx(() {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height: AddSize.size15,
-                                            ),
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                reverse: true,
-                                                itemCount: yearsList.length,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return Obx(() {
-                                                    return RadioListTile(
-                                                      title: Text(
-                                                        yearsList[index]
+                                  onTap: () {
+                                    showFilterButtonSheet(
+                                        context: context,
+                                        titleText: "To",
+                                        widgets: Obx(() {
+                                          return Column(
+                                            children: [
+                                              SizedBox(
+                                                height: AddSize.size15,
+                                              ),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  reverse: true,
+                                                  itemCount: yearsList.length,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Obx(() {
+                                                      return RadioListTile(
+                                                        title: Text(
+                                                          yearsList[index]
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: AddSize
+                                                                  .size15,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(0),
+                                                        dense: true,
+                                                        visualDensity:
+                                                            VisualDensity(
+                                                                horizontal: -4,
+                                                                vertical: -4),
+                                                        value: yearsList[index]
                                                             .toString(),
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                AddSize.size15,
-                                                            color: AppTheme
-                                                                .darkBlueText,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      dense: true,
-                                                      visualDensity:
-                                                          VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                      value: yearsList[index]
-                                                          .toString(),
-                                                      groupValue: time.value,
-                                                      onChanged: (value) {
-                                                        time.value =
-                                                            value.toString();
-                                                        _toController.text =
-                                                            value.toString();
-                                                        print(
-                                                            _toController.text);
-                                                        Get.back();
-                                                      },
-                                                    );
-                                                  });
-                                                })
-                                          ],
-                                        );
-                                      }));
-                                },
-                                readOnly: true,
-                                obSecure: false.obs,
-                                controller: _toController,
-                                hintText:
-                                    "To (or expected graduation year)".obs,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                validator: MultiValidator([
+                                                        groupValue: time.value,
+                                                        onChanged: (value) {
+                                                          time.value =
+                                                              value.toString();
+                                                          _toController.text =
+                                                              value.toString();
+                                                          print(_toController
+                                                              .text);
+                                                          Get.back();
+                                                        },
+                                                      );
+                                                    });
+                                                  })
+                                            ],
+                                          );
+                                        }));
+                                  },
+                                  readOnly: true,
+                                  obSecure: false.obs,
+                                  controller: _toController,
+                                  hintText: "To".obs,
+                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'To, year is required';
+                                    } else if (int.parse(
+                                            _fromController.text.toString()) <
+                                        int.parse(
+                                            _toController.text.toString())) {
+                                      return null;
+                                    } else {
+                                      return "End year must be grater then start date";
+                                    }
+                                  }
+                                  /* validator: MultiValidator([
                                   RequiredValidator(
                                       errorText: 'To year is required'),
-                                ]),
-                              ),
+                                ]),*/
+                                  ),
                               SizedBox(
                                 height: AddSize.size15,
                               ),
@@ -1515,32 +1575,35 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               title: 'Save',
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
-                                if(int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())
-                                ){
-                                  if (_formKey.currentState!.validate()) {
-                                    questionEducation(
-                                        id: item.id ?? "",
-                                        school: _schoolController.text.trim(),
-                                        start_year: _fromController.text.trim(),
-                                        end_year: _toController.text.trim(),
-                                        degree: _degreeController.text.trim(),
-                                        area_study: _areaController.text.trim(),
-                                        description: _descriptionController
-                                            .text
-                                            .trim(),
-                                        context: context)
-                                        .then((value) {
-                                      if (value.status == true) {
-                                        Get.back();
-                                        controller.getData();
-                                      }
+                                //   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                if (_formKey.currentState!.validate()) {
+                                  questionEducation(
+                                          id: item.id ?? "",
+                                          school: _schoolController.text.trim(),
+                                          start_year:
+                                              _fromController.text.trim(),
+                                          end_year: _toController.text.trim(),
+                                          degree: _degreeController.text.trim(),
+                                          area_study:
+                                              _areaController.text.trim(),
+                                          description: _descriptionController
+                                              .text
+                                              .trim(),
+                                          context: context)
+                                      .then((value) {
+                                    if (value.status == true) {
+                                      Get.back();
+                                      controller.getData();
+                                    } else {
                                       showToast(value.message.toString());
-                                    });
-                                  }
+                                    }
+                                  });
                                 }
-                                else{
-                                  showToast("End year must be grater then start year");
-                                }
+                              }
+                              // else {
+                              //   showToast(
+                              //       "End year must be grater then start year");
+                              // }
 
                               /*  if (_formKey.currentState!.validate()) {
                                   questionEducation(
@@ -1564,7 +1627,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                     showToast(value.message.toString());
                                   });
                                 }*/
-                              },
+                              ,
                               textColor: AppTheme.whiteColor,
                               expandedValue: false,
                             ),
@@ -1759,9 +1822,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                             backgroundColor: AppTheme.whiteColor,
                             textColor: AppTheme.primaryColor,
                             onPressed: () {
-                              submitProfileRepo().then((value) {
+                              submitProfileRepo().then((value) async {
                                 if (value.status == true) {
-                                  Get.offAllNamed(MyRouter.subscriptionScreen);
+                                  Get.toNamed(MyRouter.bottomNavbar);
+                                  SharedPreferences pref =
+                                      await SharedPreferences.getInstance();
+                                  pref.setBool('isProfileCompleted', true);
                                 }
                                 showToast(value.message.toString());
                               });
@@ -1871,631 +1937,768 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   }
 
   profilePreviewData(context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: AppTheme.whiteColor,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(5),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(0, 3), // changes position of shadow
+    return Obx(() {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.all(10),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: AppTheme.whiteColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey.shade300),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child: CachedNetworkImage(
-                          imageUrl: controller.profileImage.value ?? "",
-                          errorWidget: (_, __, ___) => SizedBox(),
-                          placeholder: (_, __) => SizedBox(),
-                          fit: BoxFit.cover,
-                        ) /*Image.file(
-                              profileImage.value,
-                              fit: BoxFit.cover,
-                            ),*/
-                        ),
-                    height: AddSize.size80 * 1.2,
-                    width: AddSize.size80 * 1.2,
-                  ),
-                  SizedBox(
-                    height: AddSize.size10,
-                  ),
-                  CustomOutlineButton(
-                    title: " Edit Photo ",
-                    backgroundColor: AppTheme.whiteColor,
-                    textColor: AppTheme.primaryColor,
-                    onPressed: () {
-                      showDialogueForProfile();
-                    },
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    controller.model.value.data!.basicInfo!.firstName
-                            .toString() +
-                        controller.model.value.data!.basicInfo!.lastName
-                            .toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.darkBlueText,
-                        fontSize: AddSize.font20),
-                  ),
-                  SizedBox(
-                    height: AddSize.size5,
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Color(0xff878787),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text(
-                        controller.model.value.data!.basicInfo!.city
-                                .toString() +
-                            "," +
-                            controller.model.value.data!.basicInfo!.country
-                                .toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff878787),
-                            fontSize: AddSize.font14),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: AddSize.size5,
-                  ),
-                  /* Text(
-                    "3:30 PM local time",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff878787),
-                        fontSize: AddSize.font14),
-                  ),*/
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                controller.model.value.data!.basicInfo!.occuption.toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    final _formKey = GlobalKey<FormState>();
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        insetPadding: EdgeInsets.symmetric(horizontal: 20),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        content: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: SizedBox(
-                                      height: 15,
-                                      width: 20,
-                                    ),
-                                  ),
-                                  Positioned(
-                                      top: -15,
-                                      right: -15,
-                                      child: IconButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        icon: Icon(
-                                          Icons.clear,
-                                          size: 20,
-                                        ),
-                                      ))
-                                ],
-                              ),
-                              Text(
-                                "Edit Your Title",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.textColor),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              BoxTextField(
-                                controller: controller.designationController,
-                                obSecure: false.obs,
-                                hintText: "Website design and development".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
-                                  MinLengthValidator(5, errorText: 'Minimum length is 5'),
-                                  MaxLengthValidator(50, errorText: "Maximum length is 100"),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              BoxTextField(
-                                controller:
-                                    controller.designationDescriptionController,
-                                obSecure: false.obs,
-                                hintText: "description".obs,
-                                isMulti: true,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Please enter description'),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              CustomOutlineButton(
-                                title: "Change",
-                                backgroundColor: AppTheme.primaryColor,
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    editDesignationInfoRepo(
-                                            title: controller
-                                                .designationController.text
-                                                .trim(),
-                                            description: controller
-                                                .designationDescriptionController
-                                                .text
-                                                .trim(),
-                                            context: context)
-                                        .then((value) {
-                                      if (value.status == true) {
-                                        showToast(value.message.toString());
-                                        Get.back();
-                                        print(jsonEncode(value));
-                                        controller.getData();
-                                      } else {
-                                        print(jsonEncode(value));
-                                        showToast(value.message.toString());
-                                      }
-                                    });
-                                  }
-                                },
-                                textColor: AppTheme.whiteColor,
-                                expandedValue: true,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.edit,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Text(
-            controller.model.value.data!.basicInfo!.description.toString(),
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Color(0xff878787),
-                fontSize: AddSize.font14),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hourly Rate",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(MyRouter.hoursPerWeekScreen);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.edit,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Text(
-            "\$" + controller.model.value.data!.basicInfo!.amount.toString(),
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Color(0xff878787),
-                fontSize: AddSize.font14),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Skills",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(MyRouter.editSkillsScreen);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.edit,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Wrap(
-            children: List.generate(
-              controller.model.value.data!.skills!.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(right: 5.0, bottom: 2),
-                child: FilterChip(
-                  label: Text(
-                    controller.model.value.data!.skills![index].skillName
-                        .toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: AppTheme.darkBlueText,
-                        fontSize: AddSize.font14),
-                  ),
-                  backgroundColor: Color(0xffEAEEF2),
-                  onSelected: (value) {},
-                ),
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 3), // changes position of shadow
             ),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Work Experience",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    showDialogue(item: Employment());
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.add,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size20,
-          ),
-          workExperience(),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Education History",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    showEducationDialog(Education());
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.add,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size20,
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          educationList(),
-          SizedBox(
-            height: AddSize.size20,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Text(
-            "Location",
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font20),
-          ),
-          Row(
-            children: [
-              Text(
-                controller.model.value.data!.basicInfo!.city
-                        .toString()
-                        .isNotEmpty
-                    ? controller.model.value.data!.basicInfo!.city.toString() +
-                        ","
-                    : "",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff878787),
-                    fontSize: AddSize.font14),
-              ),
-              Text(
-                controller.model.value.data!.basicInfo!.country.toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff878787),
-                    fontSize: AddSize.font14),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Divider(
-            color: AppTheme.pinkText.withOpacity(.39),
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Row(
-            children: [
-              Text(
-                "Languages",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText,
-                    fontSize: AddSize.font20),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(MyRouter.addLanguageScreen);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.add,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: InkWell(
-                  onTap: () {
-                    Get.toNamed(MyRouter.editLanguageScreen);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.edit,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          languageList(),
-          SizedBox(
-            height: AddSize.size20,
-          ),
-          CustomOutlineButton(
-            title: 'Submit Profile',
-            backgroundColor: AppTheme.primaryColor,
-            onPressed: () {
-              submitProfileRepo().then((value) {
-                if (value.status == true) {
-                  Get.offAllNamed(MyRouter.subscriptionScreen);
-                }
-                showToast(value.message.toString());
-              });
-            },
-            textColor: AppTheme.whiteColor,
-            expandedValue: false,
-          ),
-        ],
-      ),
-    );
-  }
-
-  workExperience() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.model.value.data!.employment!.length,
-      itemBuilder: (context, index1) {
-        return Column(
+          ],
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.grey.shade300),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(1000),
+                          child: CachedNetworkImage(
+                            imageUrl: controller.profileImage.value ?? "",
+                            errorWidget: (_, __, ___) => SizedBox(),
+                            placeholder: (_, __) => SizedBox(),
+                            fit: BoxFit.cover,
+                          ) /*Image.file(
+                              profileImage.value,
+                              fit: BoxFit.cover,
+                            ),*/
+                          ),
+                      height: AddSize.size80 * 1.2,
+                      width: AddSize.size80 * 1.2,
+                    ),
+                    SizedBox(
+                      height: AddSize.size10,
+                    ),
+                    CustomOutlineButton(
+                      title: " Edit Photo ",
+                      backgroundColor: AppTheme.whiteColor,
+                      textColor: AppTheme.primaryColor,
+                      onPressed: () {
+                        showDialogueForProfile();
+                      },
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        controller.model.value.data!.basicInfo!.firstName
+                                .toString() +
+                            controller.model.value.data!.basicInfo!.lastName
+                                .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font20),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Color(0xff878787),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Expanded(
+                            child: Text(
+                              controller.model.value.data!.basicInfo!.city
+                                      .toString() +
+                                  "," +
+                                  controller
+                                      .model.value.data!.basicInfo!.country
+                                      .toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff878787),
+                                  fontSize: AddSize.font14),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      /* Text(
+                      "3:30 PM local time",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff878787),
+                          fontSize: AddSize.font14),
+                    ),*/
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  controller.model.value.data!.employment![index1].company
-                      .toString(),
+                  controller.model.value.data!.basicInfo!.occuption.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font18),
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: const EdgeInsets.only(left: 15.0),
                   child: InkWell(
                     onTap: () {
-                      showDialogue(
+                      final _formKey = GlobalKey<FormState>();
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          insetPadding: EdgeInsets.symmetric(horizontal: 20),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          content: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: SizedBox(
+                                        height: 15,
+                                        width: 20,
+                                      ),
+                                    ),
+                                    Positioned(
+                                        top: -15,
+                                        right: -15,
+                                        child: IconButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          icon: Icon(
+                                            Icons.clear,
+                                            size: 20,
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                                Text(
+                                  "Edit Your Title",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.textColor),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                BoxTextField(
+                                  controller: controller.designationController,
+                                  obSecure: false.obs,
+                                  hintText:
+                                      "Website design and development".obs,
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText:
+                                            'Example: Full StackDeveloper | Web & Mobile'),
+                                    MinLengthValidator(5,
+                                        errorText: 'Minimum length is 5'),
+                                    MaxLengthValidator(50,
+                                        errorText: "Maximum length is 100"),
+                                  ]),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                BoxTextField(
+                                  controller: controller
+                                      .designationDescriptionController,
+                                  obSecure: false.obs,
+                                  hintText: "description".obs,
+                                  isMulti: true,
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: 'Please enter description'),
+                                  ]),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                CustomOutlineButton(
+                                  title: "Change",
+                                  backgroundColor: AppTheme.primaryColor,
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      editDesignationInfoRepo(
+                                              title: controller
+                                                  .designationController.text
+                                                  .trim(),
+                                              description: controller
+                                                  .designationDescriptionController
+                                                  .text
+                                                  .trim(),
+                                              context: context)
+                                          .then((value) {
+                                        if (value.status == true) {
+                                          showToast(value.message.toString());
+                                          Get.back();
+                                          print(jsonEncode(value));
+                                          controller.getData();
+                                        } else {
+                                          print(jsonEncode(value));
+                                          showToast(value.message.toString());
+                                        }
+                                      });
+                                    }
+                                  },
+                                  textColor: AppTheme.whiteColor,
+                                  expandedValue: true,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.edit,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Text(
+              controller.model.value.data!.basicInfo!.description.toString(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff878787),
+                  fontSize: AddSize.font14),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hourly Rate",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(MyRouter.hoursPerWeekScreen);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.edit,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Text(
+              "\$" + controller.model.value.data!.basicInfo!.amount.toString(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff878787),
+                  fontSize: AddSize.font14),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Skills",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(MyRouter.editSkillsScreen);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.edit,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Wrap(
+              children: List.generate(
+                controller.model.value.data!.skills!.length,
+                (index) => Padding(
+                  padding: const EdgeInsets.only(right: 5.0, bottom: 2),
+                  child: FilterChip(
+                    label: Text(
+                      controller.model.value.data!.skills![index].skillName
+                          .toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.darkBlueText,
+                          fontSize: AddSize.font14),
+                    ),
+                    backgroundColor: Color(0xffEAEEF2),
+                    onSelected: (value) {},
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Service",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      services();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.add,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Text(
+              controller.serviceController.text.toString(),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff878787),
+                  fontSize: AddSize.font14),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Work Experience",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      showDialogue(item: Employment());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.add,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size20,
+            ),
+            workExperience(),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Education History",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      showEducationDialog(Education());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.add,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size20,
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            educationList(),
+            SizedBox(
+              height: AddSize.size20,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Text(
+              "Location",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font20),
+            ),
+            Row(
+              children: [
+                Text(
+                  controller.model.value.data!.basicInfo!.city
+                          .toString()
+                          .isNotEmpty
+                      ? controller.model.value.data!.basicInfo!.city
+                              .toString() +
+                          ","
+                      : "",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff878787),
+                      fontSize: AddSize.font14),
+                ),
+                Text(
+                  controller.model.value.data!.basicInfo!.country.toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff878787),
+                      fontSize: AddSize.font14),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.39),
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Row(
+              children: [
+                Text(
+                  "Languages",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkBlueText,
+                      fontSize: AddSize.font20),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(MyRouter.addLanguageScreen);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.add,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(MyRouter.editLanguageScreen);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: Color(0xff707070))),
+                      child: Icon(
+                        Icons.edit,
+                        color: AppTheme.primaryColor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            languageList(),
+            SizedBox(
+              height: AddSize.size20,
+            ),
+            CustomOutlineButton(
+              title: 'Submit Profile',
+              backgroundColor: AppTheme.primaryColor,
+              onPressed: () {
+                submitProfileRepo().then((value) async {
+                  if (value.status == true) {
+                    Get.toNamed(MyRouter.bottomNavbar);
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    pref.setBool('isProfileCompleted', true);
+                  }
+                  showToast(value.message.toString());
+                });
+              },
+              textColor: AppTheme.whiteColor,
+              expandedValue: false,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  void services() {
+    return showFilterButtonSheet(
+        context: context,
+        titleText: "Select a service",
+        widgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.49),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.modelOfService.value.data!.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.back();
+
+                        addCategoryRepo(
+                                category_id:controller.modelOfService.value.data![index].id
+                                    .toString(),
+                                context: context)
+                            .then((value) {
+                          if (value.status == true) {
+                            controller.getData();
+                          }
+                          //  showToast(value.message.toString());
+                        });
+                      },
+                      child: Text(
+                        controller.modelOfService.value.data![index].name
+                            .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font16),
+                      ),
+                    ),
+                  );
+                })
+          ],
+        ));
+  }
+
+  workExperience() {
+    return Obx(() {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: controller.model.value.data!.employment!.length,
+        itemBuilder: (context, index1) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    controller.model.value.data!.employment![index1].company
+                        .toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font18),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: InkWell(
+                      onTap: () {
+                        showDialogue(
+                            item: controller
+                                .model.value.data!.employment![index1]);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.whiteColor,
+                            border: Border.all(color: Color(0xff707070))),
+                        child: Icon(
+                          Icons.edit,
+                          color: AppTheme.primaryColor,
+                          size: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      showDeleteDialogForEducation(
                           item:
                               controller.model.value.data!.employment![index1]);
                     },
@@ -2506,77 +2709,59 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           color: AppTheme.whiteColor,
                           border: Border.all(color: Color(0xff707070))),
                       child: Icon(
-                        Icons.edit,
+                        Icons.delete,
                         color: AppTheme.primaryColor,
                         size: 15,
                       ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    showDeleteDialogForEducation(
-                        item: controller.model.value.data!.employment![index1]);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.delete,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size10,
+              ),
+              Text(
+                controller.model.value.data!.employment![index1].subject
+                    .toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor,
+                    fontSize: AddSize.font16),
+              ),
+              Row(
+                children: [
+                  Text(
+                    controller.model.value.data!.employment![index1].startDate
+                        .toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font14),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AddSize.size10,
-            ),
-            Text(
-              controller.model.value.data!.employment![index1].subject
-                  .toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textColor,
-                  fontSize: AddSize.font16),
-            ),
-            Row(
-              children: [
-                Text(
-                  controller.model.value.data!.employment![index1].startDate
-                      .toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font14),
-                ),
-                Text(
-                  controller.model.value.data!.employment![index1].endDate
-                          .toString()
-                          .isNotEmpty
-                      ? "-" +
-                          controller
-                              .model.value.data!.employment![index1].endDate
-                              .toString()
-                      : "",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font14),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AddSize.size20,
-            ),
-          ],
-        );
-      },
-    );
+                  Text(
+                    controller.model.value.data!.employment![index1].endDate
+                            .toString()
+                            .isNotEmpty
+                        ? "-" +
+                            controller
+                                .model.value.data!.employment![index1].endDate
+                                .toString()
+                        : "",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font14),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size20,
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   educationList() {
@@ -2585,25 +2770,45 @@ class _ProfilePreviewState extends State<ProfilePreview> {
       physics: NeverScrollableScrollPhysics(),
       itemCount: controller.model.value.data!.education!.length,
       itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  controller.model.value.data!.education![index].school
-                      .toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font18),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: InkWell(
+        return Obx(() {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    controller.model.value.data!.education![index].school
+                        .toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font18),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: InkWell(
+                      onTap: () {
+                        showEducationDialog(
+                            controller.model.value.data!.education![index]);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.whiteColor,
+                            border: Border.all(color: Color(0xff707070))),
+                        child: Icon(
+                          Icons.edit,
+                          color: AppTheme.primaryColor,
+                          size: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
                     onTap: () {
-                      showEducationDialog(
-                          controller.model.value.data!.education![index]);
+                      showDeleteDialog(
+                          item: controller.model.value.data!.education![index]);
                     },
                     child: Container(
                       padding: EdgeInsets.all(5),
@@ -2612,110 +2817,95 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           color: AppTheme.whiteColor,
                           border: Border.all(color: Color(0xff707070))),
                       child: Icon(
-                        Icons.edit,
+                        Icons.delete,
                         color: AppTheme.primaryColor,
                         size: 15,
                       ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    showDeleteDialog(
-                        item: controller.model.value.data!.education![index]);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
-                      Icons.delete,
-                      color: AppTheme.primaryColor,
-                      size: 15,
-                    ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size10,
+              ),
+              Text(
+                controller.model.value.data!.education![index].degree
+                    .toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor,
+                    fontSize: AddSize.font16),
+              ),
+              Row(
+                children: [
+                  Text(
+                    controller.model.value.data!.education![index].areaStudy
+                            .toString() +
+                        controller.model.value.data!.education![index].startYear
+                            .toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font14),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AddSize.size10,
-            ),
-            Text(
-              controller.model.value.data!.education![index].degree.toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textColor,
-                  fontSize: AddSize.font16),
-            ),
-            Row(
-              children: [
-                Text(
-                  controller.model.value.data!.education![index].areaStudy
-                          .toString() +
-                      controller.model.value.data!.education![index].startYear
-                          .toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font14),
-                ),
-                Text(
-                  controller.model.value.data!.education![index].startYear
-                          .toString()
-                          .isNotEmpty
-                      ? "-" +
-                          controller
-                              .model.value.data!.education![index].startYear
-                              .toString()
-                      : "",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font14),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AddSize.size5,
-            ),
-          ],
-        );
+                  Text(
+                    controller.model.value.data!.education![index].startYear
+                            .toString()
+                            .isNotEmpty
+                        ? "-" +
+                            controller
+                                .model.value.data!.education![index].startYear
+                                .toString()
+                        : "",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font14),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size5,
+              ),
+            ],
+          );
+        });
       },
     );
   }
 
   languageList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.model.value.data!.language!.length,
-      itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Text(
-              controller.model.value.data!.language![index].language
-                      .toString() +
-                  " : ",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.darkBlueText,
-                  fontSize: AddSize.font14),
-            ),
-            Text(
-              controller.model.value.data!.language![index].level.toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff878787),
-                  fontSize: AddSize.font14),
-            ),
-            SizedBox(
-              height: AddSize.size5,
-            ),
-          ],
-        );
-      },
-    );
+    return Obx(() {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: controller.model.value.data!.language!.length,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              Text(
+                controller.model.value.data!.language![index].language
+                        .toString() +
+                    " : ",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText,
+                    fontSize: AddSize.font14),
+              ),
+              Text(
+                controller.model.value.data!.language![index].level.toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff878787),
+                    fontSize: AddSize.font14),
+              ),
+              SizedBox(
+                height: AddSize.size5,
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 }

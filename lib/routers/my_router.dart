@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
+import 'package:unifyfreelancer/screens/questions_screens/profile_questions.dart';
 import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 import '../Screens/alerts_screen.dart';
 import '../Screens/chat_screen.dart';
@@ -107,7 +108,7 @@ class MyRouter {
   static var stripePaymentScreen = "/stripePaymentScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SplashScreen()),
+    GetPage(name: '/', page: () =>  const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),

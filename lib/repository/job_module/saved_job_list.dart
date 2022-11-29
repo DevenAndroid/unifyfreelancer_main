@@ -13,16 +13,18 @@ Future<ModelJobsList> savedJobListRepo() async {
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       return ModelJobsList.fromJson(jsonDecode(response.body));
-    } else {
-      print(jsonDecode(response.body));
-      return ModelJobsList(
-          message: jsonDecode(response.body)["message"],
-          status: false,
-          data: null);
     }
-  } on SocketException catch (e) {
-    return ModelJobsList(
-        message: "No Internet Access", status: false, data: null);
+    else if (response.statusCode == 400) {
+      print(jsonDecode(response.body));
+      return ModelJobsList.fromJson(jsonDecode(response.body));
+    }
+    else {
+      print(jsonDecode(response.body));
+      return ModelJobsList(message: jsonDecode(response.body)["message"], status: false, data: null);
+    }
+  }
+  on SocketException catch (e) {
+    return ModelJobsList(message: "No Internet Access", status: false, data: null);
   } catch (e) {
     return ModelJobsList(message: e.toString(), status: false, data: null);
   }

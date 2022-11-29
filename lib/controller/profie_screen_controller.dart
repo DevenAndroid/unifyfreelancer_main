@@ -3,10 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unifyfreelancer/routers/my_router.dart';
 
+import '../models/model_category_list.dart';
 import '../models/model_countrylist.dart';
 import '../models/model_freelancer_profile.dart';
 import '../models/model_language_list.dart';
+import '../repository/category_list_repository.dart';
 import '../repository/languages_list_repository.dart';
 import '../repository/profile_screen_repository.dart';
 
@@ -39,7 +43,28 @@ class ProfileScreenController extends GetxController {
   final designationDescriptionController = TextEditingController();
   final serviceController = TextEditingController();
 
+//profile preview service list
 
+  Rx<ModelCategoryList> modelOfService = ModelCategoryList().obs;
+
+
+  getDataOfService() {
+    categoryListRepo().then((value) {
+      modelOfService.value = value;
+      if (value.status == true) {
+        status.value = RxStatus.success();
+        // for(var item in modelOfService.value.data!){
+        //   if(item.name!.toLowerCase() == controller.model.value.data!.basicInfo!.category!.toLowerCase()){
+        //     id.value = item.id!;
+        //     controller.serviceController.text = item.name.toString();
+        //   }
+        }
+
+      else {
+        status.value = RxStatus.error();
+      }
+    });
+  }
 
   nextPage(){
     pageController.nextPage(
@@ -55,9 +80,10 @@ class ProfileScreenController extends GetxController {
     super.onInit();
     getData();
     getLanguageData();
+    getDataOfService();
   }
   getData() {
-    freelancerProfileRepo().then((value) {
+    freelancerProfileRepo().then((value) async {
       log("Profile Data......  "+jsonEncode(value));
       model.value = value;
       if (value.status == true) {
@@ -74,6 +100,12 @@ class ProfileScreenController extends GetxController {
         designationController.text =  value.data!.basicInfo!.occuption.toString();
         designationDescriptionController.text =  value.data!.basicInfo!.description.toString();
         serviceController.text =  value.data!.basicInfo!.category.toString();
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        if(model.value.data!.basicInfo!.is_profile_complete == true  && pref.getBool('isProfileCompleted') == false){
+          pref.setBool('isProfileCompleted',true);
+          Get.offAllNamed(MyRouter.bottomNavbar);
+        }
+
       }
       else{
         status.value = RxStatus.error();

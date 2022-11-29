@@ -248,15 +248,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               showToast(value.message.toString(),
                               );
                               if (value.status == true) {
-                                SharedPreferences pref =
-                                await SharedPreferences.getInstance();
+                                SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
                                 pref.setBool("shownIntro", true);
                                 if(value.data!.user!.isProfileComplete == true){
-                                  Get.offAllNamed(MyRouter.questionsScreen);
+                                  Get.offAllNamed(MyRouter.bottomNavbar);
+                                  pref.setBool('isProfileCompleted', true);
                                 }
                                 else{
                                   Get.offAllNamed(MyRouter.questionsScreen);
+                                  pref.setBool('isProfileCompleted', false);
                                 }
                               }
                             });

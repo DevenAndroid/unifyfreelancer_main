@@ -29,7 +29,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
   void initState() {
     super.initState();
     price = double.parse(controller.priceController.text);
-    _unifyFeeController.text = ((price! * 10) / 100).toString();
+    _unifyFeeController.text = ((price! * 20) / 100).toString();
     _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
   }
 
@@ -106,7 +106,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                           setState(() {
                             print(value);
                             price = double.parse(value);
-                            _unifyFeeController.text = ((price! * 10) / 100).toString();
+                            _unifyFeeController.text = ((price! * 20) / 100).toString();
                             _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
 
                           });
@@ -142,7 +142,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                       fontSize: AddSize.font16),
                 ),
                 Text(
-                  "The unify Service fee is 20% when you begin a contract with a new client. Once you bill over \$500 with your client, the fee will be 10%",
+                  "The unify Service fee is 20% when you begin a contract with a new client.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -155,6 +155,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   children: [
                     Expanded(
                       child: CustomTextField(
+                        enabled: false,
                         controller: _unifyFeeController,
                         readOnly: true,
                         obSecure: false.obs,
@@ -196,6 +197,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   children: [
                     Expanded(
                       child: CustomTextField(
+                        enabled: false,
                         controller: _rateController,
                         readOnly: true,
                         obSecure: false.obs,

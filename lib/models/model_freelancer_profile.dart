@@ -163,6 +163,7 @@ class BasicInfo {
   String? city;
   String? zipCode;
   String? isVerified;
+  bool? is_profile_complete;
   String? category;
 
   BasicInfo(
@@ -190,7 +191,9 @@ class BasicInfo {
         this.state,
         this.city,
         this.zipCode,
-        this.isVerified});
+        this.isVerified,
+        this.is_profile_complete
+      });
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -218,6 +221,7 @@ class BasicInfo {
     city = json['city'];
     zipCode = json['zip_code'];
     isVerified = json['is_verified'];
+    is_profile_complete = json['is_profile_complete'];
   }
 
   Map<String, dynamic> toJson() {
@@ -247,6 +251,7 @@ class BasicInfo {
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
     data['is_verified'] = this.isVerified;
+    data['is_profile_complete'] = this.is_profile_complete;
     return data;
   }
 }

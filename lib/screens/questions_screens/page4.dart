@@ -39,7 +39,7 @@ class Page4 extends StatelessWidget {
                     height: AddSize.size10,
                   ),
                   Text(
-                    "Ok Great! Now we need a headline",
+                    "Ok Great! Now we need a headline.",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
