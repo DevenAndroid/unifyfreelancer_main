@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final profileController = Get.put(ProfileScreenController());
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _occputationController = TextEditingController();
   final TextEditingController _designationController = TextEditingController();
   final TextEditingController _designationDescriptionController =
       TextEditingController();
@@ -61,12 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] =
-          profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] =
-          profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] =
-          profileController.model.value.data!.basicInfo!.description.toString();
+      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] = profileController.model.value.data!.basicInfo!.occuption.toString();
       editNameInfoRepo(
               mapData: map,
               fieldName1: "profile_image",
@@ -92,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Map<String, String> map = {};
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
-    map["occcuption"] = _descriptionController.text.trim();
+    map["occcuption"] = controller.titleController.text.trim();;
     editNameInfoRepo(
             mapData: map,
             fieldName1: "profile_image",
@@ -108,12 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   showDialogueUpdateBasicInfo() {
-    _fNameController.text =
-        profileController.model.value.data!.basicInfo!.firstName.toString();
-    _lNameController.text =
-        profileController.model.value.data!.basicInfo!.lastName.toString();
-    _descriptionController.text =
-        profileController.model.value.data!.basicInfo!.occuption.toString();
+    _fNameController.text = profileController.model.value.data!.basicInfo!.firstName.toString();
+    _lNameController.text = profileController.model.value.data!.basicInfo!.lastName.toString();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -206,10 +199,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 hintText: "Occupation".obs,
                 isMulti: true,
                 keyboardType: TextInputType.text,
-                controller: _descriptionController,
+                controller: controller.titleController,
                 onSaved: (value) {
                   setState(() {
-                    _descriptionController.text = value.toString();
+                    controller.titleController.text = value.toString();
                   });
                 },
               ),
@@ -340,13 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: NetworkImage(profileController
-                                              .model
-                                              .value
-                                              .data!
-                                              .basicInfo!
-                                              .profileImage
-                                              .toString()))),
+                                          image: NetworkImage(profileController.model.value.data!.basicInfo!.profileImage.toString()))),
                                 ),
                               ),
                               Positioned(
@@ -746,16 +733,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller:
-                                                      _designationController,
+                                                  controller: _designationController,
                                                   obSecure: false.obs,
-                                                  hintText:
-                                                      "Website design and development"
-                                                          .obs,
+                                                  hintText: "Website design and development".obs,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Please enter designation'),
+                                                    RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                                                    MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
+                                                    MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -768,9 +752,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   hintText: "description".obs,
                                                   isMulti: true,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Please enter description'),
+                                                    RequiredValidator(errorText: 'Description required'),
+                                                    MinLengthValidator(100,
+                                                        errorText: 'Minimum length is 100 characters'),
+                                                    MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -2227,8 +2212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: profileController
-                                    .model.value.data!.employment!.length,
+                                itemCount: profileController.model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     crossAxisAlignment:
@@ -2249,13 +2233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Color(0xff363636)),
                                           ),
                                           Text(
-                                            profileController
-                                                        .model
-                                                        .value
-                                                        .data!
-                                                        .employment![index]
-                                                        .company
-                                                        .toString() !=
+                                            profileController.model.value.data!.employment![index].company.toString() !=
                                                     "null"
                                                 ? " | " +
                                                     profileController
@@ -2294,15 +2272,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .data!
                                                         .employment![index]
                                                         .endDate
-                                                        .toString() !=
-                                                    "null"
+                                                        .toString() != "null"
                                                 ? " - " +
                                                     profileController
                                                         .model
                                                         .value
                                                         .data!
                                                         .employment![index]
-                                                        .startDate
+                                                        .endDate
                                                         .toString()
                                                 : "",
                                             style: TextStyle(

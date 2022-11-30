@@ -19,6 +19,7 @@ class ProfileScreenController extends GetxController {
 
   Rx<ModelFreelancerProfile> model = ModelFreelancerProfile().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
+  Rx<RxStatus> serviceStatus = RxStatus.empty().obs;
 
   ModelLanguageList languages = ModelLanguageList();
 
@@ -52,7 +53,8 @@ class ProfileScreenController extends GetxController {
     categoryListRepo().then((value) {
       modelOfService.value = value;
       if (value.status == true) {
-        status.value = RxStatus.success();
+         serviceStatus.value = RxStatus.success();
+
         // for(var item in modelOfService.value.data!){
         //   if(item.name!.toLowerCase() == controller.model.value.data!.basicInfo!.category!.toLowerCase()){
         //     id.value = item.id!;
@@ -61,7 +63,7 @@ class ProfileScreenController extends GetxController {
         }
 
       else {
-        status.value = RxStatus.error();
+        serviceStatus.value = RxStatus.error();
       }
     });
   }

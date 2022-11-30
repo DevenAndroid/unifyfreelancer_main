@@ -28,8 +28,6 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -51,15 +49,24 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                 child: Padding(
                     padding: const EdgeInsets.only(
                         top: 15, bottom: 10, right: 10, left: 10),
-                    child: controller.model.value.data!.length == 0
-                        ? Center(
-                            child: Text("No data found",
+                    child: Column(
+                      children: [
+                        if (controller.model.value.data!.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 250),
+                            child: Center(
+                              child: Text(
+                                "No saved jobs",
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.darkBlueText,
-                                )))
-                        : ListView.builder(
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (controller.model.value.data!.isNotEmpty)
+                          ListView.builder(
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
                             itemCount: controller.model.value.data!.length,
@@ -113,22 +120,34 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                               ),
                                             ),
                                             SizedBox(
-                                              child:  controller.model.value
-                                                  .data![index].isSaved == false
+                                              child: controller
+                                                          .model
+                                                          .value
+                                                          .data![index]
+                                                          .isSaved ==
+                                                      false
                                                   ? InkWell(
                                                       onTap: () {
                                                         setState(() {
                                                           savedJobsRepo(
-                                                                  job_id: int.parse(controller.model.value.data![index].id.toString()),
-                                                                  context: context)
+                                                                  job_id: int.parse(
+                                                                      controller
+                                                                          .model
+                                                                          .value
+                                                                          .data![
+                                                                              index]
+                                                                          .id
+                                                                          .toString()),
+                                                                  context:
+                                                                      context)
                                                               .then((value) {
-                                                            if (value.status == true) {
-
-                                                            }
+                                                            if (value.status ==
+                                                                true) {}
                                                             showToast(value
                                                                 .message
                                                                 .toString());
-                                                            controller.getData();
+                                                            controller
+                                                                .getData();
                                                           });
                                                         });
                                                       },
@@ -158,8 +177,11 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                               controller
                                                                   .getData();
                                                             }
-                                                            showToast(value.message.toString());
-                                                            controller.getData();
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                            controller
+                                                                .getData();
                                                           });
                                                         });
                                                       },
@@ -238,16 +260,16 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                             ),
                                             Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                      controller.model.value
-                                                          .data![index].budgetType
-                                                          .toString(),
+                                                  controller.model.value
+                                                      .data![index].budgetType
+                                                      .toString(),
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                       color: AppTheme
                                                           .darkBlueText),
                                                 ),
@@ -256,7 +278,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                   style: TextStyle(
                                                       fontSize: 12.sp,
                                                       fontWeight:
-                                                      FontWeight.w500,
+                                                          FontWeight.w500,
                                                       color: const Color(
                                                           0xff6B6B6B)),
                                                 ),
@@ -357,7 +379,6 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                                         ));
                                                                   }),
                                                         ),
-
                                                       ],
                                                     ),
                                         ),
@@ -365,8 +386,9 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                     )),
                               );
                             },
-                          )),
-              )
+                          ),
+                      ],
+                    )))
             : controller.status.value.isError
                 ? SizedBox(
                     width: double.maxFinite,

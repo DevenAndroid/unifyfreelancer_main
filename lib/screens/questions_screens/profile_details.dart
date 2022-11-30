@@ -24,14 +24,14 @@ import '../../utils/api_contant.dart';
 import '../../widgets/add_text.dart';
 import '../../widgets/custom_textfield.dart';
 
-class ProfileQuestions extends StatefulWidget {
-  ProfileQuestions({Key? key}) : super(key: key);
+class ProfileDetails extends StatefulWidget {
+  ProfileDetails({Key? key}) : super(key: key);
 
   @override
-  State<ProfileQuestions> createState() => _ProfileQuestionsState();
+  State<ProfileDetails> createState() => _ProfileDetailsState();
 }
 
-class _ProfileQuestionsState extends State<ProfileQuestions> {
+class _ProfileDetailsState extends State<ProfileDetails> {
   @override
   void initState() {
     // TODO: implement initState
@@ -296,6 +296,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
   final _formKey = GlobalKey<FormState>();
   final controller = Get.put(ProfileScreenController());
 
+  var documents;
 
   @override
   Widget build(BuildContext context) {
@@ -450,7 +451,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
               ],
             ),
             CustomOutlineButton(
-                title: "Upload Photo",
+                title: "Upload photo",
                 backgroundColor: AppTheme.whiteColor,
                 textColor: AppTheme.primaryColor,
                 onPressed: () {
@@ -662,7 +663,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Zip/Postal Code",
+                  "Zip/Postal code",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -684,7 +685,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Phone Number",
+                  "Phone number",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -710,6 +711,63 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
+              /*  RadioListTile(
+                  title: Text(
+                    "Passport",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.darkBlueText,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  dense: true,
+                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                  value: "Passport",
+                  groupValue: documents,
+                  onChanged: (value) {
+                    setState(() {
+                      documents = value.toString();
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: Text(
+                    "Driving licences",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.darkBlueText,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  dense: true,
+                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                  value: "Passport",
+                  groupValue: documents,
+                  onChanged: (value) {
+                    setState(() {
+                      documents = value.toString();
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: AddSize.size15,
+                ),
+                CustomTextField(
+                  inputFormatters1:  [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                 // controller: controller.phoneController,
+                  obSecure: false.obs,
+                  hintText: "".obs,
+                  keyboardType: TextInputType.text,
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: 'Phone number is required'),
+                    MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
+                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
+                  ]),
+                ),*/
+
+
               ],
             )
           ],

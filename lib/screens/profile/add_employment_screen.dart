@@ -59,9 +59,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       _fromController.text = controller.model.value.data!.employment![parentIndex].startDate.toString();
       _toController.text = controller.model.value.data!.employment![parentIndex].endDate.toString();
       _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
+      dateInput = DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate!).millisecondsSinceEpoch;
+      dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+
       setState(() {
         acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
         acceptTermsOrPrivacy == true ?  _toController.text = "": controller.model.value.data!.employment![parentIndex].endDate.toString();
+        if (dateInput > dateInput2 ){
+          dateInput2 = 0;
+          _toController.text = "";
+        }
       });
     }
   }
@@ -390,16 +397,19 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now(),
+                                initialDate: dateInput == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput),
                                 firstDate: DateTime(1950),
                                 lastDate: DateTime.now());
                             if (pickedDate != null) {
                               print(pickedDate);
-                              // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                               _fromController.text = dateFormat.format(pickedDate);
                               print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
                                 dateInput = pickedDate.millisecondsSinceEpoch;
+                               if (dateInput > dateInput2 ){
+                                  dateInput2 = 0;
+                                  _toController.text = "";
+                                }
                               });
                             } else {
                               return null;
@@ -449,8 +459,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   onTap: () async {
                                     DateTime? pickedDate = await showDatePicker(
                                         context: context,
-                                        initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
-                                        firstDate: DateTime(1950),
+                                        initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
+                                        firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
                                         //DateTime.now() - not to allow to choose before today.
                                         lastDate: DateTime.now());
 
@@ -458,7 +468,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                       print(pickedDate);
                                       _toController.text = dateFormat.format(pickedDate);
                                       setState(() {
-                                        dateInput2 = pickedDate.millisecondsSinceEpoch; //set output date to TextField value.
+                                        dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
+                                        print(dateInput2);
                                       });
                                     } else {}
                                   },
@@ -473,7 +484,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 if (value == null ||
                                     value.isEmpty) {
                                   return 'To, date is required';
-                                } else if (DateTime.fromMillisecondsSinceEpoch(dateInput).compareTo(DateTime.fromMillisecondsSinceEpoch(dateInput2)) < 0) {
+                                } else if (int.parse(dateInput.toString()).compareTo(int.parse(dateInput2.toString())) < 0) {
                                   return null;
                                 } else {
                                   return "End date must be grater then start date";
@@ -544,8 +555,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                              id: parentIndex == -10000 ? parentIndex :
                              controller.model.value.data!.employment![parentIndex].id.toString(),
                                subject: _titleController.text.trim(),
-                               description:
-                               _descriptionController.text.trim(),
+                               description: _descriptionController.text.trim(),
                                company: _companyController.text.trim(),
                                city: _cityController.text.trim(),
                                country: countryController.text.trim(),

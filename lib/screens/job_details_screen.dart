@@ -403,7 +403,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   children: List.generate(
                                       model.value.data!.skills!.length,
                                       (index) => Container(
-                                              //    margin: EdgeInsets.only(right: 4, bottom: 10),
+                                                  margin: EdgeInsets.only(right: 4),
                                               child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:

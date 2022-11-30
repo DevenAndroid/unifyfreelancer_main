@@ -22,7 +22,7 @@ import 'page6.dart';
 import 'page7.dart';
 import 'page8.dart';
 import 'profile_preview.dart';
-import 'profile_questions.dart';
+import 'profile_details.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({Key? key}) : super(key: key);
@@ -83,15 +83,14 @@ final drawerKey = GlobalKey<ScaffoldState>();
                 child: ClipRRect(
                   borderRadius:
                   BorderRadius.circular(1000),
-                  child: controller
-                      .status.value.isSuccess ? CachedNetworkImage(
+                  child: controller.status.value.isSuccess ?
+                  CachedNetworkImage(
                     imageUrl: controller
                         .model
                         .value
                         .data!
                         .basicInfo!
-                        .profileImage ??
-                        "",
+                        .profileImage.toString(),
                     errorWidget: (_, __, ___) => SizedBox(),
                     placeholder: (_, __) => SizedBox(),
                     fit: BoxFit.cover,
@@ -301,7 +300,7 @@ final drawerKey = GlobalKey<ScaffoldState>();
          // Page9(),
           Page10(),
           HourlyChargeQuestion(),
-          ProfileQuestions(),
+          ProfileDetails(),
           ProfilePreview(),
         ],
       ),

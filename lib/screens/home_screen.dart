@@ -1160,13 +1160,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(
                           child: controller.modelBestJobList.value
-                              .data![index].isSaved ==
-                              false
+                              .data![index].isSaved == false
                               ? InkWell(
                               onTap: () {
                                 savedJobsRepo(
-                                    job_id: int.parse(
-                                        controller
+                                    job_id: int.parse(controller
                                             .modelBestJobList
                                             .value
                                             .data![index]
@@ -1175,8 +1173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context: context)
                                     .then((value) {
                                   if (value.status == true) {}
-                                  showToast(
-                                      value.message.toString());
+                                  showToast(value.message.toString());
                                   controller.getDataBestJob();
                                 });
                               },

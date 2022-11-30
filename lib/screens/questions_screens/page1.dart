@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../controller/profie_screen_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
@@ -37,8 +36,7 @@ class _Page1State extends State<Page1> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  "Hey ${controller.model.value.data!.basicInfo!.firstName
-                      .toString()}, Ready for your next big opportunity's ?",
+                  "Hey ${controller.model.value.data!.basicInfo!.firstName.toString()}, Ready for your next big opportunity's ?",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -164,7 +162,8 @@ class _Page1State extends State<Page1> {
               ],
             ),
           ),
-        ) : controller.status.value.isError ? CommonErrorWidget(
+        )
+            : controller.status.value.isError ? CommonErrorWidget(
           errorText: controller.model.value.message.toString(),
           onTap: () {
             controller.getData();

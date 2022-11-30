@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
-import 'package:unifyfreelancer/screens/questions_screens/profile_questions.dart';
+import 'package:unifyfreelancer/screens/questions_screens/profile_details.dart';
 import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 import '../Screens/alerts_screen.dart';
 import '../Screens/chat_screen.dart';

@@ -34,9 +34,7 @@ class _Page5State extends State<Page5> {
     return value != "" ? dateFormat.format(DateTime.parse(value)) : value;
   }
 
-  showDialogue({
-    required Employment item,
-  }) {
+  showDialogue({required Employment item,}) {
     RxBool endDatePresent = false.obs;
     final TextEditingController companyController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
@@ -435,17 +433,13 @@ class _Page5State extends State<Page5> {
                                   print(dateInput);
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
-                                      initialDate: dateInput == ""
-                                          ? DateTime.now()
-                                          : DateTime.parse(dateInput),
+                                      initialDate: dateInput == "" ? DateTime.now() : DateTime.parse(dateInput),
                                       firstDate: DateTime(1950),
                                       lastDate: DateTime.now());
                                   if (pickedDate != null) {
-                                    fromController.text =
-                                        dateFormat.format(pickedDate);
+                                    fromController.text = dateFormat.format(pickedDate);
                                     setState(() {
-                                      dateInput =
-                                          "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                      dateInput = "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                       print(dateInput);
                                     });
                                   }
@@ -627,9 +621,7 @@ class _Page5State extends State<Page5> {
         });
   }
 
-  showDeleteDialog({
-    required Employment item,
-  }) {
+  showDeleteDialog({required Employment item,}) {
     if (Platform.isAndroid) {
       showDialog(
           context: context,

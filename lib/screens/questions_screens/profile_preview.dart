@@ -1824,7 +1824,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                             onPressed: () {
                               submitProfileRepo().then((value) async {
                                 if (value.status == true) {
-                                  Get.toNamed(MyRouter.bottomNavbar);
+                                  Get.toNamed(MyRouter.subscriptionScreen);
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
                                   pref.setBool('isProfileCompleted', true);
@@ -2590,7 +2590,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               onPressed: () {
                 submitProfileRepo().then((value) async {
                   if (value.status == true) {
-                    Get.toNamed(MyRouter.bottomNavbar);
+                    Get.toNamed(MyRouter.subscriptionScreen);
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     pref.setBool('isProfileCompleted', true);

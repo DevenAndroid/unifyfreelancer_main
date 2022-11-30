@@ -21,8 +21,13 @@ class SavedJobController extends GetxController{
       if(value.status == true){
         status.value = RxStatus.success();
       }
+
       else{
         status.value = RxStatus.error();
+        if(value.message == "No Saved jobs"){
+          status.value = RxStatus.success();
+          model.value.data = [];
+        }
       }
 
     });
