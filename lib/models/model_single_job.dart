@@ -26,27 +26,37 @@ class Data {
   String? id;
   String? clientId;
   String? image;
+  String? imageName;
   String? name;
   String? type;
   String? description;
   String? budgetType;
-  dynamic minPrice;
+  String? minPrice;
   dynamic price;
   String? projectDuration;
   String? scop;
   String? status;
   String? experienceLevel;
+  String? englishLevel;
   String? categories;
   String? createdAt;
   List<Skills>? skills;
   List<ProposalList>? proposalList;
   ClientData? clientData;
+  List<ClientRecentHistory>? clientRecentHistory;
   bool? isProposalSend;
+  bool? isSaved;
+  String? serviceFee;
+  dynamic proposalCount;
+  dynamic inviteSent;
+  dynamic unansweredInvite;
+  String? interview;
 
   Data(
       {this.id,
         this.clientId,
         this.image,
+        this.imageName,
         this.name,
         this.type,
         this.description,
@@ -57,17 +67,26 @@ class Data {
         this.scop,
         this.status,
         this.experienceLevel,
+        this.englishLevel,
         this.categories,
         this.createdAt,
         this.skills,
         this.proposalList,
         this.clientData,
-        this.isProposalSend});
+        this.clientRecentHistory,
+        this.isProposalSend,
+        this.isSaved,
+        this.serviceFee,
+        this.proposalCount,
+        this.inviteSent,
+        this.unansweredInvite,
+        this.interview});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     clientId = json['client_id'];
     image = json['image'];
+    imageName = json['image_name'];
     name = json['name'];
     type = json['type'];
     description = json['description'];
@@ -78,6 +97,7 @@ class Data {
     scop = json['scop'];
     status = json['status'];
     experienceLevel = json['experience_level'];
+    englishLevel = json['english_level'];
     categories = json['categories'];
     createdAt = json['created_at'];
     if (json['skills'] != null) {
@@ -95,7 +115,19 @@ class Data {
     clientData = json['client_data'] != null
         ? new ClientData.fromJson(json['client_data'])
         : null;
+    if (json['client_recent_history'] != null) {
+      clientRecentHistory = <ClientRecentHistory>[];
+      json['client_recent_history'].forEach((v) {
+        clientRecentHistory!.add(new ClientRecentHistory.fromJson(v));
+      });
+    }
     isProposalSend = json['is_proposal_send'];
+    isSaved = json['is_saved'];
+    serviceFee = json['service_fee'];
+    proposalCount = json['proposal_count'];
+    inviteSent = json['invite_sent'];
+    unansweredInvite = json['unanswered_invite'];
+    interview = json['interview'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +135,7 @@ class Data {
     data['id'] = this.id;
     data['client_id'] = this.clientId;
     data['image'] = this.image;
+    data['image_name'] = this.imageName;
     data['name'] = this.name;
     data['type'] = this.type;
     data['description'] = this.description;
@@ -113,6 +146,7 @@ class Data {
     data['scop'] = this.scop;
     data['status'] = this.status;
     data['experience_level'] = this.experienceLevel;
+    data['english_level'] = this.englishLevel;
     data['categories'] = this.categories;
     data['created_at'] = this.createdAt;
     if (this.skills != null) {
@@ -125,7 +159,17 @@ class Data {
     if (this.clientData != null) {
       data['client_data'] = this.clientData!.toJson();
     }
+    if (this.clientRecentHistory != null) {
+      data['client_recent_history'] =
+          this.clientRecentHistory!.map((v) => v.toJson()).toList();
+    }
     data['is_proposal_send'] = this.isProposalSend;
+    data['is_saved'] = this.isSaved;
+    data['service_fee'] = this.serviceFee;
+    data['proposal_count'] = this.proposalCount;
+    data['invite_sent'] = this.inviteSent;
+    data['unanswered_invite'] = this.unansweredInvite;
+    data['interview'] = this.interview;
     return data;
   }
 }
@@ -156,8 +200,10 @@ class ProposalList {
   String? proposalId;
   String? proposalDescription;
   String? status;
-  String? amount;
+  dynamic proposalAmount;
+  dynamic hourRate;
   String? time;
+  List<Skills>? skills;
 
   ProposalList(
       {this.freelancerId,
@@ -166,8 +212,10 @@ class ProposalList {
         this.proposalId,
         this.proposalDescription,
         this.status,
-        this.amount,
-        this.time});
+        this.proposalAmount,
+        this.hourRate,
+        this.time,
+        this.skills});
 
   ProposalList.fromJson(Map<String, dynamic> json) {
     freelancerId = json['freelancer_id'];
@@ -176,8 +224,15 @@ class ProposalList {
     proposalId = json['proposal_id'];
     proposalDescription = json['proposal_description'];
     status = json['status'];
-    amount = json['amount'];
+    proposalAmount = json['proposal_amount'];
+    hourRate = json['hour_rate'];
     time = json['time'];
+    if (json['skills'] != null) {
+      skills = <Skills>[];
+      json['skills'].forEach((v) {
+        skills!.add(new Skills.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -188,11 +243,34 @@ class ProposalList {
     data['proposal_id'] = this.proposalId;
     data['proposal_description'] = this.proposalDescription;
     data['status'] = this.status;
-    data['amount'] = this.amount;
+    data['proposal_amount'] = this.proposalAmount;
+    data['hour_rate'] = this.hourRate;
     data['time'] = this.time;
+    if (this.skills != null) {
+      data['skills'] = this.skills!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
+
+/*class Skills {
+  int? skillId;
+  String? skillName;
+
+  Skills({this.skillId, this.skillName});
+
+  Skills.fromJson(Map<String, dynamic> json) {
+    skillId = json['skill_id'];
+    skillName = json['skill_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['skill_id'] = this.skillId;
+    data['skill_name'] = this.skillName;
+    return data;
+  }
+}*/
 
 class ClientData {
   String? id;
@@ -209,12 +287,21 @@ class ClientData {
   String? companyPhone;
   String? vatId;
   String? timezone;
+  String? localTime;
   String? companyAddress;
   String? country;
   String? state;
   String? city;
   String? zipCode;
   String? isVerified;
+  bool? paymentVerified;
+  String? rating;
+  String? numberOfReview;
+  String? jobPosted;
+  String? moneySpent;
+  String? ratePaidClient;
+  String? memberSince;
+  String? lastActivity;
 
   ClientData(
       {this.id,
@@ -231,12 +318,21 @@ class ClientData {
         this.companyPhone,
         this.vatId,
         this.timezone,
+        this.localTime,
         this.companyAddress,
         this.country,
         this.state,
         this.city,
         this.zipCode,
-        this.isVerified});
+        this.isVerified,
+        this.paymentVerified,
+        this.rating,
+        this.numberOfReview,
+        this.jobPosted,
+        this.moneySpent,
+        this.ratePaidClient,
+        this.memberSince,
+        this.lastActivity});
 
   ClientData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -253,12 +349,21 @@ class ClientData {
     companyPhone = json['company_phone'];
     vatId = json['vat_id'];
     timezone = json['timezone'];
+    localTime = json['local_time'];
     companyAddress = json['company_address'];
     country = json['country'];
     state = json['state'];
     city = json['city'];
     zipCode = json['zip_code'];
     isVerified = json['is_verified'];
+    paymentVerified = json['payment_verified'];
+    rating = json['rating'];
+    numberOfReview = json['number_of_review'];
+    jobPosted = json['job_posted'];
+    moneySpent = json['money_spent'];
+    ratePaidClient = json['rate_paid_client'];
+    memberSince = json['member_since'];
+    lastActivity = json['last_activity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -277,12 +382,62 @@ class ClientData {
     data['company_phone'] = this.companyPhone;
     data['vat_id'] = this.vatId;
     data['timezone'] = this.timezone;
+    data['local_time'] = this.localTime;
     data['company_address'] = this.companyAddress;
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
     data['is_verified'] = this.isVerified;
+    data['payment_verified'] = this.paymentVerified;
+    data['rating'] = this.rating;
+    data['number_of_review'] = this.numberOfReview;
+    data['job_posted'] = this.jobPosted;
+    data['money_spent'] = this.moneySpent;
+    data['rate_paid_client'] = this.ratePaidClient;
+    data['member_since'] = this.memberSince;
+    data['last_activity'] = this.lastActivity;
+    return data;
+  }
+}
+
+class ClientRecentHistory {
+  String? name;
+  String? description;
+  String? createdAt;
+  String? budgetType;
+  Null? minPrice;
+  dynamic price;
+  String? serviceFee;
+
+  ClientRecentHistory(
+      {this.name,
+        this.description,
+        this.createdAt,
+        this.budgetType,
+        this.minPrice,
+        this.price,
+        this.serviceFee});
+
+  ClientRecentHistory.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    description = json['description'];
+    createdAt = json['created_at'];
+    budgetType = json['budget_type'];
+    minPrice = json['min_price'];
+    price = json['price'];
+    serviceFee = json['service_fee'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['created_at'] = this.createdAt;
+    data['budget_type'] = this.budgetType;
+    data['min_price'] = this.minPrice;
+    data['price'] = this.price;
+    data['service_fee'] = this.serviceFee;
     return data;
   }
 }

@@ -239,7 +239,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Less then 30hr/week",
+                                                "Project type",
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w300,
@@ -250,8 +250,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 height: 5,
                                               ),
                                               Text(
-                                                model.value.data!.budgetType
-                                                    .toString(),
+                                                model.value.data!.budgetType.toString(),
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
@@ -265,7 +264,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Project Duration",
+                                                "Project duration",
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w300,
@@ -276,9 +275,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 height: 5,
                                               ),
                                               Text(
-                                                model
-                                                    .value.data!.projectDuration
-                                                    .toString(),
+                                                model.value.data!.projectDuration.toString()+ " month",
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
@@ -301,7 +298,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Experience Level",
+                                                "Experience level",
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w300,
@@ -312,9 +309,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 height: 5,
                                               ),
                                               Text(
-                                                model
-                                                    .value.data!.experienceLevel
-                                                    .toString(),
+                                                model.value.data!.experienceLevel.toString(),
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
@@ -335,7 +330,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   color: Color(0xff6D2EF1),
                                 ),
                                 SizedBox(
-                                  height: deviceHeight * .02,
+                                  height: AddSize.size5,
+                                ),
+
+                                Text(
+                                  "Description",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText,
+                                  ),
                                 ),
                                 Text(model.value.data!.description.toString(),
                                     style: TextStyle(
@@ -472,6 +476,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                           height: deviceHeight * .002,
                                         ),
                                         Text(
+                                          "Last viewed by client :",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff170048)),
+                                        ),
+                                        SizedBox(
+                                          height: deviceHeight * .002,
+                                        ),
+                                        Text(
                                           "Interviewing :",
                                           style: TextStyle(
                                               fontSize: 12.sp,
@@ -504,12 +518,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          "0",
+                                          "${model.value.data!.proposalCount ?? ""}",
                                           style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w600,
@@ -519,7 +532,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                           height: deviceHeight * .002,
                                         ),
                                         Text(
-                                          "0",
+                                          "${model.value.data!.clientData!.lastActivity ?? ""}",
                                           style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w600,
@@ -529,7 +542,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                           height: deviceHeight * .002,
                                         ),
                                         Text(
-                                          "0",
+                                          "${model.value.data!.interview ?? ""}",
                                           style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w600,
@@ -539,7 +552,17 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                           height: deviceHeight * .002,
                                         ),
                                         Text(
-                                          "0",
+                                       "${model.value.data!.inviteSent ?? ""}",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xff170048)),
+                                        ),
+                                        SizedBox(
+                                          height: deviceHeight * .002,
+                                        ),
+                                        Text(
+                                          "${model.value.data!.unansweredInvite ?? ""}",
                                           style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.w600,
@@ -571,12 +594,15 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 Row(
                                   children: [
                                     Icon(Icons.verified,
-                                        color: AppTheme.primaryColor, size: 20),
+                                        color: model.value.data!.clientData!.paymentVerified == true ? AppTheme.primaryColor
+                                        : Colors.grey.withOpacity(.49), size: 20),
                                     SizedBox(
                                       width: 3,
                                     ),
                                     Text(
-                                      "Payment method verified",
+                                      model.value.data!.clientData!.paymentVerified == true ?
+                                      "Payment method verified"
+                                      : "Payment method not verified",
                                       style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
@@ -594,7 +620,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     Wrap(
                                       children: List.generate(
                                           5,
-                                          (index) => 5 > index
+                                          (index) => int.parse(model.value.data!.clientData!.rating.toString()) > index
                                               ? Icon(
                                                   Icons.star,
                                                   color: AppTheme.primaryColor,
@@ -607,7 +633,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 )),
                                     ),
                                     Text(
-                                      "5.00 fo 1 review",
+                                      "${model.value.data!.clientData!.rating.toString()} of ${model.value.data!.clientData!.numberOfReview.toString()} reviews",
                                       style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
@@ -619,7 +645,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   height: deviceHeight * .01,
                                 ),
                                 Text(
-                                  "India",
+                                  model.value.data!.clientData!.country.toString(),
                                   style: TextStyle(
                                       fontSize: 13.sp,
                                       fontWeight: FontWeight.w600,
@@ -629,7 +655,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   height: deviceHeight * .002,
                                 ),
                                 Text(
-                                  "Ahmedabad 11.59 am",
+                                 " ${model.value.data!.clientData!.city.toString()}${model.value.data!.clientData!.localTime??""}",
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
@@ -639,7 +665,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   height: deviceHeight * .01,
                                 ),
                                 Text(
-                                  "15 jobs posted",
+                                  "${model.value.data!.clientData!.jobPosted.toString()} jobs posted",
                                   style: TextStyle(
                                       fontSize: 13.sp,
                                       fontWeight: FontWeight.w600,
@@ -659,7 +685,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   height: deviceHeight * .01,
                                 ),
                                 Text(
-                                  "\$600+ total spent",
+                                  "\$${model.value.data!.clientData!.moneySpent.toString()}+ total spent",
                                   style: TextStyle(
                                       fontSize: 13.sp,
                                       fontWeight: FontWeight.w600,
@@ -698,13 +724,26 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
+
                                 Text(
-                                  "Member since Nov 25,2015",
+                                  "Company size (${model.value.data!.clientData!.employeeNo!.toString()} people)",
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       color: const Color(0xff170048)),
                                 ),
+
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                  "Member since ${model.value.data!.clientData!.memberSince.toString()}",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xff170048)),
+                                ),
+
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
@@ -725,19 +764,19 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     contentPadding: EdgeInsets.zero,
                                     child: ExpansionTile(
                                         title: Text(
-                                          "Clients recent history (2)",
+                                          "Clients recent history (${model.value.data!.clientRecentHistory!.length.toString()})",
                                           style: TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         children: List.generate(
-                                            4,
+                                            model.value.data!.clientRecentHistory!.length,
                                             (index) => Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "Web Development/ Python Django CMS",
+                                                      model.value.data!.clientRecentHistory![index].name.toString(),
                                                       style: TextStyle(
                                                           fontSize: 14.sp,
                                                           fontWeight:
@@ -749,7 +788,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                       height:
                                                           deviceHeight * .005,
                                                     ),
-                                                    Text.rich(
+                                                    /*Text.rich(
                                                       TextSpan(
                                                         children: [
                                                           WidgetSpan(
@@ -794,10 +833,23 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                       0xff170048))),
                                                         ],
                                                       ),
-                                                    ),
+                                                    ),*/
                                                     SizedBox(
                                                       height:
                                                           deviceHeight * .01,
+                                                    ),
+                                                    Text(
+                                                      model.value.data!.clientRecentHistory![index].description.toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          color: const Color(
+                                                              0xff170048)),
+                                                    ),
+                                                    SizedBox(
+                                                      height:
+                                                      deviceHeight * .01,
                                                     ),
                                                     Text(
                                                       "Nov 2017 - Nov 2017",

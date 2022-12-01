@@ -6,9 +6,11 @@ import 'package:http/http.dart' as http;
 import '../../models/model_job_list.dart';
 import '../../utils/api_contant.dart';
 
-Future<ModelJobsList> searchJobListRepo(search) async {
+Future<ModelJobsList> searchJobListRepo({search,page,pagination}) async {
   Map map = <String,dynamic>{};
   map['search'] = search;
+  map['page'] = page;
+  map['pagination'] = pagination;
   try {
     http.Response response = await http.post(Uri.parse(ApiUrls.jobsList),
       headers: await getAuthHeader(),body: jsonEncode(map));

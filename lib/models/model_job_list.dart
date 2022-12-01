@@ -1,7 +1,7 @@
 class ModelJobsList {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<JobListData>? data;
   Meta? meta;
   Link? link;
 
@@ -11,9 +11,9 @@ class ModelJobsList {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <JobListData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new JobListData.fromJson(v));
       });
     }
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
@@ -37,7 +37,7 @@ class ModelJobsList {
   }
 }
 
-class Data {
+class JobListData {
   String? id;
   String? image;
   String? name;
@@ -54,7 +54,7 @@ class Data {
   List<Skills>? skills;
   bool? isSaved;
 
-  Data(
+  JobListData(
       {this.id,
         this.image,
         this.name,
@@ -71,7 +71,7 @@ class Data {
         this.skills,
         this.isSaved});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  JobListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     name = json['name'];
