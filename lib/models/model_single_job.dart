@@ -31,7 +31,7 @@ class Data {
   String? type;
   String? description;
   String? budgetType;
-  String? minPrice;
+  dynamic minPrice;
   dynamic price;
   String? projectDuration;
   String? scop;
@@ -406,7 +406,7 @@ class ClientRecentHistory {
   String? description;
   String? createdAt;
   String? budgetType;
-  Null? minPrice;
+  dynamic minPrice;
   dynamic price;
   String? serviceFee;
 

@@ -125,7 +125,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return controller.modelForPagination.length == 0
         ? Center(
-            child: Text("No JobListData found",
+            child: Text("No data found",
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
