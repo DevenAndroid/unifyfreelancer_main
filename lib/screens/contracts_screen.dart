@@ -347,7 +347,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: deviceHeight * .02,
               ),
-              Text(
+            /*  Text(
                 "Hired by: " + controller.model.value.data!.all![index].client!.firstName.toString() +
                     controller.model.value.data!.all![index].client!.lastName.toString(),
 
@@ -355,7 +355,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
-              ),
+              ),*/
               SizedBox(
                 height: deviceHeight * .01,
               ),
@@ -574,7 +574,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: deviceHeight * .02,
               ),*/
-              Text(
+    /*          Text(
                 "Hired by : "+
                     controller
                         .model.value.data!.hourly![index].client!.firstName
@@ -585,7 +585,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
-              ),
+              ),*/
              /* SizedBox(
                 height: deviceHeight * .01,
               ),

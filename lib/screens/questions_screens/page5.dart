@@ -34,9 +34,7 @@ class _Page5State extends State<Page5> {
     return value != "" ? dateFormat.format(DateTime.parse(value)) : value;
   }
 
-  showDialogue({
-    required Employment item,
-  }) {
+  showDialogue({required Employment item,}) {
     RxBool endDatePresent = false.obs;
     final TextEditingController companyController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
@@ -64,7 +62,7 @@ class _Page5State extends State<Page5> {
         builder: (context) {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .8),
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -91,7 +89,6 @@ class _Page5State extends State<Page5> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               Text(
                                 "Title",
                                 style: TextStyle(
@@ -149,6 +146,7 @@ class _Page5State extends State<Page5> {
                                 height: AddSize.size5,
                               ),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: CustomTextField(
@@ -415,7 +413,6 @@ class _Page5State extends State<Page5> {
                                   ),
                                 ],
                               ),
-
                               SizedBox(
                                 height: 15,
                               ),
@@ -433,24 +430,22 @@ class _Page5State extends State<Page5> {
                                 controller: fromController,
                                 readOnly: true,
                                 onTap: () async {
+                                  print(dateInput);
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
-                                      initialDate: dateInput == ""
-                                          ? DateTime.now()
-                                          : DateTime.parse(dateInput),
+                                      initialDate: dateInput == "" ? DateTime.now() : DateTime.parse(dateInput),
                                       firstDate: DateTime(1950),
                                       lastDate: DateTime.now());
                                   if (pickedDate != null) {
-                                    fromController.text =
-                                        dateFormat.format(pickedDate);
+                                    fromController.text = dateFormat.format(pickedDate);
                                     setState(() {
-                                      dateInput =
-                                          "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                      dateInput = "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                      print(dateInput);
                                     });
                                   }
                                 },
                                 obSecure: false.obs,
-                                hintText: "Select Date".obs,
+                                hintText: "From".obs,
                                 suffixIcon: Icon(
                                   Icons.calendar_month_outlined,
                                   size: AddSize.size22,
@@ -499,19 +494,13 @@ class _Page5State extends State<Page5> {
                                             DateTime? pickedDate =
                                                 await showDatePicker(
                                                     context: context,
-                                                    initialDate: dateInput2 ==
-                                                            ""
-                                                        ? DateTime.now()
-                                                        : DateTime.parse(
-                                                            dateInput2),
+                                                    initialDate: dateInput2 == "" ? DateTime.now() : DateTime.parse(dateInput2),
                                                     firstDate: DateTime(1950),
                                                     lastDate: DateTime.now());
                                             if (pickedDate != null) {
-                                              toController.text =
-                                                  dateFormat.format(pickedDate);
+                                              toController.text = dateFormat.format(pickedDate);
                                               setState(() {
-                                                dateInput2 =
-                                                    "${pickedDate.year}-${pickedDate.month}-${pickedDate.day}";
+                                                dateInput2 = "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                               });
                                             }
                                           },
@@ -522,12 +511,17 @@ class _Page5State extends State<Page5> {
                                             size: AddSize.size22,
                                             color: AppTheme.primaryColor,
                                           ),
-                                          validator: MultiValidator([
-                                            RequiredValidator(
-                                                errorText:
-                                                    'To, date is required'),
-                                          ]),
-                                        )
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'To, date is required';
+                                            } else if (DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0) {
+                                              return null;
+                                            } else {
+                                              return "End date must be grater then start date";
+                                            }
+                                          }
+                                          )
                                       : SizedBox(),
                                 );
                               }),
@@ -535,7 +529,7 @@ class _Page5State extends State<Page5> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Description (Optional)",
+                                "Description",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -605,7 +599,10 @@ class _Page5State extends State<Page5> {
                                       Get.back();
                                       controller.getData();
                                     }
-                                    showToast(value.message.toString());
+                                    else {
+                                      showToast(value.message.toString());
+                                    }
+
                                   });
                                 }
                               },
@@ -624,9 +621,7 @@ class _Page5State extends State<Page5> {
         });
   }
 
-  showDeleteDialog({
-    required Employment item,
-  }) {
+  showDeleteDialog({required Employment item,}) {
     if (Platform.isAndroid) {
       showDialog(
           context: context,
@@ -712,7 +707,10 @@ class _Page5State extends State<Page5> {
                           controller.getData();
                           Get.back();
                         }
-                        showToast(value.message.toString());
+                        else{
+                          showToast(value.message.toString());
+                        }
+
                       });
                     },
                     child: AddText(
@@ -750,7 +748,7 @@ class _Page5State extends State<Page5> {
                       fontSize: AddSize.font20),
                 ),
                 Text(
-                  "If you have relevant work experience, add it here",
+                  "Tell us about your experience...",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -760,10 +758,7 @@ class _Page5State extends State<Page5> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Freelancers who add their experience are "
-                  "twice as likely to win work. But if you're just"
-                  " starting out, you can still create a great profile. "
-                  "just head on the next page",
+                  "Add any information here about previous work experience, or freelance projects. If you're just starting out, no problem - you can leave this blank.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -783,7 +778,6 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-
                 CustomOutlineButton(
                   title: '+  Add Experience',
                   backgroundColor: AppTheme.whiteColor,
@@ -856,10 +850,11 @@ class _Page5State extends State<Page5> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                  if (controller.model.value.data!.employment!.isNotEmpty ||
-                      controller.acceptTermsOrPrivacy.value) {
+              //    if (controller.model.value.data!.employment!.isNotEmpty) {
                     controller.nextPage();
-                  }
+                  // } else {
+                  //   showToast("Please add at least one experience");
+                  // }
                 },
               ),
             ),

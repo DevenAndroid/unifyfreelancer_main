@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:475938716705:android:f3e313f74319bdb1bdf760",
+        "mobilesdk_app_id": "1:475938716705:android:6c6a89300098bfb0bdf760",
         "android_client_info": {
-          "package_name": "com.eoxysit.unifyfreelancer"
+          "package_name": "com.company.unifyClient"
         }
       },
       "oauth_client": [
         {
-          "client_id": "475938716705-h0fhmlpc7fdc5815ogi0a2lo0a4jb7ha.apps.googleusercontent.com",
+          "client_id": "475938716705-af1c6msi83o331tl77kp4arq71h5mbv5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.eoxysit.unifyfreelancer",
-            "certificate_hash": "bfa708e211d74ae327a2278871b44723500474a4"
+            "package_name": "com.company.unifyClient",
+            "certificate_hash": "c05a63d10f89e84ada21921971f3530b7de406f6"
           }
         },
         {
@@ -44,18 +44,18 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:475938716705:android:2c5b679f9758bd01bdf760",
+        "mobilesdk_app_id": "1:475938716705:android:5b9ba723c72891d7bdf760",
         "android_client_info": {
-          "package_name": "com.example.unifyclient"
+          "package_name": "com.eoxysit.unifyfreelancer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "475938716705-1n69a67p6dv3f4ir4rdor8utevm58p5p.apps.googleusercontent.com",
+          "client_id": "475938716705-qc45jl2ci4h29rp6cunm4dp3f7gdllgj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.unifyclient",
-            "certificate_hash": "205c7d0d77c9701d6bf996964859863de86a5c0e"
+            "package_name": "com.eoxysit.unifyfreelancer",
+            "certificate_hash": "bfa708e211d74ae327a2278871b44723500474a4"
           }
         },
         {

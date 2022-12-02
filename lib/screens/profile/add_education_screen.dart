@@ -39,7 +39,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear + 8; i++) {
+    for (var i = currentYear - 70; i < currentYear+1; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -150,7 +150,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Dates Attended (Optional)",
+                          "Start year",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -227,7 +227,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Proficiency level",
+                          "End year",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -240,7 +240,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           onTap: () {
                             showFilterButtonSheet(
                                 context: context,
-                                titleText: "To (or expected graduation year)",
+                                titleText: "To",
                                 widgets: Obx(() {
                                   return Column(
                                     children: [
@@ -293,11 +293,20 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           readOnly: true,
                           obSecure: false.obs,
                           controller: _toController,
-                          hintText: "To (or expected graduation year)".obs,
+                          hintText: "To".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
-                          validator: MultiValidator([
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'To, year is required';
+                              } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                return null;
+                              } else {
+                                return "End year must be grater then start date";
+                              }
+                            }
+                        /*  validator: MultiValidator([
                             RequiredValidator(errorText: 'To year is required'),
-                          ]),
+                          ]),*/
                         ),
                         SizedBox(
                           height: 15,

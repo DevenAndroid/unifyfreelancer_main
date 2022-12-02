@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
+import 'package:unifyfreelancer/screens/questions_screens/profile_details.dart';
 import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 import '../Screens/alerts_screen.dart';
 import '../Screens/chat_screen.dart';
@@ -21,6 +22,7 @@ import '../screens/add_milestone_screen.dart';
 import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/create_client_account.dart';
+import '../screens/payment/stripe_payment.dart';
 import '../screens/profile/add_certifications.dart';
 import '../screens/profile/add_education_screen.dart';
 import '../screens/profile/add_employment_screen.dart';
@@ -36,6 +38,7 @@ import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
 import '../screens/profile/edit_skills_screen.dart';
+import '../screens/subcription_screen.dart';
 import '../screens/userflow/new_password_screen.dart';
 import '../screens/settings/billing_and_payment_screen.dart';
 import '../screens/settings/contact_info_screen.dart';
@@ -101,16 +104,18 @@ class MyRouter {
   static var requestMilestoneChangesScreen = "/requestMilestoneChangesScreen";
   static var searchJobScreen = "/searchJobScreen";
   static var questionsScreen = "/questionsScreen";
+  static var subscriptionScreen = "/subscriptionScreen";
+  static var stripePaymentScreen = "/stripePaymentScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SplashScreen()),
+    GetPage(name: '/', page: () =>  const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
     GetPage(name: MyRouter.forgotPasswordScreen, page: () => const ForgotPasswordScreen()),
     GetPage(name: MyRouter.verificationScreen, page: () => const VerificationScreen()),
     GetPage(name: MyRouter.newPasswordScreen, page: () => const NewPasswordScreen()),
-    GetPage(name: MyRouter.bottomNavbar, page: () => const QuestionsScreen()),
+    GetPage(name: MyRouter.bottomNavbar, page: () => const BottomNavbar()),
     GetPage(name: MyRouter.homeScreen, page: () => const HomeScreen()),
     GetPage(name: MyRouter.saveJobsScreen, page: () => const SaveJobsScreen()),
     GetPage(name: MyRouter.jobDetailsScreen, page: () => const JobDetailsScreen()),
@@ -153,5 +158,7 @@ class MyRouter {
     GetPage(name: MyRouter.requestMilestoneChangesScreen, page: () => const RequestMilestoneChangesScreen()),
     GetPage(name: MyRouter.searchJobScreen, page: () => const SearchJobScreen()),
     GetPage(name: MyRouter.questionsScreen, page: () => const QuestionsScreen()),
+    GetPage(name: MyRouter.subscriptionScreen, page: () => const SubscriptionScreen()),
+    GetPage(name: MyRouter.stripePaymentScreen, page: () => const StripPayment()),
   ];
 }

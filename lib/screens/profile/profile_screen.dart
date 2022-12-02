@@ -13,6 +13,7 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
+import '../../repository/add_category_repository.dart';
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
 import '../../repository/delete_employment_info_repository.dart';
@@ -39,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final profileController = Get.put(ProfileScreenController());
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _occputationController = TextEditingController();
   final TextEditingController _designationController = TextEditingController();
   final TextEditingController _designationDescriptionController =
       TextEditingController();
@@ -62,8 +63,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Map<String, String> map = {};
       map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
       map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] = profileController.model.value.data!.basicInfo!.description.toString();
-      editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context).then((value) {
+      map["occcuption"] = profileController.model.value.data!.basicInfo!.occuption.toString();
+      editNameInfoRepo(
+              mapData: map,
+              fieldName1: "profile_image",
+              file1: imageFileToPick,
+              context: context)
+          .then((value) {
         imageFileToPick.delete();
         imageFileToPick = File("");
         if (value.status == true) {
@@ -83,8 +89,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Map<String, String> map = {};
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
-    map["occcuption"] = _descriptionController.text.trim();
-    editNameInfoRepo(mapData: map, fieldName1: "profile_image", file1: imageFileToPick, context: context)
+    map["occcuption"] = controller.titleController.text.trim();;
+    editNameInfoRepo(
+            mapData: map,
+            fieldName1: "profile_image",
+            file1: imageFileToPick,
+            context: context)
         .then((value) {
       if (value.status == true) {
         profileController.getData();
@@ -95,12 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   showDialogueUpdateBasicInfo() {
-    _fNameController.text =
-        profileController.model.value.data!.basicInfo!.firstName.toString();
-    _lNameController.text =
-        profileController.model.value.data!.basicInfo!.lastName.toString();
-    _descriptionController.text =
-        profileController.model.value.data!.basicInfo!.occuption.toString();
+    _fNameController.text = profileController.model.value.data!.basicInfo!.firstName.toString();
+    _lNameController.text = profileController.model.value.data!.basicInfo!.lastName.toString();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -193,10 +199,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 hintText: "Occupation".obs,
                 isMulti: true,
                 keyboardType: TextInputType.text,
-                controller: _descriptionController,
+                controller: controller.titleController,
                 onSaved: (value) {
                   setState(() {
-                    _descriptionController.text = value.toString();
+                    controller.titleController.text = value.toString();
                   });
                 },
               ),
@@ -327,13 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: NetworkImage(profileController
-                                              .model
-                                              .value
-                                              .data!
-                                              .basicInfo!
-                                              .profileImage
-                                              .toString()))),
+                                          image: NetworkImage(profileController.model.value.data!.basicInfo!.profileImage.toString()))),
                                 ),
                               ),
                               Positioned(
@@ -733,16 +733,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller:
-                                                      _designationController,
+                                                  controller: _designationController,
                                                   obSecure: false.obs,
-                                                  hintText:
-                                                      "Website design and development"
-                                                          .obs,
+                                                  hintText: "Website design and development".obs,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Please enter designation'),
+                                                    RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                                                    MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
+                                                    MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -755,9 +752,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   hintText: "description".obs,
                                                   isMulti: true,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Please enter description'),
+                                                    RequiredValidator(errorText: 'Description required'),
+                                                    MinLengthValidator(100,
+                                                        errorText: 'Minimum length is 100 characters'),
+                                                    MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -771,13 +769,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     if (_formKey.currentState!
                                                         .validate()) {
                                                       editDesignationInfoRepo(
-                                                             title:  _designationController
-                                                                  .text
-                                                                  .trim(),
-                                                             description:  _designationDescriptionController
-                                                                  .text
-                                                                  .trim(),
-                                                            context:   context)
+                                                              title:
+                                                                  _designationController
+                                                                      .text
+                                                                      .trim(),
+                                                              description:
+                                                                  _designationDescriptionController
+                                                                      .text
+                                                                      .trim(),
+                                                              context: context)
                                                           .then((value) {
                                                         if (value.status ==
                                                             true) {
@@ -2212,8 +2212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: profileController
-                                    .model.value.data!.employment!.length,
+                                itemCount: profileController.model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     crossAxisAlignment:
@@ -2234,13 +2233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Color(0xff363636)),
                                           ),
                                           Text(
-                                            profileController
-                                                        .model
-                                                        .value
-                                                        .data!
-                                                        .employment![index]
-                                                        .company
-                                                        .toString() !=
+                                            profileController.model.value.data!.employment![index].company.toString() !=
                                                     "null"
                                                 ? " | " +
                                                     profileController
@@ -2279,15 +2272,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .data!
                                                         .employment![index]
                                                         .endDate
-                                                        .toString() !=
-                                                    "null"
+                                                        .toString() != "null"
                                                 ? " - " +
                                                     profileController
                                                         .model
                                                         .value
                                                         .data!
                                                         .employment![index]
-                                                        .startDate
+                                                        .endDate
                                                         .toString()
                                                 : "",
                                             style: TextStyle(
@@ -2334,10 +2326,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       context)
                                                   .then((value) {
                                                 if (value.status == true) {
-                                                  profileController.model.value.data!.employment!.removeAt(index);
+                                                  profileController.model.value
+                                                      .data!.employment!
+                                                      .removeAt(index);
                                                   profileController.getData();
                                                 }
-                                                showToast(value.message.toString());
+                                                showToast(
+                                                    value.message.toString());
                                               });
                                             },
                                             child: Container(
@@ -2574,13 +2569,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           SizedBox(
-            height: 6.h,
+            height: 5.h,
           ),
           Text(
             profileController.model.value.data!.hoursPerWeek.toString(),
             style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
           ),
-
           Row(
             children: [
               Text(
@@ -2600,6 +2594,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
               ),
             ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Service",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              InkWell(
+                onTap: () => services(),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text(
+            profileController.serviceController.text.toString(),
+            style: TextStyle(fontSize: 13.sp, color: AppTheme.textColor),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
           ),
           SizedBox(
             height: 10.h,
@@ -2684,6 +2730,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
+          SizedBox(
+            height: 10.h,
+          ),
+          Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
           SizedBox(
             height: 10.h,
           ),
@@ -2986,6 +3038,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
+          ],
+        ));
+  }
+
+  void services() {
+    return showFilterButtonSheet(
+        context: context,
+        titleText: "Select a service",
+        widgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(
+              color: AppTheme.pinkText.withOpacity(.49),
+            ),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.modelOfService.value.data!.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.back();
+
+                        addCategoryRepo(
+                                category_id: controller
+                                    .modelOfService.value.data![index].id
+                                    .toString(),
+                                context: context)
+                            .then((value) {
+                          if (value.status == true) {
+                            controller.getData();
+                          }
+                          //  showToast(value.message.toString());
+                        });
+                      },
+                      child: Text(
+                        controller.modelOfService.value.data![index].name
+                            .toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font16),
+                      ),
+                    ),
+                  );
+                })
           ],
         ));
   }

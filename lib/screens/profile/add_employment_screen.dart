@@ -22,7 +22,7 @@ class AddEmploymentScreen extends StatefulWidget {
 
 class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   final _formKey = GlobalKey<FormState>();
-  var acceptTermsOrPrivacy = true;
+  bool acceptTermsOrPrivacy = true;
   int dateInput = 0;
   int dateInput2 = 0;
 
@@ -59,9 +59,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       _fromController.text = controller.model.value.data!.employment![parentIndex].startDate.toString();
       _toController.text = controller.model.value.data!.employment![parentIndex].endDate.toString();
       _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
+      dateInput = DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate!).millisecondsSinceEpoch;
+      dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+
       setState(() {
         acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
         acceptTermsOrPrivacy == true ?  _toController.text = "": controller.model.value.data!.employment![parentIndex].endDate.toString();
+        if (dateInput > dateInput2 ){
+          dateInput2 = 0;
+          _toController.text = "";
+        }
       });
     }
   }
@@ -144,6 +151,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 5,
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: CustomTextField(
@@ -389,23 +397,26 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now(),
+                                initialDate: dateInput == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput),
                                 firstDate: DateTime(1950),
                                 lastDate: DateTime.now());
                             if (pickedDate != null) {
                               print(pickedDate);
-                              // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                               _fromController.text = dateFormat.format(pickedDate);
                               print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
                                 dateInput = pickedDate.millisecondsSinceEpoch;
+                               if (dateInput > dateInput2 ){
+                                  dateInput2 = 0;
+                                  _toController.text = "";
+                                }
                               });
                             } else {
                               return null;
                             }
                           },
                           obSecure: false.obs,
-                          hintText: "Select Date".obs,
+                          hintText: "Form".obs,
                           suffixIcon: Icon(
                             Icons.calendar_month_outlined,
                             size: 22,
@@ -423,8 +434,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 value: acceptTermsOrPrivacy,
                                 activeColor: AppTheme.primaryColor,
                                 onChanged: (newValue) {
-                                  setState(() {acceptTermsOrPrivacy = newValue!;
-                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : controller.model.value.data!.employment![parentIndex].endDate.toString();
+                                  setState(() {
+                                    acceptTermsOrPrivacy = newValue!;
+                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
                                   });
                                 }),
                             SizedBox(
@@ -447,8 +459,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   onTap: () async {
                                     DateTime? pickedDate = await showDatePicker(
                                         context: context,
-                                        initialDate: dateInput2 == 0  ?DateTime.now() : DateTime.fromMicrosecondsSinceEpoch(dateInput2),
-                                        firstDate: DateTime(1950),
+                                        initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
+                                        firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
                                         //DateTime.now() - not to allow to choose before today.
                                         lastDate: DateTime.now());
 
@@ -456,7 +468,8 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                       print(pickedDate);
                                       _toController.text = dateFormat.format(pickedDate);
                                       setState(() {
-                                        dateInput2 = pickedDate.millisecondsSinceEpoch; //set output date to TextField value.
+                                        dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
+                                        print(dateInput2);
                                       });
                                     } else {}
                                   },
@@ -467,6 +480,16 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                     size: 22,
                                     color: AppTheme.primaryColor,
                                   ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty) {
+                                  return 'To, date is required';
+                                } else if (int.parse(dateInput.toString()).compareTo(int.parse(dateInput2.toString())) < 0) {
+                                  return null;
+                                } else {
+                                  return "End date must be grater then start date";
+                                }
+                              }
                                   /* validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'To, date is required'),
@@ -478,7 +501,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Description (Optional)",
+                          "Description",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -532,8 +555,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                              id: parentIndex == -10000 ? parentIndex :
                              controller.model.value.data!.employment![parentIndex].id.toString(),
                                subject: _titleController.text.trim(),
-                               description:
-                               _descriptionController.text.trim(),
+                               description: _descriptionController.text.trim(),
                                company: _companyController.text.trim(),
                                city: _cityController.text.trim(),
                                country: countryController.text.trim(),

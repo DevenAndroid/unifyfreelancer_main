@@ -89,8 +89,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             contentPadding: const EdgeInsets.only(left: 10,top: 10),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+              borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
               borderRadius: BorderRadius.circular(8),
             ),
             enabledBorder: OutlineInputBorder(

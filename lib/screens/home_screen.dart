@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/controller/saved_job_controller.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final controller = Get.put(JobListController());
+  final saveController = Get.put(SavedJobController());
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -322,6 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 if (value.status == true) {}
                                                 controller.getData();
                                                 showToast(value.message.toString());
+                                                saveController.getData();
                                               });
                                             },
                                             child: Icon(
@@ -343,6 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .then((value) {
                                                 if (value.status == true) {}
                                                 controller.getData();
+                                                saveController.getData();
                                                 showToast(value.message.toString());
 
                                               });
@@ -727,6 +731,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   if (value.status == true) {}
                                                   showToast(value.message.toString());
                                                   controller.getDataRecentJob();
+                                                  saveController.getData();
                                                 });
                                               });
                                             },
@@ -751,6 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   if (value.status == true) {}
                                                   controller.getDataRecentJob();
                                                   showToast(value.message.toString());
+                                                  saveController.getData();
 
                                                 });
                                               });
@@ -1160,13 +1166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(
                           child: controller.modelBestJobList.value
-                              .data![index].isSaved ==
-                              false
+                              .data![index].isSaved == false
                               ? InkWell(
                               onTap: () {
                                 savedJobsRepo(
-                                    job_id: int.parse(
-                                        controller
+                                    job_id: int.parse(controller
                                             .modelBestJobList
                                             .value
                                             .data![index]
@@ -1175,9 +1179,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context: context)
                                     .then((value) {
                                   if (value.status == true) {}
-                                  showToast(
-                                      value.message.toString());
+                                  showToast(value.message.toString());
                                   controller.getDataBestJob();
+                                  saveController.getData();
                                 });
                               },
                               child: Icon(
@@ -1201,6 +1205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     if (value.status == true) {}
                                     controller.getDataBestJob();
                                     showToast(value.message.toString());
+                                    saveController.getData();
 
                                   });
                                 });
@@ -1445,7 +1450,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              controller.modeRecentJobList.value.message.toString(),
+              controller.modelBestJobList.value.message.toString(),
               // fontSize: AddSize.font16,
             ),
             IconButton(

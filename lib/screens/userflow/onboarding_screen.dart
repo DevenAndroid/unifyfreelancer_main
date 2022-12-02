@@ -53,7 +53,9 @@ class OnBoardingScreen extends StatelessWidget {
                         top: AddSize.size50,
                         left: AddSize.padding16,
                         child: controller.currentIndex.value != 2
-                            ? const Text("Skip")
+                            ? InkWell(
+                          onTap: ()=>Get.toNamed(MyRouter.loginScreen),
+                            child: const Text("Skip"))
                             : const SizedBox())
                   ],
                 ),

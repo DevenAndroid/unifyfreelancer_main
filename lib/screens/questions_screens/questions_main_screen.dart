@@ -1,14 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-// <<<<<<< HEAD
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../controller/profie_screen_controller.dart';
 import '../../repository/countrylist_repository.dart';
-// =======
-import '../../controller/question_controller.dart';
-// >>>>>>> dev_branch
+
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../routers/my_router.dart';
 import 'hourly_charge_question.dart';
 import 'page1.dart';
 import 'page10.dart';
@@ -19,9 +21,8 @@ import 'page5.dart';
 import 'page6.dart';
 import 'page7.dart';
 import 'page8.dart';
-import 'page9.dart';
 import 'profile_preview.dart';
-import 'profile_questions.dart';
+import 'profile_details.dart';
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({Key? key}) : super(key: key);
@@ -44,10 +45,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       controller.countryList.value = value;
     });
   }
-
+final drawerKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: drawerKey,
       appBar: AppBar(
         centerTitle: true,
         elevation: 1,
@@ -57,12 +59,48 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           statusBarBrightness: Brightness.light,
         ),
         backgroundColor: AppTheme.whiteColor,
-        leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xff756C87),
-            )),
+        leading: InkWell(
+          onTap: () {
+           drawerKey.currentState!.openDrawer();
+          },
+          child: Card(
+            elevation: 2,
+            margin: const EdgeInsets.all(7),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(100))),
+            child: Obx(() {
+              return Container(
+                margin: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: AppTheme.blackColor,
+                  shape: BoxShape.circle,
+                  /*image: DecorationImage(
+                          image: NetworkImage(
+                              "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80"),
+                          fit: BoxFit.cover)*/),
+                height: 25.h,
+                width: 25.w,
+                child: ClipRRect(
+                  borderRadius:
+                  BorderRadius.circular(1000),
+                  child: controller.status.value.isSuccess ?
+                  CachedNetworkImage(
+                    imageUrl: controller
+                        .model
+                        .value
+                        .data!
+                        .basicInfo!
+                        .profileImage.toString(),
+                    errorWidget: (_, __, ___) => SizedBox(),
+                    placeholder: (_, __) => SizedBox(),
+                    fit: BoxFit.cover,
+                  )
+                      : SizedBox(),
+                ),
+              );
+            }),
+          ),
+        ),
         title: Text(
           "Create profile",
           style: TextStyle(
@@ -96,10 +134,160 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           }),
         ),
       ),
+      drawer: Drawer(
+        child: Obx(() {
+          return ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: 120,
+                child: DrawerHeader(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Card(
+                              elevation: 2,
+                              margin: const EdgeInsets.all(7),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(100))),
+                              child: Container(
+                                margin: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.blackColor,
+                                  shape: BoxShape.circle,
+                                  /* image: DecorationImage(
+                                    image: NetworkImage(
+                                        controller.model.value.data!.basicInfo!.profileImage ?? ""),
+                                    fit: BoxFit.cover)*/
+                                ),
+                                height: 35.h,
+                                width: 35.w,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: controller.status.value.isSuccess
+                                      ? CachedNetworkImage(
+                                    imageUrl: controller.model.value.data!
+                                        .basicInfo!.profileImage ??
+                                        "",
+                                    errorWidget: (_, __, ___) => SizedBox(),
+                                    placeholder: (_, __) => SizedBox(),
+                                    fit: BoxFit.cover,
+                                  )
+                                      : SizedBox(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller.status.value.isSuccess
+                                        ? controller.model.value.data!.basicInfo!
+                                        .firstName
+                                        .toString() +
+                                        " " +
+                                        controller.model.value.data!
+                                            .basicInfo!.lastName
+                                            .toString()
+                                        : "",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.whiteColor),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Text(
+                                    "Freelancer",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.whiteColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            drawerKey.currentState!.closeDrawer();
+                          },
+                          icon: Icon(
+                            Icons.clear,
+                            color: AppTheme.whiteColor,
+                          ))
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xfff2bde2),
+                        Color(0xffa39ef5),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height:AddSize.screenHeight*.75,
+                  ),
+                  ListTile(
+                      leading: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.primaryColor.withOpacity(.15)),
+                        child: Icon(
+                          Icons.power_settings_new,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textColor),
+                      ),
+                      onTap: () async {
+                        SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                        await pref.clear();
+                        Get.offAllNamed(MyRouter.loginScreen);
+                        pref.setBool("shownIntro", true);
+                      }),
+
+                ],
+              )
+
+            ],
+          );
+        }),
+      ),
       body: PageView(
         controller: controller.pageController,
         scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         children: [
           Page1(),
           Page2(),
@@ -112,225 +300,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
          // Page9(),
           Page10(),
           HourlyChargeQuestion(),
-          ProfileQuestions(),
+          ProfileDetails(),
           ProfilePreview(),
         ],
       ),
     );
   }
 
-// page1() {
-//   return Container(
-//     padding: EdgeInsets.all(12),
-//     height: AddSize.screenHeight,
-//     width: AddSize.screenWidth,
-//     child: SingleChildScrollView(
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           SizedBox(
-//             height: AddSize.size10,
-//           ),
-//           Text(
-//             "Hey ZabuZa. Ready for your next big opportunity's ?",
-//             style: TextStyle(
-//                 fontWeight: FontWeight.w600,
-//                 color: AppTheme.darkBlueText,
-//                 fontSize: AddSize.font20),
-//           ),
-//           SizedBox(
-//             height: AddSize.size50,
-//           ),
-//           Row(
-//             children: [
-//               Padding(
-//                 padding:  EdgeInsets.only(
-//                   right: AddSize.padding20,
-//                 ),
-//                 child: Icon(Icons.person),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   "Answer a few questions and start building your profile",
-//                   style: TextStyle(
-//                       fontWeight: FontWeight.w500,
-//                       color: AppTheme.textColor,
-//                       fontSize: AddSize.font14),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           Divider(
-//             color: AppTheme.primaryColor.withOpacity(.49),
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           Row(
-//             children: [
-//               Padding(
-//                 padding: EdgeInsets.only(
-//                     right: AddSize.padding20,
-//                 ),
-//                 child: Icon(Icons.mail_lock_outlined),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   "Apply for open roles or list services for clients to  buy",
-//                   style: TextStyle(
-//                       fontWeight: FontWeight.w500,
-//                       color: AppTheme.textColor,
-//                       fontSize: AddSize.font14),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           Divider(
-//             color: AppTheme.primaryColor.withOpacity(.49),
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           Row(
-//             children: [
-//               Padding(
-//                 padding:  EdgeInsets.only(
-//                   right: AddSize.padding20,
-//                 ),
-//                 child: Icon(Icons.monetization_on),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   "Get paid safely and know we're there to help",
-//                   style: TextStyle(
-//                       fontWeight: FontWeight.w500,
-//                       color: AppTheme.textColor,
-//                       fontSize:AddSize.font14 ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           Divider(
-//             color: AppTheme.primaryColor.withOpacity(.49),
-//           ),
-//           SizedBox(
-//             height: AddSize.size125,
-//           ),
-//           Text(
-//             "It only takes 5 -10 minutes and you can edit it later, We'll save as you go",
-//             style: TextStyle(
-//                 fontWeight: FontWeight.w500,
-//                 color: AppTheme.textColor,
-//                 fontSize: AddSize.font12),
-//           ),
-//           SizedBox(
-//             height: AddSize.size20,
-//           ),
-//           CustomOutlineButton(
-//             title: "Get Started",
-//             backgroundColor: AppTheme.primaryColor,
-//             textColor: AppTheme.whiteColor,
-//             expandedValue: true,
-//             onPressed: () {},
-//           )
-//         ],
-//       ),
-//     ),
-//   );
-// }
-//   RxInt curreentIndex = 1.obs;
-//
-//   page2() {
-//     return Container(
-//       padding: EdgeInsets.all(12),
-//       height: AddSize.screenHeight,
-//       width: AddSize.screenWidth,
-//       child: SingleChildScrollView(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(
-//               height: AddSize.size10,
-//             ),
-//             Text(
-//               "A few quick questions first, have you freelanced before?",
-//               style: TextStyle(
-//                   fontWeight: FontWeight.w600,
-//                   color: AppTheme.darkBlueText,
-//                   fontSize: AddSize.font20),
-//             ),
-//             SizedBox(
-//               height: AddSize.size20,
-//             ),
-//             Text(
-//               "This lets us know how much help to give you along the way.",
-//               style: TextStyle(
-//                   fontWeight: FontWeight.w500,
-//                   color: AppTheme.darkBlueText,
-//                   fontSize: AddSize.font14),
-//             ),
-//             SizedBox(
-//               height: AddSize.size10*.1,
-//             ),
-//             Text(
-//               "(We won't share your answer with anyone else, including potential clients.)",
-//               style: TextStyle(
-//                   fontWeight: FontWeight.w500,
-//                   color: AppTheme.textColor,
-//                   fontSize: AddSize.font14),
-//             ),
-//             SizedBox(
-//               height: AddSize.size20,
-//             ),
-//             ListView.builder(
-//               itemCount: 3,
-//               shrinkWrap: true,
-//               physics: NeverScrollableScrollPhysics(),
-//               itemBuilder: (context, index) =>
-//                 Obx(() {
-//   return Padding(
-//                   padding: EdgeInsets.only(bottom: AddSize.size20),
-//                   child: InkWell(
-//                     onTap: (){
-//                       curreentIndex.value = index;
-//                     },
-//                     child: Container(
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(AddSize.size5),
-//                         border: Border.all(color: curreentIndex.value == index ? AppTheme.primaryColor : Colors.transparent,width: AddSize.size10*.22)
-//                       ),
-//                       child: ListTile(
-//                         visualDensity: VisualDensity(horizontal: -4, vertical: 0),
-//                         leading: Icon(Icons.favorite_border,color: AppTheme.blackColor,),
-//                         title: Text(
-//                           "Nope: its new to me",
-//                           style: TextStyle(
-//                               fontWeight: FontWeight.w500,
-//                               color: AppTheme.blackColor,
-//                               fontSize: AddSize.font12),
-//                         ),
-//                         trailing: AnimatedContainer(
-//                           duration: Duration(seconds: 20),
-//                           child: Icon(Icons.check,color: AppTheme.primaryColor,size: curreentIndex.value == index
-//                                 ? AddSize.size20 : 0,),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 );
-// }),)
-//           ],
-//         ),
-//       ),
-//     );
-//   }
 }

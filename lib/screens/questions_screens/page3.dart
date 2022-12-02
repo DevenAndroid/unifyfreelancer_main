@@ -16,7 +16,7 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends State<Page3> {
-  RxInt currentIndex = 1.obs;
+
   final controller = Get.put(ProfileScreenController());
 
   List content = [
@@ -77,14 +77,14 @@ class _Page3State extends State<Page3> {
                         padding: EdgeInsets.only(bottom: AddSize.size20),
                         child: InkWell(
                           onTap: (){
-                            currentIndex.value = index;
+                            controller.questionIndex3.value = index;
                             controller.nextPage();
                           },
                           child: Card(
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(AddSize.size5),
-                                  border: Border.all(color: currentIndex.value == index ? AppTheme.primaryColor : Colors.transparent,width: AddSize.size10*.22)
+                                  border: Border.all(color: controller.questionIndex3.value == index ? AppTheme.primaryColor : Colors.transparent,width: AddSize.size10*.22)
                               ),
                               child: ListTile(
                                 visualDensity: VisualDensity(horizontal: -4, vertical: 0),
@@ -108,7 +108,7 @@ class _Page3State extends State<Page3> {
                                 ),
                                 trailing: AnimatedContainer(
                                   duration: Duration(seconds: 20),
-                                  child: Icon(Icons.check,color: AppTheme.primaryColor,size: currentIndex.value == index
+                                  child: Icon(Icons.check,color: AppTheme.primaryColor,size: controller.questionIndex3.value == index
                                       ? AddSize.size20 : 0,),
                                 ),
                               ),
@@ -117,11 +117,11 @@ class _Page3State extends State<Page3> {
                         ),
                       );
                     }),),
-              SizedBox(
-                height: AddSize.size30,
-              ),
+
               InkWell(
-                onTap: (){},
+                onTap: (){
+                  controller.nextPage();
+                },
                 child: Text(
                   "Skip for now >",
                   style: TextStyle(
@@ -134,7 +134,7 @@ class _Page3State extends State<Page3> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
+   /*   bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: AddSize.padding16).copyWith(bottom: AddSize.padding14),
         child: Row(
           children: [
@@ -163,7 +163,7 @@ class _Page3State extends State<Page3> {
             ),
           ],
         ),
-      ),
+      ),*/
     );
   }
 }

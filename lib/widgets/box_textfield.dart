@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
+import 'package:unifyfreelancer/resources/size.dart';
 
 class BoxTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -15,6 +16,7 @@ class BoxTextField extends StatefulWidget {
   final bool isMulti;
   final bool autofocus;
   final bool enabled;
+ double? textSize;
   final String? errorText;
   final String? labelText;
   final RxString hintText;
@@ -39,6 +41,7 @@ class BoxTextField extends StatefulWidget {
     this.onSaved,
     this.labelText,
     this.suffixIcon,
+    this.textSize = 0,
   });
 
   @override
@@ -87,6 +90,9 @@ class _BoxTextFieldState extends State<BoxTextField> {
             fillColor: AppTheme.primaryColor.withOpacity(.05),
             hintText: widget.hintText.value,
             errorText: widget.errorText,
+            errorStyle: TextStyle(
+              fontSize: widget.textSize == 0 ? AddSize.font14*.9 : widget.textSize
+            ),
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,
@@ -106,7 +112,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
 */
             // labelStyle: TextStyle(fontSize: lableFontSize()),
             // labelText: label,
-            hintStyle: const TextStyle(color: Color(0xff596681), fontSize: 13),
+            hintStyle: TextStyle(color: Color(0xff596681), fontSize: AddSize.font14*.92),
             contentPadding:
                 const EdgeInsets.only(right: 0, left: 10, top: 14, bottom: 14),
             focusedBorder: OutlineInputBorder(

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,14 +24,14 @@ import '../../utils/api_contant.dart';
 import '../../widgets/add_text.dart';
 import '../../widgets/custom_textfield.dart';
 
-class ProfileQuestions extends StatefulWidget {
-  ProfileQuestions({Key? key}) : super(key: key);
+class ProfileDetails extends StatefulWidget {
+  ProfileDetails({Key? key}) : super(key: key);
 
   @override
-  State<ProfileQuestions> createState() => _ProfileQuestionsState();
+  State<ProfileDetails> createState() => _ProfileDetailsState();
 }
 
-class _ProfileQuestionsState extends State<ProfileQuestions> {
+class _ProfileDetailsState extends State<ProfileDetails> {
   @override
   void initState() {
     // TODO: implement initState
@@ -295,6 +296,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
   final _formKey = GlobalKey<FormState>();
   final controller = Get.put(ProfileScreenController());
 
+  var documents;
 
   @override
   Widget build(BuildContext context) {
@@ -342,7 +344,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           title: 'Back',
                           backgroundColor: AppTheme.whiteColor,
                           onPressed: () {
-                            Get.back();
+                           controller.previousPage();
                           },
                           textColor: AppTheme.primaryColor,
                           expandedValue: false,
@@ -359,25 +361,22 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               editLocationRepo(
-                                      phone: controller.phoneController.text
-                                          .trim(),
-                                      zip_code:
-                                          controller.zipController.text.trim(),
-                                      address: controller.addressController.text
-                                          .trim(),
-                                      city:
-                                          controller.cityController.text.trim(),
-                                      country: controller.countryController.text
-                                          .trim(),
-                                      context: context)
-                                  .then((value) {
+                                      phone: controller.phoneController.text.trim(),
+                                      zip_code: controller.zipController.text.trim(),
+                                      address: controller.addressController.text.trim(),
+                                      city: controller.cityController.text.trim(),
+                                      country: controller.countryController.text.trim(),
+                                      context: context).then((value) {
                                 print(jsonEncode(value));
                                 if (value.status == true) {
                                   controller.nextPage();
                                   /*    formPart = true;
                                   check();*/
                                 }
-                                showToast(value.message.toString());
+                                else{
+                                     showToast(value.message.toString());
+                                }
+
                               });
                             }
                           },
@@ -452,7 +451,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
               ],
             ),
             CustomOutlineButton(
-                title: "Upload Photo",
+                title: "Upload photo",
                 backgroundColor: AppTheme.whiteColor,
                 textColor: AppTheme.primaryColor,
                 onPressed: () {
@@ -664,7 +663,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Zip/Postal Code",
+                  "Zip/Postal code",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -686,7 +685,7 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Phone Number",
+                  "Phone number",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -696,17 +695,79 @@ class _ProfileQuestionsState extends State<ProfileQuestions> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
+                  inputFormatters1:  [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   controller: controller.phoneController,
                   obSecure: false.obs,
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Phone number is required'),
+                    MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
+                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
                   ]),
                 ),
                 SizedBox(
                   height: AddSize.size15,
                 ),
+              /*  RadioListTile(
+                  title: Text(
+                    "Passport",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.darkBlueText,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  dense: true,
+                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                  value: "Passport",
+                  groupValue: documents,
+                  onChanged: (value) {
+                    setState(() {
+                      documents = value.toString();
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: Text(
+                    "Driving licences",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.darkBlueText,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  dense: true,
+                  visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                  value: "Passport",
+                  groupValue: documents,
+                  onChanged: (value) {
+                    setState(() {
+                      documents = value.toString();
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: AddSize.size15,
+                ),
+                CustomTextField(
+                  inputFormatters1:  [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                 // controller: controller.phoneController,
+                  obSecure: false.obs,
+                  hintText: "".obs,
+                  keyboardType: TextInputType.text,
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: 'Phone number is required'),
+                    MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
+                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
+                  ]),
+                ),*/
+
+
               ],
             )
           ],

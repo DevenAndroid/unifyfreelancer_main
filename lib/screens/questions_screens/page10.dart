@@ -35,7 +35,7 @@ class _Page10State extends State<Page10> {
   Rx<RxStatus> status = RxStatus.empty().obs;
   RxInt id = 0.obs;
 
-  final TextEditingController _serviceController = TextEditingController();
+
 
 // Service provider screen
   getData() {
@@ -43,6 +43,12 @@ class _Page10State extends State<Page10> {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
+        for(var item in model.value.data!){
+          if(item.name!.toLowerCase() == controller.model.value.data!.basicInfo!.category!.toLowerCase()){
+            id.value = item.id!;
+            controller.serviceController.text = item.name.toString();
+          }
+        }
       }
       else {
         status.value = RxStatus.error();
@@ -94,7 +100,7 @@ class _Page10State extends State<Page10> {
                     onTap: () {
                       services();
                     },
-                    controller: _serviceController,
+                    controller: controller.serviceController,
                     readOnly: true,
                     obSecure: false.obs,
                     hintText: "Search for a service".obs,
@@ -151,7 +157,7 @@ class _Page10State extends State<Page10> {
                   title: 'Back',
                   backgroundColor: AppTheme.whiteColor,
                   onPressed: () {
-                    Get.back();
+                   controller.previousPage();
                   },
                   textColor: AppTheme.primaryColor,
                   expandedValue: false,
@@ -166,13 +172,14 @@ class _Page10State extends State<Page10> {
                   title: 'Next',
                   backgroundColor: AppTheme.primaryColor,
                   onPressed: () {
+
                     if (_formKey.currentState!.validate()) {
                       addCategoryRepo(category_id: id.value, context: context)
                           .then((value) {
                         if (value.status == true) {
                           controller.nextPage();
                         }
-                        showToast(value.message.toString());
+                      //  showToast(value.message.toString());
                       }
                       );
                     }
@@ -209,8 +216,7 @@ class _Page10State extends State<Page10> {
                     child: InkWell(
                       onTap: () {
                         Get.back();
-                        _serviceController.text =
-                            model.value.data![index].name.toString();
+                        controller.serviceController.text = model.value.data![index].name.toString();
                         id.value = model.value.data![index].id!;
                         print(id.value.toString());
                       },

@@ -32,7 +32,6 @@ class _Page6State extends State<Page6> {
   RxList yearsList = [].obs;
   RxList yearsList2 = [].obs;
 
-
   showDeleteDialog({
     required Education item,
   }) {
@@ -54,7 +53,7 @@ class _Page6State extends State<Page6> {
                         foregroundColor: AppTheme.primaryColor,
                         backgroundColor: AppTheme.primaryColor,
                         padding:
-                        EdgeInsets.symmetric(horizontal: AddSize.size20)),
+                            EdgeInsets.symmetric(horizontal: AddSize.size20)),
                     child: AddText(
                       text: "Cancel",
                       color: Colors.white,
@@ -79,7 +78,7 @@ class _Page6State extends State<Page6> {
                         foregroundColor: Colors.red,
                         backgroundColor: Colors.red,
                         padding:
-                        EdgeInsets.symmetric(horizontal: AddSize.size20)),
+                            EdgeInsets.symmetric(horizontal: AddSize.size20)),
                     child: AddText(
                       text: "Delete",
                       color: Colors.white,
@@ -121,7 +120,10 @@ class _Page6State extends State<Page6> {
                           controller.getData();
                           Get.back();
                         }
-                        showToast(value.message.toString());
+                        else{
+                          showToast(value.message.toString());
+                        }
+
                       });
                     },
                     child: AddText(
@@ -164,7 +166,8 @@ class _Page6State extends State<Page6> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16,vertical: AddSize.size100*.8),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -216,7 +219,7 @@ class _Page6State extends State<Page6> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Dates Attended (Optional)",
+                                "Start year",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -249,7 +252,8 @@ class _Page6State extends State<Page6> {
                                                         yearsList2[index]
                                                             .toString(),
                                                         style: TextStyle(
-                                                            fontSize: AddSize.size15,
+                                                            fontSize:
+                                                                AddSize.size15,
                                                             color: AppTheme
                                                                 .darkBlueText,
                                                             fontWeight:
@@ -268,13 +272,13 @@ class _Page6State extends State<Page6> {
                                                           .toString(),
                                                       groupValue: time2.value,
                                                       onChanged: (value) {
-                                                          time2.value =
-                                                              value.toString();
-                                                          _fromController.text =
-                                                              value.toString();
-                                                          print(_fromController
-                                                              .text);
-                                                          Get.back();
+                                                        time2.value =
+                                                            value.toString();
+                                                        _fromController.text =
+                                                            value.toString();
+                                                        print(_fromController
+                                                            .text);
+                                                        Get.back();
                                                       },
                                                     );
                                                   });
@@ -297,7 +301,7 @@ class _Page6State extends State<Page6> {
                                 height: AddSize.size15,
                               ),
                               Text(
-                                "Proficiency level",
+                                "End year",
                                 style: TextStyle(
                                     fontSize: AddSize.size14,
                                     color: AppTheme.titleText,
@@ -311,7 +315,7 @@ class _Page6State extends State<Page6> {
                                   showFilterButtonSheet(
                                       context: context,
                                       titleText:
-                                          "To (or expected graduation year)",
+                                          "To",
                                       widgets: Obx(() {
                                         return Column(
                                           children: [
@@ -331,7 +335,8 @@ class _Page6State extends State<Page6> {
                                                         yearsList[index]
                                                             .toString(),
                                                         style: TextStyle(
-                                                            fontSize: AddSize.size15,
+                                                            fontSize:
+                                                                AddSize.size15,
                                                             color: AppTheme
                                                                 .darkBlueText,
                                                             fontWeight:
@@ -350,10 +355,13 @@ class _Page6State extends State<Page6> {
                                                           .toString(),
                                                       groupValue: time.value,
                                                       onChanged: (value) {
-                                                          time.value = value.toString();
-                                                          _toController.text = value.toString();
-                                                          print(_toController.text);
-                                                          Get.back();
+                                                        time.value =
+                                                            value.toString();
+                                                        _toController.text =
+                                                            value.toString();
+                                                        print(
+                                                            _toController.text);
+                                                        Get.back();
                                                       },
                                                     );
                                                   });
@@ -365,13 +373,21 @@ class _Page6State extends State<Page6> {
                                 readOnly: true,
                                 obSecure: false.obs,
                                 controller: _toController,
-                                hintText:
-                                    "To (or expected graduation year)".obs,
+                                hintText: "To".obs,
                                 suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                validator: MultiValidator([
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'To, year is required';
+                                  } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                    return null;
+                                  } else {
+                                    return "End year must be grater then start date";
+                                  }
+                                }
+                               /* MultiValidator([
                                   RequiredValidator(
                                       errorText: 'To year is required'),
-                                ]),
+                                ]),*/
                               ),
                               SizedBox(
                                 height: AddSize.size15,
@@ -412,7 +428,8 @@ class _Page6State extends State<Page6> {
                                                             .data![index].title
                                                             .toString(),
                                                         style: TextStyle(
-                                                            fontSize: AddSize.size15,
+                                                            fontSize:
+                                                                AddSize.size15,
                                                             color: AppTheme
                                                                 .darkBlueText,
                                                             fontWeight:
@@ -430,11 +447,15 @@ class _Page6State extends State<Page6> {
                                                       value: degree.value
                                                           .data![index].title
                                                           .toString(),
-                                                      groupValue: selectedDegree.value,
+                                                      groupValue:
+                                                          selectedDegree.value,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          selectedDegree.value = value.toString();
-                                                          _degreeController.text = value.toString();
+                                                          selectedDegree.value =
+                                                              value.toString();
+                                                          _degreeController
+                                                                  .text =
+                                                              value.toString();
                                                           Get.back();
                                                         });
                                                       },
@@ -518,26 +539,29 @@ class _Page6State extends State<Page6> {
                               backgroundColor: AppTheme.primaryColor,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  questionEducation(
-                                          id: item.id ?? "",
-                                          school: _schoolController.text.trim(),
-                                          start_year:
-                                              _fromController.text.trim(),
-                                          end_year: _toController.text.trim(),
-                                          degree: _degreeController.text.trim(),
-                                          area_study:
-                                              _areaController.text.trim(),
-                                          description: _descriptionController
-                                              .text
-                                              .trim(),
-                                          context: context)
-                                      .then((value) {
-                                    if (value.status == true) {
-                                      Get.back();
-                                      controller.getData();
-                                    }
-                                    showToast(value.message.toString());
-                                  });
+                                 // if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                    questionEducation(
+                                            id: item.id ?? "",
+                                            school: _schoolController.text.trim(),
+                                            start_year: _fromController.text.trim(),
+                                            end_year: _toController.text.trim(),
+                                            degree: _degreeController.text.trim(),
+                                            area_study: _areaController.text.trim(),
+                                            description: _descriptionController.text.trim(),
+                                            context: context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.back();
+                                        controller.getData();
+                                      }else{
+                                        showToast(value.message.toString());
+                                      }
+
+                                    });
+                                  // } else {
+                                  //   showToast(
+                                  //       "End year must be grater then start year");
+                                  // }
                                 }
                               },
                               textColor: AppTheme.whiteColor,
@@ -563,7 +587,7 @@ class _Page6State extends State<Page6> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear + 8; i++) {
+    for (var i = currentYear - 70; i < currentYear + 1; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -596,7 +620,7 @@ class _Page6State extends State<Page6> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  "Clients like to know what you know - add your education here.",
+                  "We want to know, what you know...",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -606,7 +630,7 @@ class _Page6State extends State<Page6> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "You don't have to have a degree. Adding any relevant education helps make your profile visible",
+                  " Do you have any educational qualifications? Or professional certifications? Add a copy of them here. It'll help you stand out.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -694,7 +718,11 @@ class _Page6State extends State<Page6> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                  controller.nextPage();
+                  if (controller.model.value.data!.education!.isNotEmpty) {
+                    controller.nextPage();
+                  } else {
+                    showToast("Please add at least one education");
+                  }
                 },
               ),
             ),

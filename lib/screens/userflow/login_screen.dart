@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +10,6 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../repository/login_repository.dart';
 import '../../repository/social_login_repository.dart';
 import '../../resources/app_assets.dart';
@@ -37,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
+
 
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
@@ -103,10 +102,16 @@ class _LoginScreenState extends State<LoginScreen> {
         // } catch (e) {
         //   showToast(e.toString());
         // }
-        Get.toNamed(MyRouter.bottomNavbar);
+        if(value.data!.user!.isProfileComplete == true){
+          Get.offAllNamed(MyRouter.bottomNavbar);
+        }
+        else{
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Username or email is required'),
+                                  errorText: 'Please enter email id'),
                               EmailValidator(
                                   errorText: 'Enter a valid email address')
                             ])),
@@ -202,13 +207,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
-                            validator: MultiValidator([
-                              RequiredValidator(
-                                  errorText: 'Password is required'),
-                              MinLengthValidator(8,
-                                  errorText:
-                                  'Password must be at least 8 digits long'),
-                            ]),
+                           /* validator: MultiValidator([
+                              RequiredValidator(errorText: 'Password is required'),
+                              MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
+                              MaxLengthValidator(16, errorText:"Password must be have maximum 16 digits only"),
+                              //  PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: "Password should contain a special charecter"),
+                              PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
+                                  errorText: "Password should contain a Capital and \nsmall letter with special character"),
+                            ]),*/
+
                           );
                         }),
                         SizedBox(
@@ -238,16 +245,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             login(usernameController.text,
                                 passwordController.text, context)
                                 .then((value) async {
-                              showToast(
-                                value.message.toString(),
+                              showToast(value.message.toString(),
                               );
                               if (value.status == true) {
-                                SharedPreferences pref =
-                                await SharedPreferences.getInstance();
+                                SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
-
                                 pref.setBool("shownIntro", true);
-                                Get.offAllNamed(MyRouter.bottomNavbar);
+                                if(value.data!.user!.isProfileComplete == true){
+                                  Get.offAllNamed(MyRouter.bottomNavbar);
+                                  pref.setBool('isProfileCompleted', true);
+                                }
+                                else{
+                                  Get.offAllNamed(MyRouter.questionsScreen);
+                                  pref.setBool('isProfileCompleted', false);
+                                }
                               }
                             });
                           }
