@@ -6,7 +6,7 @@ import '../models/model_edit_designation_info.dart';
 import '../resources/helper.dart';
 import '../utils/api_contant.dart';
 
-Future<ModelEditDesignationInfo> editDesignationInfoRepo(title,description,context) async {
+Future<ModelEditDesignationInfo> editDesignationInfoRepo({title,description,context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};

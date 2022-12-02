@@ -9,6 +9,7 @@ import '../../controller/profie_screen_controller.dart';
 import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -67,7 +68,7 @@ class Page4 extends StatelessWidget {
                   hintText: "Example: Full StackDeveloper | Web & Mobile".obs,
                 ),
                 SizedBox(
-                  height: AddSize.size20,
+                  height: AddSize.size15,
                 ),
                 CustomTextField(
                   isMulti: true,
@@ -114,12 +115,14 @@ class Page4 extends StatelessWidget {
                   expandedValue: false,
                   onPressed: () {
                     if(formKey.currentState!.validate()) {
-                      editDesignationInfoRepo(controller.titleController.text.trim(),
-                          controller.descriptionController.text.trim(), context).then((value){
+                      editDesignationInfoRepo(title: controller.titleController.text.trim(),
+                          description: controller.descriptionController.text.trim(),
+                          context: context).then((value){
                         log(jsonEncode(value));
                         if(value.status == true) {
                           controller.nextPage();
                         }
+                        showToast(value.message.toString());
                       });
                     }
                   },
