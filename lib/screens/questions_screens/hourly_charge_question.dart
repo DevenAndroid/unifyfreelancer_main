@@ -97,7 +97,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                           setState(() {
                             print(value);
                             price = double.parse(value);
-                            _unifyFeeController.text = ((price! * 10) / 100).toString();
+                            _unifyFeeController.text = ((price! * 20) / 100).toString();
                             _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
 
                           });

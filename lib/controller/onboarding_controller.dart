@@ -14,24 +14,15 @@ class OnBoardingController extends GetxController{
     UnbordingContent(
         image: 'assets/images/onBoarding_01.png',
         title: "Never miss an opportunity",
-        discription: "Based out of Southern California, "
-            "our Security Consultants develop security strategies, "
-            "solutions and recommendations, not just for the "
-            "short term."),
+        discription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard"),
     UnbordingContent(
         image: 'assets/images/onBoarding_02.png',
-        title: "Find interesting\n project and",
-        discription: "Based out of Southern California, "
-            "our Security Consultants develop security strategies, "
-            "solutions and recommendations, not just for the "
-            "short term."),
+        title: "Find interesting projects and submit proposals",
+        discription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard"),
     UnbordingContent(
         image: 'assets/images/onBoarding_03.png',
-        title: "Collabarate on the go",
-        discription: "Based out of Southern California, "
-            "our Security Consultants develop security strategies, "
-            "solutions and recommendations, not just for the "
-            "short term."),
+        title: "Collaborate on the go",
+        discription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard"),
   ].obs;
 
 

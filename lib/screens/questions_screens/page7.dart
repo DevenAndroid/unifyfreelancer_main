@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import '../../controller/profie_screen_controller.dart';
-import '../../models/model_language_list.dart';
 import '../../repository/Add_language_repository.dart';
-import '../../repository/languages_list_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
-import '../../widgets/custom_textfield.dart';
-import '../profile/edit_language_screen.dart';
+
 
 class Page7 extends StatefulWidget {
   const Page7({Key? key}) : super(key: key);

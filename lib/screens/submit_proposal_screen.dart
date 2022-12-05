@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -46,6 +47,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     description = Get.arguments[2];
     price = Get.arguments[3];
     type = Get.arguments[4];
+    textLength = description.length;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -72,6 +74,13 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   final dateFormat = DateFormat('yyyy-MM-dd');
 
   final controller = Get.put(JobsDetailController());
+  String descText = "";
+  bool descTextShowFlag = false;
+  int textLength = 0;
+
+  double hourlyPrice = 0;
+  String? unifyFree = "0";
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +123,38 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xff170048)),
+                    maxLines: descTextShowFlag ? 10000 : 6
                 ),
+                SizedBox(
+                    child: textLength <= 200
+                        ? SizedBox()
+                        : InkWell(
+                        onTap: () {
+                          setState(() {
+                            descTextShowFlag =
+                            !descTextShowFlag;
+                          });
+                        },
+                        child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.end,
+                            children: <Widget>[
+                              descTextShowFlag
+                                  ? Text(
+                                "Show Less",
+                                style: TextStyle(
+                                    color: AppTheme
+                                        .primaryColor),
+                              )
+                                  : Text("Show More",
+                                  style: TextStyle(
+                                      color: AppTheme
+                                          .primaryColor))
+                            ]))),
                 SizedBox(
                   height: deviceHeight * .02,
                 ),
+
                 const Divider(
                   color: Color(0xff6D2EF1),
                 ),
@@ -140,6 +177,16 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         height: deviceHeight * .01,
                       ),
                       Text(
+                        "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            color: const Color(0xff180D31),
+                            fontWeight: FontWeight.w300),
+                      ),
+                      SizedBox(
+                        height: deviceHeight * .02,
+                      ),
+                      Text(
                         "Hourly rate",
                         style: TextStyle(
                             fontSize: 13.sp,
@@ -160,9 +207,20 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         height: deviceHeight * .01,
                       ),
                       TextFormField(
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         keyboardType: TextInputType.number,
+                        onFieldSubmitted: (value){
+                          hourlyPrice = double.parse(value);
+                          unifyFree = ((hourlyPrice! * 20) / 100).toString();
+                          _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
+                        },
                         onChanged: (value) {
-                          setState(() {});
+                          setState(() {
+                            hourlyPrice = double.parse(value);
+                            unifyFree = ((hourlyPrice! * 20) / 100).toString();
+                            _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
+                          });
+
                         },
                         controller: _bidController,
                         decoration: InputDecoration(
@@ -256,7 +314,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             width: 135.w,
                           ),
                           Text(
-                            "-40.00",
+                            unifyFree.toString()!,
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: AppTheme.darkBlueText,
@@ -513,7 +571,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         height: deviceHeight * .02,
                       ),
                     ],
-                  ) : Column(
+                  ) :
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -832,8 +891,18 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             ),
                             TextFormField(
                               keyboardType: TextInputType.number,
+                              onFieldSubmitted: (value){
+                                hourlyPrice = double.parse(value);
+                                unifyFree = ((hourlyPrice! * 20) / 100).toString();
+                                _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
+                              },
                               onChanged: (value) {
-                                setState(() {});
+                                setState(() {
+                                  hourlyPrice = double.parse(value);
+                                  unifyFree = ((hourlyPrice! * 20) / 100).toString();
+                                  _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
+
+                                });
                               },
                               controller: _bidController,
                               decoration: InputDecoration(
@@ -927,7 +996,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                   width: 135.w,
                                 ),
                                 Text(
-                                  "-40.00",
+                                  unifyFree!,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     color: AppTheme.darkBlueText,
@@ -1243,7 +1312,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
 
                 CustomOutlineButton(
                   onPressed: () {
-                       if (_formKey.currentState!.validate() && imageFileToPick.path != "") {
+                       if (_formKey.currentState!.validate()) {
                          Map map = <String,String>{};
                          map['job_id'] = id.toString();
                          map['client_id'] = clientID.toString();
@@ -1288,7 +1357,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     map["description"] = _descriptionController.text;
     map["Due date"] = _descriptionController.text;
     map["amount"] = _descriptionController.text;
-    milestone.add(map);
+  //  milestone.add(map);
     _descriptionController.text = text;
     _dueDateController.text = text;
     _amountController.text = text;

@@ -21,9 +21,9 @@ class _Page2State extends State<Page2> {
   final controller = Get.put(ProfileScreenController());
 
   List content = [
-    "Nope: it's new to me",
-    "I've tried it but still might need tips",
-    "Yep, I've freelanced for years"
+    "I'm completely new to this",
+    "I've dabbled in it here and there, but I might still need some guidance",
+    "I'm a seasoned freelancer, let's get going."
   ] ;
 
   List icons = [
@@ -48,7 +48,7 @@ class _Page2State extends State<Page2> {
                 height: AddSize.size10,
               ),
               Text(
-                "A few quick questions first, have you freelanced before?",
+                "Help us help you...",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkBlueText,
@@ -58,7 +58,7 @@ class _Page2State extends State<Page2> {
                 height: AddSize.size20,
               ),
               Text(
-                "This lets us know how much help to give you along the way.",
+                "Have you freelanced before? Are you new to this? Unify is for everyone, we just need to know how to help you along the way.",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppTheme.darkBlueText,
@@ -68,7 +68,7 @@ class _Page2State extends State<Page2> {
                 height: AddSize.size10*.1,
               ),
               Text(
-                "(We won't share your answer with anyone else, including potential clients.)",
+                "This information is just for us, it won't be shared with any clients. Pick what best suits you from the below.",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppTheme.textColor,
@@ -112,9 +112,9 @@ class _Page2State extends State<Page2> {
                                 title: Text(
                                  content[index].toString(),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: AppTheme.blackColor,
-                                      fontSize: AddSize.font12),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText,
+                                      fontSize: AddSize.font14),
                                 ),
                                 trailing: AnimatedContainer(
                                   duration: Duration(seconds: 20),

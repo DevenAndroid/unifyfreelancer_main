@@ -26,14 +26,13 @@ class SearchJobListController extends GetxController {
   getData() {
     if (loading.value == false) {
       loading.value = true;
-      page++;
-      // status.value = RxStatus.loading();
       searchJobListRepo(
-              search: searchController.text.trim(),
+          search: searchController.text.trim(),
               pagination: pagination.value,
               page: page.value)
           .then((value) {
         log("Posted Jobs Data ......${jsonEncode(value)}");
+        print(searchController.text.trim());
         model.value = value;
         loading.value = false;
         if (value.status == true) {

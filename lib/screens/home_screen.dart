@@ -8,6 +8,7 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../controller/jobs_list_controller.dart';
+import '../controller/search_controller.dart';
 import '../repository/job_module/dislike_job_repository.dart';
 import '../repository/job_module/remove_saved_jobs.dart';
 import '../repository/job_module/saved_jobs_repository.dart';
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         suffixIcon: InkWell(
                           onTap: (){
                             Get.toNamed(MyRouter.searchJobScreen,arguments: [_searchController.text.toString()]);
+
                           },
                           child: Container(
                               margin: const EdgeInsets.symmetric(horizontal: 5),

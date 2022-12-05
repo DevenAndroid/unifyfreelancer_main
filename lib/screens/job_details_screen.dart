@@ -341,6 +341,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     color: AppTheme.darkBlueText,
                                   ),
                                 ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
                                 Text(model.value.data!.description.toString(),
                                     style: TextStyle(
                                         fontSize: 12.sp,
@@ -405,7 +408,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 ),
                                 Wrap(
                                   children: List.generate(
-                                      model.value.data!.skills!.length,
+                                      model.value.data!.jobSkills!.length,
                                       (index) => Container(
                                                   margin: EdgeInsets.only(right: 4),
                                               child: ElevatedButton(
@@ -429,7 +432,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 )),
                                             onPressed: () {},
                                             child: Text(
-                                              model.value.data!.skills![index]
+                                              model.value.data!.jobSkills![index]
                                                   .name
                                                   .toString(),
                                               style: TextStyle(
@@ -581,168 +584,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
-                                Text(
-                                  "About the client",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.verified,
-                                        color: model.value.data!.clientData!.paymentVerified == true ? AppTheme.primaryColor
-                                        : Colors.grey.withOpacity(.49), size: 20),
-                                    SizedBox(
-                                      width: 3,
-                                    ),
-                                    Text(
-                                      model.value.data!.clientData!.paymentVerified == true ? "Payment method verified" : "Payment method not verified",
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff170048)),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Wrap(
-                                      children: List.generate(
-                                          5,
-                                          (index) => int.parse(model.value.data!.clientData!.rating.toString()) > index
-                                              ? Icon(
-                                                  Icons.star,
-                                                  color: AppTheme.primaryColor,
-                                                  size: 16,
-                                                )
-                                              : Icon(
-                                                  Icons.star_border_outlined,
-                                                  color: Colors.grey,
-                                                  size: 16,
-                                                )),
-                                    ),
-                                    Text(
-                                      "${model.value.data!.clientData!.rating.toString()} of ${model.value.data!.clientData!.numberOfReview.toString()} reviews",
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff170048)),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Text(
-                                  model.value.data!.clientData!.country.toString(),
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .002,
-                                ),
-                                Text(
-                                 "${model.value.data!.clientData!.city.toString()} ${model.value.data!.clientData!.localTime??""}",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Text(
-                                  "${model.value.data!.clientData!.jobPosted.toString()} jobs posted",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .002,
-                                ),
-                                Text(
-                                  "14% hire rate, 5 open jobs",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Text(
-                                  "\$${model.value.data!.clientData!.moneySpent.toString()}+ total spent",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .002,
-                                ),
-                                Text(
-                                  "2 hires, 0 active",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),
-                               /* SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Text(
-                                  "\$20.00 /hr avg hourly rate paid",
-                                  style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff170048)),
-                                ),
-                                SizedBox(
-                                  height: deviceHeight * .002,
-                                ),
-                                Text(
-                                  "30 hours",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),*/
-                                SizedBox(
-                                  height: deviceHeight * .02,
-                                ),
-
-                                Text(
-                                //  "Company size (${model.value.data!.clientData!.employeeNo!.toString()} people)",
-                                  companySize(double.parse(model.value.data!.clientData!.employeeNo.toString() == "null"|| model.value.data!.clientData!.employeeNo.toString() == "" ? "0":model.value.data!.clientData!.employeeNo.toString())),
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),
-
-                                SizedBox(
-                                  height: deviceHeight * .01,
-                                ),
-                                Text(
-                                  "Member since ${model.value.data!.clientData!.memberSince.toString()}",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xff170048)),
-                                ),
-
+                                clientData(),
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
@@ -784,75 +626,6 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                               0xff170048)),
                                                     ),
 
-                                                    /*Text.rich(
-                                                      TextSpan(
-                                                        children: [
-                                                          WidgetSpan(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          3.0,
-                                                                      right: 2),
-                                                              child: Wrap(
-                                                                children: List.generate(
-                                                                    5,
-                                                                    (index) => 5 > index
-                                                                        ? Icon(
-                                                                            Icons.star,
-                                                                            color:
-                                                                                AppTheme.primaryColor,
-                                                                            size:
-                                                                                16,
-                                                                          )
-                                                                        : Icon(
-                                                                            Icons.star_border_outlined,
-                                                                            color:
-                                                                                Colors.grey,
-                                                                            size:
-                                                                                16,
-                                                                          )),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                              text:
-                                                                  "Pleasure working with Prashant. Test task completed successfully. Looking forward to working with him again. thanks",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      12.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: const Color(
-                                                                      0xff170048))),
-                                                        ],
-                                                      ),
-                                                    ),*/
-                                                    /*SizedBox(
-                                                      height:
-                                                          deviceHeight * .01,
-                                                    ),*/
-
-                                                    /*SizedBox(
-                                                      height:
-                                                      deviceHeight * .01,
-                                                    ),*/
-
-                                                    /* SizedBox(
-                                                      height:
-                                                          deviceHeight * .002,
-                                                    ),
-                                                    Text(
-                                                      "Fixed-price \$ ${model.value.data!.clientRecentHistory![index].price.toString()},",
-                                                      style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: const Color(
-                                                              0xff170048)),
-                                                    ),*/
                                                     SizedBox(
                                                       height:
                                                           deviceHeight * .01,
@@ -863,16 +636,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                           WidgetSpan(
                                                             child: Padding(
                                                               padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          2.0,
+                                                                  const EdgeInsets.only(
+                                                                      bottom: 2.0,
                                                                       right: 2,
                                                                       left: 2),
                                                               child: Wrap(
                                                                 children: List.generate(
                                                                     5,
-                                                                    (index) => 5 > index
+                                                                    (index) => 4 > index
                                                                         ? Icon(
                                                                             Icons.star,
                                                                             color:
@@ -891,13 +662,23 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                             ),
                                                           ),
                                                           TextSpan(
-                                                              text: "${model.value.data!.clientRecentHistory![index].createdAt.toString()}",
+                                                              text: "${model.value.data!.clientRecentHistory![index].startDate == null || model.value.data!.clientRecentHistory![index].startDate == "" ? model.value.data!.clientRecentHistory![index].startDate.toString() : ""}",
                                                               style: TextStyle(
                                                                   fontSize:
                                                                       12.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,
+                                                                  color: const Color(
+                                                                      0xff170048))),
+                                                          TextSpan(
+                                                              text: "${model.value.data!.clientRecentHistory![index].endDate == null || model.value.data!.clientRecentHistory![index].endDate == "" ? model.value.data!.clientRecentHistory![index].endDate.toString() : ""}",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                  12.sp,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
                                                                   color: const Color(
                                                                       0xff170048))),
                                                         ],
@@ -929,7 +710,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                   0xff170048)),
                                                         ),
 
-                                                        Text("${model.value.data!.clientRecentHistory![index].budgetType.toString()}",
+                                                        Text(model.value.data!.budgetType.toString(),
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
@@ -1004,6 +785,40 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                   expandedValue: true,
                                   backgroundColor: AppTheme.primaryColor,
                                 ),
+                                if(model.value.data!.isProposalSend == true)
+                                  CustomOutlineButton(
+                                    onPressed: () {
+                                      /* if (_formKey.currentState!.validate() && imageFileToPick.path != "") {
+                                      if (controller.coverLaterText.isNotEmpty) {
+                                        Map<String, String> map = {};
+                                        map["job_id"] = model.value.data!.id.toString();
+                                        map["bid_amount"] = _bidController.text.trim();
+                                        map["cover_letter"] = _bidController.text.trim();
+                                        map["project_duration"] = controller.coverLaterText.toString();
+                                        sendProposalRepo(
+                                          mapData: map,
+                                          fieldName1: "image",
+                                          file1: imageFileToPick,
+                                          context: context,
+                                        ).then((value) {
+                                          if (value.status == true) {
+                                            Get.back();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      }
+                                      else{
+                                        showToast("Please select duration");
+                                      }
+                                    } else {
+                                      showToast("Please add a file");
+                                    }*/
+                                    },
+                                    title: "Proposal already submitted",
+                                    textColor: AppTheme.primaryColor,
+                                    expandedValue: true,
+                                    backgroundColor: AppTheme.whiteColor,
+                                  ),
                                 SizedBox(
                                   height: deviceHeight * .02,
                                 ),
@@ -1052,4 +867,183 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       return "Company size (1000+ people)";
     }
   }
+
+ Column clientData() {
+   var deviceHeight = MediaQuery.of(context).size.height;
+   var deviceWidth = MediaQuery.of(context).size.width;
+    return model.value.data!.clientData == null ?   Column(
+      children: [
+        Text(
+          "Client data is unavailable.",
+          style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff170048)),
+        ),
+      ],
+    ) : Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "About the client",
+          style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .01,
+        ),
+        Row(
+          children: [
+            Icon(Icons.verified,
+                color: model.value.data!.clientData!.paymentVerified == true ? AppTheme.primaryColor
+                    : Colors.grey.withOpacity(.49), size: 20),
+            SizedBox(
+              width: 3,
+            ),
+            Text(
+              model.value.data!.clientData!.paymentVerified == true ? "Payment method verified" : "Payment method not verified",
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff170048)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * .02,
+        ),
+        Row(
+          mainAxisAlignment:
+          MainAxisAlignment.spaceBetween,
+          children: [
+            Wrap(
+              children: List.generate(
+                  5,
+                      (index) => int.parse(model.value.data!.clientData!.rating.toString()) > index
+                      ? Icon(
+                    Icons.star,
+                    color: AppTheme.primaryColor,
+                    size: 16,
+                  )
+                      : Icon(
+                    Icons.star_border_outlined,
+                    color: Colors.grey,
+                    size: 16,
+                  )),
+            ),
+            Text(
+              "${model.value.data!.clientData!.rating.toString()} of ${model.value.data!.clientData!.numberOfReview.toString()} reviews",
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff170048)),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * .01,
+        ),
+        Text(
+          model.value.data!.clientData!.country.toString(),
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .002,
+        ),
+        Text(
+          "${model.value.data!.clientData!.city.toString()} ${model.value.data!.clientData!.localTime??""}",
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .01,
+        ),
+        Text(
+          "${model.value.data!.clientData!.jobPosted.toString()} jobs posted",
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .002,
+        ),
+        Text(
+          "${model.value.data!.hireRate ?? ""}% hire rate, ${model.value.data!.openJobs ?? "0"} open jobs",
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .01,
+        ),
+        Text(
+          "\$${model.value.data!.clientData!.moneySpent.toString()}+ total spent",
+          style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .002,
+        ),
+        Text(
+          "${model.value.data!.totalHire ?? "0"} hires, ${model.value.data!.totalActive ?? "0"} active",
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff170048)),
+        ),
+        /* SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                  "\$20.00 /hr avg hourly rate paid",
+                                  style: TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff170048)),
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .002,
+                                ),
+                                Text(
+                                  "30 hours",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xff170048)),
+                                ),*/
+        SizedBox(
+          height: deviceHeight * .02,
+        ),
+        Text(
+          //  "Company size (${model.value.data!.clientData!.employeeNo!.toString()} people)",
+          companySize(double.parse(model.value.data!.clientData!.employeeNo.toString() == "null"|| model.value.data!.clientData!.employeeNo.toString() == "" ? "0":model.value.data!.clientData!.employeeNo.toString())),
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff170048)),
+        ),
+        SizedBox(
+          height: deviceHeight * .01,
+        ),
+        Text(
+          "Member since ${model.value.data!.clientData!.memberSince.toString()}",
+          style: TextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff170048)),
+        ),
+      ],
+    ) ;
+ }
 }
