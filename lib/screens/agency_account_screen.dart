@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../repository/additional_account_repository.dart';
@@ -21,6 +22,7 @@ class AgencyAccountScreen extends StatefulWidget {
 class _AgencyAccountScreenState extends State<AgencyAccountScreen> {
 
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.put(ProfileScreenController());
 
   final TextEditingController _agencyController = TextEditingController();
   @override
@@ -118,6 +120,7 @@ class _AgencyAccountScreenState extends State<AgencyAccountScreen> {
                                        context: context)
                                 .then((value) {
                               if (value.status == true) {
+                                controller.getData();
 
                               }
                               showToast(value.message.toString());

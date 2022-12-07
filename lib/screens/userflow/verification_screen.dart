@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState() {
     super.initState();
     email = Get.arguments[0];
+    startTimer();
     isFromSignUp = Get.arguments[1].toString() == "fromSignUp" ? true : false;
 
     String str = Get.arguments[0];
@@ -50,6 +52,32 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   var email;
   var otp = "";
+
+
+  var resendText = 'Resend OTP';
+
+  late Timer _timer;
+  int start = 60;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (start == 0) {
+          setState(() {
+            resendText == 'Resend';
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            resendText = 'Resend OTP $start';
+            start--;
+          });
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,15 +182,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     height: 15,
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: start == 0 ? () {
                       resendOtp(email, context).then((value) async {
                         print(jsonEncode(value));
-                        if (value.status == true) {}
+                        if (value.status == true) {
+                          start = 60;
+                          startTimer();
+                        }
                         showToast(
                           value.message.toString(),
                         );
                       });
-                    },
+                    } : null,
                     child: RichText(
                       text: TextSpan(
                           text: "if you Don't receive a code ? ",
@@ -179,6 +210,34 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   fontWeight: FontWeight.w600),
                             )
                           ]),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      //style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Resend otp again in ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.textColor,
+                            )),
+                        TextSpan(
+                            text: "00:$start",
+                            style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)),
+                        TextSpan(
+                            text: " Sec",
+                            style: TextStyle(
+                                fontSize: AddSize.font16,
+                                color: AppTheme.primaryColor,
+                                fontWeight: FontWeight.w500)),
+                      ],
                     ),
                   ),
                   SizedBox(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -41,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _occputationController = TextEditingController();
+
 /*  final TextEditingController _designationController = TextEditingController();
   final TextEditingController _designationDescriptionController = TextEditingController();*/
 
@@ -60,9 +62,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] = profileController.model.value.data!.basicInfo!.occuption.toString();
+      map["first_name"] =
+          profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] =
+          profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] =
+          profileController.model.value.data!.basicInfo!.occuption.toString();
       editNameInfoRepo(
               mapData: map,
               fieldName1: "profile_image",
@@ -88,7 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Map<String, String> map = {};
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
-    map["occcuption"] = controller.titleController.text.trim();;
+    map["occcuption"] = controller.titleController.text.trim();
+    ;
     editNameInfoRepo(
             mapData: map,
             fieldName1: "profile_image",
@@ -104,8 +110,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   showDialogueUpdateBasicInfo() {
-    _fNameController.text = profileController.model.value.data!.basicInfo!.firstName.toString();
-    _lNameController.text = profileController.model.value.data!.basicInfo!.lastName.toString();
+    _fNameController.text =
+        profileController.model.value.data!.basicInfo!.firstName.toString();
+    _lNameController.text =
+        profileController.model.value.data!.basicInfo!.lastName.toString();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -324,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     },
                                   );
                                 },
-                                child: Container(
+                                child: /*Container(
                                   height: 60,
                                   width: 60,
                                   decoration: BoxDecoration(
@@ -333,6 +341,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: NetworkImage(profileController.model.value.data!.basicInfo!.profileImage.toString()))),
+                                )*/
+                                    SizedBox(
+                                  child: controller.profileImage.value
+                                                  .toString() ==
+                                              "" ||
+                                          controller.profileImage.value
+                                                  .toString() ==
+                                              "null"
+                                      ? SvgPicture.asset(
+                                          "assets/images/user.svg",
+                                          height: 60,
+                                          width: 60,
+                                        )
+                                      : Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.grey.shade300),
+                                          child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(1000),
+                                              child: CachedNetworkImage(
+                                                imageUrl: controller
+                                                        .profileImage.value ??
+                                                    "",
+                                                errorWidget: (_, __, ___) =>
+                                                    SvgPicture.asset(
+                                                  "assets/images/user.svg",
+                                                  height: 60,
+                                                  width: 60,
+                                                ),
+                                                placeholder: (_, __) =>
+                                                    SvgPicture.asset(
+                                                  "assets/images/user.svg",
+                                                  height: 60,
+                                                  width: 60,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ) /*Image.file(
+                              profileImage.value,
+                              fit: BoxFit.cover,
+                            ),*/
+                                              ),
+                                        ),
                                 ),
                               ),
                               Positioned(
@@ -732,28 +785,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller: controller.titleController,
+                                                  controller: controller
+                                                      .titleController,
                                                   obSecure: false.obs,
-                                                  hintText: "Website design and development".obs,
+                                                  hintText:
+                                                      "Website design and development"
+                                                          .obs,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
-                                                    MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
-                                                    MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            'Example: Full StackDeveloper | Web & Mobile'),
+                                                    MinLengthValidator(5,
+                                                        errorText:
+                                                            'Minimum length is 5 characters'),
+                                                    MaxLengthValidator(50,
+                                                        errorText:
+                                                            "Maximum length is 50 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller: controller.descriptionController,
+                                                  controller: controller
+                                                      .descriptionController,
                                                   obSecure: false.obs,
                                                   hintText: "description".obs,
                                                   isMulti: true,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(errorText: 'Description required'),
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            'Description required'),
                                                     MinLengthValidator(100,
-                                                        errorText: 'Minimum length is 100 characters'),
-                                                    MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
+                                                        errorText:
+                                                            'Minimum length is 100 characters'),
+                                                    MaxLengthValidator(5000,
+                                                        errorText:
+                                                            "Max Length is 5000 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -767,12 +835,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     if (_formKey.currentState!
                                                         .validate()) {
                                                       editDesignationInfoRepo(
-                                                              title:
-                                                              controller.titleController
-                                                                      .text
-                                                                      .trim(),
+                                                              title: controller
+                                                                  .titleController
+                                                                  .text
+                                                                  .trim(),
                                                               description:
-                                                              controller.descriptionController
+                                                                  controller
+                                                                      .descriptionController
                                                                       .text
                                                                       .trim(),
                                                               context: context)
@@ -2210,7 +2279,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: profileController.model.value.data!.employment!.length,
+                                itemCount: profileController
+                                    .model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     crossAxisAlignment:
@@ -2231,7 +2301,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Color(0xff363636)),
                                           ),
                                           Text(
-                                            profileController.model.value.data!.employment![index].company.toString() !=
+                                            profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .company
+                                                        .toString() !=
                                                     "null"
                                                 ? " | " +
                                                     profileController
@@ -2270,7 +2346,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .data!
                                                         .employment![index]
                                                         .endDate
-                                                        .toString() != "null"
+                                                        .toString() !=
+                                                    "null"
                                                 ? " - " +
                                                     profileController
                                                         .model

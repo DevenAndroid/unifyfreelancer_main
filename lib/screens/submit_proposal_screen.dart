@@ -96,6 +96,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;

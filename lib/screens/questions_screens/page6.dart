@@ -171,408 +171,411 @@ class _Page6State extends State<Page6> {
                 horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(AddSize.size10),
-                        margin: EdgeInsets.all(AddSize.size10),
-                        decoration: BoxDecoration(
-                          color: AppTheme.whiteColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(AddSize.size10),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 40.0),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(AddSize.size10),
+                          margin: EdgeInsets.all(AddSize.size10),
+                          decoration: BoxDecoration(
+                            color: AppTheme.whiteColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(AddSize.size10),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 3)),
+                            ] // changes position of shadow
+                            ,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: const Offset(0, 3)),
-                          ] // changes position of shadow
-                          ,
-                        ),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "School",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size5,
-                              ),
-                              CustomTextField(
-                                controller: _schoolController,
-                                obSecure: false.obs,
-                                keyboardType: TextInputType.text,
-                                hintText: "Ex: Northwestern University".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'School is required'),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "Start year",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size5,
-                              ),
-                              CustomTextField(
-                                onTap: () {
-                                  showFilterButtonSheet(
-                                      context: context,
-                                      titleText: "From",
-                                      widgets: Obx(() {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height: AddSize.size15,
-                                            ),
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                reverse: true,
-                                                itemCount: yearsList2.length,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return Obx(() {
-                                                    return RadioListTile(
-                                                      title: Text(
-                                                        yearsList2[index]
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "School",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size5,
+                                ),
+                                CustomTextField(
+                                  controller: _schoolController,
+                                  obSecure: false.obs,
+                                  keyboardType: TextInputType.text,
+                                  hintText: "Ex: Northwestern University".obs,
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: 'School is required'),
+                                  ]),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                Text(
+                                  "Start year",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size5,
+                                ),
+                                CustomTextField(
+                                  onTap: () {
+                                    showFilterButtonSheet(
+                                        context: context,
+                                        titleText: "From",
+                                        widgets: Obx(() {
+                                          return Column(
+                                            children: [
+                                              SizedBox(
+                                                height: AddSize.size15,
+                                              ),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  reverse: true,
+                                                  itemCount: yearsList2.length,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemBuilder: (context, index) {
+                                                    return Obx(() {
+                                                      return RadioListTile(
+                                                        title: Text(
+                                                          yearsList2[index]
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  AddSize.size15,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        contentPadding:
+                                                            const EdgeInsets.all(
+                                                                0),
+                                                        dense: true,
+                                                        visualDensity:
+                                                            VisualDensity(
+                                                                horizontal: -4,
+                                                                vertical: -4),
+                                                        value: yearsList2[index]
                                                             .toString(),
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                AddSize.size15,
-                                                            color: AppTheme
-                                                                .darkBlueText,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      dense: true,
-                                                      visualDensity:
-                                                          VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                      value: yearsList2[index]
-                                                          .toString(),
-                                                      groupValue: time2.value,
-                                                      onChanged: (value) {
-                                                        time2.value =
-                                                            value.toString();
-                                                        _fromController.text =
-                                                            value.toString();
-                                                        print(_fromController
-                                                            .text);
-                                                        Get.back();
-                                                      },
-                                                    );
-                                                  });
-                                                })
-                                          ],
-                                        );
-                                      }));
-                                },
-                                readOnly: true,
-                                obSecure: false.obs,
-                                controller: _fromController,
-                                hintText: "From".obs,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'From year is required'),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "End year",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size5,
-                              ),
-                              CustomTextField(
-                                onTap: () {
-                                  showFilterButtonSheet(
-                                      context: context,
-                                      titleText:
-                                          "To",
-                                      widgets: Obx(() {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height: AddSize.size15,
-                                            ),
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                reverse: true,
-                                                itemCount: yearsList.length,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return Obx(() {
-                                                    return RadioListTile(
-                                                      title: Text(
-                                                        yearsList[index]
+                                                        groupValue: time2.value,
+                                                        onChanged: (value) {
+                                                          time2.value =
+                                                              value.toString();
+                                                          _fromController.text =
+                                                              value.toString();
+                                                          print(_fromController
+                                                              .text);
+                                                          Get.back();
+                                                        },
+                                                      );
+                                                    });
+                                                  })
+                                            ],
+                                          );
+                                        }));
+                                  },
+                                  readOnly: true,
+                                  obSecure: false.obs,
+                                  controller: _fromController,
+                                  hintText: "From".obs,
+                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: 'From year is required'),
+                                  ]),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                Text(
+                                  "End year",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size5,
+                                ),
+                                CustomTextField(
+                                  onTap: () {
+                                    showFilterButtonSheet(
+                                        context: context,
+                                        titleText:
+                                            "To",
+                                        widgets: Obx(() {
+                                          return Column(
+                                            children: [
+                                              SizedBox(
+                                                height: AddSize.size15,
+                                              ),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  reverse: true,
+                                                  itemCount: yearsList.length,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemBuilder: (context, index) {
+                                                    return Obx(() {
+                                                      return RadioListTile(
+                                                        title: Text(
+                                                          yearsList[index]
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  AddSize.size15,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        contentPadding:
+                                                            const EdgeInsets.all(
+                                                                0),
+                                                        dense: true,
+                                                        visualDensity:
+                                                            VisualDensity(
+                                                                horizontal: -4,
+                                                                vertical: -4),
+                                                        value: yearsList[index]
                                                             .toString(),
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                AddSize.size15,
-                                                            color: AppTheme
-                                                                .darkBlueText,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      dense: true,
-                                                      visualDensity:
-                                                          VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                      value: yearsList[index]
-                                                          .toString(),
-                                                      groupValue: time.value,
-                                                      onChanged: (value) {
-                                                        time.value =
-                                                            value.toString();
-                                                        _toController.text =
-                                                            value.toString();
-                                                        print(
-                                                            _toController.text);
-                                                        Get.back();
-                                                      },
-                                                    );
-                                                  });
-                                                })
-                                          ],
-                                        );
-                                      }));
-                                },
-                                readOnly: true,
-                                obSecure: false.obs,
-                                controller: _toController,
-                                hintText: "To".obs,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'To, year is required';
-                                  } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
-                                    return null;
-                                  } else {
-                                    return "End year must be grater then start date";
+                                                        groupValue: time.value,
+                                                        onChanged: (value) {
+                                                          time.value =
+                                                              value.toString();
+                                                          _toController.text =
+                                                              value.toString();
+                                                          print(
+                                                              _toController.text);
+                                                          Get.back();
+                                                        },
+                                                      );
+                                                    });
+                                                  })
+                                            ],
+                                          );
+                                        }));
+                                  },
+                                  readOnly: true,
+                                  obSecure: false.obs,
+                                  controller: _toController,
+                                  hintText: "To".obs,
+                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'To, year is required';
+                                    } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                      return null;
+                                    } else {
+                                      return "End year must be grater then start date";
+                                    }
                                   }
-                                }
-                               /* MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'To year is required'),
-                                ]),*/
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "Degree",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size5,
-                              ),
-                              CustomTextField(
-                                onTap: () {
-                                  showFilterButtonSheet(
-                                      context: context,
-                                      titleText: "Degree",
-                                      widgets: Obx(() {
-                                        return Column(
-                                          children: [
-                                            SizedBox(
-                                              height: AddSize.size15,
-                                            ),
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                reverse: true,
-                                                itemCount:
-                                                    degree.value.data!.length,
-                                                physics:
-                                                    BouncingScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  return Obx(() {
-                                                    return RadioListTile(
-                                                      title: Text(
-                                                        degree.value
+                                 /* MultiValidator([
+                                    RequiredValidator(
+                                        errorText: 'To year is required'),
+                                  ]),*/
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                Text(
+                                  "Degree",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size5,
+                                ),
+                                CustomTextField(
+                                  onTap: () {
+                                    showFilterButtonSheet(
+                                        context: context,
+                                        titleText: "Degree",
+                                        widgets: Obx(() {
+                                          return Column(
+                                            children: [
+                                              SizedBox(
+                                                height: AddSize.size15,
+                                              ),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  reverse: true,
+                                                  itemCount:
+                                                      degree.value.data!.length,
+                                                  physics:
+                                                      BouncingScrollPhysics(),
+                                                  itemBuilder: (context, index) {
+                                                    return Obx(() {
+                                                      return RadioListTile(
+                                                        title: Text(
+                                                          degree.value
+                                                              .data![index].title
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  AddSize.size15,
+                                                              color: AppTheme
+                                                                  .darkBlueText,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        contentPadding:
+                                                            const EdgeInsets.all(
+                                                                0),
+                                                        dense: true,
+                                                        visualDensity:
+                                                            VisualDensity(
+                                                                horizontal: -4,
+                                                                vertical: -4),
+                                                        value: degree.value
                                                             .data![index].title
                                                             .toString(),
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                AddSize.size15,
-                                                            color: AppTheme
-                                                                .darkBlueText,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      dense: true,
-                                                      visualDensity:
-                                                          VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                      value: degree.value
-                                                          .data![index].title
-                                                          .toString(),
-                                                      groupValue:
-                                                          selectedDegree.value,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          selectedDegree.value =
-                                                              value.toString();
-                                                          _degreeController
-                                                                  .text =
-                                                              value.toString();
-                                                          Get.back();
-                                                        });
-                                                      },
-                                                    );
-                                                  });
-                                                })
-                                          ],
-                                        );
-                                      }));
-                                },
-                                readOnly: true,
-                                obSecure: false.obs,
-                                controller: _degreeController,
-                                hintText: "Degree".obs,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Degree is required'),
-                                ]),
+                                                        groupValue:
+                                                            selectedDegree.value,
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            selectedDegree.value =
+                                                                value.toString();
+                                                            _degreeController
+                                                                    .text =
+                                                                value.toString();
+                                                            Get.back();
+                                                          });
+                                                        },
+                                                      );
+                                                    });
+                                                  })
+                                            ],
+                                          );
+                                        }));
+                                  },
+                                  readOnly: true,
+                                  obSecure: false.obs,
+                                  controller: _degreeController,
+                                  hintText: "Degree".obs,
+                                  suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: 'Degree is required'),
+                                  ]),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                Text(
+                                  "Area of Study (Optional)",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                CustomTextField(
+                                  obSecure: false.obs,
+                                  controller: _areaController,
+                                  keyboardType: TextInputType.text,
+                                  hintText: "Ex: Computer Science".obs,
+                                ),
+                                SizedBox(
+                                  height: AddSize.size15,
+                                ),
+                                Text(
+                                  "Description (Optional)",
+                                  style: TextStyle(
+                                      fontSize: AddSize.size14,
+                                      color: AppTheme.titleText,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: AddSize.size14,
+                                ),
+                                CustomTextField(
+                                  isMulti: true,
+                                  obSecure: false.obs,
+                                  controller: _descriptionController,
+                                  hintText: "Description".obs,
+                                ),
+                              ])),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(AddSize.size10),
+                              child: CustomOutlineButton(
+                                title: 'Cancel',
+                                backgroundColor: AppTheme.whiteColor,
+                                onPressed: () => Get.back(),
+                                textColor: AppTheme.primaryColor,
+                                expandedValue: false,
                               ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "Area of Study (Optional)",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              CustomTextField(
-                                obSecure: false.obs,
-                                controller: _areaController,
-                                keyboardType: TextInputType.text,
-                                hintText: "Ex: Computer Science".obs,
-                              ),
-                              SizedBox(
-                                height: AddSize.size15,
-                              ),
-                              Text(
-                                "Description (Optional)",
-                                style: TextStyle(
-                                    fontSize: AddSize.size14,
-                                    color: AppTheme.titleText,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: AddSize.size14,
-                              ),
-                              CustomTextField(
-                                isMulti: true,
-                                obSecure: false.obs,
-                                controller: _descriptionController,
-                                hintText: "Description".obs,
-                              ),
-                            ])),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(AddSize.size10),
-                            child: CustomOutlineButton(
-                              title: 'Cancel',
-                              backgroundColor: AppTheme.whiteColor,
-                              onPressed: () => Get.back(),
-                              textColor: AppTheme.primaryColor,
-                              expandedValue: false,
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(AddSize.size10),
-                            child: CustomOutlineButton(
-                              title: 'Save',
-                              backgroundColor: AppTheme.primaryColor,
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                 // if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
-                                    questionEducation(
-                                            id: item.id ?? "",
-                                            school: _schoolController.text.trim(),
-                                            start_year: _fromController.text.trim(),
-                                            end_year: _toController.text.trim(),
-                                            degree: _degreeController.text.trim(),
-                                            area_study: _areaController.text.trim(),
-                                            description: _descriptionController.text.trim(),
-                                            context: context)
-                                        .then((value) {
-                                      if (value.status == true) {
-                                        Get.back();
-                                        controller.getData();
-                                      }else{
-                                        showToast(value.message.toString());
-                                      }
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(AddSize.size10),
+                              child: CustomOutlineButton(
+                                title: 'Save',
+                                backgroundColor: AppTheme.primaryColor,
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                   // if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                      questionEducation(
+                                              id: item.id ?? "",
+                                              school: _schoolController.text.trim(),
+                                              start_year: _fromController.text.trim(),
+                                              end_year: _toController.text.trim(),
+                                              degree: _degreeController.text.trim(),
+                                              area_study: _areaController.text.trim(),
+                                              description: _descriptionController.text.trim(),
+                                              context: context)
+                                          .then((value) {
+                                        if (value.status == true) {
+                                          Get.back();
+                                          controller.getData();
+                                        }else{
+                                          showToast(value.message.toString());
+                                        }
 
-                                    });
-                                  // } else {
-                                  //   showToast(
-                                  //       "End year must be grater then start year");
-                                  // }
-                                }
-                              },
-                              textColor: AppTheme.whiteColor,
-                              expandedValue: false,
+                                      });
+                                    // } else {
+                                    //   showToast(
+                                    //       "End year must be grater then start year");
+                                    // }
+                                  }
+                                },
+                                textColor: AppTheme.whiteColor,
+                                expandedValue: false,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

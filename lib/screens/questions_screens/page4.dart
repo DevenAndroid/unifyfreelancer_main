@@ -67,7 +67,7 @@ class Page4 extends StatelessWidget {
                     }
                   },*/
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                      RequiredValidator(errorText: 'Example: full stack developer | web & mobile'),
                       MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
                       MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                     ]),

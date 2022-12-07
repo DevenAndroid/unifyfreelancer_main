@@ -28,7 +28,7 @@ class JobListController extends GetxController {
   }
 
   getData() {
-    jobListRepo().then((value) {
+    jobListRepo(15).then((value) {
       modelJobList.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();

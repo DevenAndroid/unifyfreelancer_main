@@ -167,14 +167,14 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   controller: _titleController,
                   obSecure: false.obs,
                   keyboardType: TextInputType.emailAddress,
-                  hintText: "Degree (Optional)".obs,
+                  hintText: "Client's title".obs,
 
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Project Type (Optional)",
+                  "Project type (optional)",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -187,14 +187,13 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                     controller: _typeController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.emailAddress,
-                    hintText: "Degree (Optional)".obs,
-                  validator: MultiValidator(
-                      [RequiredValidator(errorText: 'Type is required')]),),
+                    hintText: "Project type ".obs,
+                  ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  "Description (Optional)",
+                  "Description (optional)",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -209,8 +208,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                     keyboardType: TextInputType.text,
                     hintText: "Description".obs,
                     isMulti: true,
-                  validator: MultiValidator(
-                      [RequiredValidator(errorText: 'Description is required')]),),
+                ),
                 SizedBox(
                   height: 25,
                 ),

@@ -6,10 +6,13 @@ import 'package:http/http.dart' as http;
 import '../../models/model_job_list.dart';
 import '../../utils/api_contant.dart';
 
-Future<ModelJobsList> jobListRepo() async {
+Future<ModelJobsList> jobListRepo(pagination) async {
+  Map map = <String,dynamic>{};
+  map["pagination"] = pagination;
+
   try {
     http.Response response = await http.post(Uri.parse(ApiUrls.jobsList),
-        headers: await getAuthHeader(),);
+        headers: await getAuthHeader(),body: jsonEncode(map));
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));

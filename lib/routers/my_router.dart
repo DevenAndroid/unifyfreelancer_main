@@ -32,7 +32,8 @@ import '../screens/profile/add_portfolio_screen.dart';
 import '../screens/profile/add_testimonials_screen.dart';
 import '../screens/profile/edit_language_screen.dart';
 import '../screens/profile/hour_per_week_screen.dart';
-import '../screens/proposals/offer_details.dart';
+import '../screens/proposals/invitations_to_interview.dart';
+import '../screens/proposals/offer_details_screen.dart';
 import '../screens/request_milestone_changes.dart';
 import '../screens/search_jobs.dart';
 import '../screens/settings/change_password_screen.dart';
@@ -108,6 +109,7 @@ class MyRouter {
   static var subscriptionScreen = "/subscriptionScreen";
   static var stripePaymentScreen = "/stripePaymentScreen";
   static var offerDetailsScreen = "/offerDetailsScreen";
+  static var invitationsToInterview = "/invitationsToInterview";
 
   static var route = [
     GetPage(name: '/', page: () =>  const SplashScreen()),
@@ -163,5 +165,6 @@ class MyRouter {
     GetPage(name: MyRouter.subscriptionScreen, page: () => const SubscriptionScreen()),
     GetPage(name: MyRouter.stripePaymentScreen, page: () => const StripPayment()),
     GetPage(name: MyRouter.offerDetailsScreen, page: () => const OfferDetailsScreen()),
+    GetPage(name: MyRouter.invitationsToInterview, page: () => const InvitationsToInterview()),
   ];
 }

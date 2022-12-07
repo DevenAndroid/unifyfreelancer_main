@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignIn!.authentication;
+    await googleSignIn!.authentication;
     final userCredentials = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
@@ -72,6 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
+
 
   loginWithApple(context) async {
     final appleProvider = AppleAuthProvider();
@@ -91,9 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   socialLoginApi(context, authToken, provider) {
-    socialLoginRepo(
-            context: context, accessToken: authToken, provider: provider)
-        .then((value) async {
+    socialLoginRepo(context: context, accessToken: authToken, provider: provider).then((value) async {
       showToast(value.message.toString());
       log(jsonEncode(value));
       if (value.status == true) {
@@ -126,7 +125,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // } catch (e) {
         //   showToast(e.toString());
         // }
-        Get.toNamed(MyRouter.bottomNavbar);
+        if(value.data!.user!.isProfileComplete == true){
+          Get.offAllNamed(MyRouter.bottomNavbar);
+        }
+        else{
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
       }
     });
   }
@@ -274,14 +278,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ? InkWell(
                                       onTap: () => setState(() {
                                             eyeHide = true.obs;
-                                            eyeHide2 = true.obs;
+
                                           }),
                                       child:
                                           Icon(Icons.remove_red_eye_outlined))
                                   : InkWell(
                                       onTap: () => setState(() {
                                             eyeHide = false.obs;
-                                            eyeHide2 = false.obs;
                                           }),
                                       child:
                                           Icon(Icons.visibility_off_outlined)),
@@ -290,10 +293,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               validator: MultiValidator([
                                 RequiredValidator(errorText: 'Password is required'),
-                                MinLengthValidator(8, errorText: '8 characters minimum 1 special character 1 Number'),
+                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                                 PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
-                                    errorText: "8 characters minimum 1 special character 1 Number"),
+                                    errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
                               ]),
                             );
                           }),
@@ -308,13 +311,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             suffixIcon: eyeHide2 == false
                                 ? InkWell(
                                     onTap: () => setState(() {
-                                          eyeHide = true.obs;
                                           eyeHide2 = true.obs;
                                         }),
                                     child: Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
                                     onTap: () => setState(() {
-                                          eyeHide = false.obs;
                                           eyeHide2 = false.obs;
                                         }),
                                     child: Icon(Icons.visibility_off_outlined)),

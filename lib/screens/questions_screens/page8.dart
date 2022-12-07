@@ -192,7 +192,7 @@ class _Page8State extends State<Page8> {
                       Align(
                         alignment: Alignment.topRight,
                         child: Text(
-                          "Max 15 Skills",
+                          "Max 10 Skills",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: AppTheme.darkBlueText,

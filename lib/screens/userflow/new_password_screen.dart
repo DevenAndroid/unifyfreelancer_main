@@ -85,13 +85,11 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide = true.obs;
-                                  eyeHide2 = true.obs;
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide = false.obs;
-                                  eyeHide2 = false.obs;
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: passwordController,
@@ -106,10 +104,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     ]),*/
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Password is required'),
-                      MinLengthValidator(8, errorText: '8 characters minimum 1 special character 1 Number'),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
                       MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                       PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
-                          errorText: "8 characters minimum 1 special character 1 Number"),
+                          errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
                     ]),
                   ),
                   SizedBox(
@@ -130,13 +128,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = true.obs;
-                                  eyeHide = true.obs;
+
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = false.obs;
-                                  eyeHide = false.obs;
+
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: confirmPasswordController,
