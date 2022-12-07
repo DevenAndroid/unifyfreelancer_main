@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +57,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   final TextEditingController _letterController = TextEditingController();
   final TextEditingController _durationController = TextEditingController();
 
-  File imageFileToPick = File("");
+/*  File imageFileToPick = File("");
 
   pickImageFromDevice({required imageSource}) async {
     try {
@@ -67,7 +68,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     } catch (e) {
       throw Exception(e);
     }
-  }
+  }*/
 
 
   int dateInput = 0;
@@ -81,6 +82,19 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   double hourlyPrice = 0;
   String? unifyFree = "0";
 
+  Rx<File> documentFile = File("").obs;
+
+  pickFileToUpload() async {
+    FocusManager.instance.primaryFocus!.unfocus();
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+
+    if (result.files.single.size / (1024 * 1024) > 25) {
+      showToast("Your file size is greater then 25 MB");
+    } else {
+      documentFile.value = File(result.files.single.path!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -519,8 +533,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          pickImageFromDevice(
-                              imageSource: ImageSource.gallery);
+                          pickFileToUpload();
                         },
                         child: Container(
                             padding: const EdgeInsets.only(left: 10.0),
@@ -540,9 +553,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          imageFileToPick.path == ""
+                                          documentFile.value == ""
                                               ? "Attach Files"
-                                              : imageFileToPick.path
+                                              : documentFile.value
                                               .toString(),
                                           style: TextStyle(
                                               fontSize: 15,
@@ -761,8 +774,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             SizedBox(
                               height: deviceHeight * .01,
                             ),
-                            InkWell(
-                              onTap: () {
+                            TextFormField(
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              onTap: (){
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -770,44 +786,49 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                   },
                                 );
                               },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border:
-                                    Border.all(color: AppTheme.primaryColor),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Obx(() {
-                                      return Text(
-                                        controller.duration.isEmpty
-                                            ? 'Select a duration'
-                                            : controller.duration
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color(0xff431444)),
-                                      );
-                                    }),
-                                    Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      color: AppTheme.blackColor,
-                                    ),
-                                  ],
+                              readOnly: true,
+                              controller: controller.durationController,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                border: new OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  borderSide: new BorderSide(
+                                      color: AppTheme.primaryColor),
+                                ),
+                                hintText: "Select a duration",
+                                focusColor: AppTheme.primaryColor,
+                                suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
+                                hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppTheme.hintTextColor),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  borderSide: new BorderSide(
+                                      color: AppTheme.primaryColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  borderSide: new BorderSide(
+                                      color: AppTheme.primaryColor),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                  borderSide: new BorderSide(
+                                      color: AppTheme.primaryColor),
                                 ),
                               ),
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: 'Select a duration'),
+                              ]),
                             ),
                             SizedBox(
                               height: deviceHeight * .025,
                             ),
                             InkWell(
                               onTap: () {
-                                pickImageFromDevice(
-                                    imageSource: ImageSource.gallery);
+                               pickFileToUpload();
                               },
                               child: Container(
                                   padding: const EdgeInsets.only(left: 10.0),
@@ -827,9 +848,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                imageFileToPick.path == ""
+                                                documentFile.value == ""
                                                     ? "Attach Files"
-                                                    : imageFileToPick.path
+                                                    : documentFile.value
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontSize: 15,
@@ -890,6 +911,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                               height: deviceHeight * .01,
                             ),
                             TextFormField(
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               keyboardType: TextInputType.number,
                               onFieldSubmitted: (value){
                                 hourlyPrice = double.parse(value);
@@ -1219,12 +1241,12 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                   borderSide: new BorderSide(
                                       color: AppTheme.primaryColor),
                                 ),
-                                hintText: '\$',
+                                hintText: "Select a duration",
                                 focusColor: AppTheme.primaryColor,
                                 suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
                                 hintStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                     color: AppTheme.hintTextColor),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(5.0),
@@ -1251,8 +1273,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                pickImageFromDevice(
-                                    imageSource: ImageSource.gallery);
+                                pickFileToUpload();
                               },
                               child: Container(
                                   padding: const EdgeInsets.only(left: 10.0),
@@ -1272,9 +1293,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                imageFileToPick.path == ""
+                                                documentFile.value == ""
                                                     ? "Attach Files"
-                                                    : imageFileToPick.path
+                                                    : documentFile.value
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontSize: 15,
@@ -1322,7 +1343,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                          if(type.toString().toLowerCase() == "hourly"){
                            map['project_duration'] = controller.duration.toString()!;
                          }
-                         sendProposalRepo(mapData: map,fieldName1: "image",file1: imageFileToPick,context: context ).then((value) {
+                         sendProposalRepo(mapData: map,fieldName1: "image",file1: documentFile.value,context: context ).then((value) {
                            if(value.status == true){
                              Get.offNamed(MyRouter.bottomNavbar);
                            }
@@ -1421,6 +1442,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         color: const Color(0xff180D31)),
                   ),
                   CustomTextField(
+                    readOnly: true,
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -1468,8 +1490,10 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                     prefix: Icon(
                       Icons.attach_money,
                       size: 20,
+                      color: AppTheme.primaryColor,
                     ),
                     obSecure: false.obs,
+                    inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.emailAddress,
                     hintText: "".obs,
                     validator: MultiValidator([

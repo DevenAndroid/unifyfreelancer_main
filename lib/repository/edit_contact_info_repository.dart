@@ -11,13 +11,12 @@ import '../utils/api_contant.dart';
 
 
 
-Future<ModelCommonResponse> editContactInfoRepo({first_name, last_name, email, context}) async {
+Future<ModelCommonResponse> editContactInfoRepo({first_name, last_name, context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   Map map = <String, dynamic>{};
   map['first_name'] = first_name;
   map['last_name'] = last_name;
-  map['email'] = email;
 
 
   print(map);

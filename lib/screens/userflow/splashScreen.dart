@@ -21,10 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
       if (pref.getString('cookie') != null) {
         print("object" + pref.getString('cookie').toString());
         if(pref.getBool('isProfileCompleted') == true){
-          Get.toNamed(MyRouter.bottomNavbar);
+          Get.offAllNamed(MyRouter.bottomNavbar);
         }
         else{
-          Get.toNamed(MyRouter.questionsScreen);
+          Get.offAllNamed(MyRouter.questionsScreen);
         }
       } else {
         if(pref.getBool("shownIntro") == null){

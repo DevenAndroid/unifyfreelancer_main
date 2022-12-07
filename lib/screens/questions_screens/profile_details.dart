@@ -1,19 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/new_helper.dart';
-
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
-
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_countrylist.dart';
 import '../../repository/countrylist_repository.dart';
@@ -42,10 +40,10 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   }
 
   final List<String> photoList = [
-    " Be a close-up of your face.",
-    " Show your face clearly -sunglasses",
-    " Be clear and crisp",
-    " Have a neural background",
+    "Make sure it is a clear picture of your face",
+    "Professional photo's are good, think Linkedin or your CV!",
+    "No sunglasses (we'll reject these)",
+    "Clear backgrounds preferred",
   ];
   final NewHelper newHelper = NewHelper();
 
@@ -186,7 +184,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: AddText(
-                                  text: "Your photo should:",
+                                  text: "Photo Tips",
                                   fontWeight: FontWeight.w600,
                                   fontSize: AddSize.size16,
                                 ),
@@ -215,11 +213,16 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                                   size: AddSize.size10 * .8,
                                                   color: AppTheme.primaryColor,
                                                 ),
-                                                AddText(
-                                                  text: photoList[index],
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: AddSize.size15,
-                                                  height: 1.3,
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                  child: AddText(
+                                                    text: photoList[index],
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: AddSize.size15,
+                                                    height: 1.3,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -314,7 +317,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   height: AddSize.size20,
                 ),
                 Text(
-                  "A few last details - then you can check and publish your profile.",
+                  "Right, we're almost done. The last few bits before you are on your way to Learn and Earn.",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -324,7 +327,17 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "A professional photo helps you build trust with your clients. To keep things safe and simple, they'll pay you through us - which is why we need your personal information.",
+                  "We need some personal information, clients need to know who you are and where you're from.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.textColor,
+                      fontSize: AddSize.font12),
+                ),
+                SizedBox(
+                  height: AddSize.size20,
+                ),
+                Text(
+                  "Your address and phone number are just for us - we will not show this to clients or release this information.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -344,7 +357,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                           title: 'Back',
                           backgroundColor: AppTheme.whiteColor,
                           onPressed: () {
-                           controller.previousPage();
+                            controller.previousPage();
                           },
                           textColor: AppTheme.primaryColor,
                           expandedValue: false,
@@ -366,17 +379,17 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                       address: controller.addressController.text.trim(),
                                       city: controller.cityController.text.trim(),
                                       country: controller.countryController.text.trim(),
-                                      context: context).then((value) {
+                                      context: context)
+                                  .then((value) {
                                 print(jsonEncode(value));
                                 if (value.status == true) {
                                   controller.nextPage();
+                                  controller.getData();
                                   /*    formPart = true;
                                   check();*/
+                                } else {
+                                  showToast(value.message.toString());
                                 }
-                                else{
-                                     showToast(value.message.toString());
-                                }
-
                               });
                             }
                           },
@@ -387,7 +400,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     ),
                   ],
                 ),
-
               ],
             ),
           );
@@ -428,25 +440,32 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey.shade300),
-                    margin: EdgeInsets.only(top: AddSize.size10),
-                    child: ClipRRect(
-                            borderRadius: BorderRadius.circular(1000),
-                            child:  CachedNetworkImage(
-                              imageUrl: controller.profileImage.value ?? "" ,
-                              errorWidget: (_,__,___) => SizedBox(),
-                              placeholder: (_,__) => SizedBox(),
-                              fit: BoxFit.cover,
-                            )/*Image.file(
+                  child: controller.profileImage.value.toString() == "" ||
+                          controller.profileImage.value.toString() == "null"
+                      ? Container(
+                      height: AddSize.size200 * .72,
+                      width: AddSize.size200 * .72,
+                      child: SvgPicture.asset("assets/images/user.svg"))
+                      : Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade300),
+                          margin: EdgeInsets.only(top: AddSize.size10),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: CachedNetworkImage(
+                                imageUrl: controller.profileImage.value ?? "",
+                                errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg"),
+                                placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg"),
+                                fit: BoxFit.cover,
+                              ) /*Image.file(
                               profileImage.value,
                               fit: BoxFit.cover,
                             ),*/
-                          ),
-                    height: AddSize.size200 * .72,
-                    width: AddSize.size200 * .72,
-                  ),
+                              ),
+                          height: AddSize.size200 * .72,
+                          width: AddSize.size200 * .72,
+                        ),
                 ),
               ],
             ),
@@ -673,12 +692,16 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
+                  inputFormatters1: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                  ],
                   controller: controller.zipController,
                   obSecure: false.obs,
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Zip/Postal code is required'),
+                    MaxLengthValidator(8, errorText: "Maximum length is 8")
                   ]),
                 ),
                 SizedBox(
@@ -695,23 +718,23 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   height: AddSize.size10,
                 ),
                 CustomTextField(
-                  inputFormatters1:  [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                   controller: controller.phoneController,
                   obSecure: false.obs,
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Phone number is required'),
-                    MinLengthValidator(10,errorText: 'Phone number minimum length is 10 digits'),
-                    MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
+                    MinLengthValidator(10,
+                        errorText: 'Phone number minimum length is 10 digits'),
+                    MaxLengthValidator(12,
+                        errorText: 'Phone number maximum length is 12 digits'),
                   ]),
                 ),
                 SizedBox(
                   height: AddSize.size15,
                 ),
-              /*  RadioListTile(
+                /*  RadioListTile(
                   title: Text(
                     "Passport",
                     style: TextStyle(
@@ -766,8 +789,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     MaxLengthValidator(12,errorText: 'Phone number maximum length is 12 digits'),
                   ]),
                 ),*/
-
-
               ],
             )
           ],

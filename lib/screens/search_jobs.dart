@@ -40,64 +40,93 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
         return Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
+
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 15,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppTheme.whiteColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(30),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset:
-                              const Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: TextFormField(
-                      controller: controller.searchController,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                              color: AppTheme.textColor, fontSize: 14),
-                          filled: true,
-                          fillColor: Colors.white24,
-                          hintText: 'Search for job',
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          suffixIcon: InkWell(
-                            onTap: () {
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppTheme.whiteColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset:
+                                    const Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: TextFormField(
+                            controller: controller.searchController,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(
+                                    color: AppTheme.textColor, fontSize: 14),
+                                filled: true,
+                                fillColor: Colors.white24,
+                                hintText: 'Search for job',
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    controller.getData();
+                                    controller.modelForPagination.clear();
+                                  },
+                                  child: Container(
+                                      margin:
+                                          const EdgeInsets.symmetric(horizontal: 5),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: const BoxDecoration(
+                                        color: AppTheme.primaryColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        'assets/icon/Search.svg',
+                                        color: AppTheme.whiteColor,
+                                      )),
+                                )),
+                            onFieldSubmitted: (value) {
                               controller.getData();
                               controller.modelForPagination.clear();
 
                             },
-                            child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                  color: AppTheme.primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SvgPicture.asset(
-                                  'assets/icon/Search.svg',
-                                  color: AppTheme.whiteColor,
-                                )),
-                          )),
-                      onFieldSubmitted: (value) {
-                        controller.getData();
-                        controller.modelForPagination.clear();
+                          ),
+                        ),
 
-                      },
-                    ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          showFilterButtonSheet(context: context, titleText: "Filters", widgets: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                            ],
+                          ));
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            padding: const EdgeInsets.all(10),
+                            decoration:  BoxDecoration(
+                              color: AppTheme.whiteColor,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppTheme.primaryColor)
+                            ),
+                            child: SvgPicture.asset(
+                              'assets/icon/fillter.svg',
+                              color: AppTheme.primaryColor,
+                            )),
+                      )
+                    ],
                   ),
                   SizedBox(
                     height: 20,

@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:developer';
+
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -34,7 +33,9 @@ class _Page5State extends State<Page5> {
     return value != "" ? dateFormat.format(DateTime.parse(value)) : value;
   }
 
-  showDialogue({required Employment item,}) {
+  showDialogue({
+    required Employment item,
+  }) {
     RxBool endDatePresent = false.obs;
     final TextEditingController companyController = TextEditingController();
     final TextEditingController cityController = TextEditingController();
@@ -433,13 +434,17 @@ class _Page5State extends State<Page5> {
                                   print(dateInput);
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
-                                      initialDate: dateInput == "" ? DateTime.now() : DateTime.parse(dateInput),
+                                      initialDate: dateInput == ""
+                                          ? DateTime.now()
+                                          : DateTime.parse(dateInput),
                                       firstDate: DateTime(1950),
                                       lastDate: DateTime.now());
                                   if (pickedDate != null) {
-                                    fromController.text = dateFormat.format(pickedDate);
+                                    fromController.text =
+                                        dateFormat.format(pickedDate);
                                     setState(() {
-                                      dateInput = "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                      dateInput =
+                                          "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                       print(dateInput);
                                     });
                                   }
@@ -494,13 +499,19 @@ class _Page5State extends State<Page5> {
                                             DateTime? pickedDate =
                                                 await showDatePicker(
                                                     context: context,
-                                                    initialDate: dateInput2 == "" ? DateTime.now() : DateTime.parse(dateInput2),
+                                                    initialDate: dateInput2 ==
+                                                            ""
+                                                        ? DateTime.now()
+                                                        : DateTime.parse(
+                                                            dateInput2),
                                                     firstDate: DateTime(1950),
                                                     lastDate: DateTime.now());
                                             if (pickedDate != null) {
-                                              toController.text = dateFormat.format(pickedDate);
+                                              toController.text =
+                                                  dateFormat.format(pickedDate);
                                               setState(() {
-                                                dateInput2 = "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                                dateInput2 =
+                                                    "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
                                               });
                                             }
                                           },
@@ -515,13 +526,15 @@ class _Page5State extends State<Page5> {
                                             if (value == null ||
                                                 value.isEmpty) {
                                               return 'To, date is required';
-                                            } else if (DateTime.parse(dateInput).compareTo(DateTime.parse(dateInput2)) < 0) {
+                                            } else if (DateTime.parse(dateInput)
+                                                    .compareTo(DateTime.parse(
+                                                        dateInput2)) <
+                                                0) {
                                               return null;
                                             } else {
                                               return "End date must be grater then start date";
                                             }
-                                          }
-                                          )
+                                          })
                                       : SizedBox(),
                                 );
                               }),
@@ -544,10 +557,10 @@ class _Page5State extends State<Page5> {
                                 obSecure: false.obs,
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "Description".obs,
-                                validator: MultiValidator([
+                                /*validator: MultiValidator([
                                   RequiredValidator(
                                       errorText: 'Description is required'),
-                                ]),
+                                ]),*/
                               ),
                               SizedBox(
                                 height: AddSize.size15,
@@ -598,11 +611,9 @@ class _Page5State extends State<Page5> {
                                     if (value.status == true) {
                                       Get.back();
                                       controller.getData();
-                                    }
-                                    else {
+                                    } else {
                                       showToast(value.message.toString());
                                     }
-
                                   });
                                 }
                               },
@@ -621,7 +632,9 @@ class _Page5State extends State<Page5> {
         });
   }
 
-  showDeleteDialog({required Employment item,}) {
+  showDeleteDialog({
+    required Employment item,
+  }) {
     if (Platform.isAndroid) {
       showDialog(
           context: context,
@@ -706,11 +719,9 @@ class _Page5State extends State<Page5> {
                           controller.model.value.data!.employment!.remove(item);
                           controller.getData();
                           Get.back();
-                        }
-                        else{
+                        } else {
                           showToast(value.message.toString());
                         }
-
                       });
                     },
                     child: AddText(
@@ -723,6 +734,8 @@ class _Page5State extends State<Page5> {
           });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -790,6 +803,35 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
+                if (controller.model.value.data!.employment!.length == 0)
+                  Row(
+                    children: [
+                      Checkbox(
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          value: controller.nothingToAddForExperience.value,
+                          activeColor: AppTheme.primaryColor,
+                          onChanged: (newValue) {
+                            setState(() {
+                              controller.nothingToAddForExperience.value = newValue!;
+                            });
+                          }),
+                      SizedBox(
+                        width: 5,
+                      ),
+
+                      Expanded(
+                        child: Text(
+                          "Nothing to add? check the box and keep going",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: AppTheme.darkBlueText,
+                              fontSize: AddSize.font14),
+                        ),
+                      ),
+                    ],
+                  )
+
                 /*Row(
                   children: [
                     Obx(() {
@@ -850,11 +892,12 @@ class _Page5State extends State<Page5> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-              //    if (controller.model.value.data!.employment!.isNotEmpty) {
+                    if (controller.nothingToAddForExperience.value == false) {
+                      showToast("Please check the checkbox");
+                  } else {
+
                     controller.nextPage();
-                  // } else {
-                  //   showToast("Please add at least one experience");
-                  // }
+                  }
                 },
               ),
             ),
@@ -925,7 +968,7 @@ class _Page5State extends State<Page5> {
             height: AddSize.size10,
           ),
           Text(
-            item.description.toString().capitalizeFirst!,
+            item.company.toString().capitalizeFirst!,
             style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textColor,

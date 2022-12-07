@@ -27,6 +27,7 @@ class Page6 extends StatefulWidget {
 class _Page6State extends State<Page6> {
   RxBool acceptTermsOrPrivacy = false.obs;
 
+
   final controller = Get.put(ProfileScreenController());
 
   RxList yearsList = [].obs;
@@ -660,6 +661,36 @@ class _Page6State extends State<Page6> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
+
+                if(controller.model.value.data!.education!.length == 0)
+                  Row(
+                    children: [
+                      Checkbox(
+                          materialTapTargetSize:
+                          MaterialTapTargetSize.shrinkWrap,
+                          value: controller.nothingToAddForEducation.value,
+                          activeColor: AppTheme.primaryColor,
+                          onChanged: (newValue) {
+                            setState(() {
+                              controller.nothingToAddForEducation.value = newValue!;
+                            });
+                          }),
+                      SizedBox(
+                        width: 5,
+                      ),
+
+                      Expanded(
+                        child: Text(
+                          "Nothing to add? check the box and keep going",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: AppTheme.darkBlueText,
+                              fontSize: AddSize.font14),
+                        ),
+                      ),
+                    ],
+                  )
+
                 /*Row(
                   children: [
                     Checkbox(
@@ -718,11 +749,12 @@ class _Page6State extends State<Page6> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                  if (controller.model.value.data!.education!.isNotEmpty) {
-                    controller.nextPage();
+                  if (controller.nothingToAddForEducation.value == false) {
+                    showToast("Please check the checkbox");
                   } else {
-                    showToast("Please add at least one education");
+                    controller.nextPage();
                   }
+
                 },
               ),
             ),

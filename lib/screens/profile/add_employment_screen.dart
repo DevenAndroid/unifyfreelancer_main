@@ -41,7 +41,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   ModelCountryList countryList = ModelCountryList();
   RxList searchList1 = <String>[].obs;
 
-  final dateFormat = DateFormat('yyyy-MM-dd');
+  final dateFormat = DateFormat('dd-MMM-yyyy');
 
   @override
   void initState() {

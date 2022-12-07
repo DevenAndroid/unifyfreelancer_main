@@ -239,12 +239,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               controller: emailController,
                               hintText: AppStrings.emailID.obs,
-                              validator: MultiValidator([
+                             /* validator: MultiValidator([
                                 RequiredValidator(
                                     errorText: 'Email is required'),
                                 EmailValidator(
                                     errorText: 'Enter a valid email address')
-                              ])),
+                              ])*/
+                            validator: (value) {
+                              if (emailController.text.isEmpty) {
+                                return "Please enter email address.";
+                              } else if (emailController.text
+                                  .contains('+')) {
+                                return "Email is invalid";
+                              } else if (RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(emailController.text)) {
+                                return null;
+                              } else {
+                                return 'Please Enter valid email address';
+                              }
+                            },
+                          ),
                           SizedBox(
                             height: 12.h,
                           ),
@@ -277,7 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 RequiredValidator(errorText: 'Password is required'),
                                 MinLengthValidator(8, errorText: '8 characters minimum 1 special character 1 Number'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
-                                PatternValidator(r"(?=.*[a-zA-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
+                                PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
                                     errorText: "8 characters minimum 1 special character 1 Number"),
                               ]),
                             );

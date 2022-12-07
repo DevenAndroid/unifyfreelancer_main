@@ -278,7 +278,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               if(_formKey1.currentState!.validate()){
                                                 editContactInfoRepo(first_name: fNameController.text.trim(),
                                                 last_name:lNameController.text.trim(),
-                                                email: emailController.text.trim(),
+
                                                 context: context).then((value) {
                                                   if(value.status == true){
                                                     editProfile = false;

@@ -41,9 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _occputationController = TextEditingController();
-  final TextEditingController _designationController = TextEditingController();
-  final TextEditingController _designationDescriptionController =
-      TextEditingController();
+/*  final TextEditingController _designationController = TextEditingController();
+  final TextEditingController _designationDescriptionController = TextEditingController();*/
 
   @override
   void initState() {
@@ -733,7 +732,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller: _designationController,
+                                                  controller: controller.titleController,
                                                   obSecure: false.obs,
                                                   hintText: "Website design and development".obs,
                                                   validator: MultiValidator([
@@ -746,8 +745,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller:
-                                                      _designationDescriptionController,
+                                                  controller: controller.descriptionController,
                                                   obSecure: false.obs,
                                                   hintText: "description".obs,
                                                   isMulti: true,
@@ -770,11 +768,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .validate()) {
                                                       editDesignationInfoRepo(
                                                               title:
-                                                                  _designationController
+                                                              controller.titleController
                                                                       .text
                                                                       .trim(),
                                                               description:
-                                                                  _designationDescriptionController
+                                                              controller.descriptionController
                                                                       .text
                                                                       .trim(),
                                                               context: context)

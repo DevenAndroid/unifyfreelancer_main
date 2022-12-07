@@ -3,20 +3,18 @@ import 'dart:io';
 
 
 import 'package:http/http.dart' as http;
-import '../../models/model_job_list.dart';
 import '../../models/model_single_job.dart';
 import '../../utils/api_contant.dart';
 
-Future<ModelSingleJob> singleJobRepo({
-  job_id,
-}) async {
-  Map map = <String, dynamic>{};
+Future<ModelSingleJob> singleJobRepo(jobId)
+async {
+ /* Map map = <String, dynamic>{};
   map["job_id"] = job_id;
-  print(map);
+  print(map);*/
 
   try {
-    http.Response response = await http.post(Uri.parse(ApiUrls.singleJob),
-        headers: await getAuthHeader(), body: jsonEncode(map));
+    http.Response response = await http.get(Uri.parse(ApiUrls.singleJob +"/$jobId"),
+        headers: await getAuthHeader()  );
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));

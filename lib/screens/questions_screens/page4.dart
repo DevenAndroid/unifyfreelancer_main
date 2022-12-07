@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/repository/edit_designation_info_repository.dart';
 
 import '../../controller/profie_screen_controller.dart';
-import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';

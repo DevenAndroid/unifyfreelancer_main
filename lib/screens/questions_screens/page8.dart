@@ -66,7 +66,7 @@ class _Page8State extends State<Page8> {
                         height: AddSize.size10,
                       ),
                       Text(
-                        "Nearly there! what work are you here to do?",
+                        "Time to show off your skills!",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText,
@@ -76,7 +76,17 @@ class _Page8State extends State<Page8> {
                         height: AddSize.size15,
                       ),
                       Text(
-                        "Your skills show clients what you can offer, and help us choose which jobs to recommend to you. Add or remove the ones we've suggested, or start typing to pick more. It's up to you.",
+                        "Skills will show up on your profile and help you stand out to clients. It'll also help us recommend jobs for you.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.textColor,
+                            fontSize: AddSize.font12),
+                      ),
+                      SizedBox(
+                        height: AddSize.size20,
+                      ),
+                      Text(
+                        "We've pre-populated this based on the information you've given us, but feel free to add more!",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: AppTheme.textColor,
@@ -200,7 +210,7 @@ class _Page8State extends State<Page8> {
                             fontSize: AddSize.font18),
                       ),
                       SizedBox(
-                        height: AddSize.size20,
+                        height: AddSize.size10,
                       ),
                       ListView.builder(
                           shrinkWrap: true,
@@ -209,14 +219,25 @@ class _Page8State extends State<Page8> {
                           itemBuilder: (context, index) {
                             return Align(
                               alignment: Alignment.topLeft,
-                              child: Chip(
+                              child:
+                              Text(
+                                  skillList.data![index]
+                                      .name
+                                      .toString()
+                                      .capitalizeFirst!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppTheme.textColor,
+                                    fontSize: AddSize.font12),
+                              ),
+                            /*  Chip(
                                 label: AddText(
                                   text: skillList.data![index]
                                       .name
                                       .toString()
                                       .capitalizeFirst!,
                                 ),
-                              ),
+                              ),*/
                             );
                           })
                     ],

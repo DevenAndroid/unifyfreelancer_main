@@ -216,11 +216,11 @@ class _Page7State extends State<Page7> {
                   textColor: AppTheme.whiteColor,
                   expandedValue: false,
                   onPressed: () {
-                    if (controller.model.value.data!.language!.isNotEmpty) {
+                    if (controller.model.value.data!.language!.length != 0) {
                       controller.nextPage();
                     }
                     else {
-                      showToast("Please add your english proficiency");
+                      showToast("Please add a language");
                     }
                   },
                 ),

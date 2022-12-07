@@ -83,12 +83,7 @@ final drawerKey = GlobalKey<ScaffoldState>();
                 child: ClipRRect(
                   borderRadius:
                   BorderRadius.circular(1000),
-                  child: controller.status.value.isSuccess ? controller
-                      .model
-                      .value
-                      .data!
-                      .basicInfo!
-                      .profileImage.toString() != ""?
+                  child: controller.status.value.isSuccess ? controller.model.value.data!.basicInfo!.profileImage.toString() != ""?
                   CachedNetworkImage(
                     imageUrl: controller
                         .model
@@ -96,8 +91,8 @@ final drawerKey = GlobalKey<ScaffoldState>();
                         .data!
                         .basicInfo!
                         .profileImage.toString(),
-                    errorWidget: (_, __, ___) => SizedBox(),
-                    placeholder: (_, __) => SizedBox(),
+                    errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg",),
+                    placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg",),
                     fit: BoxFit.cover,
                   ) : SvgPicture.asset("assets/images/user.svg",)
                       : SizedBox(),
@@ -182,8 +177,8 @@ final drawerKey = GlobalKey<ScaffoldState>();
                                     imageUrl: controller.model.value.data!
                                         .basicInfo!.profileImage ??
                                         "",
-                                    errorWidget: (_, __, ___) => SizedBox(),
-                                    placeholder: (_, __) => SizedBox(),
+                                    errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg",),
+                                    placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg",),
                                     fit: BoxFit.cover,
                                   ) : SvgPicture.asset("assets/images/user.svg",)
                                       : SizedBox(),

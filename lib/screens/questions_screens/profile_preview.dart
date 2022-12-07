@@ -43,10 +43,10 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   final controller = Get.put(ProfileScreenController());
   Rx<File> profileImage = File("").obs;
   final List<String> photoList = [
-    " Be a close-up of your face.",
-    " Show your face clearly -sunglasses",
-    " Be clear and crisp",
-    " Have a neural background",
+    "Make sure it is a clear picture of your face",
+    "Professional photo's are good, think Linkedin or your CV!",
+    "No sunglasses (we'll reject these)",
+    "Clear backgrounds preferred",
   ];
   final NewHelper newHelper = NewHelper();
 
@@ -136,8 +136,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.grey.shade300),
-                                      margin:
-                                          EdgeInsets.only(top: AddSize.size10),
+                                      margin: EdgeInsets.only(top: AddSize.size10),
                                       child: profileImage.value.path == ""
                                           ? Icon(
                                               Icons.person_add_alt_1,
@@ -183,7 +182,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: AddText(
-                                  text: "Your photo should:",
+                                  text: "Photo Tips",
                                   fontWeight: FontWeight.w600,
                                   fontSize: AddSize.size16,
                                 ),
@@ -212,11 +211,16 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   size: AddSize.size10 * .8,
                                                   color: AppTheme.primaryColor,
                                                 ),
-                                                AddText(
-                                                  text: photoList[index],
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: AddSize.size15,
-                                                  height: 1.3,
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Expanded(
+                                                  child: AddText(
+                                                    text: photoList[index],
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: AddSize.size15,
+                                                    height: 1.3,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -829,10 +833,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 obSecure: false.obs,
                                 keyboardType: TextInputType.emailAddress,
                                 hintText: "Description".obs,
-                                validator: MultiValidator([
-                                  RequiredValidator(
-                                      errorText: 'Description is required'),
-                                ]),
+
                               ),
                               SizedBox(
                                 height: AddSize.size15,
@@ -1793,56 +1794,69 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     ),
                   ],
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Looking good, ${controller.model.value.data!.basicInfo!.firstName.toString()}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.darkBlueText,
-                                fontSize: AddSize.font20),
-                          ),
-                          Text(
-                            "Make any edits you want, then submit your profile. You can make more change after it's live.",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: AppTheme.darkBlueText,
-                                fontSize: AddSize.font14),
-                          ),
-                          SizedBox(
-                            height: AddSize.size10,
-                          ),
-                          CustomOutlineButton(
-                            title: "Submit Profile",
-                            backgroundColor: AppTheme.whiteColor,
-                            textColor: AppTheme.primaryColor,
-                            onPressed: () {
-                              submitProfileRepo().then((value) async {
-                                if (value.status == true) {
-                                  Get.toNamed(MyRouter.subscriptionScreen);
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  pref.setBool('isProfileCompleted', true);
-                                }
-                                showToast(value.message.toString());
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: AddSize.size10,
-                    ),
                     SvgPicture.asset(
                       "assets/images/like.svg",
                       height: 80,
                       width: 80,
+                    ),
+                    SizedBox(
+                      height: AddSize.size10,
+                    ),
+                    Text(
+                      "You're almost there, ${controller.model.value.data!.basicInfo!.firstName.toString()}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.darkBlueText,
+                          fontSize: AddSize.font20),
+                      textAlign: TextAlign.center
+                    ),
+                    SizedBox(
+                      height: AddSize.size10,
+                    ),
+                    Text(
+                      "Please review your information below to check it's accurate and then submit your profile.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.darkBlueText,
+                          fontSize: AddSize.font14),
+                        textAlign: TextAlign.center
+                    ),
+                    Text(
+                      "Our team will verify it behind the scenes and let you know once it's ready.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.darkBlueText,
+                          fontSize: AddSize.font14),
+                        textAlign: TextAlign.center
+                    ),
+                    Text(
+                      "You can make changes later on once you're live on the platform.",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.darkBlueText,
+                          fontSize: AddSize.font14),
+                        textAlign: TextAlign.center
+                    ),
+                    SizedBox(
+                      height: AddSize.size10,
+                    ),
+                    CustomOutlineButton(
+                      title: "Submit Profile",
+                      backgroundColor: AppTheme.whiteColor,
+                      textColor: AppTheme.primaryColor,
+                      onPressed: () {
+                        submitProfileRepo().then((value) async {
+                          if (value.status == true) {
+                            Get.toNamed(MyRouter.subscriptionScreen);
+                            SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                            pref.setBool('isProfileCompleted', true);
+                          }
+                          showToast(value.message.toString());
+                        });
+                      },
                     )
                   ],
                 ),
@@ -1964,24 +1978,27 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               children: [
                 Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.grey.shade300),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(1000),
-                          child: CachedNetworkImage(
-                            imageUrl: controller.profileImage.value ?? "",
-                            errorWidget: (_, __, ___) => SizedBox(),
-                            placeholder: (_, __) => SizedBox(),
-                            fit: BoxFit.cover,
-                          ) /*Image.file(
+                    SizedBox(
+                      child:  controller.profileImage.value.toString() == ""||controller.profileImage.value.toString() == "null" ? SvgPicture.asset("assets/images/user.svg") : Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.grey.shade300),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child: CachedNetworkImage(
+                              imageUrl: controller.profileImage.value ?? "",
+                              errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg"),
+                              placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg"),
+                              fit: BoxFit.cover,
+                            ) /*Image.file(
                               profileImage.value,
                               fit: BoxFit.cover,
                             ),*/
-                          ),
-                      height: AddSize.size80 * 1.2,
-                      width: AddSize.size80 * 1.2,
+                        ),
+                        height: AddSize.size80 * 1.2,
+                        width: AddSize.size80 * 1.2,
+                      ),
                     ),
+
                     SizedBox(
                       height: AddSize.size10,
                     ),
@@ -2024,9 +2041,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           ),
                           Expanded(
                             child: Text(
-                              controller.model.value.data!.basicInfo!.city
-                                      .toString() +
-                                  "," +
+                              controller.model.value.data!.basicInfo!.city.toString() +
+                                  " " +
                                   controller
                                       .model.value.data!.basicInfo!.country
                                       .toString(),

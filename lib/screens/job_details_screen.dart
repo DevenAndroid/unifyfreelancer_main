@@ -33,7 +33,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   }
 
   getData() {
-    singleJobRepo(job_id: id).then((value) {
+    singleJobRepo(id).then((value) {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
