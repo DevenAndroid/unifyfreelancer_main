@@ -65,6 +65,7 @@ class ApiUrls {
   static const String subscriptionPlansUrl = "${apiBaseUrl}subscription-list";
   static const String stripePayUrl = "${apiBaseUrl}subscription-payment";
   static const String singleProposalDetails = "${apiBaseUrl}single-proposal-details/";
+  static const String inviteDecline = "${apiBaseUrl}invite-decline";
 
 
 }

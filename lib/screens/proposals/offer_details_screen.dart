@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
+import 'package:unifyfreelancer/widgets/progress_indicator.dart';
 
-import '../../models/model_single_proposal.dart';
-import '../../repository/single_proposals_repository.dart';
+
+import '../../models/proposals/model_offer_proposal.dart';
+import '../../repository/proposals/offer_repository.dart';
 import '../../widgets/circular_widget.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
@@ -24,17 +26,17 @@ class OfferDetailsScreen extends StatefulWidget {
 
 class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
   String? id;
-  Rx<SingleProposal> model = SingleProposal().obs;
+  Rx<ModelOffer> model = ModelOffer().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
 
   @override
   void initState() {
     super.initState();
     id = Get.arguments[0];
-getData();
+    getData();
   }
   void getData() {
-    singleProposalDetailsRepo(id).then((value) {
+    offerRepo(id).then((value) {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
@@ -95,7 +97,7 @@ getData();
               ],
             )
           ],
-        )) : status.value.isError ? CommonErrorWidget(errorText: model.value.message.toString(), onTap: () { getData(); },) : CircularLoadingWidget(height: 40,) ;
+        )) : status.value.isError ? CommonErrorWidget(errorText: model.value.message.toString(), onTap: () { getData(); },) : CommonProgressIndicator() ;
       }),
     );
   }
@@ -355,7 +357,7 @@ getData();
             height: AddSize.size15,
           ),
           SizedBox(
-            child: model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" ? Column(
+            child: model.value.data!.projectData!.budgetType.toString().toLowerCase() == "hourly" ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
@@ -408,7 +410,7 @@ getData();
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "\$200.00 max/week",
+                  "\$${double.parse(model.value.data!.proposalData!.amount ?? "0") * double.parse(model.value.data!.proposalData!.weeklyLimit ?? "0")} max/week",
                   style: TextStyle(
                       color: Color(0xff4D4D4D),
                       fontSize: AddSize.font14,

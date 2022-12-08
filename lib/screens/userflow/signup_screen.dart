@@ -547,8 +547,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Checkbox(
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   value: acceptTermsOrPrivacy,
                                   activeColor: AppTheme.primaryColor,
                                   onChanged: (newValue) {
@@ -599,8 +598,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             color: AppTheme.primaryColor,
                                             //decoration: TextDecoration.underline,
                                           ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
+                                          recognizer: TapGestureRecognizer()..onTap = () {
                                               _launchUrl("https://unify-web.eoxyslive.com/#/pages/agreements");
 
                                             }),

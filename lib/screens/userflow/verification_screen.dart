@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:unifyfreelancer/repository/resend_otp_repository.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
@@ -157,7 +157,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  OtpTextField(
+                  /*OtpTextField(
                     numberOfFields: 4,
                     borderRadius: BorderRadius.all(Radius.circular(100)),
                     fieldWidth: 60,
@@ -177,6 +177,53 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         otp = verificationCode;
                       });
                     },
+                  ),*/
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: AddSize.size40,
+                      right: AddSize.size40,
+                    ),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      textStyle: TextStyle(color: AppTheme.subText),
+                      controller: otpController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      pastedTextStyle: TextStyle(
+                        color: Colors.green.shade600,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      animationType: AnimationType.fade,
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return "Otp field is required";
+                        } else if (v.length != 4) {
+                          return "Otp field required 4 digit";
+                        }
+                        return null;
+                      },
+                      length: 4,
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.circle,
+                        //borderRadius: BorderRadius.circular(AddSize.size30),
+                        fieldWidth: AddSize.size30*2,
+                        fieldHeight: AddSize.size30*2,
+                        activeColor: AppTheme.textfield,
+                        inactiveColor: AppTheme.textfield,
+                        errorBorderColor: AppTheme.textfield,
+                      ),
+                      //   //runs when a code is typed in
+                      keyboardType: TextInputType.number,
+                      onChanged: (String code) {
+                        otp = code;
+                      },
+                      onSubmitted: (String verificationCode) {
+                        setState(() {
+                          otp = verificationCode;
+                        });
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -203,7 +250,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: "Resend",
+                              text: start == 0 ? "Resend" :"",
                               style: TextStyle(
                                   color: AppTheme.primaryColor,
                                   fontSize: 14,

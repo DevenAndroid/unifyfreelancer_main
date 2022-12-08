@@ -1204,8 +1204,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: Padding(

@@ -1,11 +1,11 @@
-class SingleProposal {
+class ModelOffer {
   bool? status;
   String? message;
   Data? data;
 
-  SingleProposal({this.status, this.message, this.data});
+  ModelOffer({this.status, this.message, this.data});
 
-  SingleProposal.fromJson(Map<String, dynamic> json) {
+  ModelOffer.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -72,21 +72,21 @@ class Data {
 }
 
 class ProposalData {
-  int? id;
-  int? projectId;
-  int? clientId;
-  int? freelancerId;
-  String? type;
-  String? budgetType;
-  int? amount;
-  int? weeklyLimit;
-  String? title;
-  String? date;
-  String? coverLetter;
-  Null? image;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
+  dynamic id;
+  dynamic projectId;
+  dynamic clientId;
+  dynamic freelancerId;
+  dynamic type;
+  dynamic budgetType;
+  dynamic amount;
+  dynamic weeklyLimit;
+  dynamic title;
+  dynamic date;
+  dynamic coverLetter;
+  dynamic image;
+  dynamic status;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   ProposalData(
       {this.id,
@@ -145,35 +145,35 @@ class ProposalData {
 }
 
 class ClientData {
-  String? id;
-  String? profileImage;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? companyName;
-  String? website;
-  String? tagline;
-  String? industry;
-  String? employeeNo;
-  String? description;
-  String? companyPhone;
-  String? vatId;
-  String? timezone;
-  String? localTime;
-  String? companyAddress;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
-  bool? paymentVerified;
-  String? rating;
-  String? numberOfReview;
-  String? jobPosted;
-  String? moneySpent;
-  String? ratePaidClient;
-  String? memberSince;
-  String? lastActivity;
+  dynamic id;
+  dynamic profileImage;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic companyName;
+  dynamic website;
+  dynamic tagline;
+  dynamic industry;
+  dynamic employeeNo;
+  dynamic description;
+  dynamic companyPhone;
+  dynamic vatId;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic companyAddress;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic isVerified;
+  dynamic paymentVerified;
+  dynamic rating;
+  dynamic numberOfReview;
+  dynamic jobPosted;
+  dynamic moneySpent;
+  dynamic ratePaidClient;
+  dynamic memberSince;
+  dynamic lastActivity;
 
   ClientData(
       {this.id,
@@ -274,40 +274,40 @@ class ClientData {
 }
 
 class ProjectData {
-  String? id;
-  String? clientId;
-  String? image;
-  String? imageName;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
-  String? minPrice;
-  int? price;
-  String? projectDuration;
-  String? scop;
-  String? status;
-  String? experienceLevel;
-  String? englishLevel;
-  String? categories;
-  String? categoryId;
-  String? createdAt;
+  dynamic id;
+  dynamic clientId;
+  dynamic image;
+  dynamic imageName;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
+  dynamic minPrice;
+  dynamic price;
+  dynamic projectDuration;
+  dynamic scop;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic englishLevel;
+  dynamic categories;
+  dynamic categoryId;
+  dynamic createdAt;
   List<JobSkills>? jobSkills;
-  Null? proposalList;
-  Null? clientData;
-  bool? isPrivate;
-  bool? isProposalSend;
-  bool? isSaved;
-  String? serviceFee;
-  int? proposalCount;
-  Null? inviteSent;
-  Null? unansweredInvite;
-  String? interview;
-  String? hireRate;
-  String? openJobs;
-  String? totalHire;
-  String? totalActive;
-  Null? clientRecentHistory;
+  dynamic proposalList;
+  dynamic clientData;
+  dynamic isPrivate;
+  dynamic isProposalSend;
+  dynamic isSaved;
+  dynamic serviceFee;
+  dynamic proposalCount;
+  dynamic inviteSent;
+  dynamic unansweredInvite;
+  dynamic interview;
+  dynamic hireRate;
+  dynamic openJobs;
+  dynamic totalHire;
+  dynamic totalActive;
+  dynamic clientRecentHistory;
 
   ProjectData(
       {this.id,

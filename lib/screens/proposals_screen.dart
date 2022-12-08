@@ -165,7 +165,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                 onTap: () {
                   Get.toNamed(MyRouter.offerDetailsScreen,
                       arguments: [controller.model.value.data!.offers![index].id.toString()]);
-                  print([controller.model.value.data!.offers![index].projectId]);
+                  print(controller.model.value.data!.offers![index].id.toString());
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -252,8 +252,8 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  /*   Get.toNamed(MyRouter.jobDetailsScreen,
-                      arguments: [item[index].projectId]);
+                  //   Get.toNamed(MyRouter.invitationsToInterview);
+                    /*  arguments: [item[index].projectId]);
                   print([item[index].projectId]);*/
                 },
                 child: Container(
@@ -434,9 +434,9 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  /*   Get.toNamed(MyRouter.jobDetailsScreen,
-                      arguments: [item[index].projectId]);
-                  print([item[index].projectId]);*/
+                  Get.toNamed(MyRouter.invitationsToInterview,
+                      arguments: [controller.model.value.data!.interviewForInvitation![index].id.toString()]);
+                  print(controller.model.value.data!.interviewForInvitation![index].id.toString());
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, right: 10, left: 10),

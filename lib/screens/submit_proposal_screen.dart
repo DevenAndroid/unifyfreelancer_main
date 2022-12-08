@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../Controller/jobs_detail_controller.dart';
+import '../models/model_milestones.dart';
 import '../popups/radio_buttons_job_details.dart';
 import '../repository/job_module/send_proposal_repository.dart';
 import '../resources/app_theme.dart';
@@ -33,7 +34,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   dynamic price;
   dynamic type = "";
   dynamic clientID = "";
-  List milestone = [];
+  List milestone = <ModelMilestones>[];
 
 
 
@@ -49,6 +50,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     price = Get.arguments[3];
     type = Get.arguments[4];
     textLength = description.length;
+
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -95,6 +97,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
       documentFile.value = File(result.files.single.path!);
     }
   }
+
 
 
   @override
@@ -554,7 +557,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          documentFile.value == ""
+                                          documentFile.value.path == ""
                                               ? "Attach Files"
                                               : documentFile.value
                                               .toString(),
@@ -661,6 +664,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             setState(() {
                               radioProjectType = value.toString();
                               print(radioProjectType);
+                              milestone.add(ModelMilestones(description: "",amount: "",dueDate: ""));
                             });
                           }),
                       SizedBox(
@@ -694,7 +698,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  milestone.add("");
+                                  milestone.add(ModelMilestones(description: "",amount: "",dueDate: ""));
+                                  print(milestone);
                                 });
                               },
                               child: Text("+ Add milestone",
@@ -849,7 +854,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                documentFile.value == ""
+                                                documentFile.value.path == ""
                                                     ? "Attach Files"
                                                     : documentFile.value
                                                     .toString(),
@@ -1294,7 +1299,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                documentFile.value == ""
+                                                documentFile.value.path == ""
                                                     ? "Attach Files"
                                                     : documentFile.value
                                                     .toString(),
@@ -1375,14 +1380,14 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     final TextEditingController _descriptionController = TextEditingController();
     final TextEditingController _dueDateController = TextEditingController();
     final TextEditingController _amountController = TextEditingController();
-    Map map = <String,dynamic>{};
+ /*   Map map = <String,dynamic>{};
     map["description"] = _descriptionController.text;
-    map["Due date"] = _descriptionController.text;
-    map["amount"] = _descriptionController.text;
-  //  milestone.add(map);
-    _descriptionController.text = text;
+    map["Due date"] = _dueDateController.text;
+    map["amount"] = _amountController.text;*/
+  //  milestone.add( ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
+    /*_descriptionController.text = text;
     _dueDateController.text = text;
-    _amountController.text = text;
+    _amountController.text = text;*/
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

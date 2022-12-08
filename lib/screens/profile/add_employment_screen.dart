@@ -161,7 +161,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 hintText: "City".obs,
                                 validator: MultiValidator([
                                   RequiredValidator(
-                                      errorText: 'city is required'),
+                                      errorText: 'City is required'),
                                 ]),
                               ),
                             ),
@@ -424,7 +424,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           ),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'From, date is required'),
+                                errorText: 'From date is required'),
                           ]),
                         ),
                         Row(
@@ -483,7 +483,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               validator: (value) {
                                 if (value == null ||
                                     value.isEmpty) {
-                                  return 'To, date is required';
+                                  return 'To date is required';
                                 } else if (int.parse(dateInput.toString()).compareTo(int.parse(dateInput2.toString())) < 0) {
                                   return null;
                                 } else {
