@@ -17,8 +17,7 @@ Future<ModelCommonResponse> sendProposalRepo({
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   try {
-    var request =
-        http.MultipartRequest('POST', Uri.parse(ApiUrls.sendProposal));
+    var request = http.MultipartRequest('POST', Uri.parse(ApiUrls.sendProposal));
 
     request.headers.addAll(await getAuthHeader());
 

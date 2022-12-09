@@ -252,9 +252,9 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  //   Get.toNamed(MyRouter.invitationsToInterview);
-                    /*  arguments: [item[index].projectId]);
-                  print([item[index].projectId]);*/
+                    Get.toNamed(MyRouter.submittedProposalScreen);
+                    //  arguments: [item[index].projectId]);
+                  print(controller.model.value.data!.submittedProposal![index].id.toString());
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -295,9 +295,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                         height: deviceHeight * .01,
                       ),
                       Text(
-                        controller
-                            .model.value.data!.submittedProposal![index].date
-                            .toString(),
+                        controller.model.value.data!.submittedProposal![index].date.toString(),
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -344,6 +342,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
+                  Get.toNamed(MyRouter.submittedProposalScreen);
                   /*   Get.toNamed(MyRouter.jobDetailsScreen,
                       arguments: [item[index].projectId]);
                   print([item[index].projectId]);*/

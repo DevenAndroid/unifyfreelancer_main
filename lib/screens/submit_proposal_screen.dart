@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -34,12 +35,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   dynamic price;
   dynamic type = "";
   dynamic clientID = "";
-  List milestone = <ModelMilestones>[];
-
-
+  List<ModelMilestones> milestone = <ModelMilestones>[
+    ModelMilestones(description: "", amount: "", dueDate: "")
+  ];
 
   String? radioProjectType = "By project";
-
 
   @override
   void initState() {
@@ -50,7 +50,6 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     price = Get.arguments[3];
     type = Get.arguments[4];
     textLength = description.length;
-
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -72,9 +71,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     }
   }*/
 
-
-  int dateInput = 0;
-  final dateFormat = DateFormat('yyyy-MM-dd');
+  dynamic dateInput = 0;
+  final dateFormatForShow = DateFormat('yyyy-MM-dd');
+  //final dateFormatForSend = DateFormat('yyyy-MM-dd');
 
   final controller = Get.put(JobsDetailController());
   String descText = "";
@@ -93,12 +92,12 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
 
     if (result.files.single.size / (1024 * 1024) > 25) {
       showToast("Your file size is greater then 25 MB");
+      setState(() {});
     } else {
       documentFile.value = File(result.files.single.path!);
+      setState(() {});
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,44 +134,37 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                 SizedBox(
                   height: deviceHeight * .02,
                 ),
-                Text(
-                  description!,
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff170048)),
-                    maxLines: descTextShowFlag ? 10000 : 6
-                ),
+                Text(description!,
+                    style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff170048)),
+                    maxLines: descTextShowFlag ? 10000 : 6),
                 SizedBox(
                     child: textLength <= 200
                         ? SizedBox()
                         : InkWell(
-                        onTap: () {
-                          setState(() {
-                            descTextShowFlag =
-                            !descTextShowFlag;
-                          });
-                        },
-                        child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.end,
-                            children: <Widget>[
-                              descTextShowFlag
-                                  ? Text(
-                                "Show Less",
-                                style: TextStyle(
-                                    color: AppTheme
-                                        .primaryColor),
-                              )
-                                  : Text("Show More",
-                                  style: TextStyle(
-                                      color: AppTheme
-                                          .primaryColor))
-                            ]))),
+                            onTap: () {
+                              setState(() {
+                                descTextShowFlag = !descTextShowFlag;
+                              });
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  descTextShowFlag
+                                      ? Text(
+                                          "Show Less",
+                                          style: TextStyle(
+                                              color: AppTheme.primaryColor),
+                                        )
+                                      : Text("Show More",
+                                          style: TextStyle(
+                                              color: AppTheme.primaryColor))
+                                ]))),
                 SizedBox(
                   height: deviceHeight * .02,
                 ),
-
                 const Divider(
                   color: Color(0xff6D2EF1),
                 ),
@@ -180,306 +172,332 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                   height: deviceHeight * .02,
                 ),
                 SizedBox(
-                  child: type == "hourly" ?
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "What is the rate you'd like to bid for this job?",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff180D31)),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            color: const Color(0xff180D31),
-                            fontWeight: FontWeight.w300),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Text(
-                        "Hourly rate",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff180D31)),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        "Total amount the client will see on your proposal",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            color: const Color(0xff170048),
-                            fontWeight: FontWeight.w300),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        keyboardType: TextInputType.number,
-                        onFieldSubmitted: (value){
-                          hourlyPrice = double.parse(value);
-                          unifyFree = ((hourlyPrice! * 20) / 100).toString();
-                          _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            hourlyPrice = double.parse(value);
-                            unifyFree = ((hourlyPrice! * 20) / 100).toString();
-                            _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
-                          });
-
-                        },
-                        controller: _bidController,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          hintText: '\$',
-                          focusColor: AppTheme.primaryColor,
-                          suffixIcon: _bidController.text.length == 0
-                              ? Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding:
-                                const EdgeInsets.only(right: 10.0),
-                                child: Text(
-                                  "200.00",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppTheme.hintTextColor),
-                                ),
-                              ))
-                              : SizedBox(),
-                          hintStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.hintTextColor),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                        ),
-                        validator: MultiValidator([
-                          RequiredValidator(errorText: 'Bid is required'),
-                        ]),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      const Divider(
-                        color: Color(0xff6D2EF1),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Unify service fees ",
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "Explain this",
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                color: AppTheme.primaryColor,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "\$",
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            width: 135.w,
-                          ),
-                          Text(
-                            unifyFree.toString()!,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: AppTheme.darkBlueText,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      const Divider(
-                        color: Color(0xff6D2EF1),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Text(
-                        "You Receive",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppTheme.darkBlueText,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        "This estimated amount you receiver after service",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w300,
-                          color: AppTheme.textColor2,
-                        ),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      TextFormField(
-                          onChanged: (value) {
-                            setState(() {});
-                          },
-                          readOnly: true,
-                          controller: _receiveController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              borderSide: new BorderSide(
-                                  color: AppTheme.primaryColor),
-                            ),
-                            hintText: '\$',
-                            focusColor: AppTheme.primaryColor,
-                            suffixIcon: _receiveController.text.length == 0
-                                ? Align(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 10.0),
-                                  child: Text(
-                                    "150.00",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: AppTheme.hintTextColor),
+                    child: type == "hourly"
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "What is the rate you'd like to bid for this job?",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff180D31)),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              Text(
+                                "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: const Color(0xff180D31),
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              Text(
+                                "Hourly rate",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff180D31)),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              Text(
+                                "Total amount the client will see on your proposal",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: const Color(0xff170048),
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              TextFormField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                keyboardType: TextInputType.number,
+                                onFieldSubmitted: (value) {
+                                  hourlyPrice = double.parse(value);
+                                  unifyFree =
+                                      ((hourlyPrice! * 20) / 100).toString();
+                                  _receiveController.text =
+                                      (hourlyPrice! - double.parse(unifyFree!))
+                                          .toString();
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    hourlyPrice = double.parse(value);
+                                    unifyFree =
+                                        ((hourlyPrice! * 20) / 100).toString();
+                                    _receiveController.text = (hourlyPrice! -
+                                            double.parse(unifyFree!))
+                                        .toString();
+                                  });
+                                },
+                                controller: _bidController,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  border: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
                                   ),
-                                ))
-                                : SizedBox(),
-                            hintStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.hintTextColor),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              borderSide: new BorderSide(
-                                  color: AppTheme.primaryColor),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              borderSide: new BorderSide(
-                                  color: AppTheme.primaryColor),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(5.0),
-                              borderSide: new BorderSide(
-                                  color: AppTheme.primaryColor),
-                            ),
-                          )),
-                      SizedBox(
-                        height: deviceHeight * .025,
-                      ),
-                      Text(
-                        "Cover Letter",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            color: AppTheme.darkBlueText,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .010,
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                        controller: _letterController,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          focusColor: AppTheme.primaryColor,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(5.0),
-                            borderSide: new BorderSide(
-                                color: AppTheme.primaryColor),
-                          ),
-                        ),
-                        validator: MultiValidator([
-                          RequiredValidator(
-                              errorText: 'Cover letter is required'),
-                        ]),
-                      ),
-                      /*SizedBox(
+                                  hintText: '\$',
+                                  focusColor: AppTheme.primaryColor,
+                                  suffixIcon: _bidController.text.length == 0
+                                      ? Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10.0),
+                                            child: Text(
+                                              "200.00",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color:
+                                                      AppTheme.hintTextColor),
+                                            ),
+                                          ))
+                                      : SizedBox(),
+                                  hintStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.hintTextColor),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                ),
+                                validator: MultiValidator([
+                                  RequiredValidator(
+                                      errorText: 'Bid is required'),
+                                ]),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              const Divider(
+                                color: Color(0xff6D2EF1),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Unify service fees ",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    "Explain this",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "\$",
+                                    style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    width: 135.w,
+                                  ),
+                                  Text(
+                                    unifyFree.toString()!,
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: AppTheme.darkBlueText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              const Divider(
+                                color: Color(0xff6D2EF1),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              Text(
+                                "You Receive",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: AppTheme.darkBlueText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              Text(
+                                "This estimated amount you receiver after service",
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w300,
+                                  color: AppTheme.textColor2,
+                                ),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              TextFormField(
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  },
+                                  readOnly: true,
+                                  controller: _receiveController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    border: new OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(5.0),
+                                      borderSide: new BorderSide(
+                                          color: AppTheme.primaryColor),
+                                    ),
+                                    hintText: '\$',
+                                    focusColor: AppTheme.primaryColor,
+                                    suffixIcon: _receiveController
+                                                .text.length ==
+                                            0
+                                        ? Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10.0),
+                                              child: Text(
+                                                "150.00",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color:
+                                                        AppTheme.hintTextColor),
+                                              ),
+                                            ))
+                                        : SizedBox(),
+                                    hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.hintTextColor),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(5.0),
+                                      borderSide: new BorderSide(
+                                          color: AppTheme.primaryColor),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(5.0),
+                                      borderSide: new BorderSide(
+                                          color: AppTheme.primaryColor),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(5.0),
+                                      borderSide: new BorderSide(
+                                          color: AppTheme.primaryColor),
+                                    ),
+                                  )),
+                              SizedBox(
+                                height: deviceHeight * .025,
+                              ),
+                              Text(
+                                "Cover Letter",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: AppTheme.darkBlueText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .010,
+                              ),
+                              TextFormField(
+                                onChanged: (value) {
+                                  setState(() {});
+                                },
+                                controller: _letterController,
+                                maxLines: 4,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  border: new OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  focusColor: AppTheme.primaryColor,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(5.0),
+                                    borderSide: new BorderSide(
+                                        color: AppTheme.primaryColor),
+                                  ),
+                                ),
+                                validator: MultiValidator([
+                                  RequiredValidator(
+                                      errorText: 'Cover letter is required'),
+                                ]),
+                              ),
+                              /*SizedBox(
                         height: deviceHeight * .02,
                       ),
                       Text(
@@ -532,659 +550,818 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                           ),
                         ),
                       ),*/
-                      SizedBox(
-                        height: deviceHeight * .025,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          pickFileToUpload();
-                        },
-                        child: Container(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppTheme.primaryColor)),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Image.asset("assets/icon/script.png"),
-                                      SizedBox(
-                                        width: 15.w,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          documentFile.value.path == ""
-                                              ? "Attach Files"
-                                              : documentFile.value
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w300),
-                                          overflow: TextOverflow.ellipsis,
+                              SizedBox(
+                                height: deviceHeight * .025,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  pickFileToUpload();
+                                },
+                                child: Container(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppTheme.primaryColor)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                  "assets/icon/script.png"),
+                                              SizedBox(
+                                                width: 15.w,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  documentFile.value.path == ""
+                                                      ? "Attach Files"
+                                                      : documentFile.value
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(15),
-                                  color: AppTheme.pinkText,
-                                  child: Text(
-                                    "Choose File",
+                                        Container(
+                                          padding: EdgeInsets.all(15),
+                                          color: AppTheme.pinkText,
+                                          child: Text(
+                                            "Choose File",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.whiteColor),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Terms",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff170048)),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .01,
+                              ),
+                              Text(
+                                "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: const Color(0xff180D31),
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .02,
+                              ),
+                              RadioListTile(
+                                  title: Text(
+                                    "By project",
                                     style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppTheme.whiteColor),
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                ),
-                              ],
-                            )),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                    ],
-                  ) :
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Terms",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff170048)),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
-                        style: TextStyle(
-                            fontSize: 13.sp,
-                            color: const Color(0xff180D31),
-                            fontWeight: FontWeight.w300),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      RadioListTile(
-                          title: Text(
-                            "By project",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Text(
-                            "Get your entire payment at the end, when all work has been delivered",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          contentPadding: const EdgeInsets.all(0),
-                          dense: true,
-                          visualDensity:
-                          const VisualDensity(horizontal: -4, vertical: -4),
-                          value: "By project",
-                          groupValue: radioProjectType,
-                          onChanged: (value) {
-                            setState(() {
-                              radioProjectType = value.toString();
-                              print(radioProjectType);
-                            });
-                          }),
-                      RadioListTile(
-                          title: Text(
-                            "By milestone",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Text(
-                            "Divide the project into smaller segments, called milestones. You'll be paid for milestones as they are completed and approved",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.darkBlueText,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          contentPadding: const EdgeInsets.all(0),
-                          dense: true,
-                          visualDensity:
-                          const VisualDensity(horizontal: -4, vertical: -4),
-                          value: "By milestone",
-                          groupValue: radioProjectType,
-                          onChanged: (value) {
-                            setState(() {
-                              radioProjectType = value.toString();
-                              print(radioProjectType);
-                              milestone.add(ModelMilestones(description: "",amount: "",dueDate: ""));
-                            });
-                          }),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      SizedBox(
-                        child: radioProjectType == "By milestone"
-                            ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "How many milestones do you want to include?",
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff180D31)),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: milestone.length,
-                                itemBuilder: (context, index) {
-                                  return mileStones(deviceHeight, index, milestone[index]);
-                                }),
-                            SizedBox(
-                              height: deviceHeight * .03,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  milestone.add(ModelMilestones(description: "",amount: "",dueDate: ""));
-                                  print(milestone);
-                                });
-                              },
-                              child: Text("+ Add milestone",
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.primaryColor)),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .025,
-                            ),
-                            Text(
-                              "Cover Letter",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppTheme.darkBlueText,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .010,
-                            ),
-                            TextFormField(
-                              onChanged: (value) {
-                                setState(() {});
-                              },
-                              controller: _letterController,
-                              maxLines: 4,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                focusColor: AppTheme.primaryColor,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
+                                  subtitle: Text(
+                                    "Get your entire payment at the end, when all work has been delivered",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  contentPadding: const EdgeInsets.all(0),
+                                  dense: true,
+                                  visualDensity: const VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  value: "By project",
+                                  groupValue: radioProjectType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      radioProjectType = value.toString();
+                                      print(radioProjectType);
+                                      milestone.clear();
+                                    });
+                                  }),
+                              RadioListTile(
+                                  title: Text(
+                                    "By milestone",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  subtitle: Text(
+                                    "Divide the project into smaller segments, called milestones. You'll be paid for milestones as they are completed and approved",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppTheme.darkBlueText,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  contentPadding: const EdgeInsets.all(0),
+                                  dense: true,
+                                  visualDensity: const VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  value: "By milestone",
+                                  groupValue: radioProjectType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      radioProjectType = value.toString();
+                                      print(radioProjectType);
+                                     // milestone.add(ModelMilestones(description: "", amount: "", dueDate: ""));
+                                    });
+                                  }),
+                              SizedBox(
+                                height: deviceHeight * .02,
                               ),
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Cover letter is required'),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            Text(
-                              "How long will this project take?",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppTheme.darkBlueText,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            TextFormField(
-                              onChanged: (value) {
-                                setState(() {});
-                              },
-                              onTap: (){
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RadioButtonsJobDetails();
-                                  },
-                                );
-                              },
-                              readOnly: true,
-                              controller: controller.durationController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                hintText: "Select a duration",
-                                focusColor: AppTheme.primaryColor,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
-                                hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.hintTextColor),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                              ),
-                              validator: MultiValidator([
-                                RequiredValidator(errorText: 'Select a duration'),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .025,
-                            ),
-                            InkWell(
-                              onTap: () {
-                               pickFileToUpload();
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppTheme.primaryColor)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Image.asset("assets/icon/script.png"),
-                                            SizedBox(
-                                              width: 15.w,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                documentFile.value.path == ""
-                                                    ? "Attach Files"
-                                                    : documentFile.value
-                                                    .toString(),
+                              SizedBox(
+                                child: radioProjectType == "By milestone"
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "How many milestones do you want to include?",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: const Color(0xff180D31)),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount: milestone.length,
+                                              itemBuilder: (context, index) {
+                                                print(milestone.length);
+                                                print(milestone);
+                                                return mileStones(deviceHeight,
+                                                    index, milestone[index]);
+                                              }),
+                                          SizedBox(
+                                            height: deviceHeight * .03,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                milestone.add(ModelMilestones(
+                                                    description: "",
+                                                    amount: "",
+                                                    dueDate: ""));
+                                              });
+                                            },
+                                            child: Text("+ Add milestone",
                                                 style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w300),
-                                                overflow: TextOverflow.ellipsis,
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color:
+                                                        AppTheme.primaryColor)),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .025,
+                                          ),
+                                          Text(
+                                            "Cover Letter",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: AppTheme.darkBlueText,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .010,
+                                          ),
+                                          TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            controller: _letterController,
+                                            maxLines: 4,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(15),
-                                        color: AppTheme.pinkText,
-                                        child: Text(
-                                          "Choose File",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.whiteColor),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        )
-                            : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "What is the full amount you like to bid for this job ?",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff180D31)),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            Text(
-                              "Bid",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xff180D31)),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            Text(
-                              "Total amount the client will see on your proposal",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: const Color(0xff170048),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            TextFormField(
-                              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              keyboardType: TextInputType.number,
-                              onFieldSubmitted: (value){
-                                hourlyPrice = double.parse(value);
-                                unifyFree = ((hourlyPrice! * 20) / 100).toString();
-                                _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
-                              },
-                              onChanged: (value) {
-                                setState(() {
-                                  hourlyPrice = double.parse(value);
-                                  unifyFree = ((hourlyPrice! * 20) / 100).toString();
-                                  _receiveController.text = (hourlyPrice! - double.parse(unifyFree!)).toString();
-
-                                });
-                              },
-                              controller: _bidController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                hintText: '\$',
-                                focusColor: AppTheme.primaryColor,
-                                suffixIcon: _bidController.text.length == 0
-                                    ? Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets.only(right: 10.0),
-                                      child: Text(
-                                        "200.00",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: AppTheme.hintTextColor),
-                                      ),
-                                    ))
-                                    : SizedBox(),
-                                hintStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.hintTextColor),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                              ),
-                              validator: MultiValidator([
-                                RequiredValidator(errorText: 'Bid is required'),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            const Divider(
-                              color: Color(0xff6D2EF1),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Unify service fees ",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppTheme.darkBlueText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  "Explain this",
-                                  style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: AppTheme.primaryColor,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "\$",
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: AppTheme.darkBlueText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  width: 135.w,
-                                ),
-                                Text(
-                                  unifyFree!,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: AppTheme.darkBlueText,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            const Divider(
-                              color: Color(0xff6D2EF1),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            Text(
-                              "You Receive",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppTheme.darkBlueText,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            Text(
-                              "This estimated amount you receiver after service",
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w300,
-                                color: AppTheme.textColor2,
-                              ),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                            TextFormField(
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
-                                readOnly: true,
-                                controller: _receiveController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
-                                  border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(
-                                        color: AppTheme.primaryColor),
-                                  ),
-                                  hintText: '\$',
-                                  focusColor: AppTheme.primaryColor,
-                                  suffixIcon: _receiveController.text.length == 0
-                                      ? Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 10.0),
-                                        child: Text(
-                                          "150.00",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: AppTheme.hintTextColor),
-                                        ),
-                                      ))
-                                      : SizedBox(),
-                                  hintStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppTheme.hintTextColor),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(
-                                        color: AppTheme.primaryColor),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(
-                                        color: AppTheme.primaryColor),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(
-                                        color: AppTheme.primaryColor),
-                                  ),
-                                )),
-                            SizedBox(
-                              height: deviceHeight * .025,
-                            ),
-                            Text(
-                              "Cover Letter",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppTheme.darkBlueText,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .010,
-                            ),
-                            TextFormField(
-                              onChanged: (value) {
-                                setState(() {});
-                              },
-                              controller: _letterController,
-                              maxLines: 4,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                focusColor: AppTheme.primaryColor,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                disabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                              ),
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Cover letter is required'),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .02,
-                            ),
-                            Text(
-                              "How long will this project take?",
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: AppTheme.darkBlueText,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .01,
-                            ),
-                        /*    InkWell(
+                                              focusColor: AppTheme.primaryColor,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText:
+                                                      'Cover letter is required'),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          Text(
+                                            "How long will this project take?",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: AppTheme.darkBlueText,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return RadioButtonsJobDetails();
+                                                },
+                                              );
+                                            },
+                                            readOnly: true,
+                                            controller:
+                                                controller.durationController,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              hintText: "Select a duration",
+                                              focusColor: AppTheme.primaryColor,
+                                              suffixIcon: Icon(Icons
+                                                  .keyboard_arrow_down_outlined),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      AppTheme.hintTextColor),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText:
+                                                      'Select a duration'),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .025,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              pickFileToUpload();
+                                            },
+                                            child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: AppTheme
+                                                            .primaryColor)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Image.asset(
+                                                              "assets/icon/script.png"),
+                                                          SizedBox(
+                                                            width: 15.w,
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              documentFile.value
+                                                                          .path ==
+                                                                      ""
+                                                                  ? "Attach Files"
+                                                                  : documentFile
+                                                                      .value
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(15),
+                                                      color: AppTheme.pinkText,
+                                                      child: Text(
+                                                        "Choose File",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppTheme
+                                                                .whiteColor),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      )
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "What is the full amount you like to bid for this job ?",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xff180D31)),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          Text(
+                                            "Bid",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xff180D31)),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          Text(
+                                            "Total amount the client will see on your proposal",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                color: const Color(0xff170048),
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          TextFormField(
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            keyboardType: TextInputType.number,
+                                            onFieldSubmitted: (value) {
+                                              hourlyPrice = double.parse(value);
+                                              unifyFree =
+                                                  ((hourlyPrice! * 20) / 100)
+                                                      .toString();
+                                              _receiveController
+                                                  .text = (hourlyPrice! -
+                                                      double.parse(unifyFree!))
+                                                  .toString();
+                                            },
+                                            onChanged: (value) {
+                                              setState(() {
+                                                hourlyPrice =
+                                                    double.parse(value);
+                                                unifyFree =
+                                                    ((hourlyPrice! * 20) / 100)
+                                                        .toString();
+                                                _receiveController.text =
+                                                    (hourlyPrice! -
+                                                            double.parse(
+                                                                unifyFree!))
+                                                        .toString();
+                                              });
+                                            },
+                                            controller: _bidController,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              hintText: '\$',
+                                              focusColor: AppTheme.primaryColor,
+                                              suffixIcon: _bidController
+                                                          .text.length ==
+                                                      0
+                                                  ? Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 10.0),
+                                                        child: Text(
+                                                          "200.00",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: AppTheme
+                                                                  .hintTextColor),
+                                                        ),
+                                                      ))
+                                                  : SizedBox(),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      AppTheme.hintTextColor),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: 'Bid is required'),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          const Divider(
+                                            color: Color(0xff6D2EF1),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Unify service fees ",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color:
+                                                        AppTheme.darkBlueText,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              Text(
+                                                "Explain this",
+                                                style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color:
+                                                        AppTheme.primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "\$",
+                                                style: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    color:
+                                                        AppTheme.darkBlueText,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              SizedBox(
+                                                width: 135.w,
+                                              ),
+                                              Text(
+                                                unifyFree!,
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: AppTheme.darkBlueText,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          const Divider(
+                                            color: Color(0xff6D2EF1),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          Text(
+                                            "You Receive",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: AppTheme.darkBlueText,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          Text(
+                                            "This estimated amount you receiver after service",
+                                            style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w300,
+                                              color: AppTheme.textColor2,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          TextFormField(
+                                              onChanged: (value) {
+                                                setState(() {});
+                                              },
+                                              readOnly: true,
+                                              controller: _receiveController,
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 10),
+                                                border: new OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme
+                                                          .primaryColor),
+                                                ),
+                                                hintText: '\$',
+                                                focusColor:
+                                                    AppTheme.primaryColor,
+                                                suffixIcon: _receiveController
+                                                            .text.length ==
+                                                        0
+                                                    ? Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 10.0),
+                                                          child: Text(
+                                                            "150.00",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: AppTheme
+                                                                    .hintTextColor),
+                                                          ),
+                                                        ))
+                                                    : SizedBox(),
+                                                hintStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color:
+                                                        AppTheme.hintTextColor),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme
+                                                          .primaryColor),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme
+                                                          .primaryColor),
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          5.0),
+                                                  borderSide: new BorderSide(
+                                                      color: AppTheme
+                                                          .primaryColor),
+                                                ),
+                                              )),
+                                          SizedBox(
+                                            height: deviceHeight * .025,
+                                          ),
+                                          Text(
+                                            "Cover Letter",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: AppTheme.darkBlueText,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .010,
+                                          ),
+                                          TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            controller: _letterController,
+                                            maxLines: 4,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              focusColor: AppTheme.primaryColor,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText:
+                                                      'Cover letter is required'),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .02,
+                                          ),
+                                          Text(
+                                            "How long will this project take?",
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                color: AppTheme.darkBlueText,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .01,
+                                          ),
+                                          /*    InkWell(
                               onTap: () {
                                 showDialog(
                                   context: context,
@@ -1225,141 +1402,187 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                               ),
                             ),*/
 
-                            TextFormField(
-                              onChanged: (value) {
-                                setState(() {});
-                              },
-                              onTap: (){
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RadioButtonsJobDetails();
-                                  },
-                                );
-                              },
-                              readOnly: true,
-                              controller: controller.durationController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                border: new OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                hintText: "Select a duration",
-                                focusColor: AppTheme.primaryColor,
-                                suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
-                                hintStyle: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppTheme.hintTextColor),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(5.0),
-                                  borderSide: new BorderSide(
-                                      color: AppTheme.primaryColor),
-                                ),
-                              ),
-                              validator: MultiValidator([
-                                RequiredValidator(errorText: 'Select a duration'),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: deviceHeight * .025,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                pickFileToUpload();
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppTheme.primaryColor)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Image.asset("assets/icon/script.png"),
-                                            SizedBox(
-                                              width: 15.w,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                documentFile.value.path == ""
-                                                    ? "Attach Files"
-                                                    : documentFile.value
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w300),
-                                                overflow: TextOverflow.ellipsis,
+                                          TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return RadioButtonsJobDetails();
+                                                },
+                                              );
+                                            },
+                                            readOnly: true,
+                                            controller:
+                                                controller.durationController,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                              hintText: "Select a duration",
+                                              focusColor: AppTheme.primaryColor,
+                                              suffixIcon: Icon(Icons
+                                                  .keyboard_arrow_down_outlined),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      AppTheme.hintTextColor),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        5.0),
+                                                borderSide: new BorderSide(
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText:
+                                                      'Select a duration'),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            height: deviceHeight * .025,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              pickFileToUpload();
+                                            },
+                                            child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: AppTheme
+                                                            .primaryColor)),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Image.asset(
+                                                              "assets/icon/script.png"),
+                                                          SizedBox(
+                                                            width: 15.w,
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              documentFile.value
+                                                                          .path ==
+                                                                      ""
+                                                                  ? "Attach Files"
+                                                                  : documentFile
+                                                                      .value
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(15),
+                                                      color: AppTheme.pinkText,
+                                                      child: Text(
+                                                        "Choose File",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: AppTheme
+                                                                .whiteColor),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.all(15),
-                                        color: AppTheme.pinkText,
-                                        child: Text(
-                                          "Choose File",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.whiteColor),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .025,
-                      ),
-                    ],
-                  )
-                ),
-
+                              ),
+                              SizedBox(
+                                height: deviceHeight * .025,
+                              ),
+                            ],
+                          )),
                 CustomOutlineButton(
                   onPressed: () {
-                       if (_formKey.currentState!.validate()) {
-                         Map map = <String,String>{};
-                         map['job_id'] = id.toString();
-                         map['client_id'] = clientID.toString();
-                         map['bid_amount'] = _bidController.text.trim();
-                         map['cover_letter'] = _letterController.text.trim();
-                         map['budget_type'] = type.toString();
-                         if(type.toString().toLowerCase() == "hourly"){
-                           map['project_duration'] = controller.duration.toString()!;
-                         }
-                         sendProposalRepo(mapData: map,fieldName1: "image",file1: documentFile.value,context: context ).then((value) {
-                           if(value.status == true){
-                             Get.offNamed(MyRouter.bottomNavbar);
-                           }
-                           showToast(value.message.toString());
-                         });
-                       }
-                       else {
-                         showToast("Please attach a file");
-                       }
-                       },
+                    if (_formKey.currentState!.validate()) {
+                      Map map = <String, String>{};
+                      map['job_id'] = id.toString();
+                      // map['client_id'] = clientID.toString();
+                      if (radioProjectType == "By project") {
+                        map['bid_amount'] = _bidController.text.trim();
+                      }
+                      map['cover_letter'] = _letterController.text.trim();
+                      if (type.toString().toLowerCase() == "fixed") {
+                        map['milestone_type'] =
+                            radioProjectType == "By milestone" ? "multiple" : "single";
+                      }
+
+                      if (radioProjectType == "By milestone") {
+                        map["milestone_data"] = jsonEncode(milestone);
+                      }
+
+                      // map['budget_type'] = type.toString();
+                      if (type.toString().toLowerCase() == "fixed") {
+                        map['project_duration'] =
+                            controller.duration.toString()!;
+                      }
+                      print(map);
+                      sendProposalRepo(
+                              mapData: map,
+                              fieldName1: "image",
+                              file1: documentFile.value,
+                              context: context)
+                          .then((value) {
+                        if (value.status == true) {
+                          Get.offNamed(MyRouter.bottomNavbar);
+                        }
+                        showToast(value.message.toString());
+                      });
+                    }
+                  },
                   title: "Submit Proposal",
                   textColor: AppTheme.whiteColor,
                   expandedValue: true,
@@ -1376,18 +1599,21 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     );
   }
 
-  Column mileStones(double deviceHeight, int index, text) {
-    final TextEditingController _descriptionController = TextEditingController();
+  Column mileStones(double deviceHeight, int index, listIndex) {
+    final TextEditingController _descriptionController =
+        TextEditingController();
     final TextEditingController _dueDateController = TextEditingController();
     final TextEditingController _amountController = TextEditingController();
- /*   Map map = <String,dynamic>{};
+
+    /*   Map map = <String,dynamic>{};
     map["description"] = _descriptionController.text;
     map["Due date"] = _dueDateController.text;
     map["amount"] = _amountController.text;*/
-  //  milestone.add( ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
-    /*_descriptionController.text = text;
-    _dueDateController.text = text;
-    _amountController.text = text;*/
+    // milestone.contains(index,ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
+    _descriptionController.text = milestone[index].description.toString();
+    _dueDateController.text = milestone[index].dueDate.toString();
+    _amountController.text = milestone[index].amount.toString();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1423,8 +1649,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
         CustomTextField(
           controller: _descriptionController,
           obSecure: false.obs,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
           hintText: "".obs,
+          onChanged: (value) {
+            milestone[index].description = value.toString();
+          },
           validator: MultiValidator([
             RequiredValidator(errorText: 'Description is required'),
           ]),
@@ -1453,26 +1682,37 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(1950),
+                          firstDate: DateTime.now(),
                           lastDate: DateTime(2100));
                       if (pickedDate != null) {
                         print(pickedDate);
-                        // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        _dueDateController.text = dateFormat.format(pickedDate);
-                        print(pickedDate.millisecondsSinceEpoch);setState(() {dateInput = pickedDate.millisecondsSinceEpoch;
+                        //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        _dueDateController.text = dateFormatForShow.format(pickedDate);
+                        print(pickedDate.millisecondsSinceEpoch);
+                        setState(() {
+                          dateInput = _dueDateController.text;
+                          milestone[index].dueDate = dateInput.toString();
                         });
                       } else {
                         return null;
                       }
                     },
-                    suffixIcon: Icon(Icons.calendar_month_outlined,size: 20,color: AppTheme.primaryColor,),
-                     controller: _dueDateController,
+                    suffixIcon: Icon(
+                      Icons.calendar_month_outlined,
+                      size: 20,
+                      color: AppTheme.primaryColor,
+                    ),
+                    controller: _dueDateController,
                     obSecure: false.obs,
                     keyboardType: TextInputType.emailAddress,
                     hintText: "".obs,
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Due date is required'),
                     ]),
+                    onChanged: (value)
+                    {
+                      milestone[index].dueDate = value.toString();
+                    },
                   ),
                 ],
               ),
@@ -1492,12 +1732,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         color: const Color(0xff180D31)),
                   ),
                   CustomTextField(
-                     controller: _amountController,
+                    controller: _amountController,
                     prefix: Icon(
                       Icons.attach_money,
                       size: 20,
                       color: AppTheme.primaryColor,
                     ),
+                    onChanged: (value) {
+                      milestone[index].amount = value.toString();
+                    },
                     obSecure: false.obs,
                     inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.emailAddress,
