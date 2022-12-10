@@ -72,7 +72,7 @@ class Page4 extends StatelessWidget {
                       MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                     ]),
                     obSecure: false.obs,
-                    hintText: "Example: Full StackDeveloper | Web & Mobile".obs,
+                    hintText: "Example: full stack developer | web & mobile".obs,
                   ),
                   SizedBox(
                     height: AddSize.size15,

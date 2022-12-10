@@ -178,52 +178,48 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       });
                     },
                   ),*/
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: AddSize.size40,
-                      right: AddSize.size40,
+                  PinCodeTextField(
+                    errorTextSpace: 20,
+                    errorTextMargin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.25),
+                    appContext: context,
+                    textStyle: TextStyle(color: AppTheme.subText),
+                    controller: otpController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    pastedTextStyle: TextStyle(
+                      color: Colors.green.shade600,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: PinCodeTextField(
-                      appContext: context,
-                      textStyle: TextStyle(color: AppTheme.subText),
-                      controller: otpController,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      pastedTextStyle: TextStyle(
-                        color: Colors.green.shade600,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      animationType: AnimationType.fade,
-                      validator: (v) {
-                        if (v!.isEmpty) {
-                          return "Otp field is required";
-                        } else if (v.length != 4) {
-                          return "Otp field required 4 digit";
-                        }
-                        return null;
-                      },
-                      length: 4,
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.circle,
-                        //borderRadius: BorderRadius.circular(AddSize.size30),
-                        fieldWidth: AddSize.size30*2,
-                        fieldHeight: AddSize.size30*2,
-                        activeColor: AppTheme.textfield,
-                        inactiveColor: AppTheme.textfield,
-                        errorBorderColor: AppTheme.textfield,
-                      ),
-                      //   //runs when a code is typed in
-                      keyboardType: TextInputType.number,
-                      onChanged: (String code) {
-                        otp = code;
-                      },
-                      onSubmitted: (String verificationCode) {
-                        setState(() {
-                          otp = verificationCode;
-                        });
-                      },
+                    animationType: AnimationType.fade,
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "    Please enter the otp";
+                      } else if (v.length != 4) {
+                        return "The otp must be 4 digit";
+                      }
+                      return null;
+                    },
+                    length: 4,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.circle,
+                      //borderRadius: BorderRadius.circular(AddSize.size30),
+                      fieldWidth: AddSize.size30*2,
+                      fieldHeight: AddSize.size30*2,
+                      activeColor: AppTheme.textfield,
+                      inactiveColor: AppTheme.textfield,
+                      errorBorderColor: AppTheme.textfield,
                     ),
+                    //   //runs when a code is typed in
+                    keyboardType: TextInputType.number,
+                    onChanged: (String code) {
+                      otp = code;
+                    },
+                    onSubmitted: (String verificationCode) {
+                      setState(() {
+                        otp = verificationCode;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -279,9 +275,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500)),
                         TextSpan(
-                            text: " Sec",
+                            text: " sec",
                             style: TextStyle(
-                                fontSize: AddSize.font16,
+                                fontSize: 14,
                                 color: AppTheme.primaryColor,
                                 fontWeight: FontWeight.w500)),
                       ],

@@ -32,6 +32,7 @@ import '../screens/profile/add_portfolio_screen.dart';
 import '../screens/profile/add_testimonials_screen.dart';
 import '../screens/profile/edit_language_screen.dart';
 import '../screens/profile/hour_per_week_screen.dart';
+import '../screens/proposals/active_proposal_screen.dart';
 import '../screens/proposals/submitted_proposal_screen.dart';
 import '../screens/proposals/invitations_to_interview.dart';
 import '../screens/proposals/offer_details_screen.dart';
@@ -114,6 +115,7 @@ class MyRouter {
   static var invitationsToInterview = "/invitationsToInterview";
   static var submittedProposalScreen = "/submittedProposalScreen";
   static var changeTermsScreen = "/changeTermsScreen";
+  static var activeProposalScreen = "/activeProposalScreen";
 
   static var route = [
     GetPage(name: '/', page: () =>  const SplashScreen()),
@@ -172,5 +174,6 @@ class MyRouter {
     GetPage(name: MyRouter.invitationsToInterview, page: () => const InvitationsToInterview()),
     GetPage(name: MyRouter.submittedProposalScreen, page: () => const SubmittedProposalScreen()),
     GetPage(name: MyRouter.changeTermsScreen, page: () => const ChangeTermsScreen()),
+    GetPage(name: MyRouter.activeProposalScreen, page: () => const ActiveProposalScreen()),
   ];
 }

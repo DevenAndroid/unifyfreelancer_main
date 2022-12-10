@@ -70,7 +70,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   height: AddSize.size30,
                 ),
                 Text(
-                  "Hourly Rate",
+                  "Hourly Rate*",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,

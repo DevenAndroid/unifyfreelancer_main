@@ -119,7 +119,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Company",
+                          "Company*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -141,7 +141,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Location",
+                          "Location*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -360,7 +360,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Title",
+                          "Title*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -382,7 +382,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Period",
+                          "Period*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,

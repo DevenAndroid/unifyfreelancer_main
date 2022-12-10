@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../Controller/jobs_detail_controller.dart';
+import '../controller/proposals_screen_controller.dart';
 import '../models/model_milestones.dart';
 import '../popups/radio_buttons_job_details.dart';
 import '../repository/job_module/send_proposal_repository.dart';
@@ -85,6 +86,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
 
   Rx<File> documentFile = File("").obs;
 
+
   pickFileToUpload() async {
     FocusManager.instance.primaryFocus!.unfocus();
     final result = await FilePicker.platform.pickFiles();
@@ -98,7 +100,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
       setState(() {});
     }
   }
-
+  final proposalController = Get.put(ProposalScreenController());
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;

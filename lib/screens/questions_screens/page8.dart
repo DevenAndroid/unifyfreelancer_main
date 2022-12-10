@@ -105,7 +105,7 @@ class _Page8State extends State<Page8> {
                           children: [
                             Expanded(
                               child: Text(
-                                "Your skills",
+                                "Your skills*",
                                 style: TextStyle(
                                     fontSize: AddSize.font18,
                                     color: AppTheme.titleText,

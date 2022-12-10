@@ -252,8 +252,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                    Get.toNamed(MyRouter.submittedProposalScreen);
-                    //  arguments: [item[index].projectId]);
+                    Get.toNamed(MyRouter.submittedProposalScreen ,arguments: [controller.model.value.data!.submittedProposal![index].id.toString()]);
                   print(controller.model.value.data!.submittedProposal![index].id.toString());
                 },
                 child: Container(
@@ -342,7 +341,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  Get.toNamed(MyRouter.submittedProposalScreen);
+                  Get.toNamed(MyRouter.activeProposalScreen);
                   /*   Get.toNamed(MyRouter.jobDetailsScreen,
                       arguments: [item[index].projectId]);
                   print([item[index].projectId]);*/

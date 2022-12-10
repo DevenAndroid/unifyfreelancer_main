@@ -70,7 +70,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "First Name",
+                  "First name*",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -83,7 +83,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   controller: _fNameController,
                   obSecure: false.obs,
                   keyboardType: TextInputType.text,
-                  hintText: "Enter First Name".obs,
+                  hintText: "Enter first name".obs,
                   validator: MultiValidator(
                       [RequiredValidator(errorText: 'First name is required')]),
                 ),
@@ -91,7 +91,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 15,
                 ),
                 Text(
-                  "Last Name",
+                  "Last name*",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,
@@ -104,7 +104,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   controller: _lNameController,
                   obSecure: false.obs,
                   keyboardType: TextInputType.text,
-                  hintText: "Enter Last Name".obs,
+                  hintText: "Enter last name".obs,
                   validator: MultiValidator(
                       [RequiredValidator(errorText: 'Last name is required')]),
                 ),
@@ -112,7 +112,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   height: 15,
                 ),
                 Text(
-                  "Business email address",
+                  "Business email address*",
                   style: TextStyle(
                       fontSize: 14,
                       color: AppTheme.titleText,

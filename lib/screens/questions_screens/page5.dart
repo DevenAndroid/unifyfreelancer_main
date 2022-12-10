@@ -66,7 +66,7 @@ class _Page5State extends State<Page5> {
             child: Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40.0),
+                padding: const EdgeInsets.only(bottom: 30.0),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
@@ -89,484 +89,498 @@ class _Page5State extends State<Page5> {
                             ],
                           ),
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Title",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppTheme.titleText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                CustomTextField(
-                                  controller: titleController,
-                                  obSecure: false.obs,
-                                  keyboardType: TextInputType.emailAddress,
-                                  hintText: "Web developer".obs,
-                                  validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText: 'Title is required'),
-                                  ]),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size15,
-                                ),
-                                Text(
-                                  "Company",
-                                  style: TextStyle(
-                                      fontSize: AddSize.font14,
-                                      color: AppTheme.titleText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size5,
-                                ),
-                                CustomTextField(
-                                  controller: companyController,
-                                  obSecure: false.obs,
-                                  keyboardType: TextInputType.emailAddress,
-                                  hintText: "Ex: Unify".obs,
-                                  validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText: 'Company is required'),
-                                  ]),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size15,
-                                ),
-                                Text(
-                                  "Location",
-                                  style: TextStyle(
-                                      fontSize: AddSize.font14,
-                                      color: AppTheme.titleText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size5,
-                                ),
-                                Row(
+                            children: [
+                              Text(
+                                "Add Work Experience",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppTheme.titleText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: CustomTextField(
-                                        controller: cityController,
-                                        obSecure: false.obs,
-                                        keyboardType: TextInputType.emailAddress,
-                                        hintText: "City".obs,
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: 'city is required'),
-                                        ]),
-                                      ),
+                                    Text(
+                                      "Title*",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppTheme.titleText,
+                                          fontWeight: FontWeight.w600),
                                     ),
                                     SizedBox(
-                                      width: AddSize.size5,
+                                      height: 5,
                                     ),
-                                    Expanded(
-                                      child: TextFormField(
-                                        onTap: () {
-                                          FocusManager.instance.primaryFocus!
-                                              .unfocus();
-                                          controller.searchList1.clear();
-                                          for (var item in controller
-                                              .countryList.value.countrylist!) {
-                                            controller.searchList1
-                                                .add(item.name.toString());
-                                          }
-                                          showModalBottomSheet<void>(
-                                            isScrollControlled: true,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(
-                                                        AddSize.size30),
-                                                    topRight: Radius.circular(
-                                                        AddSize.size30))),
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    .7,
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      child: IconButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        icon: Icon(
-                                                          Icons.clear,
-                                                          color:
-                                                              AppTheme.blackColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.all(
-                                                              AddSize.size10)
-                                                          .copyWith(top: 0),
-                                                      child: TextFormField(
-                                                        onChanged: (value) {
-                                                          if (value != "") {
-                                                            controller.searchList1
-                                                                .clear();
-                                                            // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
-                                                            for (var item
-                                                                in controller
-                                                                    .countryList
-                                                                    .value
-                                                                    .countrylist!) {
-                                                              if (item.name
-                                                                  .toString()
-                                                                  .toLowerCase()
-                                                                  .contains(value
-                                                                      .toLowerCase())) {
-                                                                controller
-                                                                    .searchList1
-                                                                    .add(item.name
-                                                                        .toString());
-                                                              }
-                                                            }
-                                                          } else {
-                                                            controller.searchList1
-                                                                .clear();
-                                                            for (var item
-                                                                in controller
-                                                                    .countryList
-                                                                    .value
-                                                                    .countrylist!) {
-                                                              controller
-                                                                  .searchList1
-                                                                  .add(item.name
-                                                                      .toString());
-                                                            }
-                                                          }
-                                                        },
-                                                        decoration:
-                                                            InputDecoration(
-                                                          filled: true,
-                                                          fillColor: AppTheme
-                                                              .primaryColor
-                                                              .withOpacity(.05),
-                                                          hintText:
-                                                              "Select country",
-                                                          prefixIcon:
-                                                              Icon(Icons.flag),
-                                                          hintStyle:
-                                                              const TextStyle(
-                                                                  color: Color(
-                                                                      0xff596681),
-                                                                  fontSize: 15),
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 14,
-                                                                  horizontal: 20),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppTheme
-                                                                    .primaryColor
-                                                                    .withOpacity(
-                                                                        .15),
-                                                                width: 1.0),
-                                                            borderRadius: BorderRadius
-                                                                .circular(AddSize
-                                                                        .size10 *
-                                                                    .8),
-                                                          ),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: AppTheme
-                                                                    .primaryColor
-                                                                    .withOpacity(
-                                                                        .15),
-                                                                width: 1.0),
-                                                            borderRadius: BorderRadius
-                                                                .circular(AddSize
-                                                                        .size10 *
-                                                                    .8),
-                                                          ),
-                                                          border: OutlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: AppTheme
-                                                                      .primaryColor
-                                                                      .withOpacity(
-                                                                          .15),
-                                                                  width: 1.0),
-                                                              borderRadius: BorderRadius
-                                                                  .circular(AddSize
-                                                                          .size10 *
-                                                                      .8)),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Obx(() {
-                                                      return Expanded(
-                                                        child: ListView.builder(
-                                                            physics:
-                                                                BouncingScrollPhysics(),
-                                                            shrinkWrap: true,
-                                                            itemCount: controller
-                                                                .searchList1
-                                                                .length,
-                                                            itemBuilder:
-                                                                (context, index) {
-                                                              return Obx(() {
-                                                                return InkWell(
-                                                                  onTap: () {
-                                                                    setState(() {
-                                                                      countryController
-                                                                              .text =
-                                                                          controller
-                                                                              .searchList1[index]
-                                                                              .toString();
-                                                                    });
-                                                                    print(
-                                                                        countryController
-                                                                            .text);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Padding(
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              AddSize
-                                                                                  .size30,
-                                                                          vertical:
-                                                                              AddSize.size10),
-                                                                      child: Text(
-                                                                        controller
-                                                                            .searchList1[
-                                                                                index]
-                                                                            .toString(),
-                                                                        style: TextStyle(
-                                                                            fontSize: AddSize
-                                                                                .font14,
-                                                                            fontWeight:
-                                                                                FontWeight.w600),
-                                                                      )),
-                                                                );
-                                                              });
-                                                            }),
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        readOnly: true,
-                                        controller: countryController,
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: AppTheme.whiteColor,
-                                          hintText: "Country",
-                                          labelStyle: const TextStyle(
-                                              color: Colors.black),
-                                          suffixIcon:
-                                              Icon(Icons.keyboard_arrow_down),
-                                          hintStyle: TextStyle(
-                                            color: Color(0xff596681),
-                                            fontSize: AddSize.size15,
-                                          ),
-                                          contentPadding: EdgeInsets.only(
-                                              left: AddSize.size10),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius: BorderRadius.circular(
-                                                AddSize.size10 * .8),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: AppTheme.primaryColor
-                                                    .withOpacity(.15),
-                                                width: 1.0),
-                                            borderRadius: BorderRadius.circular(
-                                                AddSize.size10 * .8),
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: AppTheme.primaryColor
-                                                      .withOpacity(.15),
-                                                  width: 1.0),
-                                              borderRadius: BorderRadius.circular(
-                                                  AddSize.size10 * .8)),
-                                        ),
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText: 'Country is required'),
-                                        ]),
-                                      ),
+                                    CustomTextField(
+                                      controller: titleController,
+                                      obSecure: false.obs,
+                                      keyboardType: TextInputType.emailAddress,
+                                      hintText: "Web developer".obs,
+                                      validator: MultiValidator([
+                                        RequiredValidator(
+                                            errorText: 'Title is required'),
+                                      ]),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                  "Period",
-                                  style: TextStyle(
-                                      fontSize: AddSize.size14,
-                                      color: AppTheme.titleText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size5,
-                                ),
-                                CustomTextField(
-                                  controller: fromController,
-                                  readOnly: true,
-                                  onTap: () async {
-                                    print(dateInput);
-                                    DateTime? pickedDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: dateInput == ""
-                                            ? DateTime.now()
-                                            : DateTime.parse(dateInput),
-                                        firstDate: DateTime(1950),
-                                        lastDate: DateTime.now());
-                                    if (pickedDate != null) {
-                                      fromController.text =
-                                          dateFormat.format(pickedDate);
-                                      setState(() {
-                                        dateInput =
-                                            "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
-                                        print(dateInput);
-                                      });
-                                    }
-                                  },
-                                  obSecure: false.obs,
-                                  hintText: "From".obs,
-                                  suffixIcon: Icon(
-                                    Icons.calendar_month_outlined,
-                                    size: AddSize.size22,
-                                    color: AppTheme.primaryColor,
-                                  ),
-                                  validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText: 'From, date is required'),
-                                  ]),
-                                ),
-                                Row(
-                                  children: [
-                                    Obx(() {
-                                      return Checkbox(
-                                          materialTapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          value: endDatePresent.value,
-                                          activeColor: AppTheme.primaryColor,
-                                          onChanged: (newValue) {
-                                            endDatePresent.value = newValue!;
-                                            if (endDatePresent.value == true) {
-                                              toController.clear();
-                                              dateInput2 = "";
-                                            }
-                                          });
-                                    }),
                                     SizedBox(
-                                      width: 5,
+                                      height: AddSize.size15,
                                     ),
                                     Text(
-                                      "I currently work here",
+                                      "Company*",
                                       style: TextStyle(
-                                          fontSize: AddSize.size12,
+                                          fontSize: AddSize.font14,
                                           color: AppTheme.titleText,
-                                          fontWeight: FontWeight.w500),
+                                          fontWeight: FontWeight.w600),
                                     ),
-                                  ],
-                                ),
-                                Obx(() {
-                                  return SizedBox(
-                                    child: endDatePresent == false
-                                        ? CustomTextField(
-                                            controller: toController,
-                                            readOnly: true,
-                                            onTap: () async {
-                                              DateTime? pickedDate =
-                                                  await showDatePicker(
-                                                      context: context,
-                                                      initialDate: dateInput2 ==
-                                                              ""
-                                                          ? DateTime.now()
-                                                          : DateTime.parse(
-                                                              dateInput2),
-                                                      firstDate: DateTime(1950),
-                                                      lastDate: DateTime.now());
-                                              if (pickedDate != null) {
-                                                toController.text =
-                                                    dateFormat.format(pickedDate);
-                                                setState(() {
-                                                  dateInput2 =
-                                                      "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
-                                                });
-                                              }
-                                            },
+                                    SizedBox(
+                                      height: AddSize.size5,
+                                    ),
+                                    CustomTextField(
+                                      controller: companyController,
+                                      obSecure: false.obs,
+                                      keyboardType: TextInputType.emailAddress,
+                                      hintText: "Ex: Unify".obs,
+                                      validator: MultiValidator([
+                                        RequiredValidator(
+                                            errorText: 'Company is required'),
+                                      ]),
+                                    ),
+                                    SizedBox(
+                                      height: AddSize.size15,
+                                    ),
+                                    Text(
+                                      "Location*",
+                                      style: TextStyle(
+                                          fontSize: AddSize.font14,
+                                          color: AppTheme.titleText,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(
+                                      height: AddSize.size5,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: CustomTextField(
+                                            controller: cityController,
                                             obSecure: false.obs,
-                                            hintText: "To".obs,
-                                            suffixIcon: Icon(
-                                              Icons.calendar_month_outlined,
-                                              size: AddSize.size22,
-                                              color: AppTheme.primaryColor,
-                                            ),
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'To, date is required';
-                                              } else if (DateTime.parse(dateInput)
-                                                      .compareTo(DateTime.parse(
-                                                          dateInput2)) <
-                                                  0) {
-                                                return null;
-                                              } else {
-                                                return "End date must be grater then start date";
+                                            keyboardType: TextInputType.emailAddress,
+                                            hintText: "City".obs,
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: 'city is required'),
+                                            ]),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: AddSize.size5,
+                                        ),
+                                        Expanded(
+                                          child: TextFormField(
+                                            onTap: () {
+                                              FocusManager.instance.primaryFocus!
+                                                  .unfocus();
+                                              controller.searchList1.clear();
+                                              for (var item in controller
+                                                  .countryList.value.countrylist!) {
+                                                controller.searchList1
+                                                    .add(item.name.toString());
                                               }
-                                            })
-                                        : SizedBox(),
-                                  );
-                                }),
-                                SizedBox(
-                                  height: AddSize.size15,
-                                ),
-                                Text(
-                                  "Description",
-                                  style: TextStyle(
-                                      fontSize: AddSize.size14,
-                                      color: AppTheme.titleText,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: AddSize.size5,
-                                ),
-                                CustomTextField(
-                                  controller: descriptionController,
-                                  isMulti: true,
-                                  obSecure: false.obs,
-                                  keyboardType: TextInputType.emailAddress,
-                                  hintText: "Description".obs,
-                                  /*validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText: 'Description is required'),
-                                  ]),*/
-                                ),
-                                SizedBox(
-                                  height: AddSize.size15,
-                                ),
-                              ])),
+                                              showModalBottomSheet<void>(
+                                                isScrollControlled: true,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(
+                                                            AddSize.size30),
+                                                        topRight: Radius.circular(
+                                                            AddSize.size30))),
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return SizedBox(
+                                                    height: MediaQuery.of(context)
+                                                            .size
+                                                            .height *
+                                                        .7,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
+                                                      children: [
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.topRight,
+                                                          child: IconButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            icon: Icon(
+                                                              Icons.clear,
+                                                              color:
+                                                                  AppTheme.blackColor,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets.all(
+                                                                  AddSize.size10)
+                                                              .copyWith(top: 0),
+                                                          child: TextFormField(
+                                                            onChanged: (value) {
+                                                              if (value != "") {
+                                                                controller.searchList1
+                                                                    .clear();
+                                                                // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
+                                                                for (var item
+                                                                    in controller
+                                                                        .countryList
+                                                                        .value
+                                                                        .countrylist!) {
+                                                                  if (item.name
+                                                                      .toString()
+                                                                      .toLowerCase()
+                                                                      .contains(value
+                                                                          .toLowerCase())) {
+                                                                    controller
+                                                                        .searchList1
+                                                                        .add(item.name
+                                                                            .toString());
+                                                                  }
+                                                                }
+                                                              } else {
+                                                                controller.searchList1
+                                                                    .clear();
+                                                                for (var item
+                                                                    in controller
+                                                                        .countryList
+                                                                        .value
+                                                                        .countrylist!) {
+                                                                  controller
+                                                                      .searchList1
+                                                                      .add(item.name
+                                                                          .toString());
+                                                                }
+                                                              }
+                                                            },
+                                                            decoration:
+                                                                InputDecoration(
+                                                              filled: true,
+                                                              fillColor: AppTheme
+                                                                  .primaryColor
+                                                                  .withOpacity(.05),
+                                                              hintText:
+                                                                  "Select country",
+                                                              prefixIcon:
+                                                                  Icon(Icons.flag),
+                                                              hintStyle:
+                                                                  const TextStyle(
+                                                                      color: Color(
+                                                                          0xff596681),
+                                                                      fontSize: 15),
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical: 14,
+                                                                      horizontal: 20),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: AppTheme
+                                                                        .primaryColor
+                                                                        .withOpacity(
+                                                                            .15),
+                                                                    width: 1.0),
+                                                                borderRadius: BorderRadius
+                                                                    .circular(AddSize
+                                                                            .size10 *
+                                                                        .8),
+                                                              ),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: AppTheme
+                                                                        .primaryColor
+                                                                        .withOpacity(
+                                                                            .15),
+                                                                    width: 1.0),
+                                                                borderRadius: BorderRadius
+                                                                    .circular(AddSize
+                                                                            .size10 *
+                                                                        .8),
+                                                              ),
+                                                              border: OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: AppTheme
+                                                                          .primaryColor
+                                                                          .withOpacity(
+                                                                              .15),
+                                                                      width: 1.0),
+                                                                  borderRadius: BorderRadius
+                                                                      .circular(AddSize
+                                                                              .size10 *
+                                                                          .8)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Obx(() {
+                                                          return Expanded(
+                                                            child: ListView.builder(
+                                                                physics:
+                                                                    BouncingScrollPhysics(),
+                                                                shrinkWrap: true,
+                                                                itemCount: controller
+                                                                    .searchList1
+                                                                    .length,
+                                                                itemBuilder:
+                                                                    (context, index) {
+                                                                  return Obx(() {
+                                                                    return InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          countryController
+                                                                                  .text =
+                                                                              controller
+                                                                                  .searchList1[index]
+                                                                                  .toString();
+                                                                        });
+                                                                        print(
+                                                                            countryController
+                                                                                .text);
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Padding(
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              horizontal:
+                                                                                  AddSize
+                                                                                      .size30,
+                                                                              vertical:
+                                                                                  AddSize.size10),
+                                                                          child: Text(
+                                                                            controller
+                                                                                .searchList1[
+                                                                                    index]
+                                                                                .toString(),
+                                                                            style: TextStyle(
+                                                                                fontSize: AddSize
+                                                                                    .font14,
+                                                                                fontWeight:
+                                                                                    FontWeight.w600),
+                                                                          )),
+                                                                    );
+                                                                  });
+                                                                }),
+                                                          );
+                                                        }),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            readOnly: true,
+                                            controller: countryController,
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: AppTheme.whiteColor,
+                                              hintText: "Country",
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.black),
+                                              suffixIcon:
+                                                  Icon(Icons.keyboard_arrow_down),
+                                              hintStyle: TextStyle(
+                                                color: Color(0xff596681),
+                                                fontSize: AddSize.size15,
+                                              ),
+                                              contentPadding: EdgeInsets.only(
+                                                  left: AddSize.size10),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppTheme.primaryColor
+                                                        .withOpacity(.15),
+                                                    width: 1.0),
+                                                borderRadius: BorderRadius.circular(
+                                                    AddSize.size10 * .8),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: AppTheme.primaryColor
+                                                        .withOpacity(.15),
+                                                    width: 1.0),
+                                                borderRadius: BorderRadius.circular(
+                                                    AddSize.size10 * .8),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppTheme.primaryColor
+                                                          .withOpacity(.15),
+                                                      width: 1.0),
+                                                  borderRadius: BorderRadius.circular(
+                                                      AddSize.size10 * .8)),
+                                            ),
+                                            validator: MultiValidator([
+                                              RequiredValidator(
+                                                  errorText: 'Country is required'),
+                                            ]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      "Period*",
+                                      style: TextStyle(
+                                          fontSize: AddSize.size14,
+                                          color: AppTheme.titleText,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(
+                                      height: AddSize.size5,
+                                    ),
+                                    CustomTextField(
+                                      controller: fromController,
+                                      readOnly: true,
+                                      onTap: () async {
+                                        print(dateInput);
+                                        DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: dateInput == ""
+                                                ? DateTime.now()
+                                                : DateTime.parse(dateInput),
+                                            firstDate: DateTime(1950),
+                                            lastDate: DateTime.now());
+                                        if (pickedDate != null) {
+                                          fromController.text =
+                                              dateFormat.format(pickedDate);
+                                          setState(() {
+                                            dateInput =
+                                                "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                            print(dateInput);
+                                          });
+                                        }
+                                      },
+                                      obSecure: false.obs,
+                                      hintText: "From".obs,
+                                      suffixIcon: Icon(
+                                        Icons.calendar_month_outlined,
+                                        size: AddSize.size22,
+                                        color: AppTheme.primaryColor,
+                                      ),
+                                      validator: MultiValidator([
+                                        RequiredValidator(
+                                            errorText: 'From, date is required'),
+                                      ]),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Obx(() {
+                                          return Checkbox(
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize.shrinkWrap,
+                                              value: endDatePresent.value,
+                                              activeColor: AppTheme.primaryColor,
+                                              onChanged: (newValue) {
+                                                endDatePresent.value = newValue!;
+                                                if (endDatePresent.value == true) {
+                                                  toController.clear();
+                                                  dateInput2 = "";
+                                                }
+                                              });
+                                        }),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "I currently work here",
+                                          style: TextStyle(
+                                              fontSize: AddSize.size12,
+                                              color: AppTheme.titleText,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                    Obx(() {
+                                      return SizedBox(
+                                        child: endDatePresent == false
+                                            ? CustomTextField(
+                                                controller: toController,
+                                                readOnly: true,
+                                                onTap: () async {
+                                                  DateTime? pickedDate =
+                                                      await showDatePicker(
+                                                          context: context,
+                                                          initialDate: dateInput2 ==
+                                                                  ""
+                                                              ? DateTime.now()
+                                                              : DateTime.parse(
+                                                                  dateInput2),
+                                                          firstDate: DateTime(1950),
+                                                          lastDate: DateTime.now());
+                                                  if (pickedDate != null) {
+                                                    toController.text =
+                                                        dateFormat.format(pickedDate);
+                                                    setState(() {
+                                                      dateInput2 =
+                                                          "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
+                                                    });
+                                                  }
+                                                },
+                                                obSecure: false.obs,
+                                                hintText: "To".obs,
+                                                suffixIcon: Icon(
+                                                  Icons.calendar_month_outlined,
+                                                  size: AddSize.size22,
+                                                  color: AppTheme.primaryColor,
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty) {
+                                                    return 'To, date is required';
+                                                  } else if (DateTime.parse(dateInput)
+                                                          .compareTo(DateTime.parse(
+                                                              dateInput2)) <
+                                                      0) {
+                                                    return null;
+                                                  } else {
+                                                    return "End date must be grater then start date";
+                                                  }
+                                                })
+                                            : SizedBox(),
+                                      );
+                                    }),
+                                    SizedBox(
+                                      height: AddSize.size15,
+                                    ),
+                                    Text(
+                                      "Description",
+                                      style: TextStyle(
+                                          fontSize: AddSize.size14,
+                                          color: AppTheme.titleText,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(
+                                      height: AddSize.size5,
+                                    ),
+                                    CustomTextField(
+                                      controller: descriptionController,
+                                      isMulti: true,
+                                      obSecure: false.obs,
+                                      keyboardType: TextInputType.emailAddress,
+                                      hintText: "Description".obs,
+                                      /*validator: MultiValidator([
+                                        RequiredValidator(
+                                            errorText: 'Description is required'),
+                                      ]),*/
+                                    ),
+                                    SizedBox(
+                                      height: AddSize.size15,
+                                    ),
+                                  ]),
+                            ],
+                          )),
                       Row(
                         children: [
                           Expanded(
@@ -976,14 +990,30 @@ class _Page5State extends State<Page5> {
                 color: AppTheme.textColor,
                 fontSize: AddSize.font14),
           ),
-          Text(
-            "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
-            " ${item.endDate != null ? "to" : ""}"
-            " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: AppTheme.textColor,
-                fontSize: AddSize.font14),
+          Row(
+            children: [
+              Text(
+                "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
+                " ${item.endDate != null ? "to" : ""}"
+                " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
+
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: AppTheme.textColor,
+                    fontSize: AddSize.font14),
+              ),
+              Expanded(
+                child: Text(
+                  " ${item.endDate != null ? "," : "- Present"}"
+                      " ${item.city != null ? item.city.toString() : ""}"
+                      " ${item.country != null ? item.country.toString() : ""}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: AppTheme.textColor,
+                      fontSize: AddSize.font14),
+                ),
+              )
+            ],
           ),
         ],
       ),

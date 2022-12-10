@@ -501,6 +501,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             readOnly: true,
                             controller: countryController,
                             decoration: InputDecoration(
+
                               filled: true,
                               fillColor: AppTheme.primaryColor.withOpacity(.05),
                               hintText: 'Select country',
@@ -512,7 +513,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintStyle: const TextStyle(
                                   color: Color(0xff596681), fontSize: 15),
                               contentPadding: const EdgeInsets.only(
-                                  top: 14, bottom: 14, left: 20),
+                                  top: 14, bottom: 14),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color:

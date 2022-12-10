@@ -90,9 +90,9 @@ class _BoxTextFieldState extends State<BoxTextField> {
             fillColor: AppTheme.primaryColor.withOpacity(.05),
             hintText: widget.hintText.value,
             errorText: widget.errorText,
-            errorStyle: TextStyle(
+            /*errorStyle: TextStyle(
               fontSize: widget.textSize == 0 ? AddSize.font14*.9 : widget.textSize
-            ),
+            ),*/
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,

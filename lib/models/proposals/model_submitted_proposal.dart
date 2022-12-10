@@ -1,11 +1,11 @@
-class ModelInvite {
+class ModelSubmittedProposal {
   bool? status;
   String? message;
   Data? data;
 
-  ModelInvite({this.status, this.message, this.data});
+  ModelSubmittedProposal({this.status, this.message, this.data});
 
-  ModelInvite.fromJson(Map<String, dynamic> json) {
+  ModelSubmittedProposal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -30,15 +30,15 @@ class Data {
 
   Data(
       {this.proposalData,
-        this.milestonedata,
-        this.clientData,
-        this.projectData});
+      this.milestonedata,
+      this.clientData,
+      this.projectData});
 
   Data.fromJson(Map<String, dynamic> json) {
     proposalData = json['proposal_data'] != null
         ? new ProposalData.fromJson(json['proposal_data'])
         : null;
-  /*  if (json['milestonedata'] != null) {
+    /*   if (json['milestonedata'] != null) {
       milestonedata = <Null>[];
       json['milestonedata'].forEach((v) {
         milestonedata!.add(new Null.fromJson(v));
@@ -73,45 +73,85 @@ class Data {
 
 class ProposalData {
   dynamic id;
+  dynamic projectId;
   dynamic clientId;
   dynamic freelancerId;
-  dynamic projectId;
-  String? status;
-  String? description;
-  String? createdAt;
-  String? updatedAt;
+  dynamic inviteId;
+  dynamic type;
+  dynamic budgetType;
+  dynamic weeklyLimit;
+  dynamic projectDuration;
+  dynamic title;
+  dynamic date;
+  dynamic coverLetter;
+  dynamic image;
+  dynamic status;
+  dynamic additionalStatus;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic bidAmount;
 
   ProposalData(
       {this.id,
-        this.clientId,
-        this.freelancerId,
-        this.projectId,
-        this.status,
-        this.description,
-        this.createdAt,
-        this.updatedAt});
+      this.projectId,
+      this.clientId,
+      this.freelancerId,
+      this.inviteId,
+      this.type,
+      this.budgetType,
+      this.weeklyLimit,
+      this.projectDuration,
+      this.title,
+      this.date,
+      this.coverLetter,
+      this.image,
+      this.status,
+      this.additionalStatus,
+      this.createdAt,
+      this.updatedAt,
+      this.bidAmount});
 
   ProposalData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    projectId = json['project_id'];
     clientId = json['client_id'];
     freelancerId = json['freelancer_id'];
-    projectId = json['project_id'];
+    inviteId = json['invite_id'];
+    type = json['type'];
+    budgetType = json['budget_type'];
+    weeklyLimit = json['weekly_limit'];
+    projectDuration = json['project_duration'];
+    title = json['title'];
+    date = json['date'];
+    coverLetter = json['cover_letter'];
+    image = json['image'];
     status = json['status'];
-    description = json['description'];
+    additionalStatus = json['additional_status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    bidAmount = json['bid_amount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['project_id'] = this.projectId;
     data['client_id'] = this.clientId;
     data['freelancer_id'] = this.freelancerId;
-    data['project_id'] = this.projectId;
+    data['invite_id'] = this.inviteId;
+    data['type'] = this.type;
+    data['budget_type'] = this.budgetType;
+    data['weekly_limit'] = this.weeklyLimit;
+    data['project_duration'] = this.projectDuration;
+    data['title'] = this.title;
+    data['date'] = this.date;
+    data['cover_letter'] = this.coverLetter;
+    data['image'] = this.image;
     data['status'] = this.status;
-    data['description'] = this.description;
+    data['additional_status'] = this.additionalStatus;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['bid_amount'] = this.bidAmount;
     return data;
   }
 }
@@ -138,7 +178,7 @@ class ClientData {
   dynamic city;
   dynamic zipCode;
   dynamic isVerified;
-  bool? paymentVerified;
+  dynamic paymentVerified;
   dynamic rating;
   dynamic numberOfReview;
   dynamic jobPosted;
@@ -149,34 +189,34 @@ class ClientData {
 
   ClientData(
       {this.id,
-        this.profileImage,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.companyName,
-        this.website,
-        this.tagline,
-        this.industry,
-        this.employeeNo,
-        this.description,
-        this.companyPhone,
-        this.vatId,
-        this.timezone,
-        this.localTime,
-        this.companyAddress,
-        this.country,
-        this.state,
-        this.city,
-        this.zipCode,
-        this.isVerified,
-        this.paymentVerified,
-        this.rating,
-        this.numberOfReview,
-        this.jobPosted,
-        this.moneySpent,
-        this.ratePaidClient,
-        this.memberSince,
-        this.lastActivity});
+      this.profileImage,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.companyName,
+      this.website,
+      this.tagline,
+      this.industry,
+      this.employeeNo,
+      this.description,
+      this.companyPhone,
+      this.vatId,
+      this.timezone,
+      this.localTime,
+      this.companyAddress,
+      this.country,
+      this.state,
+      this.city,
+      this.zipCode,
+      this.isVerified,
+      this.paymentVerified,
+      this.rating,
+      this.numberOfReview,
+      this.jobPosted,
+      this.moneySpent,
+      this.ratePaidClient,
+      this.memberSince,
+      this.lastActivity});
 
   ClientData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -272,9 +312,9 @@ class ProjectData {
   dynamic isProposalSend;
   dynamic isSaved;
   dynamic serviceFee;
- dynamic proposalCount;
- dynamic  inviteSent;
- dynamic  unansweredInvite;
+  dynamic proposalCount;
+  dynamic inviteSent;
+  dynamic unansweredInvite;
   dynamic interview;
   dynamic hireRate;
   dynamic openJobs;
@@ -284,40 +324,40 @@ class ProjectData {
 
   ProjectData(
       {this.id,
-        this.clientId,
-        this.image,
-        this.imageName,
-        this.name,
-        this.type,
-        this.description,
-        this.budgetType,
-        this.minPrice,
-        this.price,
-        this.projectDuration,
-        this.scop,
-        this.status,
-        this.experienceLevel,
-        this.englishLevel,
-        this.categories,
-        this.categoryId,
-        this.createdAt,
-        this.postedDate,
-        this.jobSkills,
-        this.proposalList,
-        this.clientData,
-        this.isPrivate,
-        this.isProposalSend,
-        this.isSaved,
-        this.serviceFee,
-        this.proposalCount,
-        this.inviteSent,
-        this.unansweredInvite,
-        this.interview,
-        this.hireRate,
-        this.openJobs,
-        this.totalHire,
-        this.totalActive,
-        this.clientRecentHistory});
+      this.clientId,
+      this.image,
+      this.imageName,
+      this.name,
+      this.type,
+      this.description,
+      this.budgetType,
+      this.minPrice,
+      this.price,
+      this.projectDuration,
+      this.scop,
+      this.status,
+      this.experienceLevel,
+      this.englishLevel,
+      this.categories,
+      this.categoryId,
+      this.createdAt,
+      this.postedDate,
+      this.jobSkills,
+      this.proposalList,
+      this.clientData,
+      this.isPrivate,
+      this.isProposalSend,
+      this.isSaved,
+      this.serviceFee,
+      this.proposalCount,
+      this.inviteSent,
+      this.unansweredInvite,
+      this.interview,
+      this.hireRate,
+      this.openJobs,
+      this.totalHire,
+      this.totalActive,
+      this.clientRecentHistory});
 
   ProjectData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

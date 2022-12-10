@@ -682,7 +682,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Zip/Postal code",
+                  "Zip/Postal code*",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -701,14 +701,16 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Zip/Postal code is required'),
-                    MaxLengthValidator(8, errorText: "Maximum length is 8")
+                    MinLengthValidator(4,
+                        errorText: 'Minimum length is 4'),
+                    MaxLengthValidator(10, errorText: "Maximum length is 10")
                   ]),
                 ),
                 SizedBox(
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Phone number",
+                  "Phone number*",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

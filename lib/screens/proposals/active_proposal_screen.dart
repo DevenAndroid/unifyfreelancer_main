@@ -8,46 +8,17 @@ import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
-import '../../models/proposals/model_submitted_proposal.dart';
-import '../../repository/proposals/submitted_proposal_repository.dart';
-import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
-import '../../widgets/error_widget.dart';
-import '../../widgets/progress_indicator.dart';
 
-class SubmittedProposalScreen extends StatefulWidget {
-  const SubmittedProposalScreen({Key? key}) : super(key: key);
+class ActiveProposalScreen extends StatefulWidget {
+  const ActiveProposalScreen({Key? key}) : super(key: key);
 
   @override
-  State<SubmittedProposalScreen> createState() =>
-      _SubmittedProposalScreenState();
+  State<ActiveProposalScreen> createState() => _ActiveProposalScreenState();
 }
 
-class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
-  String? id;
-  Rx<ModelSubmittedProposal> model = ModelSubmittedProposal().obs;
-  Rx<RxStatus> status = RxStatus.empty().obs;
-
-  @override
-  void initState() {
-    super.initState();
-    id = Get.arguments[0];
-    getData();
-  }
-
-  void getData() {
-    submittedRepo(id).then((value) {
-      model.value = value;
-      if (value.status == true) {
-        status.value = RxStatus.success();
-      } else {
-        showToast(value.message.toString());
-        status.value = RxStatus.error();
-      }
-    });
-  }
-
+class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -60,25 +31,14 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
               isProfileImage: false,
               titleText: "Job details",
             )),
-        body: Obx(() {
-          return status.value.isSuccess
-              ? SingleChildScrollView(
-                  child: Column(
-                  children: [
-                    contentSection(),
-                    coverLetter(),
-                    AboutTheClient(),
-                  ],
-                ))
-              : status.value.isError
-                  ? CommonErrorWidget(
-                      errorText: model.value.message.toString(),
-                      onTap: () {
-                        getData();
-                      },
-                    )
-                  : CommonProgressIndicator();
-        }));
+        body: SingleChildScrollView(
+            child: Column(
+              children: [
+                contentSection(),
+                coverLetter(),
+                AboutTheClient(),
+              ],
+            )));
   }
 
   contentSection() {
@@ -104,7 +64,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            model.value.data!.projectData!.name.toString(),
+            "Mobile App And Website design",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font24,
@@ -117,7 +77,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               CustomOutlineButton(
-                title: model.value.data!.projectData!.categories.toString(),
+                title: "Backend Developer",
                 backgroundColor: AppTheme.whiteColor,
                 textColor: AppTheme.primaryColor,
                 onPressed: () {},
@@ -126,7 +86,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                 width: AddSize.size10,
               ),
               Text(
-                model.value.data!.projectData!.postedDate.toString(),
+                'Posted dec 6, 2022',
                 style: TextStyle(
                     color: Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
@@ -138,7 +98,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             height: AddSize.size20,
           ),
           Text(
-            model.value.data!.projectData!.description.toString(),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
@@ -174,7 +134,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             height: AddSize.size10,
           ),
           Text(
-            "Client's budget: \$${model.value.data!.projectData!.price.toString()}",
+            "Client's budget: \$70.00",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font16,
@@ -194,7 +154,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             height: AddSize.size10,
           ),
           Text(
-            "By ${model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" ? "project" : "hourly"}",
+            "By project",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
@@ -213,7 +173,6 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if(model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed")
           Text(
             "This includes all milestones, and is the amount your client will see",
             style: TextStyle(
@@ -225,7 +184,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             height: deviceHeight * .01,
           ),
           Text(
-            "\$${model.value.data!.proposalData!.bidAmount.toString()}",
+            "\$0.00",
             style: TextStyle(
                 color: AppTheme.darkBlueText,
                 fontSize: AddSize.font16,
@@ -261,10 +220,8 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-         Text(
-            "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) *
-                int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
-                ).toString()}",
+          Text(
+            "\$0.00",
             style: TextStyle(
                 color: AppTheme.darkBlueText,
                 fontSize: AddSize.font16,
@@ -278,59 +235,59 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             children: [
               Expanded(
                   child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      color: Color(0xff6D2EF1),
+                    style: ElevatedButton.styleFrom(
+                        side: const BorderSide(
+                          color: Color(0xff6D2EF1),
+                        ),
+                        backgroundColor: AppTheme.whiteColor,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            )),
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )),
+                    onPressed: () {
+                      Get.toNamed(MyRouter.changeTermsScreen);
+                      Get.toNamed(MyRouter.changeTermsScreen);
+                    },
+                    child: Text(
+                      "Change terms",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppTheme.primaryColor,
+                      ),
                     ),
-                    backgroundColor: AppTheme.whiteColor,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    )),
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )),
-                onPressed: () {
-                  Get.toNamed(MyRouter.changeTermsScreen);
-                  Get.toNamed(MyRouter.changeTermsScreen);
-                },
-                child: Text(
-                  "Change terms",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: AppTheme.primaryColor,
-                  ),
-                ),
-              )),
+                  )),
               SizedBox(
                 width: AddSize.size10,
               ),
               Expanded(
                   child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      color: Color(0xff6D2EF1),
+                    style: ElevatedButton.styleFrom(
+                        side: const BorderSide(
+                          color: Color(0xff6D2EF1),
+                        ),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            )),
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )),
+                    onPressed: () {},
+                    child: Text(
+                      "Withdraw proposal",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppTheme.whiteColor,
+                      ),
                     ),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    )),
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    )),
-                onPressed: () {},
-                child: Text(
-                  "Withdraw proposal",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: AppTheme.whiteColor,
-                  ),
-                ),
-              )),
+                  )),
             ],
             // =======
             //             ],
@@ -359,9 +316,9 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
-                    textColor: AppTheme.primaryColor,
-                    iconColor: AppTheme.primaryColor))
+            expansionTileTheme: ExpansionTileThemeData(
+                textColor: AppTheme.primaryColor,
+                iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
         child: ListTileTheme(
           contentPadding: EdgeInsets.zero,
@@ -379,7 +336,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  model.value.data!.proposalData!.coverLetter.toString(),
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.",
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 ),
               ]),
@@ -459,9 +416,9 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
-                    textColor: AppTheme.primaryColor,
-                    iconColor: AppTheme.primaryColor))
+            expansionTileTheme: ExpansionTileThemeData(
+                textColor: AppTheme.primaryColor,
+                iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
         child: ListTileTheme(
           contentPadding: EdgeInsets.zero,
@@ -481,18 +438,12 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                 Row(
                   children: [
                     Icon(Icons.verified,
-                        color: model.value.data!.clientData!.paymentVerified ==
-                                true
-                            ? AppTheme.primaryColor
-                            : Colors.grey.withOpacity(.49),
-                        size: 20),
+                        color: AppTheme.primaryColor, size: 20),
                     SizedBox(
                       width: AddSize.size10,
                     ),
                     Text(
-                      model.value.data!.clientData!.paymentVerified == true
-                          ? "Payment method verified"
-                          : "Payment method not verified",
+                      "Payment method verified",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -509,26 +460,23 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                     Wrap(
                       children: List.generate(
                           5,
-                          (index) => double.parse(model
-                                      .value.data!.clientData!.rating
-                                      .toString()) >
-                                  index
+                              (index) => 3 > index
                               ? Icon(
-                                  Icons.star,
-                                  color: AppTheme.pinkText,
-                                  size: 20,
-                                )
+                            Icons.star,
+                            color: AppTheme.pinkText,
+                            size: 20,
+                          )
                               : Icon(
-                                  Icons.star_border_outlined,
-                                  color: Colors.grey,
-                                  size: 20,
-                                )),
+                            Icons.star_border_outlined,
+                            color: Colors.grey,
+                            size: 20,
+                          )),
                     ),
                     SizedBox(
                       width: AddSize.size10,
                     ),
                     Text(
-                      "${double.parse(model.value.data!.clientData!.rating.toString())} of ${double.parse(model.value.data!.clientData!.numberOfReview.toString())} reviews",
+                      "4.2 of 22 reviews",
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -545,7 +493,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          model.value.data!.clientData!.country.toString(),
+                          "Netherlands",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -556,9 +504,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          model.value.data!.clientData!.city.toString() +
-                              model.value.data!.clientData!.localTime
-                                  .toString(),
+                          "Zwijndrecht 12:20 pm",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -569,7 +515,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          "${model.value.data!.clientData!.jobPosted.toString()} jobs posted",
+                          "5 jobs posted",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -580,7 +526,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          "${model.value.data!.projectData!.hireRate.toString()}% hire rate, ${model.value.data!.projectData!.openJobs.toString()} open job",
+                          "20% hire rate, 1 open job",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -591,7 +537,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          "\$${model.value.data!.clientData!.moneySpent.toString()}+ total spent",
+                          "\$300+ total spent",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -602,7 +548,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          "${model.value.data!.projectData!.totalHire.toString()} hires, ${model.value.data!.projectData!.openJobs.toString()} active",
+                          "5 hires, 2 active",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -613,8 +559,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          model.value.data!.projectData!.projectDuration
-                              .toString(),
+                          "1 to 3 months",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -636,16 +581,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size15,
                         ),
                         Text(
-                          companySize(double.parse(model
-                                          .value.data!.clientData!.employeeNo
-                                          .toString() ==
-                                      "null" ||
-                                  model.value.data!.clientData!.employeeNo
-                                          .toString() ==
-                                      ""
-                              ? "0"
-                              : model.value.data!.clientData!.employeeNo
-                                  .toString())),
+                          "Mid size company (10-99 people)",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -656,7 +592,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           height: AddSize.size15,
                         ),
                         Text(
-                          "Member since ${model.value.data!.clientData!.memberSince.toString()}",
+                          "Member since Sep 16, 2020",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -671,17 +607,5 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
         ),
       ),
     );
-  }
-
-  String companySize(double numberOfEmp) {
-    if (numberOfEmp <= 10) {
-      return "Company size (1 to 10 people)";
-    } else if (numberOfEmp <= 100) {
-      return "Company size (10 to 100 people)";
-    } else if (numberOfEmp <= 1000) {
-      return "Company size (10 to 100 people)";
-    } else {
-      return "Company size (1000+ people)";
-    }
   }
 }
