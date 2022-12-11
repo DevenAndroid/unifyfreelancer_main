@@ -104,7 +104,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                         ),
 
                       ),
-                      InkWell(
+               /*       InkWell(
                         onTap: (){
                           showFilterButtonSheet(context: context, titleText: "Filters", widgets: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +125,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               'assets/icon/fillter.svg',
                               color: AppTheme.primaryColor,
                             )),
-                      )
+                      )*/
                     ],
                   ),
                   SizedBox(

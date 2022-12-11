@@ -24,121 +24,123 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Obx(() {
-        return Column(
-          children: [
-            SizedBox(height: 10.h),
-            DefaultTabController(
-                length: 4, // length of tabs
-                initialIndex: 0,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TabBar(
-                        isScrollable: true,
-                        labelColor: Color(0xff271943),
-                        labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                        unselectedLabelColor: Color(0xff707070),
-                        // indicatorColor: const Color(0xffFA61FF),
-                        indicator: UnderlineTabIndicator(
-                          borderSide: BorderSide(
-                            width: 3.0.w,
-                            color: AppTheme.pinkText,
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10.h),
+              DefaultTabController(
+                  length: 4, // length of tabs
+                  initialIndex: 0,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TabBar(
+                          isScrollable: true,
+                          labelColor: Color(0xff271943),
+                          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+                          unselectedLabelColor: Color(0xff707070),
+                          // indicatorColor: const Color(0xffFA61FF),
+                          indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(
+                              width: 3.0.w,
+                              color: AppTheme.pinkText,
+                            ),
                           ),
-                        ),
-                        automaticIndicatorColorAdjustment: true,
-                        unselectedLabelStyle:
-                            const TextStyle(color: Color(0xff707070)),
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              "Offers",
-                              style: TextStyle(
-                                fontSize: 15.sp,
+                          automaticIndicatorColorAdjustment: true,
+                          unselectedLabelStyle:
+                              const TextStyle(color: Color(0xff707070)),
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                "Offers",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                ),
                               ),
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Submitted Proposals",
-                              style: TextStyle(
-                                fontSize: 15.sp,
+                            Tab(
+                              child: Text(
+                                "Submitted Proposals",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                ),
                               ),
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Active Proposals",
-                              style: TextStyle(
-                                fontSize: 15.sp,
+                            Tab(
+                              child: Text(
+                                "Active Proposals",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                ),
                               ),
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Invitations to interview",
-                              style: TextStyle(
-                                fontSize: 15.sp,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (controller.status.value.isSuccess)
-                        Container(
-                            decoration: const BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(
-                                        color: AppTheme.pinkText, width: 0.5))),
-                            height: deviceHeight - 195,
-                            child: TabBarView(children: [
-                              offers(),
-                              submittedProposals(),
-                              activeProposals(),
-                              invitationsToInterview()
-                            ])),
-                      if (controller.status.value.isError)
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: AddSize.size200,
-                            ),
-                            SizedBox(
-                              width: double.maxFinite,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    controller.model.value.message.toString(),
-                                    // fontSize: AddSize.font16,
-                                  ),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.getData();
-                                      },
-                                      icon: Icon(
-                                        Icons.change_circle_outlined,
-                                        size: AddSize.size30,
-                                      ))
-                                ],
+                            Tab(
+                              child: Text(
+                                "Invitations to interview",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      if (controller.status.value.isEmpty)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: AddSize.size200,
-                            ),
-                            Center(
-                              child: CircularProgressIndicator(
-                                  color: AppTheme.primaryColor),
-                            ),
-                          ],
-                        ),
-                    ])),
-          ],
+                        if (controller.status.value.isSuccess)
+                          Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      top: BorderSide(
+                                          color: AppTheme.pinkText, width: 0.5))),
+                              height: deviceHeight - 195,
+                              child: TabBarView(children: [
+                                offers(),
+                                submittedProposals(),
+                                activeProposals(),
+                                invitationsToInterview()
+                              ])),
+                        if (controller.status.value.isError)
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: AddSize.size200,
+                              ),
+                              SizedBox(
+                                width: double.maxFinite,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      controller.model.value.message.toString(),
+                                      // fontSize: AddSize.font16,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          controller.getData();
+                                        },
+                                        icon: Icon(
+                                          Icons.change_circle_outlined,
+                                          size: AddSize.size30,
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (controller.status.value.isEmpty)
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: AddSize.size200,
+                              ),
+                              Center(
+                                child: CircularProgressIndicator(
+                                    color: AppTheme.primaryColor),
+                              ),
+                            ],
+                          ),
+                      ])),
+            ],
+          ),
         );
       }),
     );
@@ -196,7 +198,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                             .toString(),
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -252,7 +254,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                    Get.toNamed(MyRouter.submittedProposalScreen ,arguments: [controller.model.value.data!.submittedProposal![index].id.toString()]);
+                    Get.toNamed(MyRouter.submittedProposalScreen ,arguments: [controller.model.value.data!.submittedProposal![index].id.toString(),"submit"]);
                   print(controller.model.value.data!.submittedProposal![index].id.toString());
                 },
                 child: Container(
@@ -285,7 +287,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                             .toString(),
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -340,12 +342,10 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             padding: EdgeInsets.only(bottom: 30),
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
-                onTap: () {
-                  Get.toNamed(MyRouter.activeProposalScreen);
-                  /*   Get.toNamed(MyRouter.jobDetailsScreen,
-                      arguments: [item[index].projectId]);
-                  print([item[index].projectId]);*/
-                },
+                  onTap: () {
+                    Get.toNamed(MyRouter.activeProposalScreen ,arguments: [controller.model.value.data!.activeProposal![index].id.toString()]);
+                    print(controller.model.value.data!.activeProposal![index].id.toString());
+                  },
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
                   width: deviceWidth,
@@ -375,7 +375,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                             .toString(),
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -466,7 +466,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                             .toString(),
                         style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

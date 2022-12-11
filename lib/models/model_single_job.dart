@@ -23,30 +23,30 @@ class ModelSingleJob {
 }
 
 class Data {
-  String? id;
-  String? clientId;
-  String? image;
-  String? imageName;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
+  dynamic id;
+  dynamic clientId;
+  dynamic image;
+  dynamic imageName;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
   dynamic minPrice;
   dynamic price;
-  String? projectDuration;
-  String? scop;
-  String? status;
-  String? experienceLevel;
-  String? englishLevel;
-  String? categories;
-  String? createdAt;
+  dynamic projectDuration;
+  dynamic scop;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic englishLevel;
+  dynamic categories;
+  dynamic createdAt;
   List<JobSkills>? jobSkills;
   List<ProposalList>? proposalList;
   ClientData? clientData;
   bool? isPrivate;
   bool? isProposalSend;
   bool? isSaved;
-  String? serviceFee;
+  dynamic serviceFee;
   dynamic proposalCount;
   dynamic inviteSent;
   dynamic unansweredInvite;
@@ -293,35 +293,35 @@ class Skills {
 }
 
 class ClientData {
-  String? id;
-  String? profileImage;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? companyName;
-  String? website;
-  String? tagline;
-  String? industry;
-  String? employeeNo;
-  String? description;
-  String? companyPhone;
-  String? vatId;
-  String? timezone;
-  String? localTime;
-  String? companyAddress;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic companyName;
+  dynamic website;
+  dynamic tagline;
+  dynamic industry;
+  dynamic employeeNo;
+  dynamic description;
+  dynamic companyPhone;
+  dynamic vatId;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic companyAddress;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic isVerified;
   bool? paymentVerified;
-  String? rating;
-  String? numberOfReview;
-  String? jobPosted;
-  String? moneySpent;
-  String? ratePaidClient;
-  String? memberSince;
-  String? lastActivity;
+  dynamic rating;
+  dynamic numberOfReview;
+  dynamic jobPosted;
+  dynamic moneySpent;
+  dynamic ratePaidClient;
+  dynamic memberSince;
+  dynamic lastActivity;
 
   ClientData(
       {this.id,
@@ -422,10 +422,10 @@ class ClientData {
 }
 
 class ClientRecentHistory {
-  String? name;
-  String? description;
-  String? startDate;
-  String? endDate;
+  dynamic name;
+  dynamic description;
+  dynamic startDate;
+  dynamic endDate;
   dynamic minPrice;
   dynamic rating;
   dynamic price;

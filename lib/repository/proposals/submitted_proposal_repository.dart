@@ -6,9 +6,9 @@ import '../../utils/api_contant.dart';
 
 
 
-Future<ModelSubmittedProposal> submittedRepo(id) async {
+Future<ModelSubmittedProposal> submittedRepo(id,type) async {
   try {
-    http.Response response = await http.get(Uri.parse(ApiUrls.singleProposalDetails+"${id}/submit"),
+    http.Response response = await http.get(Uri.parse(ApiUrls.singleProposalDetails+"${id}/${type}"),
         headers: await getAuthHeader() );
     print(ApiUrls.singleProposalDetails+"${id}/submit");
 

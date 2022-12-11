@@ -2805,6 +2805,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
+         /* Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Verification",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              InkWell(
+                onTap: () {
+                  verification();
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+              *//* InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),*//*
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            children: [
+              Text(
+                "ID : ",
+                style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+              Text(
+                "Verified",
+                style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textColor),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(Icons.verified,color: AppTheme.primaryColor,size: 20,)
+            ],
+          ),*/
           SizedBox(
             height: 10.h,
           ),
@@ -3164,4 +3241,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ));
   }
+
+/*  verification(){
+    List dropDownValues = [
+      "Driving licences"
+    ];
+    return    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Form(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "User Verification",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      DropdownButtonFormField<dynamic>(
+                        alignment: Alignment.centerLeft,
+                        decoration: InputDecoration(
+                          hintText: 'Select ID',
+                          focusColor: AppTheme.textfield.withOpacity(0.5),
+                          hintStyle: TextStyle(color: Colors.grey.shade400),
+                          filled: true,
+                          fillColor:
+                          AppTheme.whitebg.withOpacity(0.5),
+                          contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppTheme.boardercolor.withOpacity(0.5)),
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppTheme.boardercolor
+                                      .withOpacity(0.5)),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppTheme.boardercolor
+                                      .withOpacity(0.5),
+                                  width: 3.0),
+                              borderRadius:
+                              BorderRadius.circular(15.0)),
+                        ),
+                        isDense: false,
+                        validator: (value) {
+                          if (value == null) {
+                            return "Select ID Type";
+                          } else {
+                            return null;
+                          }
+                        },
+                        value: currentSelectedDocument.value == ""
+                            ? null
+                            : currentSelectedDocument.value,
+                        isExpanded: true,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        items: List.generate(
+                            dropDownValues.length,
+                                (index) => DropdownMenuItem(
+                                value: dropDownValues[index]
+                                    .slug
+                                    .toString(),
+                                child: Text(dropDownValues[index]
+                                    .title
+                                    .toString()))),
+                        onChanged: (val) {
+                          currentSelectedDocument.value = val;
+                        },
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }*/
 }

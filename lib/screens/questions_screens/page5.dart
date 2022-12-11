@@ -170,7 +170,7 @@ class _Page5State extends State<Page5> {
                                             hintText: "City".obs,
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'city is required'),
+                                                  errorText: 'City is required'),
                                             ]),
                                           ),
                                         ),

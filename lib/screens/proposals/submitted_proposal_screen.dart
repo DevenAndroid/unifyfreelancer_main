@@ -1,18 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-
+import 'package:unifyfreelancer/controller/proposals_screen_controller.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
-
 import '../../models/proposals/model_submitted_proposal.dart';
 import '../../repository/proposals/submitted_proposal_repository.dart';
+import '../../repository/proposals/withdraw_proposal_repository.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_textfield.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/progress_indicator.dart';
 
@@ -26,6 +27,7 @@ class SubmittedProposalScreen extends StatefulWidget {
 
 class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
   String? id;
+  String? type;
   Rx<ModelSubmittedProposal> model = ModelSubmittedProposal().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
 
@@ -33,20 +35,35 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
   void initState() {
     super.initState();
     id = Get.arguments[0];
+    type = Get.arguments[1];
     getData();
   }
 
   void getData() {
-    submittedRepo(id).then((value) {
+    submittedRepo(id,type).then((value) {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
+
+       if(model.value.data!.milestonedata!.isNotEmpty) {
+         for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
+           milestonePrice = milestonePrice +
+               int.parse(model.value.data!.milestonedata![i].amount.toString());
+           print("milestone total price" + milestonePrice.toString());
+         }
+       }
       } else {
         showToast(value.message.toString());
         status.value = RxStatus.error();
       }
     });
   }
+  
+  int milestonePrice = 0;
+ // int totalPrice = 0;
+
+final controller = Get.put(ProposalScreenController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +119,9 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             ),
           ],
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child:
+        Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             model.value.data!.projectData!.name.toString(),
             style: TextStyle(
@@ -147,12 +166,18 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: AddSize.size20,
           ),
-          Text(
-            "View job posting",
-            style: TextStyle(
-                color: AppTheme.primaryColor,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
+          InkWell(
+            onTap: (){
+              Get.toNamed(MyRouter.jobDetailsScreen,arguments: [model.value.data!.projectData!.id.toString()]);
+              print(model.value.data!.projectData!.id.toString());
+            },
+            child: Text(
+              "View job posting",
+              style: TextStyle(
+                  color: AppTheme.primaryColor,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           SizedBox(
             height: AddSize.size10,
@@ -213,7 +238,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if(model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed")
+          if(model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" && model.value.data!.milestonedata!.isNotEmpty)
           Text(
             "This includes all milestones, and is the amount your client will see",
             style: TextStyle(
@@ -224,6 +249,8 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
+          
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
           Text(
             "\$${model.value.data!.proposalData!.bidAmount.toString()}",
             style: TextStyle(
@@ -231,6 +258,14 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                 fontSize: AddSize.font16,
                 fontWeight: FontWeight.w600),
           ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
+            Text(
+              "\$${milestonePrice}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
           SizedBox(
             height: deviceHeight * .015,
           ),
@@ -261,15 +296,26 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-         Text(
-            "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) *
-                int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
-                ).toString()}",
-            style: TextStyle(
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
-          ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
+            Text(
+              "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) *
+                  int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
+              ).toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
+            Text("\$${(milestonePrice - milestonePrice *
+                  int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
+              ).toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+
           SizedBox(
             height: AddSize.size30,
           ),
@@ -292,8 +338,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                       fontWeight: FontWeight.bold,
                     )),
                 onPressed: () {
-                  Get.toNamed(MyRouter.changeTermsScreen);
-                  Get.toNamed(MyRouter.changeTermsScreen);
+                    Get.toNamed(MyRouter.changeTermsScreen , arguments: [id,"submit"]);
                 },
                 child: Text(
                   "Change terms",
@@ -321,7 +366,9 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                     )),
-                onPressed: () {},
+                onPressed: () {
+                  withdrawProposal(context);
+                },
                 child: Text(
                   "Withdraw proposal",
                   style: TextStyle(
@@ -673,6 +720,142 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
     );
   }
 
+
+  withdrawProposal(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final _reasonController = TextEditingController();
+    final _messageController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Withdraw Proposal",
+                        style: TextStyle(
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: AddSize.size25,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Reason",
+                            style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: AddSize.font16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: AddSize.size5,
+                          ),
+                          CustomTextField(
+                            controller: _reasonController,
+                            obSecure: false.obs,
+                            keyboardType: TextInputType.text,
+                            hintText: "".obs,
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'Reason is required'),
+                            ]),
+                          ),
+                          SizedBox(
+                            height: AddSize.size10,
+                          ),
+                          Text(
+                            "Message (optional)",
+                            style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: AddSize.font16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: AddSize.size5,
+                          ),
+                          CustomTextField(
+                            controller: _messageController,
+                            isMulti: true,
+                            obSecure: false.obs,
+                            keyboardType: TextInputType.text,
+                            hintText: "".obs,
+                          ),
+                          SizedBox(
+                            height: AddSize.size10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Decline',
+                                    backgroundColor: AppTheme.whiteColor,
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    textColor: AppTheme.primaryColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Accept',
+                                    backgroundColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      if(_formKey.currentState!.validate()){
+                                        proposalWithdrawRepo(
+                                            proposal_id: model.value.data!.proposalData!.id.toString(),
+                                            reason: _reasonController.text.trim(),
+                                            description: _messageController.text.trim(),
+                                            context: context
+                                        ).then((value) {
+                                          if(value.status == true){
+                                            Get.offAllNamed(MyRouter.bottomNavbar);
+                                            controller.getData();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      }
+
+                                    },
+                                    textColor: AppTheme.whiteColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+
   String companySize(double numberOfEmp) {
     if (numberOfEmp <= 10) {
       return "Company size (1 to 10 people)";
@@ -684,4 +867,5 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
       return "Company size (1000+ people)";
     }
   }
+
 }

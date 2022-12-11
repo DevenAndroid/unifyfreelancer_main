@@ -1,15 +1,21 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-
+import 'package:unifyfreelancer/controller/proposals_screen_controller.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
-
+import '../../models/proposals/model_submitted_proposal.dart';
+import '../../repository/proposals/submitted_proposal_repository.dart';
+import '../../repository/proposals/withdraw_proposal_repository.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_textfield.dart';
+import '../../widgets/error_widget.dart';
+import '../../widgets/progress_indicator.dart';
 
 class ActiveProposalScreen extends StatefulWidget {
   const ActiveProposalScreen({Key? key}) : super(key: key);
@@ -19,6 +25,45 @@ class ActiveProposalScreen extends StatefulWidget {
 }
 
 class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
+  String? id;
+  String? type;
+  Rx<ModelSubmittedProposal> model = ModelSubmittedProposal().obs;
+  Rx<RxStatus> status = RxStatus.empty().obs;
+
+  @override
+  void initState() {
+    super.initState();
+    id = Get.arguments[0];
+    type = Get.arguments[1];
+    getData();
+  }
+
+  void getData() {
+    submittedRepo(id,type).then((value) {
+      model.value = value;
+      if (value.status == true) {
+        status.value = RxStatus.success();
+
+        if(model.value.data!.milestonedata!.isNotEmpty) {
+          for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
+            milestonePrice = milestonePrice +
+                int.parse(model.value.data!.milestonedata![i].amount.toString());
+            print("milestone total price" + milestonePrice.toString());
+          }
+        }
+      } else {
+        showToast(value.message.toString());
+        status.value = RxStatus.error();
+      }
+    });
+  }
+
+  int milestonePrice = 0;
+  // int totalPrice = 0;
+
+  final controller = Get.put(ProposalScreenController());
+
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -31,14 +76,25 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
               isProfileImage: false,
               titleText: "Job details",
             )),
-        body: SingleChildScrollView(
-            child: Column(
-              children: [
-                contentSection(),
-                coverLetter(),
-                AboutTheClient(),
-              ],
-            )));
+        body: Obx(() {
+          return status.value.isSuccess
+              ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  contentSection(),
+                  coverLetter(),
+                  AboutTheClient(),
+                ],
+              ))
+              : status.value.isError
+              ? CommonErrorWidget(
+            errorText: model.value.message.toString(),
+            onTap: () {
+              getData();
+            },
+          )
+              : CommonProgressIndicator();
+        }));
   }
 
   contentSection() {
@@ -64,7 +120,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            "Mobile App And Website design",
+            model.value.data!.projectData!.name.toString(),
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font24,
@@ -77,7 +133,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               CustomOutlineButton(
-                title: "Backend Developer",
+                title: model.value.data!.projectData!.categories.toString(),
                 backgroundColor: AppTheme.whiteColor,
                 textColor: AppTheme.primaryColor,
                 onPressed: () {},
@@ -86,7 +142,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 width: AddSize.size10,
               ),
               Text(
-                'Posted dec 6, 2022',
+                model.value.data!.projectData!.postedDate.toString(),
                 style: TextStyle(
                     color: Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
@@ -98,7 +154,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
             height: AddSize.size20,
           ),
           Text(
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
+            model.value.data!.projectData!.description.toString(),
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
@@ -107,12 +163,18 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           SizedBox(
             height: AddSize.size20,
           ),
-          Text(
-            "View job posting",
-            style: TextStyle(
-                color: AppTheme.primaryColor,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
+          InkWell(
+            onTap: (){
+              Get.toNamed(MyRouter.jobDetailsScreen,arguments: [model.value.data!.projectData!.id.toString()]);
+              print(model.value.data!.projectData!.id.toString());
+            },
+            child: Text(
+              "View job posting",
+              style: TextStyle(
+                  color: AppTheme.primaryColor,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           SizedBox(
             height: AddSize.size10,
@@ -134,7 +196,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
             height: AddSize.size10,
           ),
           Text(
-            "Client's budget: \$70.00",
+            "Client's budget: \$${model.value.data!.projectData!.price.toString()}",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font16,
@@ -154,7 +216,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
             height: AddSize.size10,
           ),
           Text(
-            "By project",
+            "By ${model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" ? "project" : "hourly"}",
             style: TextStyle(
                 color: Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
@@ -173,23 +235,34 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          Text(
-            "This includes all milestones, and is the amount your client will see",
-            style: TextStyle(
-                color: Color(0xff4D4D4D),
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w500),
-          ),
+          if(model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" && model.value.data!.milestonedata!.isNotEmpty)
+            Text(
+              "This includes all milestones, and is the amount your client will see",
+              style: TextStyle(
+                  color: Color(0xff4D4D4D),
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w500),
+            ),
           SizedBox(
             height: deviceHeight * .01,
           ),
-          Text(
-            "\$0.00",
-            style: TextStyle(
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
-          ),
+
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
+            Text(
+              "\$${model.value.data!.proposalData!.bidAmount.toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
+            Text(
+              "\$${milestonePrice}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
           SizedBox(
             height: deviceHeight * .015,
           ),
@@ -220,13 +293,26 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          Text(
-            "\$0.00",
-            style: TextStyle(
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
-          ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
+            Text(
+              "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) *
+                  int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
+              ).toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
+            Text("\$${(milestonePrice - milestonePrice *
+                int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
+            ).toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+
           SizedBox(
             height: AddSize.size30,
           ),
@@ -278,7 +364,9 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                         textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                      withdrawProposal(context);
+                    },
                     child: Text(
                       "Withdraw proposal",
                       style: TextStyle(
@@ -336,7 +424,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.",
+                  model.value.data!.proposalData!.coverLetter.toString(),
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 ),
               ]),
@@ -438,12 +526,18 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 Row(
                   children: [
                     Icon(Icons.verified,
-                        color: AppTheme.primaryColor, size: 20),
+                        color: model.value.data!.clientData!.paymentVerified ==
+                            true
+                            ? AppTheme.primaryColor
+                            : Colors.grey.withOpacity(.49),
+                        size: 20),
                     SizedBox(
                       width: AddSize.size10,
                     ),
                     Text(
-                      "Payment method verified",
+                      model.value.data!.clientData!.paymentVerified == true
+                          ? "Payment method verified"
+                          : "Payment method not verified",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -460,7 +554,10 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                     Wrap(
                       children: List.generate(
                           5,
-                              (index) => 3 > index
+                              (index) => double.parse(model
+                              .value.data!.clientData!.rating
+                              .toString()) >
+                              index
                               ? Icon(
                             Icons.star,
                             color: AppTheme.pinkText,
@@ -476,7 +573,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                       width: AddSize.size10,
                     ),
                     Text(
-                      "4.2 of 22 reviews",
+                      "${double.parse(model.value.data!.clientData!.rating.toString())} of ${double.parse(model.value.data!.clientData!.numberOfReview.toString())} reviews",
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -493,7 +590,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Netherlands",
+                          model.value.data!.clientData!.country.toString(),
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -504,7 +601,9 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          "Zwijndrecht 12:20 pm",
+                          model.value.data!.clientData!.city.toString() +
+                              model.value.data!.clientData!.localTime
+                                  .toString(),
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -515,7 +614,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          "5 jobs posted",
+                          "${model.value.data!.clientData!.jobPosted.toString()} jobs posted",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -526,7 +625,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          "20% hire rate, 1 open job",
+                          "${model.value.data!.projectData!.hireRate.toString()}% hire rate, ${model.value.data!.projectData!.openJobs.toString()} open job",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -537,7 +636,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          "\$300+ total spent",
+                          "\$${model.value.data!.clientData!.moneySpent.toString()}+ total spent",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -548,7 +647,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size5,
                         ),
                         Text(
-                          "5 hires, 2 active",
+                          "${model.value.data!.projectData!.totalHire.toString()} hires, ${model.value.data!.projectData!.openJobs.toString()} active",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -559,7 +658,8 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size10,
                         ),
                         Text(
-                          "1 to 3 months",
+                          model.value.data!.projectData!.projectDuration
+                              .toString(),
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w600,
@@ -581,7 +681,16 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size15,
                         ),
                         Text(
-                          "Mid size company (10-99 people)",
+                          companySize(double.parse(model
+                              .value.data!.clientData!.employeeNo
+                              .toString() ==
+                              "null" ||
+                              model.value.data!.clientData!.employeeNo
+                                  .toString() ==
+                                  ""
+                              ? "0"
+                              : model.value.data!.clientData!.employeeNo
+                              .toString())),
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -592,7 +701,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           height: AddSize.size15,
                         ),
                         Text(
-                          "Member since Sep 16, 2020",
+                          "Member since ${model.value.data!.clientData!.memberSince.toString()}",
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
@@ -608,4 +717,151 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
       ),
     );
   }
+  withdrawProposal(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final _reasonController = TextEditingController();
+    final _messageController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Withdraw Proposal",
+                        style: TextStyle(
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: AddSize.size25,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Reason",
+                            style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: AddSize.font16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: AddSize.size5,
+                          ),
+                          CustomTextField(
+                            controller: _reasonController,
+                            obSecure: false.obs,
+                            keyboardType: TextInputType.text,
+                            hintText: "".obs,
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'Reason is required'),
+                            ]),
+                          ),
+                          SizedBox(
+                            height: AddSize.size10,
+                          ),
+                          Text(
+                            "Message (optional)",
+                            style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: AddSize.font16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: AddSize.size5,
+                          ),
+                          CustomTextField(
+                            controller: _messageController,
+                            isMulti: true,
+                            obSecure: false.obs,
+                            keyboardType: TextInputType.text,
+                            hintText: "".obs,
+                          ),
+                          SizedBox(
+                            height: AddSize.size10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Decline',
+                                    backgroundColor: AppTheme.whiteColor,
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    textColor: AppTheme.primaryColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Accept',
+                                    backgroundColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      if(_formKey.currentState!.validate()){
+                                        proposalWithdrawRepo(
+                                            proposal_id: model.value.data!.proposalData!.id.toString(),
+                                            reason: _reasonController.text.trim(),
+                                            description: _messageController.text.trim(),
+                                            context: context
+                                        ).then((value) {
+                                          if(value.status == true){
+                                            Get.offAllNamed(MyRouter.bottomNavbar);
+                                            controller.getData();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      }
+
+                                    },
+                                    textColor: AppTheme.whiteColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+
+  String companySize(double numberOfEmp) {
+    if (numberOfEmp <= 10) {
+      return "Company size (1 to 10 people)";
+    } else if (numberOfEmp <= 100) {
+      return "Company size (10 to 100 people)";
+    } else if (numberOfEmp <= 1000) {
+      return "Company size (10 to 100 people)";
+    } else {
+      return "Company size (1000+ people)";
+    }
+  }
+
 }
