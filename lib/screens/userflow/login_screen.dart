@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // }
         if(value.data!.user!.isProfileComplete == true){
           Get.offAllNamed(MyRouter.bottomNavbar);
+          pref.setBool("isProfileCompleted", true);
         }
         else{
           Get.offAllNamed(MyRouter.questionsScreen);

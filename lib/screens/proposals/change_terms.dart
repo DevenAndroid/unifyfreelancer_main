@@ -122,13 +122,13 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           return status.value.isSuccess
               ? SingleChildScrollView(
                   child: Column(
-                children: [
-                  contentSection(),
-                  coverLetter(),
-                  //   Message(),
-                  AboutTheClient(),
-                ],
-              ))
+                  children: [
+                    contentSection(),
+                    coverLetter(),
+                    //   Message(),
+                    AboutTheClient(),
+                  ],
+                ))
               : status.value.isError
                   ? CommonErrorWidget(
                       errorText: model.value.message.toString(),
@@ -286,8 +286,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                             ),
                             contentPadding: const EdgeInsets.all(0),
                             dense: true,
-                            visualDensity:
-                                const VisualDensity(horizontal: -4, vertical: -4),
+                            visualDensity: const VisualDensity(
+                                horizontal: -4, vertical: -4),
                             value: "By project",
                             groupValue: radioProjectType,
                             onChanged: (value) {
@@ -316,8 +316,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                             ),
                             contentPadding: const EdgeInsets.all(0),
                             dense: true,
-                            visualDensity:
-                                const VisualDensity(horizontal: -4, vertical: -4),
+                            visualDensity: const VisualDensity(
+                                horizontal: -4, vertical: -4),
                             value: "By milestone",
                             groupValue: radioProjectType,
                             onChanged: (value) {
@@ -333,7 +333,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         SizedBox(
                             child: radioProjectType == "By milestone"
                                 ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "How many milestones do you want to include?",
@@ -344,13 +345,14 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       ),
                                       ListView.builder(
                                           shrinkWrap: true,
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemCount: milestone.length,
                                           itemBuilder: (context, index) {
                                             print(milestone.length);
                                             print(milestone);
-                                            return mileStones(deviceHeight, index,
-                                                milestone[index]);
+                                            return mileStones(deviceHeight,
+                                                index, milestone[index]);
                                           }),
                                       SizedBox(
                                         height: 10,
@@ -400,8 +402,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       SizedBox(
                                         height: deviceHeight * .01,
                                       ),
-                                      if (model
-                                          .value.data!.milestonedata!.isNotEmpty)
+                                      if (model.value.data!.milestonedata!
+                                          .isNotEmpty)
                                         Text(
                                           "\$${milestonePrice}",
                                           style: TextStyle(
@@ -438,8 +440,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       SizedBox(
                                         height: deviceHeight * .01,
                                       ),
-                                      if (int.parse(model
-                                              .value.data!.proposalData!.bidAmount
+                                      if (int.parse(model.value.data!
+                                              .proposalData!.bidAmount
                                               .toString()) !=
                                           0)
                                         Text(
@@ -449,8 +451,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                               fontSize: AddSize.font16,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                      if (int.parse(model
-                                              .value.data!.proposalData!.bidAmount
+                                      if (int.parse(model.value.data!
+                                              .proposalData!.bidAmount
                                               .toString()) ==
                                           0)
                                         Text(
@@ -490,8 +492,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       SizedBox(
                                         height: deviceHeight * .01,
                                       ),
-                                      if (int.parse(model
-                                              .value.data!.proposalData!.bidAmount
+                                      if (int.parse(model.value.data!
+                                              .proposalData!.bidAmount
                                               .toString()) !=
                                           0)
                                         Text(
@@ -501,8 +503,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                               fontSize: AddSize.font16,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                      if (int.parse(model
-                                              .value.data!.proposalData!.bidAmount
+                                      if (int.parse(model.value.data!
+                                              .proposalData!.bidAmount
                                               .toString()) ==
                                           0)
                                         Text(
@@ -546,7 +548,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           );
                                         },
                                         readOnly: true,
-                                        controller: controller.durationController,
+                                        controller:
+                                            controller.durationController,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
@@ -558,8 +561,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           ),
                                           hintText: "Select a duration",
                                           focusColor: AppTheme.primaryColor,
-                                          suffixIcon: Icon(
-                                              Icons.keyboard_arrow_down_outlined),
+                                          suffixIcon: Icon(Icons
+                                              .keyboard_arrow_down_outlined),
                                           hintStyle: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -591,7 +594,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                     ],
                                   )
                                 : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "What is the rate you'd like to bid for this job?",
@@ -648,7 +652,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         prefix: Icon(Icons.attach_money),
                                         validator: MultiValidator([
                                           RequiredValidator(
-                                              errorText: 'Bid price is required'),
+                                              errorText:
+                                                  'Bid price is required'),
                                         ]),
                                       ),
                                       SizedBox(
@@ -723,7 +728,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           );
                                         },
                                         readOnly: true,
-                                        controller: controller.durationController,
+                                        controller:
+                                            controller.durationController,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
@@ -735,8 +741,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           ),
                                           hintText: "Select a duration",
                                           focusColor: AppTheme.primaryColor,
-                                          suffixIcon: Icon(
-                                              Icons.keyboard_arrow_down_outlined),
+                                          suffixIcon: Icon(Icons
+                                              .keyboard_arrow_down_outlined),
                                           hintStyle: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -884,24 +890,30 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           SizedBox(
             height: AddSize.size30,
           ),
-
           CustomOutlineButton(
-            title: "Submit",
-            backgroundColor: AppTheme.primaryColor,
-            textColor: AppTheme.whiteColor,
-            expandedValue: true,
-            onPressed: ()
-              {
-                if(_formKey.currentState!.validate()){
-                 /* updateProposalRepo(id,
-                    _priceController.text.trim(),
-                    model.value.data.
-                  ).then((value) {
+              title: "Submit",
+              backgroundColor: AppTheme.primaryColor,
+              textColor: AppTheme.whiteColor,
+              expandedValue: true,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  updateProposalRepo(
+                          model.value.data!.proposalData!.id.toString(),
+                          _priceController.text.trim(),
+                      model.value.data!.projectData!.budgetType.toString().toLowerCase() == "hourly" ? ""
+                              : radioProjectType == "By project" ? "single" : "multiple",
+                          jsonEncode(milestone),
+                          controller.durationController.text,
+                          context)
+                      .then((value) {
+                        if(value.status == true){
+                          Get.offAllNamed(MyRouter.bottomNavbar);
 
-                  })*/
+                        }
+                        showToast(value.message.toString());
+                  });
                 }
-              }
-          ),
+              }),
           SizedBox(
             height: AddSize.size20,
           ),

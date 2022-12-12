@@ -8,7 +8,7 @@ import '../../models/proposal_screen_model.dart';
 Future<ModelProposal> allProposalRepo() async {
   try {
     http.Response response = await http.get(Uri.parse(ApiUrls.allProposal), headers: await getAuthHeader());
-    print("32132132231231321    "+response.body);
+    print("Proposal List"+response.body);
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));

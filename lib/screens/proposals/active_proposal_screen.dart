@@ -335,8 +335,7 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                           fontWeight: FontWeight.bold,
                         )),
                     onPressed: () {
-                      Get.toNamed(MyRouter.changeTermsScreen);
-                      Get.toNamed(MyRouter.changeTermsScreen);
+                      Get.toNamed(MyRouter.changeTermsScreen , arguments: [id,"active"]);
                     },
                     child: Text(
                       "Change terms",

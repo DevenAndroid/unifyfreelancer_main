@@ -157,20 +157,20 @@ class ProposalData {
 }
 
 class Milestonedata {
-  int? id;
-  int? proposalId;
-  int? projectId;
-  int? clientId;
-  int? freelancerId;
-  String? description;
-  String? projectDuration;
-  int? amount;
-  String? dueDate;
-  String? status;
-  String? note;
-  String? type;
-  String? createdAt;
-  String? updatedAt;
+  dynamic id;
+  dynamic proposalId;
+  dynamic projectId;
+  dynamic clientId;
+  dynamic freelancerId;
+  dynamic description;
+  dynamic projectDuration;
+  dynamic amount;
+  dynamic dueDate;
+  dynamic status;
+  dynamic note;
+  dynamic type;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Milestonedata(
       {this.id,
@@ -226,35 +226,35 @@ class Milestonedata {
 }
 
 class ClientData {
-  String? id;
-  String? profileImage;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? companyName;
-  String? website;
-  String? tagline;
-  String? industry;
-  String? employeeNo;
-  String? description;
-  String? companyPhone;
-  String? vatId;
-  String? timezone;
-  String? localTime;
-  String? companyAddress;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
-  bool? paymentVerified;
-  String? rating;
-  String? numberOfReview;
-  String? jobPosted;
-  String? moneySpent;
-  String? ratePaidClient;
-  String? memberSince;
-  String? lastActivity;
+  dynamic id;
+  dynamic profileImage;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic companyName;
+  dynamic website;
+  dynamic tagline;
+  dynamic industry;
+  dynamic employeeNo;
+  dynamic description;
+  dynamic companyPhone;
+  dynamic vatId;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic companyAddress;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic isVerified;
+  dynamic paymentVerified;
+  dynamic rating;
+  dynamic numberOfReview;
+  dynamic jobPosted;
+  dynamic moneySpent;
+  dynamic ratePaidClient;
+  dynamic memberSince;
+  dynamic lastActivity;
 
   ClientData(
       {this.id,
@@ -355,43 +355,43 @@ class ClientData {
 }
 
 class ProjectData {
-  String? id;
-  String? clientId;
-  String? image;
-  String? imageName;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
+  dynamic id;
+  dynamic clientId;
+  dynamic image;
+  dynamic imageName;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
   dynamic minPrice;
-  int? price;
-  String? projectDuration;
-  String? scop;
-  String? status;
-  String? experienceLevel;
-  String? englishLevel;
-  String? categories;
-  String? categoryId;
-  String? createdAt;
-  String? postedDate;
+ dynamic price;
+  dynamic projectDuration;
+  dynamic scop;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic englishLevel;
+  dynamic categories;
+  dynamic categoryId;
+  dynamic createdAt;
+  dynamic postedDate;
   List<JobSkills>? jobSkills;
-  Null? proposalList;
-  Null? clientData;
-  bool? isPrivate;
-  bool? isProposalSend;
-  bool? isSaved;
-  int? serviceFee;
-  int? proposalCount;
-  Null? inviteSent;
-  Null? unansweredInvite;
-  String? interview;
-  String? hireRate;
-  String? openJobs;
-  String? totalHire;
-  String? totalActive;
-  Null? inviteId;
-  bool? isInvited;
-  Null? clientRecentHistory;
+dynamic proposalList;
+dynamic clientData;
+dynamic isPrivate;
+dynamic isProposalSend;
+dynamic isSaved;
+dynamic serviceFee;
+dynamic proposalCount;
+dynamic inviteSent;
+dynamic unansweredInvite;
+  dynamic interview;
+  dynamic hireRate;
+  dynamic openJobs;
+  dynamic totalHire;
+  dynamic totalActive;
+  dynamic inviteId;
+  dynamic isInvited;
+  dynamic clientRecentHistory;
 
   ProjectData(
       {this.id,
