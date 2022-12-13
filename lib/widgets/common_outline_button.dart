@@ -34,26 +34,27 @@ class CustomOutlineButton extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
         onPressed: onPressed,
-        child:expandedValue == true ? SizedBox(
-          width:  double.maxFinite,
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
-                color: textColor,
-              ),
-            ),
-          ),
-        ):
-        Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 13.sp,
-            color: textColor,
-          ),
-        ));
+        child: expandedValue == true
+            ? SizedBox(
+                width: double.maxFinite,
+                child: Center(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+              )
+            : Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13.sp,
+                  color: textColor,
+                ),
+              ));
   }
 }

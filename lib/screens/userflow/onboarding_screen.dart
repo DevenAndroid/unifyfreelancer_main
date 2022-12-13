@@ -86,18 +86,16 @@ class OnBoardingScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(),
-                            FittedBox(
-                              child: Text(
-                                controller
-                                    .contents[controller.currentIndex.value]
-                                    .title
-                                    .toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: AddSize.font24,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
+                            Text(
+                              controller
+                                  .contents[controller.currentIndex.value]
+                                  .title
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: AddSize.font24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
                             ),
                             SizedBox(height: AddSize.size25),

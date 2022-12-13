@@ -72,7 +72,7 @@ final drawerKey = GlobalKey<ScaffoldState>();
               return Container(
                 margin: const EdgeInsets.all(3),
                 decoration: const BoxDecoration(
-                  color: AppTheme.blackColor,
+                 // color: AppTheme.greyTextColor.withOpacity(.2),
                   shape: BoxShape.circle,
                   /*image: DecorationImage(
                           image: NetworkImage(
@@ -83,7 +83,7 @@ final drawerKey = GlobalKey<ScaffoldState>();
                 child: ClipRRect(
                   borderRadius:
                   BorderRadius.circular(1000),
-                  child: controller.status.value.isSuccess ?
+                  child: controller.status.value.isSuccess ? controller.model.value.data!.basicInfo!.profileImage.toString() != ""?
                   CachedNetworkImage(
                     imageUrl: controller
                         .model
@@ -91,10 +91,10 @@ final drawerKey = GlobalKey<ScaffoldState>();
                         .data!
                         .basicInfo!
                         .profileImage.toString(),
-                    errorWidget: (_, __, ___) => SizedBox(),
-                    placeholder: (_, __) => SizedBox(),
+                    errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg",),
+                    placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg",),
                     fit: BoxFit.cover,
-                  )
+                  ) : SvgPicture.asset("assets/images/user.svg",)
                       : SizedBox(),
                 ),
               );
@@ -159,7 +159,7 @@ final drawerKey = GlobalKey<ScaffoldState>();
                               child: Container(
                                 margin: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.blackColor,
+                                  //color: AppTheme.blackColor,
                                   shape: BoxShape.circle,
                                   /* image: DecorationImage(
                                     image: NetworkImage(
@@ -171,14 +171,16 @@ final drawerKey = GlobalKey<ScaffoldState>();
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(1000),
                                   child: controller.status.value.isSuccess
-                                      ? CachedNetworkImage(
+                                      ?  controller.model.value.data!
+                                      .basicInfo!.profileImage.toString() != "" ?
+                                  CachedNetworkImage(
                                     imageUrl: controller.model.value.data!
                                         .basicInfo!.profileImage ??
                                         "",
-                                    errorWidget: (_, __, ___) => SizedBox(),
-                                    placeholder: (_, __) => SizedBox(),
+                                    errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg",),
+                                    placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg",),
                                     fit: BoxFit.cover,
-                                  )
+                                  ) : SvgPicture.asset("assets/images/user.svg",)
                                       : SizedBox(),
                                 ),
                               ),

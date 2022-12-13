@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:unifyfreelancer/repository/resend_otp_repository.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
@@ -33,6 +34,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   void initState() {
     super.initState();
     email = Get.arguments[0];
+    startTimer();
     isFromSignUp = Get.arguments[1].toString() == "fromSignUp" ? true : false;
 
     String str = Get.arguments[0];
@@ -50,6 +52,32 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   var email;
   var otp = "";
+
+
+  var resendText = 'Resend OTP';
+
+  late Timer _timer;
+  int start = 60;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (start == 0) {
+          setState(() {
+            resendText == 'Resend';
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            resendText = 'Resend OTP $start';
+            start--;
+          });
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +157,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  OtpTextField(
+                  /*OtpTextField(
                     numberOfFields: 4,
                     borderRadius: BorderRadius.all(Radius.circular(100)),
                     fieldWidth: 60,
@@ -149,20 +177,66 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         otp = verificationCode;
                       });
                     },
+                  ),*/
+                  PinCodeTextField(
+                    errorTextSpace: 20,
+                    errorTextMargin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.25),
+                    appContext: context,
+                    textStyle: TextStyle(color: AppTheme.subText),
+                    controller: otpController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    pastedTextStyle: TextStyle(
+                      color: Colors.green.shade600,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    animationType: AnimationType.fade,
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "    Please enter the otp";
+                      } else if (v.length != 4) {
+                        return "The otp must be 4 digit";
+                      }
+                      return null;
+                    },
+                    length: 4,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.circle,
+                      //borderRadius: BorderRadius.circular(AddSize.size30),
+                      fieldWidth: AddSize.size30*2,
+                      fieldHeight: AddSize.size30*2,
+                      activeColor: AppTheme.textfield,
+                      inactiveColor: AppTheme.textfield,
+                      errorBorderColor: AppTheme.textfield,
+                    ),
+                    //   //runs when a code is typed in
+                    keyboardType: TextInputType.number,
+                    onChanged: (String code) {
+                      otp = code;
+                    },
+                    onSubmitted: (String verificationCode) {
+                      setState(() {
+                        otp = verificationCode;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 15,
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: start == 0 ? () {
                       resendOtp(email, context).then((value) async {
                         print(jsonEncode(value));
-                        if (value.status == true) {}
+                        if (value.status == true) {
+                          start = 60;
+                          startTimer();
+                        }
                         showToast(
                           value.message.toString(),
                         );
                       });
-                    },
+                    } : null,
                     child: RichText(
                       text: TextSpan(
                           text: "if you Don't receive a code ? ",
@@ -172,13 +246,41 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: "Resend",
+                              text: start == 0 ? "Resend" :"",
                               style: TextStyle(
                                   color: AppTheme.primaryColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600),
                             )
                           ]),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      //style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Resend otp again in ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.textColor,
+                            )),
+                        TextSpan(
+                            text: "00:$start",
+                            style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500)),
+                        TextSpan(
+                            text: " sec",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.primaryColor,
+                                fontWeight: FontWeight.w500)),
+                      ],
                     ),
                   ),
                   SizedBox(

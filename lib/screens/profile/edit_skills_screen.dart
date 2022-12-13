@@ -155,7 +155,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                                   }
                                   filterSelectedSkills();
                                 } else {
-                                  showToast("Max limit is 15 skills");
+                                  showToast("Max limit is 10 skills");
                                 }
                               });
                         })),
@@ -173,7 +173,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
       }
     }
     print(value);
-    return value <15 ? false : true;
+    return value <10 ? false : true;
   }
 
   filterSelectedSkills() {

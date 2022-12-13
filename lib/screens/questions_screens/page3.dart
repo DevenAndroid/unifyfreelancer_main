@@ -20,10 +20,10 @@ class _Page3State extends State<Page3> {
   final controller = Get.put(ProfileScreenController());
 
   List content = [
-    "To earn my main income",
-    "To make money on the side",
-    "To get experiences so i can find a full time job",
-    "I don't have a goal yet: I'm exploring"
+    "I'm here to earn a make a full-time income",
+    "I'm here to make money on the side.",
+    "I'm here to gain experience, to help me find a full-time role.",
+    "I'm just exploring for now"
   ] ;
   List icons = [
     'assets/icon/venture-capital.svg',
@@ -48,7 +48,7 @@ class _Page3State extends State<Page3> {
                 height: AddSize.size10,
               ),
               Text(
-                "Got it: so what's your biggest goal for freelancing?",
+                "Next up: Tell us your hopes, your dreams, your aspirations and your goals...",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkBlueText,
@@ -58,7 +58,7 @@ class _Page3State extends State<Page3> {
                 height: AddSize.size20,
               ),
               Text(
-                "Different people come to unify for different reasons. We want to highlight to opportunities that fit your goals best - while still showing you all possibilities. which of these feels most right for you ? ",
+                "Unify is a place for everyone. We want to understand your motivations so we can help you get the best out of your experience with us.",
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppTheme.darkBlueText,
@@ -102,9 +102,9 @@ class _Page3State extends State<Page3> {
                                 title: Text(
                                   content[index].toString(),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: AppTheme.blackColor,
-                                      fontSize: AddSize.font12),
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText,
+                                      fontSize: AddSize.font14),
                                 ),
                                 trailing: AnimatedContainer(
                                   duration: Duration(seconds: 20),

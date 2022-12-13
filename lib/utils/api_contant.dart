@@ -8,7 +8,8 @@ import '../resources/app_theme.dart';
 import '../resources/size.dart';
 
 class ApiUrls {
-  static const String apiBaseUrl = 'https://unify.eoxyslive.com/api/';
+  // static const String apiBaseUrl = 'https://unify.eoxyslive.com/api/';
+  static const String apiBaseUrl = 'https://unify-backend-staging.eoxyslive.com/api/';
 
   static const String stripeApiKey = "pk_test_51M7YBGEAU8g6XRhsSzwgw2cS4DwXnFyL6C8HiT3GkOTY4GVOpbyjff7PCITznuAi5GV9xic6sDlLZd4p2t9fKnPZ00zZi7dmqe";
 
@@ -64,6 +65,12 @@ class ApiUrls {
   static const String submitProfile = "${apiBaseUrl}submit-profile";
   static const String subscriptionPlansUrl = "${apiBaseUrl}subscription-list";
   static const String stripePayUrl = "${apiBaseUrl}subscription-payment";
+  static const String singleProposalDetails = "${apiBaseUrl}single-proposal-details/";
+  static const String inviteDecline = "${apiBaseUrl}invite-decline";
+  static const String proposalWithdraw = "${apiBaseUrl}proposal-withdraw";
+  static const String updateProposal = "${apiBaseUrl}update-proposal";
+  static const String acceptOffer = "${apiBaseUrl}accept-offer/";
+  static const String declineOffer = "${apiBaseUrl}decline-offer";
 
 
 }

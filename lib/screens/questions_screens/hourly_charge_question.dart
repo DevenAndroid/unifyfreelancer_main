@@ -7,7 +7,6 @@ import '../../controller/profie_screen_controller.dart';
 import '../../repository/edit_hours_per_week_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
-import '../../utils/api_contant.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -28,9 +27,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
   @override
   void initState() {
     super.initState();
-    price = double.parse(controller.priceController.text);
-    _unifyFeeController.text = ((price! * 20) / 100).toString();
-    _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
+    controller.priceController.text = controller.priceController.text;
   }
 
   double? price;
@@ -53,7 +50,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   height: AddSize.size10,
                 ),
                 Text(
-                  "Now, Let's set your hourly rate.",
+                  "Show me the money!",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -63,7 +60,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   height: AddSize.size15,
                 ),
                 Text(
-                  "Clients will se this rate on your profile and in search result once you publish your profile. You can adjust your rate every time you submit a proposal",
+                  "This will appear on your profile as your standard hourly rate. You may find projects that are above or below this, and can change this every time you are interested in a new project.",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppTheme.textColor,
@@ -73,7 +70,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                   height: AddSize.size30,
                 ),
                 Text(
-                  "Hourly Rate",
+                  "Hourly Rate*",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.darkBlueText,
@@ -97,7 +94,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                           setState(() {
                             print(value);
                             price = double.parse(value);
-                            _unifyFeeController.text = ((price! * 10) / 100).toString();
+                            _unifyFeeController.text = ((price! * 20) / 100).toString();
                             _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
 
                           });
@@ -118,7 +115,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                         prefix: Icon(Icons.attach_money),
                         validator: MultiValidator([
                           RequiredValidator(
-                              errorText: 'Please your hourly price'),
+                              errorText: 'Please enter your hourly price'),
                         ]),
                       ),
                     ),

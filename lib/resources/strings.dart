@@ -9,7 +9,7 @@ class AppStrings {
 
   // Login Screen Strings
   static const String loginYourAccount = "LOGIN YOUR ACCOUNT";
-  static const String userNameOrEmailID = "User Name or Email ID";
+  static const String userNameOrEmailID = "Email id";
   static const String password = "Password";
   static const String forgotPassword = "Forgot Password?";
   static const String orLoginWith = "Or login with...";

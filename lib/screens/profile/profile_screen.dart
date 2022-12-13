@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -41,9 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _occputationController = TextEditingController();
-  final TextEditingController _designationController = TextEditingController();
-  final TextEditingController _designationDescriptionController =
-      TextEditingController();
+
+/*  final TextEditingController _designationController = TextEditingController();
+  final TextEditingController _designationDescriptionController = TextEditingController();*/
 
   @override
   void initState() {
@@ -61,9 +62,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       imageFileToPick = File(image.path);
       setState(() {});
       Map<String, String> map = {};
-      map["first_name"] = profileController.model.value.data!.basicInfo!.firstName.toString();
-      map["last_name"] = profileController.model.value.data!.basicInfo!.lastName.toString();
-      map["occcuption"] = profileController.model.value.data!.basicInfo!.occuption.toString();
+      map["first_name"] =
+          profileController.model.value.data!.basicInfo!.firstName.toString();
+      map["last_name"] =
+          profileController.model.value.data!.basicInfo!.lastName.toString();
+      map["occcuption"] =
+          profileController.model.value.data!.basicInfo!.occuption.toString();
       editNameInfoRepo(
               mapData: map,
               fieldName1: "profile_image",
@@ -89,7 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Map<String, String> map = {};
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
-    map["occcuption"] = controller.titleController.text.trim();;
+    map["occcuption"] = controller.titleController.text.trim();
+    ;
     editNameInfoRepo(
             mapData: map,
             fieldName1: "profile_image",
@@ -105,8 +110,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   showDialogueUpdateBasicInfo() {
-    _fNameController.text = profileController.model.value.data!.basicInfo!.firstName.toString();
-    _lNameController.text = profileController.model.value.data!.basicInfo!.lastName.toString();
+    _fNameController.text =
+        profileController.model.value.data!.basicInfo!.firstName.toString();
+    _lNameController.text =
+        profileController.model.value.data!.basicInfo!.lastName.toString();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -325,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     },
                                   );
                                 },
-                                child: Container(
+                                child: /*Container(
                                   height: 60,
                                   width: 60,
                                   decoration: BoxDecoration(
@@ -334,6 +341,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
                                           image: NetworkImage(profileController.model.value.data!.basicInfo!.profileImage.toString()))),
+                                )*/
+                                    SizedBox(
+                                  child: controller.profileImage.value
+                                                  .toString() ==
+                                              "" ||
+                                          controller.profileImage.value
+                                                  .toString() ==
+                                              "null"
+                                      ? SvgPicture.asset(
+                                          "assets/images/user.svg",
+                                          height: 60,
+                                          width: 60,
+                                        )
+                                      : Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.grey.shade300),
+                                          child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(1000),
+                                              child: CachedNetworkImage(
+                                                imageUrl: controller
+                                                        .profileImage.value ??
+                                                    "",
+                                                errorWidget: (_, __, ___) =>
+                                                    SvgPicture.asset(
+                                                  "assets/images/user.svg",
+                                                  height: 60,
+                                                  width: 60,
+                                                ),
+                                                placeholder: (_, __) =>
+                                                    SvgPicture.asset(
+                                                  "assets/images/user.svg",
+                                                  height: 60,
+                                                  width: 60,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ) /*Image.file(
+                              profileImage.value,
+                              fit: BoxFit.cover,
+                            ),*/
+                                              ),
+                                        ),
                                 ),
                               ),
                               Positioned(
@@ -733,29 +785,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller: _designationController,
+                                                  controller: controller
+                                                      .titleController,
                                                   obSecure: false.obs,
-                                                  hintText: "Website design and development".obs,
+                                                  hintText:
+                                                      "Website design and development"
+                                                          .obs,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
-                                                    MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
-                                                    MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            'Example: Full StackDeveloper | Web & Mobile'),
+                                                    MinLengthValidator(5,
+                                                        errorText:
+                                                            'Minimum length is 5 characters'),
+                                                    MaxLengthValidator(50,
+                                                        errorText:
+                                                            "Maximum length is 50 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
                                                 BoxTextField(
-                                                  controller:
-                                                      _designationDescriptionController,
+                                                  controller: controller
+                                                      .descriptionController,
                                                   obSecure: false.obs,
                                                   hintText: "description".obs,
                                                   isMulti: true,
                                                   validator: MultiValidator([
-                                                    RequiredValidator(errorText: 'Description required'),
+                                                    RequiredValidator(
+                                                        errorText:
+                                                            'Description required'),
                                                     MinLengthValidator(100,
-                                                        errorText: 'Minimum length is 100 characters'),
-                                                    MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
+                                                        errorText:
+                                                            'Minimum length is 100 characters'),
+                                                    MaxLengthValidator(5000,
+                                                        errorText:
+                                                            "Max Length is 5000 characters"),
                                                   ]),
                                                 ),
                                                 SizedBox(
@@ -769,12 +835,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     if (_formKey.currentState!
                                                         .validate()) {
                                                       editDesignationInfoRepo(
-                                                              title:
-                                                                  _designationController
-                                                                      .text
-                                                                      .trim(),
+                                                              title: controller
+                                                                  .titleController
+                                                                  .text
+                                                                  .trim(),
                                                               description:
-                                                                  _designationDescriptionController
+                                                                  controller
+                                                                      .descriptionController
                                                                       .text
                                                                       .trim(),
                                                               context: context)
@@ -2212,7 +2279,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: profileController.model.value.data!.employment!.length,
+                                itemCount: profileController
+                                    .model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
                                   return Column(
                                     crossAxisAlignment:
@@ -2233,7 +2301,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 color: Color(0xff363636)),
                                           ),
                                           Text(
-                                            profileController.model.value.data!.employment![index].company.toString() !=
+                                            profileController
+                                                        .model
+                                                        .value
+                                                        .data!
+                                                        .employment![index]
+                                                        .company
+                                                        .toString() !=
                                                     "null"
                                                 ? " | " +
                                                     profileController
@@ -2272,7 +2346,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .data!
                                                         .employment![index]
                                                         .endDate
-                                                        .toString() != "null"
+                                                        .toString() !=
+                                                    "null"
                                                 ? " - " +
                                                     profileController
                                                         .model
@@ -2730,6 +2805,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
+         /* Divider(
+            color: AppTheme.pinkText.withOpacity(.29),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Verification",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.darkBlueText),
+              ),
+              InkWell(
+                onTap: () {
+                  verification();
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppTheme.whiteColor,
+                      border: Border.all(color: Color(0xff707070))),
+                  child: Icon(
+                    Icons.add,
+                    color: AppTheme.primaryColor,
+                    size: 15,
+                  ),
+                ),
+              ),
+              *//* InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppTheme.whiteColor,
+                                      border: Border.all(
+                                          color: Color(0xff707070))),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppTheme.primaryColor,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),*//*
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            children: [
+              Text(
+                "ID : ",
+                style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+              Text(
+                "Verified",
+                style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.textColor),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(Icons.verified,color: AppTheme.primaryColor,size: 20,)
+            ],
+          ),*/
           SizedBox(
             height: 10.h,
           ),
@@ -3089,4 +3241,98 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ));
   }
+
+/*  verification(){
+    List dropDownValues = [
+      "Driving licences"
+    ];
+    return    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Form(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "User Verification",
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      DropdownButtonFormField<dynamic>(
+                        alignment: Alignment.centerLeft,
+                        decoration: InputDecoration(
+                          hintText: 'Select ID',
+                          focusColor: AppTheme.textfield.withOpacity(0.5),
+                          hintStyle: TextStyle(color: Colors.grey.shade400),
+                          filled: true,
+                          fillColor:
+                          AppTheme.whitebg.withOpacity(0.5),
+                          contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppTheme.boardercolor.withOpacity(0.5)),
+                            borderRadius:
+                            BorderRadius.circular(10.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppTheme.boardercolor
+                                      .withOpacity(0.5)),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0))),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppTheme.boardercolor
+                                      .withOpacity(0.5),
+                                  width: 3.0),
+                              borderRadius:
+                              BorderRadius.circular(15.0)),
+                        ),
+                        isDense: false,
+                        validator: (value) {
+                          if (value == null) {
+                            return "Select ID Type";
+                          } else {
+                            return null;
+                          }
+                        },
+                        value: currentSelectedDocument.value == ""
+                            ? null
+                            : currentSelectedDocument.value,
+                        isExpanded: true,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        items: List.generate(
+                            dropDownValues.length,
+                                (index) => DropdownMenuItem(
+                                value: dropDownValues[index]
+                                    .slug
+                                    .toString(),
+                                child: Text(dropDownValues[index]
+                                    .title
+                                    .toString()))),
+                        onChanged: (val) {
+                          currentSelectedDocument.value = val;
+                        },
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }*/
 }

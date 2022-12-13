@@ -34,6 +34,10 @@ class ProfileScreenController extends GetxController {
   RxInt questionIndex2 = (-1).obs;
   RxInt questionIndex3 = (-1).obs;
 
+  //nothing to add
+  RxBool nothingToAddForExperience = false.obs;
+  RxBool nothingToAddForEducation = false.obs;
+
   final priceController = TextEditingController();
   final countryController = TextEditingController();
   final phoneController = TextEditingController();
@@ -92,7 +96,18 @@ class ProfileScreenController extends GetxController {
         status.value = RxStatus.success();
         titleController.text = value.data!.basicInfo!.occuption.toString();
         descriptionController.text = value.data!.basicInfo!.description.toString();
-        priceController.text = value.data!.basicInfo!.amount.toString();
+        if(value.data!.basicInfo!.amount.toString() == "0.00"){
+          priceController.text = "";
+        }
+        else{
+          priceController.text = value.data!.basicInfo!.amount.toString();
+        }
+        if(value.data!.education!.isNotEmpty){
+          nothingToAddForEducation.value = true;
+        }
+        if(value.data!.employment!.isNotEmpty){
+          nothingToAddForExperience.value = true;
+        }
         countryController.text = value.data!.basicInfo!.country.toString();
         phoneController.text = value.data!.basicInfo!.phone.toString();
         zipController .text = value.data!.basicInfo!.zipCode.toString();

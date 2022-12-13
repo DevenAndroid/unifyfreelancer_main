@@ -47,7 +47,7 @@ class _AppDrawerScreenState extends State<AppDrawerScreen> {
                             child: Container(
                               margin: const EdgeInsets.all(2),
                               decoration: BoxDecoration(
-                                color: AppTheme.blackColor,
+                            //    color: AppTheme.blackColor,
                                 shape: BoxShape.circle,
                                 /* image: DecorationImage(
                                     image: NetworkImage(
@@ -56,7 +56,7 @@ class _AppDrawerScreenState extends State<AppDrawerScreen> {
                               ),
                               height: 35.h,
                               width: 35.w,
-                              child: ClipRRect(
+                              child: /*ClipRRect(
                                 borderRadius: BorderRadius.circular(1000),
                                 child: controller.status.value.isSuccess
                                     ? CachedNetworkImage(
@@ -67,6 +67,20 @@ class _AppDrawerScreenState extends State<AppDrawerScreen> {
                                         placeholder: (_, __) => SizedBox(),
                                         fit: BoxFit.cover,
                                       )
+                                    : SizedBox(),
+                              )*/ ClipRRect(
+                                borderRadius: BorderRadius.circular(1000),
+                                child: controller.status.value.isSuccess
+                                    ?  controller.model.value.data!
+                                    .basicInfo!.profileImage.toString() != "" ?
+                                CachedNetworkImage(
+                                  imageUrl: controller.model.value.data!
+                                      .basicInfo!.profileImage ??
+                                      "",
+                                  errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg",),
+                                  placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg",),
+                                  fit: BoxFit.cover,
+                                ) : SvgPicture.asset("assets/images/user.svg",)
                                     : SizedBox(),
                               ),
                             ),

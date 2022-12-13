@@ -128,7 +128,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "School",
+                          "School*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -150,7 +150,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Start year",
+                          "Start year*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -227,7 +227,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "End year",
+                          "End year*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -312,7 +312,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Degree",
+                          "Degree*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -391,7 +391,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Area of Study (Optional)",
+                          "Area of study (optional)",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -410,7 +410,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Description (Optional)",
+                          "Description (optional)",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,

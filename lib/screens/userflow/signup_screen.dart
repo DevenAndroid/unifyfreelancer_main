@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignIn!.authentication;
+    await googleSignIn!.authentication;
     final userCredentials = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
@@ -72,6 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
+
 
   loginWithApple(context) async {
     final appleProvider = AppleAuthProvider();
@@ -91,9 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   socialLoginApi(context, authToken, provider) {
-    socialLoginRepo(
-            context: context, accessToken: authToken, provider: provider)
-        .then((value) async {
+    socialLoginRepo(context: context, accessToken: authToken, provider: provider).then((value) async {
       showToast(value.message.toString());
       log(jsonEncode(value));
       if (value.status == true) {
@@ -126,7 +125,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // } catch (e) {
         //   showToast(e.toString());
         // }
-        Get.toNamed(MyRouter.bottomNavbar);
+        if(value.data!.user!.isProfileComplete == true){
+          Get.offAllNamed(MyRouter.bottomNavbar);
+        }
+        else{
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
       }
     });
   }
@@ -239,12 +243,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               controller: emailController,
                               hintText: AppStrings.emailID.obs,
-                              validator: MultiValidator([
+                             /* validator: MultiValidator([
                                 RequiredValidator(
                                     errorText: 'Email is required'),
                                 EmailValidator(
                                     errorText: 'Enter a valid email address')
-                              ])),
+                              ])*/
+                            validator: (value) {
+                              if (emailController.text.isEmpty) {
+                                return "Please enter email address.";
+                              } else if (emailController.text
+                                  .contains('+')) {
+                                return "Email is invalid";
+                              } else if (RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(emailController.text)) {
+                                return null;
+                              } else {
+                                return 'Please Enter valid email address';
+                              }
+                            },
+                          ),
                           SizedBox(
                             height: 12.h,
                           ),
@@ -259,14 +278,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ? InkWell(
                                       onTap: () => setState(() {
                                             eyeHide = true.obs;
-                                            eyeHide2 = true.obs;
+
                                           }),
                                       child:
                                           Icon(Icons.remove_red_eye_outlined))
                                   : InkWell(
                                       onTap: () => setState(() {
                                             eyeHide = false.obs;
-                                            eyeHide2 = false.obs;
                                           }),
                                       child:
                                           Icon(Icons.visibility_off_outlined)),
@@ -275,10 +293,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               validator: MultiValidator([
                                 RequiredValidator(errorText: 'Password is required'),
-                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters with symbol \n& letter. '),
+                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
-                                PatternValidator(r"(?=.*[a-zA-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])",
-                                    errorText: "Password must be at least 8 characters with symbol \n& letter. "),
+                                PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
+                                    errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
                               ]),
                             );
                           }),
@@ -293,13 +311,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             suffixIcon: eyeHide2 == false
                                 ? InkWell(
                                     onTap: () => setState(() {
-                                          eyeHide = true.obs;
                                           eyeHide2 = true.obs;
                                         }),
                                     child: Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
                                     onTap: () => setState(() {
-                                          eyeHide = false.obs;
                                           eyeHide2 = false.obs;
                                         }),
                                     child: Icon(Icons.visibility_off_outlined)),
@@ -485,6 +501,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             readOnly: true,
                             controller: countryController,
                             decoration: InputDecoration(
+
                               filled: true,
                               fillColor: AppTheme.primaryColor.withOpacity(.05),
                               hintText: 'Select country',
@@ -496,7 +513,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintStyle: const TextStyle(
                                   color: Color(0xff596681), fontSize: 15),
                               contentPadding: const EdgeInsets.only(
-                                  top: 14, bottom: 14, left: 20),
+                                  top: 14, bottom: 14),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color:
@@ -531,8 +548,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Checkbox(
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   value: acceptTermsOrPrivacy,
                                   activeColor: AppTheme.primaryColor,
                                   onChanged: (newValue) {
@@ -583,8 +599,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             color: AppTheme.primaryColor,
                                             //decoration: TextDecoration.underline,
                                           ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
+                                          recognizer: TapGestureRecognizer()..onTap = () {
                                               _launchUrl("https://unify-web.eoxyslive.com/#/pages/agreements");
 
                                             }),

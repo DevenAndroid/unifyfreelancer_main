@@ -13,6 +13,7 @@ class ProposalScreenController extends GetxController{
     // TODO: implement onInit
     super.onInit();
     getData();
+
   }
 
   getData(){

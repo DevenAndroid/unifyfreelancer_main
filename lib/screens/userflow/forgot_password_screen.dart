@@ -77,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   BoxTextField(
                       controller: emailController,
                       obSecure: false.obs,
-                      hintText: "  Email ID".obs,
+                      hintText: "Email ID".obs,
                       validator: MultiValidator([
                         RequiredValidator(
                             errorText: 'Email is required'),

@@ -18,6 +18,7 @@ class AppTheme {
   static const Color settingsTextColor = Color(0xff1F1F1F);
   static const Color subText = Color(0xff828282);
   static const Color titleText = Color(0xff172B4D);
+  static const Color textfield = Color(0xfff0ebf3);
 }
 
 MaterialColor primaryColorShades = MaterialColor(

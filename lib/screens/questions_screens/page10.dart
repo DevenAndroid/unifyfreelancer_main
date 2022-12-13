@@ -77,7 +77,7 @@ class _Page10State extends State<Page10> {
                     height: AddSize.size10,
                   ),
                   Text(
-                    "What are the main services you offer?",
+                    "What projects are you looking for?",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
@@ -87,7 +87,7 @@ class _Page10State extends State<Page10> {
                     height: AddSize.size15,
                   ),
                   Text(
-                    "Choose at least 1 service that best describes the type of work you do. this helps us match you with clients who need your unique expertise.",
+                    "Choose at least 1 service. This will help clients find you for the work they need.",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: AppTheme.textColor,

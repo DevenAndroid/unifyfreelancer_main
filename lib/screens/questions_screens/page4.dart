@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:unifyfreelancer/repository/edit_designation_info_repository.dart';
 
 import '../../controller/profie_screen_controller.dart';
-import '../../controller/question_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';
@@ -68,12 +67,12 @@ class Page4 extends StatelessWidget {
                     }
                   },*/
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Example: Full StackDeveloper | Web & Mobile'),
+                      RequiredValidator(errorText: 'Example: full stack developer | web & mobile'),
                       MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
                       MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
                     ]),
                     obSecure: false.obs,
-                    hintText: "Example: Full StackDeveloper | Web & Mobile".obs,
+                    hintText: "Example: full stack developer | web & mobile".obs,
                   ),
                   SizedBox(
                     height: AddSize.size15,
