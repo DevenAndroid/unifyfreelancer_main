@@ -175,7 +175,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                 validator: MultiValidator([
                                   RequiredValidator(
                                       errorText:
-                                      'Hourly price is required'),
+                                      'Please enter your hourly price'),
                                 ]),
                               ),
                             ),

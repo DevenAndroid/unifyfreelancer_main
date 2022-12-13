@@ -395,7 +395,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       hintText: "Web developer".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Title is required'),
+                                            errorText: 'Please enter your title'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -418,7 +418,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       hintText: "Ex: Unify".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Company is required'),
+                                            errorText: 'Please enter your company'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -444,7 +444,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                             hintText: "City".obs,
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'city is required'),
+                                                  errorText: 'Please enter your city'),
                                             ]),
                                           ),
                                         ),
@@ -695,7 +695,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                             ),
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'Country is required'),
+                                                  errorText: 'Please select your country'),
                                             ]),
                                           ),
                                         ),
@@ -743,7 +743,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       ),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'From, date is required'),
+                                            errorText: 'Please select your start date'),
                                       ]),
                                     ),
                                     Row(
@@ -815,7 +815,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                 validator: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return 'To, date is required';
+                                                    return 'Please select your end date';
                                                   } else if (DateTime.parse(dateInput)
                                                           .compareTo(DateTime.parse(
                                                               dateInput2)) <
@@ -1277,7 +1277,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       hintText: "Ex: Northwestern University".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'School is required'),
+                                            errorText: 'Please enter your school name'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1359,7 +1359,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'From year is required'),
+                                            errorText: 'Please select start year'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1442,7 +1442,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         suffixIcon: Icon(Icons.keyboard_arrow_down),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'To, year is required';
+                                            return 'Please select end year';
                                           } else if (int.parse(
                                                   _fromController.text.toString()) <
                                               int.parse(
@@ -1541,7 +1541,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Degree is required'),
+                                            errorText: 'Please select your degree'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1685,7 +1685,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear + 8; i++) {
+    for (var i = currentYear - 70; i < currentYear +11; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());

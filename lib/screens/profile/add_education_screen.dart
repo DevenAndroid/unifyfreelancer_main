@@ -39,7 +39,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear+1; i++) {
+    for (var i = currentYear - 70; i < currentYear+11; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -98,8 +98,8 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
             isProfileImage: false,
             titleText: "Add Education",
           )
-          // onPressedForLeading:,
-          ),
+        // onPressedForLeading:,
+      ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -143,7 +143,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           keyboardType: TextInputType.text,
                           hintText: "Ex: Northwestern University".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'School is required'),
+                            RequiredValidator(errorText: 'Please enter your school name'),
                           ]),
                         ),
                         SizedBox(
@@ -183,12 +183,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
-                                                          AppTheme.darkBlueText,
+                                                      AppTheme.darkBlueText,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                      FontWeight.w500),
                                                 ),
                                                 contentPadding:
-                                                    const EdgeInsets.all(0),
+                                                const EdgeInsets.all(0),
                                                 dense: true,
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
@@ -220,7 +220,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'From year is required'),
+                                errorText: 'Please select start year'),
                           ]),
                         ),
                         SizedBox(
@@ -237,74 +237,74 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 5,
                         ),
                         CustomTextField(
-                          onTap: () {
-                            showFilterButtonSheet(
-                                context: context,
-                                titleText: "To",
-                                widgets: Obx(() {
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          reverse: true,
-                                          itemCount: yearsList.length,
-                                          physics: BouncingScrollPhysics(),
-                                          itemBuilder: (context, index) {
-                                            return Obx(() {
-                                              return RadioListTile(
-                                                title: Text(
-                                                  yearsList[index].toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color:
-                                                          AppTheme.darkBlueText,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                contentPadding:
-                                                    const EdgeInsets.all(0),
-                                                dense: true,
-                                                visualDensity: VisualDensity(
-                                                    horizontal: -4,
-                                                    vertical: -4),
-                                                value:
+                            onTap: () {
+                              showFilterButtonSheet(
+                                  context: context,
+                                  titleText: "To",
+                                  widgets: Obx(() {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        ListView.builder(
+                                            shrinkWrap: true,
+                                            reverse: true,
+                                            itemCount: yearsList.length,
+                                            physics: BouncingScrollPhysics(),
+                                            itemBuilder: (context, index) {
+                                              return Obx(() {
+                                                return RadioListTile(
+                                                  title: Text(
                                                     yearsList[index].toString(),
-                                                groupValue: time.value,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    time.value =
-                                                        value.toString();
-                                                    _toController.text =
-                                                        value.toString();
-                                                    print(_toController.text);
-                                                    Get.back();
-                                                  });
-                                                },
-                                              );
-                                            });
-                                          })
-                                    ],
-                                  );
-                                }));
-                          },
-                          readOnly: true,
-                          obSecure: false.obs,
-                          controller: _toController,
-                          hintText: "To".obs,
-                          suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                        AppTheme.darkBlueText,
+                                                        fontWeight:
+                                                        FontWeight.w500),
+                                                  ),
+                                                  contentPadding:
+                                                  const EdgeInsets.all(0),
+                                                  dense: true,
+                                                  visualDensity: VisualDensity(
+                                                      horizontal: -4,
+                                                      vertical: -4),
+                                                  value:
+                                                  yearsList[index].toString(),
+                                                  groupValue: time.value,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      time.value =
+                                                          value.toString();
+                                                      _toController.text =
+                                                          value.toString();
+                                                      print(_toController.text);
+                                                      Get.back();
+                                                    });
+                                                  },
+                                                );
+                                              });
+                                            })
+                                      ],
+                                    );
+                                  }));
+                            },
+                            readOnly: true,
+                            obSecure: false.obs,
+                            controller: _toController,
+                            hintText: "To".obs,
+                            suffixIcon: Icon(Icons.keyboard_arrow_down),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'To, year is required';
+                                return 'Please select end year';
                               } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
                                 return null;
                               } else {
                                 return "End year must be grater then start date";
                               }
                             }
-                        /*  validator: MultiValidator([
+                          /*  validator: MultiValidator([
                             RequiredValidator(errorText: 'To year is required'),
                           ]),*/
                         ),
@@ -347,12 +347,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
-                                                          AppTheme.darkBlueText,
+                                                      AppTheme.darkBlueText,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                      FontWeight.w500),
                                                 ),
                                                 contentPadding:
-                                                    const EdgeInsets.all(0),
+                                                const EdgeInsets.all(0),
                                                 dense: true,
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
@@ -361,7 +361,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                     .value.data![index].title
                                                     .toString(),
                                                 groupValue:
-                                                    selectedDegree.value,
+                                                selectedDegree.value,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     selectedDegree.value =
@@ -384,7 +384,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           hintText: "Degree".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Degree is required'),
+                            RequiredValidator(errorText: 'Please select your degree'),
                           ]),
                         ),
                         SizedBox(
@@ -451,18 +451,18 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             editEducationInfoRepo(
-                                    id: load == -100
-                                        ? load
-                                        : controller.model.value.data!
-                                            .education![load].id,
-                                    school: _schoolController.text.trim(),
-                                    start_year: _fromController.text.trim(),
-                                    end_year: _toController.text.trim(),
-                                    degree: _degreeController.text.trim(),
-                                    area_study: _areaController.text.trim(),
-                                    description:
-                                        _descriptionController.text.trim(),
-                                    context: context)
+                                id: load == -100
+                                    ? load
+                                    : controller.model.value.data!
+                                    .education![load].id,
+                                school: _schoolController.text.trim(),
+                                start_year: _fromController.text.trim(),
+                                end_year: _toController.text.trim(),
+                                degree: _degreeController.text.trim(),
+                                area_study: _areaController.text.trim(),
+                                description:
+                                _descriptionController.text.trim(),
+                                context: context)
                                 .then((value) {
                               if (value.status == true) {
                                 Get.back();

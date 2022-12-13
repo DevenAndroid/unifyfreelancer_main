@@ -42,7 +42,9 @@ class CustomTextField extends StatefulWidget {
     this.onEditingCompleted,
     this.onChanged,
     this.onSaved,
-    this.labelText, this.inputFormatters1, this.onFieldSubmitted ,
+    this.labelText,
+    this.inputFormatters1,
+    this.onFieldSubmitted ,
 
   });
 

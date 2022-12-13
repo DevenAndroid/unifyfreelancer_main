@@ -62,7 +62,7 @@ class _StripPaymentState extends State<StripPayment> {
                 const SizedBox(height: 10,),
                 CardFormField(
                   controller: controller,
-                  enablePostalCode: true,
+                  enablePostalCode: false,
                   autofocus: true,
                   style: CardFormStyle(
                       borderColor: Colors.black,

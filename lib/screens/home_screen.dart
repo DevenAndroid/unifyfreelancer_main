@@ -265,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   shrinkWrap: true,
                                                   physics: NeverScrollableScrollPhysics(),
                                                   itemCount: controller.dislikeReasons.value.data!.length,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder: (context, index2) {
                                                     return Column(crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         InkWell(
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Get.back();
                                                             dislikeJobRepo(
                                                                     job_id: controller.modelJobList.value.data![index].id.toString(),
-                                                                    reason_id: controller.dislikeReasons.value.data![index].id.toString(),
+                                                                    reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                                     context: context).then((value) {
                                                                       print("remove job response::::"+value.message.toString());
                                                               if (value.status == true) {}
@@ -282,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             });
                                                           },
                                                           child: Text(
-                                                            controller.dislikeReasons.value.data![index].name.toString(),
+                                                            controller.dislikeReasons.value.data![index2].name.toString(),
                                                             style: TextStyle(
                                                               fontSize: 12.sp,
                                                               fontWeight: FontWeight.w500,
@@ -661,7 +661,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   shrinkWrap: true,
                                                   physics: NeverScrollableScrollPhysics(),
                                                   itemCount: controller.dislikeReasons.value.data!.length,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder: (context, index2) {
                                                     return Column(crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         InkWell(
@@ -669,7 +669,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Get.back();
                                                             dislikeJobRepo(
                                                                 job_id: controller.modeRecentJobList.value.data![index].id.toString(),
-                                                                reason_id: controller.dislikeReasons.value.data![index].id.toString(),
+                                                                reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                                 context: context).then((value) {
                                                               print("remove recent job response::::"+value.message.toString());
                                                               if (value.status == true) {}
@@ -682,7 +682,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             controller
                                                                 .dislikeReasons
                                                                 .value
-                                                                .data![index]
+                                                                .data![index2]
                                                                 .name
                                                                 .toString(),
                                                             style: TextStyle(
@@ -1114,7 +1114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
                                         itemCount: controller.dislikeReasons.value.data!.length,
-                                        itemBuilder: (context, index) {
+                                        itemBuilder: (context, index2) {
                                           return Column(crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               InkWell(
@@ -1122,7 +1122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Get.back();
                                                   dislikeJobRepo(
                                                       job_id: controller.modelBestJobList.value.data![index].id.toString(),
-                                                      reason_id: controller.dislikeReasons.value.data![index].id.toString(),
+                                                      reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                       context: context).then((value) {
                                                     print("remove job response::::"+value.message.toString());
                                                     if (value.status == true) {}
@@ -1135,7 +1135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   controller
                                                       .dislikeReasons
                                                       .value
-                                                      .data![index]
+                                                      .data![index2]
                                                       .name
                                                       .toString(),
                                                   style: TextStyle(

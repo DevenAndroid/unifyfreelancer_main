@@ -120,7 +120,7 @@ class _Page5State extends State<Page5> {
                                       hintText: "Web developer".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Title is required'),
+                                            errorText: 'Please enter your title'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -139,11 +139,11 @@ class _Page5State extends State<Page5> {
                                     CustomTextField(
                                       controller: companyController,
                                       obSecure: false.obs,
-                                      keyboardType: TextInputType.emailAddress,
+                                      keyboardType: TextInputType.text,
                                       hintText: "Ex: Unify".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Company is required'),
+                                            errorText: 'Please enter your company'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -170,7 +170,7 @@ class _Page5State extends State<Page5> {
                                             hintText: "City".obs,
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'City is required'),
+                                                  errorText: 'Please enter your city'),
                                             ]),
                                           ),
                                         ),
@@ -421,7 +421,7 @@ class _Page5State extends State<Page5> {
                                             ),
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'Country is required'),
+                                                  errorText: 'Please select your country'),
                                             ]),
                                           ),
                                         ),
@@ -471,7 +471,7 @@ class _Page5State extends State<Page5> {
                                       ),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'From, date is required'),
+                                            errorText: 'Please select your start date'),
                                       ]),
                                     ),
                                     Row(
@@ -538,7 +538,7 @@ class _Page5State extends State<Page5> {
                                                 validator: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return 'To, date is required';
+                                                    return 'Please select your end date';
                                                   } else if (DateTime.parse(dateInput)
                                                           .compareTo(DateTime.parse(
                                                               dateInput2)) <
@@ -909,9 +909,8 @@ class _Page5State extends State<Page5> {
                 expandedValue: false,
                 onPressed: () {
                     if (controller.nothingToAddForExperience.value == false) {
-                      showToast("Please check the checkbox");
+                      showToast("Please select the checkbox");
                   } else {
-
                     controller.nextPage();
                   }
                 },

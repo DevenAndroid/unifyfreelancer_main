@@ -85,7 +85,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   keyboardType: TextInputType.text,
                   hintText: "Enter first name".obs,
                   validator: MultiValidator(
-                      [RequiredValidator(errorText: 'First name is required')]),
+                      [RequiredValidator(errorText: 'Please enter first name')]),
                 ),
                 SizedBox(
                   height: 15,
@@ -106,7 +106,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   keyboardType: TextInputType.text,
                   hintText: "Enter last name".obs,
                   validator: MultiValidator(
-                      [RequiredValidator(errorText: 'Last name is required')]),
+                      [RequiredValidator(errorText: 'Please enter last name')]),
                 ),
                 SizedBox(
                   height: 15,
@@ -127,7 +127,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                   keyboardType: TextInputType.emailAddress,
                   hintText: "Enter Business Email".obs,
                   validator: MultiValidator(
-                      [RequiredValidator(errorText: 'Email is required')]),
+                      [RequiredValidator(errorText: 'Please enter email id')]),
                 ),
                /* SizedBox(
                   height: 15,

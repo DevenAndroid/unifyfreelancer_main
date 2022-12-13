@@ -227,7 +227,7 @@ class _Page6State extends State<Page6> {
                                       hintText: "Ex: Northwestern University".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'School is required'),
+                                            errorText: 'Please enter your school name'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -309,7 +309,7 @@ class _Page6State extends State<Page6> {
                                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'From year is required'),
+                                            errorText: 'Please select start year'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -392,7 +392,7 @@ class _Page6State extends State<Page6> {
                                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return 'To, year is required';
+                                          return 'Please select end year';
                                         } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
                                           return null;
                                         } else {
@@ -488,7 +488,7 @@ class _Page6State extends State<Page6> {
                                       suffixIcon: Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Degree is required'),
+                                            errorText: 'Please select your degree'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -605,7 +605,7 @@ class _Page6State extends State<Page6> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear + 1; i++) {
+    for (var i = currentYear - 70; i < currentYear + 11; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -767,7 +767,7 @@ class _Page6State extends State<Page6> {
                 expandedValue: false,
                 onPressed: () {
                   if (controller.nothingToAddForEducation.value == false) {
-                    showToast("Please check the checkbox");
+                    showToast("Please select the checkbox");
                   } else {
                     controller.nextPage();
                   }

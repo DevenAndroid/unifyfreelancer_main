@@ -6,6 +6,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -195,7 +196,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                           validator: MultiValidator([
                                             RequiredValidator(
                                                 errorText:
-                                                    'First name is required'),
+                                                    'Please enter your first name'),
                                           ]),
                                         ),
                                         SizedBox(
@@ -226,7 +227,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                           validator: MultiValidator([
                                             RequiredValidator(
                                                 errorText:
-                                                    'Last name is required'),
+                                                    'Please enter your last name'),
                                           ]),
                                         ),
                                         SizedBox(
@@ -258,7 +259,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               TextInputType.emailAddress,
                                           validator: MultiValidator([
                                             RequiredValidator(
-                                                errorText: 'Email is required'),
+                                                errorText: 'Please enter your email'),
                                           ]),
                                         ),
                                         SizedBox(
@@ -689,7 +690,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Time Zone",
+                                              "Time Zone*",
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
@@ -709,7 +710,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                     : timezoneValue.value,
                                                 validator: (value) {
                                                   if (value == null) {
-                                                    return 'Please select type';
+                                                    return 'Please select time zone';
                                                   }
                                                 },
                                                 decoration: InputDecoration(
@@ -816,7 +817,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               height: 10.h,
                                             ),
                                             Text(
-                                              "Phone",
+                                              "Phone*",
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
@@ -826,14 +827,17 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               height: 5.h,
                                             ),
                                             BoxTextField(
+                                              inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                                               obSecure: false.obs,
                                               controller: phoneController,
                                               hintText: "Phone".obs,
                                               keyboardType: TextInputType.phone,
                                               validator: MultiValidator([
-                                                RequiredValidator(
-                                                    errorText:
-                                                        'Phone is required'),
+                                                RequiredValidator(errorText: "Please enter your phone number"),
+                                                MinLengthValidator(10,
+                                                    errorText: 'Phone number minimum length is 10 digits'),
+                                                MaxLengthValidator(12,
+                                                    errorText: 'Phone number maximum length is 12 digits'),
                                               ]),
                                             ),
                                             SizedBox(
@@ -857,16 +861,29 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               height: 5.h,
                                             ),
                                             BoxTextField(
+                                              inputFormatters1: [
+                                                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9 ]')),
+                                              ],
                                               obSecure: false.obs,
                                               controller: zipController,
                                               hintText: "Zip/Postal code".obs,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              validator: MultiValidator([
+                                              keyboardType: TextInputType.number,
+                                              validator: (value){
+                                                if(value!.trim().isEmpty){
+                                                  return "Please enter your zip code";
+                                                }
+                                                else if(value.trim().length < 4){
+                                                  return "Zip code minimum length is 4";
+                                                }
+                                                else if(value.trim().length > 10) {
+                                                  return "Zip code maximum length is 10";
+                                                }
+                                              },
+                                            /*  validator: MultiValidator([
                                                 RequiredValidator(
                                                     errorText:
                                                         'Zip is required'),
-                                              ]),
+                                              ]),*/
                                             ),
                                             SizedBox(
                                               height: 10.h,
@@ -897,7 +914,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               validator: MultiValidator([
                                                 RequiredValidator(
                                                     errorText:
-                                                        'Address is required'),
+                                                        'Please enter your address'),
                                               ]),
                                             ),
                                             SizedBox(
@@ -926,9 +943,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               hintText: "City".obs,
                                               keyboardType: TextInputType.text,
                                               validator: MultiValidator([
-                                                RequiredValidator(
-                                                    errorText:
-                                                        'City is required'),
+                                                RequiredValidator(errorText: 'Please enter your city'),
                                               ]),
                                             ),
                                             SizedBox(
@@ -1205,7 +1220,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               validator: MultiValidator([
                                                 RequiredValidator(
                                                     errorText:
-                                                        'Country is required'),
+                                                        'Please select your country'),
                                               ]),
                                             ),
                                             SizedBox(

@@ -83,7 +83,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                   keyboardType: TextInputType.text,
                   hintText: "Title".obs,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Title is required'),
+                    RequiredValidator(errorText: 'Please enter title'),
                   ]),
                 ),
                 SizedBox(
@@ -96,7 +96,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                   hintText: "Description".obs,
                   isMulti: true,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Description is required'),
+                    RequiredValidator(errorText: 'Please enter description'),
                   ]),
                 ),
                 SizedBox(

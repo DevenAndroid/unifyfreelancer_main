@@ -134,7 +134,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Ex: Unify".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Company is required'),
+                            RequiredValidator(errorText: 'Please enter your company'),
                           ]),
                         ),
                         SizedBox(
@@ -161,7 +161,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 hintText: "City".obs,
                                 validator: MultiValidator([
                                   RequiredValidator(
-                                      errorText: 'City is required'),
+                                      errorText: 'Please enter your city'),
                                 ]),
                               ),
                             ),
@@ -350,7 +350,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 ),
                                 validator: MultiValidator([
                                   RequiredValidator(
-                                      errorText: 'Country is required'),
+                                      errorText: 'Please select your country'),
                                 ]),
                               ),
                             ),
@@ -375,7 +375,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Web developer".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Title is required'),
+                            RequiredValidator(errorText: 'Please enter your title'),
                           ]),
                         ),
                         SizedBox(
@@ -424,7 +424,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           ),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'From date is required'),
+                                errorText: 'Please select your start date'),
                           ]),
                         ),
                         Row(
@@ -483,7 +483,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               validator: (value) {
                                 if (value == null ||
                                     value.isEmpty) {
-                                  return 'To date is required';
+                                  return 'Please select your end date';
                                 } else if (int.parse(dateInput.toString()).compareTo(int.parse(dateInput2.toString())) < 0) {
                                   return null;
                                 } else {
@@ -516,10 +516,10 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Description".obs,
-                          validator: MultiValidator([
+                          /*validator: MultiValidator([
                             RequiredValidator(
                                 errorText: 'Description is required'),
-                          ]),
+                          ]),*/
                         ),
                         SizedBox(
                           height: 15,

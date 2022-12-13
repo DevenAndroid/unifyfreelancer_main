@@ -58,6 +58,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }));
   }
 
+  bool checkboxColor = false;
+
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
@@ -217,7 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.firstName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'First name is required'),
+                                    errorText: 'Please enter your first name'),
                               ])),
                           SizedBox(
                             height: 12.h,
@@ -231,7 +233,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.lastName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'Last name is required'),
+                                    errorText: 'Please enter your last name'),
                               ])),
                           SizedBox(
                             height: 12.h,
@@ -251,7 +253,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ])*/
                             validator: (value) {
                               if (emailController.text.isEmpty) {
-                                return "Please enter email address.";
+                                return "Please enter your email";
                               } else if (emailController.text
                                   .contains('+')) {
                                 return "Email is invalid";
@@ -260,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   .hasMatch(emailController.text)) {
                                 return null;
                               } else {
-                                return 'Please Enter valid email address';
+                                return 'Please type a valid email address';
                               }
                             },
                           ),
@@ -292,7 +294,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: AppStrings.password.obs,
 
                               validator: MultiValidator([
-                                RequiredValidator(errorText: 'Password is required'),
+                                RequiredValidator(errorText: 'Please enter your password'),
                                 MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                                 PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
@@ -323,10 +325,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             hintText: "Confirm password".obs,
                             validator: (value) {
                               if (value == "") {
-                                return "Confirm password is required";
+                                return "Please enter your confirm password";
                               } else if (value.toString() !=
                                   passwordController.text.trim()) {
-                                return "Confirm password is not matching with password";
+                                return "The confirm password is not matching with password";
                               } else {
                                 return null;
                               }
@@ -537,7 +539,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Country is required'),
+                                  errorText: 'Please select your country'),
                             ]),
                           ),
                           SizedBox(
@@ -547,15 +549,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Checkbox(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  value: acceptTermsOrPrivacy,
-                                  activeColor: AppTheme.primaryColor,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      acceptTermsOrPrivacy = newValue!;
-                                    });
-                                  }),
+                              Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: checkboxColor == false ? Colors.grey.withOpacity(.78) : Colors.red,
+
+                                ),
+                                child: Checkbox(
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    value: acceptTermsOrPrivacy,
+                                    activeColor: AppTheme.primaryColor,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        acceptTermsOrPrivacy = newValue!;
+                                      });
+                                    }),
+                              ),
                               SizedBox(
                                 width: 5,
                               ),
@@ -654,7 +662,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             }
                             if(acceptTermsOrPrivacy == false){
-                              showToast("Please accept terms and conditions");
+                            //  showToast("Please accept terms and conditions");
+                              setState(() {
+                                checkboxColor = true;
+                              });
                             }
                           }, deviceWidth, 50),
                           SizedBox(

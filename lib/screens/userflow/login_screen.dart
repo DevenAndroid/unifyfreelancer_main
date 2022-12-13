@@ -182,9 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Please enter email id'),
+                                  errorText: 'Please enter your email'),
                               EmailValidator(
-                                  errorText: 'Enter a valid email address')
+                                  errorText: 'Please type a valid email address')
                             ])),
                         SizedBox(
                           height: 16.h,
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([
-                              RequiredValidator(errorText: 'Please enter password'),
+                              RequiredValidator(errorText: 'Please enter your password'),
                             ]),
 
                           );
