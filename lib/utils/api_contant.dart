@@ -71,6 +71,7 @@ class ApiUrls {
   static const String updateProposal = "${apiBaseUrl}update-proposal";
   static const String acceptOffer = "${apiBaseUrl}accept-offer/";
   static const String declineOffer = "${apiBaseUrl}decline-offer";
+  static const String userDocumentVerify = "${apiBaseUrl}user-document-verify";
 
 
 }

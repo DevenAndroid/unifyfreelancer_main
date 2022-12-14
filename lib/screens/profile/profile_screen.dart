@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +16,7 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
+
 import '../../repository/add_category_repository.dart';
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
@@ -22,6 +25,7 @@ import '../../repository/delete_portfolio_info_repository.dart';
 import '../../repository/delete_testimonial_info_repository.dart';
 import '../../repository/edit_designation_info_repository.dart';
 import '../../repository/edit_name_info_repository.dart';
+import '../../repository/verification_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/box_textfield.dart';
@@ -2069,7 +2073,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
+                                                    /* Container(
                                                         height: 85,
                                                         width: 70,
                                                         child: Image.network(
@@ -2077,7 +2081,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         )),
                                                     SizedBox(
                                                       width: 20,
-                                                    ),
+                                                    ),*/
                                                     Expanded(
                                                       child: Column(
                                                         crossAxisAlignment:
@@ -2177,27 +2181,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.verified,
-                                                                size: 15,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                "Pending verification",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ],
+                                                          Text(
+                                                            profileController
+                                                                .model
+                                                                .value
+                                                                .data!
+                                                                .certificates![
+                                                                    index]
+                                                                .description
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 13.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppTheme
+                                                                    .darkBlueText),
                                                           ),
                                                           SizedBox(
                                                             height: 5,
@@ -2805,41 +2804,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
-         /* Divider(
+          Divider(
             color: AppTheme.pinkText.withOpacity(.29),
           ),
           SizedBox(
             height: 10.h,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Verification",
-                style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText),
-              ),
-              InkWell(
-                onTap: () {
-                  verification();
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
-                    Icons.add,
-                    color: AppTheme.primaryColor,
-                    size: 15,
-                  ),
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "Verification",
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.darkBlueText),
+            ),
+            InkWell(
+              onTap: () {
+                verification();
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.whiteColor,
+                    border: Border.all(color: Color(0xff707070))),
+                child: Icon(
+                  Icons.add,
+                  color: AppTheme.primaryColor,
+                  size: 15,
                 ),
               ),
-              *//* InkWell(
+            ),
+          ]),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+              children: [
+            Text(
+              "ID : ",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.darkBlueText),
+            ),
+                Text(
+                  "verified",
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.darkBlueText),
+                ),
+            SizedBox(
+              width: 5,
+            ),
+            Icon(
+              Icons.verified,
+              color: profileController.model.value.data!.basicInfo!.isVerified == true ? AppTheme.primaryColor : Colors.grey.withOpacity(.49),
+              size: 20,
+            ),
+          ]),
+
+          /* InkWell(
                                 onTap: () {},
                                 child: Container(
                                   padding: EdgeInsets.all(5),
@@ -2854,7 +2881,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     size: 15,
                                   ),
                                 ),
-                              ),*//*
+                              ),*/ /*
             ],
           ),
           SizedBox(
@@ -3030,6 +3057,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(
                     height: 5.h,
+                  ),
+                  Text(
+                    profileController
+                            .model.value.data!.education![index].startYear
+                            .toString() +
+                        " - " +
+                        profileController
+                            .model.value.data!.education![index].endYear
+                            .toString(),
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff4D4D4D)),
                   ),
                   Divider(
                     color: AppTheme.pinkText.withOpacity(.29),
@@ -3242,97 +3282,276 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-/*  verification(){
-    List dropDownValues = [
-      "Driving licences"
-    ];
-    return    showDialog(
+  verification() {
+    List dropDownValues = ["passport", "driving_license","other"];
+    String currentSelectedDocument = dropDownValues.first;
+    final _formKey34 = GlobalKey<FormState>();
+
+
+    Rx<File> documentFile = File("").obs;
+    RxString fileName = "".obs;
+
+    pickFileToUpload() async {
+
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        fileName.value = result.files.first.name;
+        documentFile.value = File(result.files.single.path!);
+        setState(() {});
+      }
+    }
+
+    Rx<File> documentFile1 = File("").obs;
+    RxString fileName1 = "".obs;
+
+    pickFileToUpload1() async {
+
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        fileName1.value = result.files.first.name;
+        documentFile1.value = File(result.files.single.path!);
+        setState(() {});
+      }
+    }
+
+
+
+
+    return showDialog(
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
-            child: Form(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 40.0),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: AddSize.size5,
-                      ),
-                      Text(
-                        "User Verification",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                      ),
-                      SizedBox(
-                        height: AddSize.size5,
-                      ),
-                      DropdownButtonFormField<dynamic>(
-                        alignment: Alignment.centerLeft,
-                        decoration: InputDecoration(
-                          hintText: 'Select ID',
-                          focusColor: AppTheme.textfield.withOpacity(0.5),
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          filled: true,
-                          fillColor:
-                          AppTheme.whitebg.withOpacity(0.5),
-                          contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppTheme.boardercolor.withOpacity(0.5)),
-                            borderRadius:
-                            BorderRadius.circular(10.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppTheme.boardercolor
-                                      .withOpacity(0.5)),
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(10.0))),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppTheme.boardercolor
-                                      .withOpacity(0.5),
-                                  width: 3.0),
-                              borderRadius:
-                              BorderRadius.circular(15.0)),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Obx(() {
+              return Form(
+                key: _formKey34,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, right: 15, left: 15, bottom: 15),
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: AddSize.size5,
                         ),
-                        isDense: false,
-                        validator: (value) {
-                          if (value == null) {
-                            return "Select ID Type";
-                          } else {
-                            return null;
-                          }
-                        },
-                        value: currentSelectedDocument.value == ""
-                            ? null
-                            : currentSelectedDocument.value,
-                        isExpanded: true,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: List.generate(
-                            dropDownValues.length,
-                                (index) => DropdownMenuItem(
-                                value: dropDownValues[index]
-                                    .slug
-                                    .toString(),
-                                child: Text(dropDownValues[index]
-                                    .title
-                                    .toString()))),
-                        onChanged: (val) {
-                          currentSelectedDocument.value = val;
-                        },
-                      ),
-
-                    ],
+                        Text(
+                          "User Verification",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                        ),
+                        SizedBox(
+                          height: AddSize.size20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DropdownButtonFormField<dynamic>(
+                              alignment: Alignment.centerLeft,
+                              decoration: InputDecoration(
+                                hintText: 'Select id',
+                                focusColor: AppTheme.textfield.withOpacity(0.5),
+                                hintStyle:
+                                    TextStyle(color: Colors.grey.shade400),
+                                filled: true,
+                                fillColor: AppTheme.whiteColor.withOpacity(0.5),
+                                contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5)),
+                                    borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5),
+                                        width: 3.0),
+                                    borderRadius: BorderRadius.circular(15.0)),
+                              ),
+                              isDense: false,
+                              validator: (value) {
+                                if (value.toString().trim().isEmpty) {
+                                  return "Please select id";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              value: currentSelectedDocument,
+                              isExpanded: true,
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              items: List.generate(
+                                  dropDownValues.length,
+                                  (index) => DropdownMenuItem(
+                                      value: dropDownValues[index].toString(),
+                                      child: Text(
+                                          dropDownValues[index].toString().capitalizeFirst!.replaceAll("_", " ")))),
+                              onChanged: (val) {
+                                currentSelectedDocument = val;
+                                print(currentSelectedDocument);
+                              },
+                            ),
+                            SizedBox(
+                              height: AddSize.size25,
+                            ),
+                            Text(
+                              "Upload Documents",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.darkBlueText),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            InkWell(
+                              onTap: () => pickFileToUpload(),
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 13,horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffE1EDFB),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: documentFile.value.path == ""
+                                      ? RichText(
+                                          text: TextSpan(
+                                              text: "Upload ",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppTheme.primaryColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: "document front image",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: AppTheme
+                                                          .darkBlueText),
+                                                )
+                                              ]),
+                                        )
+                                      : Text(
+                                    fileName.value.toString(),
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            InkWell(
+                              onTap: () => pickFileToUpload1(),
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 13,horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffE1EDFB),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: documentFile1.value.path == ""
+                                      ? RichText(
+                                    text: TextSpan(
+                                        text: "Upload ",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppTheme.primaryColor),
+                                        children: [
+                                          TextSpan(
+                                            text: "document back image",
+                                            style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight:
+                                                FontWeight.w400,
+                                                color: AppTheme
+                                                    .darkBlueText),
+                                          )
+                                        ]),
+                                  )
+                                      : Text(
+                                    fileName1.value.toString(),
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: AddSize.size25,
+                            ),
+                            Row(children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'cancel',
+                                    backgroundColor: AppTheme.whiteColor,
+                                    onPressed: () => Get.back(),
+                                    textColor: AppTheme.primaryColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Save',
+                                    backgroundColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      if(_formKey34.currentState!.validate() && documentFile.value.path != "" && documentFile1.value.path != "" ){
+                                        Map map = <String,String>{};
+                                        map["type"] = currentSelectedDocument.toString();
+                                       userDocumentVerifyRepo(mapData : map,fieldName1: "document_front", file1: documentFile.value,
+                                       fieldName2: "document_back", file2: documentFile1.value,context: context).then((value) {
+                                         if(value.status == true){
+                                           Get.back();
+                                         }
+                                         showToast(value.message.toString());
+                                       });
+                                      }
+                                      else{
+                                        showToast('Please add front and back documents');
+                                      }
+                                    },
+                                    textColor: AppTheme.whiteColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                            ])
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
           );
         });
-  }*/
+  }
 }

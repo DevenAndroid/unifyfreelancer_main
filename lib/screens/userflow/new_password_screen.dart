@@ -103,7 +103,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           errorText: "Password must be at least 8 characters with symbol & letter. "),
                     ]),*/
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Password is required'),
+                      RequiredValidator(errorText: 'Please enter new password'),
                       MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
                       MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                       PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
@@ -142,7 +142,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     hintText: "  Confirm new password".obs,
                     validator: (value) {
                       if (value == "") {
-                        return "Confirm password required";
+                        return "Please enter confirm password";
                       } else if (value.toString() !=
                           passwordController.text.trim()) {
                         return "Confirm password is not matching with password";

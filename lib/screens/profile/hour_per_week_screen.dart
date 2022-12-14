@@ -172,11 +172,22 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                 obSecure: false.obs,
                                 keyboardType: TextInputType.number,
                                 hintText: "5.00".obs,
-                                validator: MultiValidator([
+                                validator: (value){
+                                  if(value!.isEmpty && value.toString().trim() != ""){
+                                    return "Please enter your hourly price";
+                                  }
+                                  else if(double.parse(value.isEmpty ? "0" : value) < 3){
+                                    return "Minimum hourly price is 3 dollars";
+                                  }
+                                  else {
+                                    return null;
+                                  }
+                                },
+                                /*validator: MultiValidator([
                                   RequiredValidator(
                                       errorText:
                                       'Please enter your hourly price'),
-                                ]),
+                                ]),*/
                               ),
                             ),
                             Text(

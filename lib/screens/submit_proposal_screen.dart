@@ -92,8 +92,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
 
-    if (result.files.single.size / (1024 * 1024) > 25) {
-      showToast("Your file size is greater then 25 MB");
+    if (result.files.single.size / (1024 * 1024) > 10) {
+      showToast("Your file size is greater then 10 MB");
       setState(() {});
     } else {
       documentFile.value = File(result.files.single.path!);

@@ -435,6 +435,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       height: AddSize.size5,
                                     ),
                                     Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: CustomTextField(
@@ -1882,7 +1883,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       onPressed: () {
                         submitProfileRepo().then((value) async {
                           if (value.status == true) {
-                            Get.toNamed(MyRouter.subscriptionScreen);
+                            Get.offAllNamed(MyRouter.subscriptionScreen);
                             SharedPreferences pref =
                             await SharedPreferences.getInstance();
                             pref.setBool('isProfileCompleted', true);
@@ -2067,7 +2068,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     children: [
                       Text(
                         controller.model.value.data!.basicInfo!.firstName
-                                .toString() +
+                                .toString() + " "+
                             controller.model.value.data!.basicInfo!.lastName
                                 .toString(),
                         style: TextStyle(
@@ -2655,7 +2656,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               onPressed: () {
                 submitProfileRepo().then((value) async {
                   if (value.status == true) {
-                    Get.toNamed(MyRouter.subscriptionScreen);
+                    Get.offAllNamed(MyRouter.subscriptionScreen);
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     pref.setBool('isProfileCompleted', true);
@@ -2733,7 +2734,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 children: [
                   Text(
                     controller.model.value.data!.employment![index1].company
-                        .toString(),
+                        .toString().capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -2787,7 +2788,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               ),
               Text(
                 controller.model.value.data!.employment![index1].subject
-                    .toString(),
+                    .toString().capitalizeFirst!,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textColor,
@@ -2796,22 +2797,16 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               Row(
                 children: [
                   Text(
-                    controller.model.value.data!.employment![index1].startDate
-                        .toString(),
+                    "${dateFormat.format(DateTime.parse(controller.model.value.data!.employment![index1].startDate.toString()))}",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
                         fontSize: AddSize.font14),
                   ),
                   Text(
-                    controller.model.value.data!.employment![index1].endDate
-                            .toString()
-                            .isNotEmpty
-                        ? "-" +
-                            controller
-                                .model.value.data!.employment![index1].endDate
-                                .toString()
-                        : "",
+                    controller.model.value.data!.employment![index1].endDate.toString() == "null"
+                        ? " - Currently working" : " - " +
+          "${dateFormat.format(DateTime.parse(controller.model.value.data!.employment![index1].endDate.toString()))}",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
@@ -2843,7 +2838,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 children: [
                   Text(
                     controller.model.value.data!.education![index].school
-                        .toString(),
+                        .toString().capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -2904,10 +2899,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               Row(
                 children: [
                   Text(
-                    controller.model.value.data!.education![index].areaStudy
-                            .toString() +
-                        controller.model.value.data!.education![index].startYear
-                            .toString(),
+                    controller.model.value.data!.education![index].areaStudy.toString() +
+                        controller.model.value.data!.education![index].startYear.toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
@@ -2917,9 +2910,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     controller.model.value.data!.education![index].startYear
                             .toString()
                             .isNotEmpty
-                        ? "-" +
+                        ? " - " +
                             controller
-                                .model.value.data!.education![index].startYear
+                                .model.value.data!.education![index].endYear
                                 .toString()
                         : "",
                     style: TextStyle(

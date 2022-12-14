@@ -97,7 +97,7 @@ class ProfileScreenController extends GetxController {
         titleController.text = value.data!.basicInfo!.occuption.toString();
         descriptionController.text = value.data!.basicInfo!.description.toString();
         if(value.data!.basicInfo!.amount.toString() == "0.00"){
-          priceController.text = "";
+          priceController.text = "3.00";
         }
         else{
           priceController.text = value.data!.basicInfo!.amount.toString();

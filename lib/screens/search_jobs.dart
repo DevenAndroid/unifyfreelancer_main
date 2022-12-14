@@ -223,7 +223,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                 controller
                                                     .modelForPagination[index]
                                                     .name
-                                                    .toString(),
+                                                    .toString().capitalizeFirst!,
                                                 style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
@@ -391,7 +391,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       Text(
                                         controller
                                             .modelForPagination[index].type
-                                            .toString(),
+                                            .toString().capitalizeFirst!.replaceAll("_", " "),
                                         style: TextStyle(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w600,
@@ -404,7 +404,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       Text(
                                           controller.modelForPagination[index]
                                               .description
-                                              .toString(),
+                                              .toString().capitalizeFirst!,
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w300,
@@ -455,7 +455,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                 controller
                                                     .modelForPagination[index]
                                                     .budgetType
-                                                    .toString(),
+                                                    .toString().capitalizeFirst!,
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,

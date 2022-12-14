@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                        controller.modelJobList.value.data![index].name.toString(),
+                                        controller.modelJobList.value.data![index].name.toString().capitalizeFirst!,
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
@@ -366,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Text(
                                 controller.modelJobList.value.data![index].type
-                                    .toString(),
+                                    .toString().capitalizeFirst!.replaceAll("_", " "),
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -379,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(
                                   controller.modelJobList.value.data![index]
                                       .description
-                                      .toString(),
+                                      .toString().capitalizeFirst!,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w300,
@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         controller.modelJobList.value
                                             .data![index].budgetType
-                                            .toString(),
+                                            .toString().capitalizeFirst!,
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -633,7 +633,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                         controller.modeRecentJobList.value
                                             .data![index].name
-                                            .toString(),
+                                            .toString().capitalizeFirst!,
                                         style: TextStyle(
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.w600,
@@ -777,7 +777,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(
                                 controller
                                     .modeRecentJobList.value.data![index].type
-                                    .toString(),
+                                    .toString().capitalizeFirst!.replaceAll("_", " "),
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -790,7 +790,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(
                                   controller.modeRecentJobList.value
                                       .data![index].description
-                                      .toString(),
+                                      .toString().capitalizeFirst!,
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w300,
@@ -835,7 +835,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         controller.modeRecentJobList.value
                                             .data![index].budgetType
-                                            .toString(),
+                                            .toString().capitalizeFirst!,
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -1086,7 +1086,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                               controller.modelBestJobList.value
                                   .data![index].name
-                                  .toString(),
+                                  .toString().capitalizeFirst!,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -1224,9 +1224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: deviceHeight * .01,
                     ),
                     Text(
-                      controller
-                          .modelBestJobList.value.data![index].type
-                          .toString(),
+                      controller.modelBestJobList.value.data![index].type.toString().capitalizeFirst!.replaceAll("_", " "),
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -1239,7 +1237,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                         controller.modelBestJobList.value.data![index]
                             .description
-                            .toString(),
+                            .toString().capitalizeFirst!,
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w300,
@@ -1285,7 +1283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               controller.modelBestJobList.value
                                   .data![index].budgetType
-                                  .toString(),
+                                  .toString().capitalizeFirst!,
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,

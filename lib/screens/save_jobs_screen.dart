@@ -111,7 +111,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                               child: Text(
                                                 controller.model.value
                                                     .data![index].name
-                                                    .toString(),
+                                                    .toString().capitalizeFirst!,
                                                 style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w600,
@@ -207,7 +207,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                         Text(
                                           controller
                                               .model.value.data![index].type
-                                              .toString(),
+                                              .toString().capitalizeFirst!.replaceAll("_", " "),
                                           style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -220,7 +220,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                         Text(
                                           controller.model.value.data![index]
                                               .description
-                                              .toString(),
+                                              .toString().capitalizeFirst!,
                                           style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w300,
@@ -272,7 +272,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                 Text(
                                                   controller.model.value
                                                       .data![index].budgetType
-                                                      .toString(),
+                                                      .toString().capitalizeFirst!,
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
                                                       fontWeight:
