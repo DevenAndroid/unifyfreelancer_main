@@ -62,8 +62,11 @@ class User {
   bool? agreeTerms;
   bool? sendEmail;
   String? userType;
+  String? planId;
+  bool? isSubscription;
   String? isVerified;
   bool? isProfileComplete;
+  int? amount;
 
   User(
       {this.id,
@@ -84,8 +87,11 @@ class User {
         this.agreeTerms,
         this.sendEmail,
         this.userType,
+        this.planId,
+        this.isSubscription,
         this.isVerified,
-        this.isProfileComplete});
+        this.isProfileComplete,
+        this.amount});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -106,8 +112,11 @@ class User {
     agreeTerms = json['agree_terms'];
     sendEmail = json['send_email'];
     userType = json['user_type'];
+    planId = json['plan_id'];
+    isSubscription = json['is_subscription'];
     isVerified = json['is_verified'];
     isProfileComplete = json['is_profile_complete'];
+    amount = json['amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,8 +139,11 @@ class User {
     data['agree_terms'] = this.agreeTerms;
     data['send_email'] = this.sendEmail;
     data['user_type'] = this.userType;
+    data['plan_id'] = this.planId;
+    data['is_subscription'] = this.isSubscription;
     data['is_verified'] = this.isVerified;
     data['is_profile_complete'] = this.isProfileComplete;
+    data['amount'] = this.amount;
     return data;
   }
 }

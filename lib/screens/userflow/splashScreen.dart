@@ -20,14 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       if (pref.getString('cookie') != null) {
         print("object" + pref.getString('cookie').toString());
-        if(pref.getBool('isProfileCompleted') == true){
-          Get.offAllNamed(MyRouter.bottomNavbar);
-        }
-        else{
-          Get.offAllNamed(MyRouter.questionsScreen);
-        }
+        Get.offAllNamed(MyRouter.bottomNavbar);
       } else {
-        if(pref.getBool("shownIntro") == null){
+        if (pref.getBool("shownIntro") == null) {
           Get.offAllNamed(MyRouter.onBoardingScreen);
         } else {
           Get.offAllNamed(MyRouter.loginScreen);

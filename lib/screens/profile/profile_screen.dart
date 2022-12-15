@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/popups/radio_buttons_profile_screen.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
@@ -238,6 +239,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  final dateFormat = DateFormat('dd-MMM-yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -2330,9 +2333,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            profileController.model.value.data!
-                                                .employment![index].startDate
-                                                .toString(),
+                                            dateFormat.format(DateTime.parse(
+                                                profileController
+                                                    .model
+                                                    .value
+                                                    .data!
+                                                    .employment![index]
+                                                    .startDate
+                                                    .toString())),
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
@@ -2348,13 +2356,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .toString() !=
                                                     "null"
                                                 ? " - " +
-                                                    profileController
-                                                        .model
-                                                        .value
-                                                        .data!
-                                                        .employment![index]
-                                                        .endDate
-                                                        .toString()
+                                                    dateFormat.format(DateTime
+                                                        .parse(profileController
+                                                            .model
+                                                            .value
+                                                            .data!
+                                                            .employment![index]
+                                                            .endDate
+                                                            .toString()))
                                                 : "",
                                             style: TextStyle(
                                                 fontSize: 12,
@@ -2840,8 +2849,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 10.h,
           ),
-          Row(
-              children: [
+          Row(children: [
             Text(
               "ID : ",
               style: TextStyle(
@@ -2849,19 +2857,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText),
             ),
-                Text(
-                  "verified",
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppTheme.darkBlueText),
-                ),
+            Text(
+              "verified",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.darkBlueText),
+            ),
             SizedBox(
               width: 5,
             ),
             Icon(
               Icons.verified,
-              color: profileController.model.value.data!.basicInfo!.isVerified == true ? AppTheme.primaryColor : Colors.grey.withOpacity(.49),
+              color:
+                  profileController.model.value.data!.basicInfo!.isVerified ==
+                          true
+                      ? AppTheme.primaryColor
+                      : Colors.grey.withOpacity(.49),
               size: 20,
             ),
           ]),
@@ -3283,16 +3295,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   verification() {
-    List dropDownValues = ["passport", "driving_license","other"];
+    List dropDownValues = ["passport", "driving_license", "other"];
     String currentSelectedDocument = dropDownValues.first;
     final _formKey34 = GlobalKey<FormState>();
-
 
     Rx<File> documentFile = File("").obs;
     RxString fileName = "".obs;
 
     pickFileToUpload() async {
-
       FocusManager.instance.primaryFocus!.unfocus();
       final result = await FilePicker.platform.pickFiles();
       if (result == null) return;
@@ -3310,7 +3320,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     RxString fileName1 = "".obs;
 
     pickFileToUpload1() async {
-
       FocusManager.instance.primaryFocus!.unfocus();
       final result = await FilePicker.platform.pickFiles();
       if (result == null) return;
@@ -3323,9 +3332,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {});
       }
     }
-
-
-
 
     return showDialog(
         context: context,
@@ -3368,16 +3374,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     TextStyle(color: Colors.grey.shade400),
                                 filled: true,
                                 fillColor: AppTheme.whiteColor.withOpacity(0.5),
-                                contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: AddSize.padding12),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5)),
+                                  borderSide: BorderSide(
+                                      color: AppTheme.greyTextColor
+                                          .withOpacity(0.5)),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5)),
-                                    borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+                                    borderSide: BorderSide(
+                                        color: AppTheme.greyTextColor
+                                            .withOpacity(0.5)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0))),
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: AppTheme.greyTextColor.withOpacity(0.5),
+                                    borderSide: BorderSide(
+                                        color: AppTheme.greyTextColor
+                                            .withOpacity(0.5),
                                         width: 3.0),
                                     borderRadius: BorderRadius.circular(15.0)),
                               ),
@@ -3396,8 +3410,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   dropDownValues.length,
                                   (index) => DropdownMenuItem(
                                       value: dropDownValues[index].toString(),
-                                      child: Text(
-                                          dropDownValues[index].toString().capitalizeFirst!.replaceAll("_", " ")))),
+                                      child: Text(dropDownValues[index]
+                                          .toString()
+                                          .capitalizeFirst!
+                                          .replaceAll("_", " ")))),
                               onChanged: (val) {
                                 currentSelectedDocument = val;
                                 print(currentSelectedDocument);
@@ -3420,7 +3436,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onTap: () => pickFileToUpload(),
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.symmetric(vertical: 13,horizontal: 15),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15),
                                 decoration: BoxDecoration(
                                     color: Color(0xffE1EDFB),
                                     borderRadius: BorderRadius.circular(5)),
@@ -3446,7 +3463,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ]),
                                         )
                                       : Text(
-                                    fileName.value.toString(),
+                                          fileName.value.toString(),
                                           style: TextStyle(
                                               fontSize: 13.sp,
                                               fontWeight: FontWeight.w500,
@@ -3462,38 +3479,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onTap: () => pickFileToUpload1(),
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.symmetric(vertical: 13,horizontal: 15),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15),
                                 decoration: BoxDecoration(
                                     color: Color(0xffE1EDFB),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: documentFile1.value.path == ""
                                       ? RichText(
-                                    text: TextSpan(
-                                        text: "Upload ",
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppTheme.primaryColor),
-                                        children: [
-                                          TextSpan(
-                                            text: "document back image",
-                                            style: TextStyle(
-                                                fontSize: 13.sp,
-                                                fontWeight:
-                                                FontWeight.w400,
-                                                color: AppTheme
-                                                    .darkBlueText),
-                                          )
-                                        ]),
-                                  )
+                                          text: TextSpan(
+                                              text: "Upload ",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppTheme.primaryColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: "document back image",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: AppTheme
+                                                          .darkBlueText),
+                                                )
+                                              ]),
+                                        )
                                       : Text(
-                                    fileName1.value.toString(),
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppTheme.darkBlueText),
-                                  ),
+                                          fileName1.value.toString(),
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.darkBlueText),
+                                        ),
                                 ),
                               ),
                             ),
@@ -3522,19 +3540,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     title: 'Save',
                                     backgroundColor: AppTheme.primaryColor,
                                     onPressed: () {
-                                      if(_formKey34.currentState!.validate() && documentFile.value.path != "" && documentFile1.value.path != "" ){
-                                        Map map = <String,String>{};
-                                        map["type"] = currentSelectedDocument.toString();
-                                       userDocumentVerifyRepo(mapData : map,fieldName1: "document_front", file1: documentFile.value,
-                                       fieldName2: "document_back", file2: documentFile1.value,context: context).then((value) {
-                                         if(value.status == true){
-                                           Get.back();
-                                         }
-                                         showToast(value.message.toString());
-                                       });
-                                      }
-                                      else{
-                                        showToast('Please add front and back documents');
+                                      if (_formKey34.currentState!.validate() &&
+                                          documentFile.value.path != "" &&
+                                          documentFile1.value.path != "") {
+                                        Map map = <String, String>{};
+                                        map["type"] =
+                                            currentSelectedDocument.toString();
+                                        userDocumentVerifyRepo(
+                                                mapData: map,
+                                                fieldName1: "document_front",
+                                                file1: documentFile.value,
+                                                fieldName2: "document_back",
+                                                file2: documentFile1.value,
+                                                context: context)
+                                            .then((value) {
+                                          if (value.status == true) {
+                                            Get.back();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      } else {
+                                        showToast(
+                                            'Please add front and back documents');
                                       }
                                     },
                                     textColor: AppTheme.whiteColor,

@@ -110,7 +110,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                             height: deviceWidth * .01,
                                           ),
                                           Text(
-                                            model.value.data!.name.toString(),
+                                            model.value.data!.name.toString().capitalizeFirst!,
                                             style: TextStyle(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
@@ -257,7 +257,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   ),
                                                   Text(
                                                     model.value.data!.budgetType
-                                                        .toString(),
+                                                        .toString().capitalizeFirst!,
                                                     style: TextStyle(
                                                         fontSize: 14.sp,
                                                         fontWeight: FontWeight.w600,
@@ -320,7 +320,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   Text(
                                                     model
                                                         .value.data!.experienceLevel
-                                                        .toString(),
+                                                        .toString().capitalizeFirst!,
                                                     style: TextStyle(
                                                         fontSize: 14.sp,
                                                         fontWeight: FontWeight.w600,
@@ -807,11 +807,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               arguments: [
                                                 id,
                                                 model.value.data!.name.toString(),
-                                                model.value.data!.description
-                                                    .toString(),
+                                                model.value.data!.description.toString(),
                                                 model.value.data!.price.toString(),
-                                                model.value.data!.budgetType
-                                                    .toString(),
+                                                model.value.data!.budgetType.toString(),
                                                 model.value.data!.clientData!.id,
                                               ]);
                                         },

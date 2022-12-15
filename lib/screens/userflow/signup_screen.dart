@@ -101,36 +101,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
         pref.setBool("shownIntro", true);
-        // try {
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .set({"userId": value.data!.user.id.toString()}).catchError((e) {
-        //     showToast(e.toString());
-        //   });
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .set({"lastMessage": "Good Morning"});
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .collection("FirebaseMessages")
-        //       .add({
-        //     "message": "Good Morning",
-        //     "timeStamp": DateTime.now().millisecondsSinceEpoch
-        //   });
-        // } catch (e) {
-        //   showToast(e.toString());
-        // }
-        if(value.data!.user!.isProfileComplete == true){
-          Get.offAllNamed(MyRouter.bottomNavbar);
-        }
-        else{
+        //   pref.setBool("isSubscribed", false);
+        if(value.data!.user!.isProfileComplete!)
+        {
+          if(value.data!.user!.isSubscription!){
+            Get.offAllNamed(MyRouter.bottomNavbar);
+          }
+          else{
+            Get.offAllNamed(MyRouter.subscriptionScreen);
+          }
+        } else {
           Get.offAllNamed(MyRouter.questionsScreen);
         }
       }

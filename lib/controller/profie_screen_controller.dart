@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../models/model_category_list.dart';
 import '../models/model_countrylist.dart';
@@ -117,12 +118,21 @@ class ProfileScreenController extends GetxController {
         designationController.text =  value.data!.basicInfo!.occuption.toString();
         designationDescriptionController.text =  value.data!.basicInfo!.description.toString();
         serviceController.text =  value.data!.basicInfo!.category.toString();
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        if(model.value.data!.basicInfo!.is_profile_complete == true  && pref.getBool('isProfileCompleted') == false){
-          pref.setBool('isProfileCompleted',true);
-          Get.offAllNamed(MyRouter.bottomNavbar);
+        print("Profile ....."+ model.value.data!.basicInfo!.isProfileComplete.toString() );
+        print("Profile Subscription....."+ model.value.data!.basicInfo!.isSubscription.toString() );
+        if(model.value.data!.basicInfo!.isProfileComplete!)
+        {
+          if(model.value.data!.basicInfo!.isSubscription!){
+            Get.offNamed(MyRouter.bottomNavbar);
+          }
+          else{
+            Get.offNamed(MyRouter.subscriptionScreen);
+        //    showToast("Please choose a subscription ");
+          }
+        } else {
+          Get.offNamed(MyRouter.questionsScreen);
+        //  showToast("Please create your profile");
         }
-
       }
       else{
         status.value = RxStatus.error();

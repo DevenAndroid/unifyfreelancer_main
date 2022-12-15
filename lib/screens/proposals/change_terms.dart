@@ -79,15 +79,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               model.value.data!.proposalData!.bidAmount.toString());
           _priceController.text = price.toString();
           _feeController.text = ((price! * 20) / 100).toString();
-          _receiveController.text =
-              (price! - double.parse(_feeController.text)).toString();
+          _receiveController.text = (price! - double.parse(_feeController.text)).toString();
         }
-        if (model.value.data!.proposalData!.budgetType
-                .toString()
-                .toLowerCase() ==
-            "fixed") {
-          controller.durationController.text =
-              model.value.data!.proposalData!.projectDuration.toString();
+        if (model.value.data!.proposalData!.budgetType.toString() == "fixed") {
+          print("duration projext.......");
+          controller.durationController.text = model.value.data!.proposalData!.projectDuration.toString();
         }
         status.value = RxStatus.success();
       } else {

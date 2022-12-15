@@ -42,6 +42,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   RxList searchList1 = <String>[].obs;
 
   final dateFormat = DateFormat('dd-MMM-yyyy');
+  final dateFormat2 = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
@@ -56,11 +57,15 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       _cityController.text = controller.model.value.data!.employment![parentIndex].city.toString();
       countryController.text = controller.model.value.data!.employment![parentIndex].country.toString();
       _titleController.text = controller.model.value.data!.employment![parentIndex].subject.toString();
-      _fromController.text = controller.model.value.data!.employment![parentIndex].startDate.toString();
-      _toController.text = controller.model.value.data!.employment![parentIndex].endDate.toString();
-      _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
+      _fromController.text = dateFormat.format(DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate.toString()));
+
+     if(controller.model.value.data!.employment![parentIndex].currentlyWorking == 0){
+       _toController.text = dateFormat.format(DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate.toString()));
+       dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+     }
+      _descriptionController.text = controller.model.value.data!.employment![parentIndex].description ?? "";
       dateInput = DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate!).millisecondsSinceEpoch;
-      dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+
 
       setState(() {
         acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
@@ -131,7 +136,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         CustomTextField(
                           controller: _companyController,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.text,
                           hintText: "Ex: Unify".obs,
                           validator: MultiValidator([
                             RequiredValidator(errorText: 'Please enter your company'),
@@ -406,7 +411,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
                                 dateInput = pickedDate.millisecondsSinceEpoch;
-                               if (dateInput > dateInput2 ){
+                                if (dateInput > dateInput2 ){
                                   dateInput2 = 0;
                                   _toController.text = "";
                                 }
@@ -436,7 +441,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 onChanged: (newValue) {
                                   setState(() {
                                     acceptTermsOrPrivacy = newValue!;
-                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
+                                    acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
                                   });
                                 }),
                             SizedBox(
@@ -454,32 +459,32 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         SizedBox(
                           child: acceptTermsOrPrivacy == false
                               ? CustomTextField(
-                                  controller: _toController,
-                                  readOnly: true,
-                                  onTap: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
-                                        firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
-                                        //DateTime.now() - not to allow to choose before today.
-                                        lastDate: DateTime.now());
+                              controller: _toController,
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
+                                    firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
+                                    //DateTime.now() - not to allow to choose before today.
+                                    lastDate: DateTime.now());
 
-                                    if (pickedDate != null) {
-                                      print(pickedDate);
-                                      _toController.text = dateFormat.format(pickedDate);
-                                      setState(() {
-                                        dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
-                                        print(dateInput2);
-                                      });
-                                    } else {}
-                                  },
-                                  obSecure: false.obs,
-                                  hintText: "To".obs,
-                                  suffixIcon: Icon(
-                                    Icons.calendar_month_outlined,
-                                    size: 22,
-                                    color: AppTheme.primaryColor,
-                                  ),
+                                if (pickedDate != null) {
+                                  print(pickedDate);
+                                  _toController.text = dateFormat.format(pickedDate);
+                                  setState(() {
+                                    dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
+                                    print(dateInput2);
+                                  });
+                                } else {}
+                              },
+                              obSecure: false.obs,
+                              hintText: "To".obs,
+                              suffixIcon: Icon(
+                                Icons.calendar_month_outlined,
+                                size: 22,
+                                color: AppTheme.primaryColor,
+                              ),
                               validator: (value) {
                                 if (value == null ||
                                     value.isEmpty) {
@@ -490,11 +495,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   return "End date must be grater then start date";
                                 }
                               }
-                                  /* validator: MultiValidator([
+                            /* validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'To, date is required'),
                             ]),*/
-                                )
+                          )
                               : SizedBox(),
                         ),
                         SizedBox(
@@ -551,26 +556,25 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         backgroundColor: AppTheme.primaryColor,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                           editEmploymentInfoRepo(
-                             id: parentIndex == -10000 ? parentIndex :
-                             controller.model.value.data!.employment![parentIndex].id.toString(),
-                               subject: _titleController.text.trim(),
-                               description: _descriptionController.text.trim(),
-                               company: _companyController.text.trim(),
-                               city: _cityController.text.trim(),
-                               country: countryController.text.trim(),
-                               start_date: _fromController.text.trim(),
-                               end_date: _toController.text.trim(),
-                               currently_working:
-                               acceptTermsOrPrivacy == true ? 1 : 0,
-                               context: context)
-                               .then((value) {
-                             if (value.status == true) {
-                               Get.back();
-                               controller.getData();
-                             }
-                             showToast(value.message.toString());
-                           });
+                            editEmploymentInfoRepo(
+                                id: parentIndex == -10000 ? parentIndex :
+                                controller.model.value.data!.employment![parentIndex].id.toString(),
+                                subject: _titleController.text.trim(),
+                                description: _descriptionController.text.trim(),
+                                company: _companyController.text.trim(),
+                                city: _cityController.text.trim(),
+                                country: countryController.text.trim(),
+                                start_date: dateFormat2.format(DateTime.fromMillisecondsSinceEpoch(dateInput)),
+                                end_date: dateFormat2.format(DateTime.fromMillisecondsSinceEpoch(dateInput2)),
+                                currently_working: acceptTermsOrPrivacy == true ? 1 : 0,
+                                context: context)
+                                .then((value) {
+                              if (value.status == true) {
+                                Get.back();
+                                controller.getData();
+                              }
+                              showToast(value.message.toString());
+                            });
                           }
                         },
                         textColor: AppTheme.whiteColor,

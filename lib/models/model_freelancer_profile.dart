@@ -156,15 +156,22 @@ class BasicInfo {
   int? pendingProject;
   String? amount;
   String? timezone;
+  String? localTime;
   String? address;
   String? phone;
   String? country;
   String? state;
   String? city;
   String? zipCode;
-  String? isVerified;
-  bool? is_profile_complete;
+  String? hoursPerWeek;
+  int? categoryId;
   String? category;
+  String? isVerified;
+  bool? isProfileComplete;
+  String? successRate;
+  String? subscriptionId;
+  bool? isSubscription;
+  bool? isSaveTalent;
 
   BasicInfo(
       {this.id,
@@ -184,16 +191,22 @@ class BasicInfo {
         this.pendingProject,
         this.amount,
         this.timezone,
+        this.localTime,
         this.address,
-        this.category,
         this.phone,
         this.country,
         this.state,
         this.city,
         this.zipCode,
+        this.hoursPerWeek,
+        this.categoryId,
+        this.category,
         this.isVerified,
-        this.is_profile_complete
-      });
+        this.isProfileComplete,
+        this.successRate,
+        this.subscriptionId,
+        this.isSubscription,
+        this.isSaveTalent});
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -213,15 +226,22 @@ class BasicInfo {
     pendingProject = json['pending_project'];
     amount = json['amount'];
     timezone = json['timezone'];
+    localTime = json['local_time'];
     address = json['address'];
-    category = json['category'];
     phone = json['phone'];
     country = json['country'];
     state = json['state'];
     city = json['city'];
     zipCode = json['zip_code'];
+    hoursPerWeek = json['hours_per_week'];
+    categoryId = json['category_id'];
+    category = json['category'];
     isVerified = json['is_verified'];
-    is_profile_complete = json['is_profile_complete'];
+    isProfileComplete = json['is_profile_complete'];
+    successRate = json['success_rate'];
+    subscriptionId = json['subscription_id'];
+    isSubscription = json['is_subscription'];
+    isSaveTalent = json['isSaveTalent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -243,15 +263,22 @@ class BasicInfo {
     data['pending_project'] = this.pendingProject;
     data['amount'] = this.amount;
     data['timezone'] = this.timezone;
+    data['local_time'] = this.localTime;
     data['address'] = this.address;
-    data['category'] = this.category;
     data['phone'] = this.phone;
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
+    data['hours_per_week'] = this.hoursPerWeek;
+    data['category_id'] = this.categoryId;
+    data['category'] = this.category;
     data['is_verified'] = this.isVerified;
-    data['is_profile_complete'] = this.is_profile_complete;
+    data['is_profile_complete'] = this.isProfileComplete;
+    data['success_rate'] = this.successRate;
+    data['subscription_id'] = this.subscriptionId;
+    data['is_subscription'] = this.isSubscription;
+    data['isSaveTalent'] = this.isSaveTalent;
     return data;
   }
 }

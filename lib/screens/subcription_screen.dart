@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +16,6 @@ import '../controller/subscription_controller.dart';
 import '../models/model_subscription.dart';
 import '../resources/size.dart';
 import '../utils/api_contant.dart';
-import '../widgets/custom_appbar.dart';
 
 
 
@@ -35,8 +33,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   final profileController = Get.put(ProfileScreenController());
   final drawerKey = GlobalKey<ScaffoldState>();
   @override
+  void initState() {
+    super.initState();
+    profileController.getData();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: drawerKey,
       backgroundColor: Colors.white,
       /*appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -57,7 +61,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         backgroundColor: AppTheme.whiteColor,
         leading: InkWell(
           onTap: () {
-            drawerKey.currentState!.openDrawer();
+           drawerKey.currentState!.openDrawer();
+           /* Scaffold.of(context).openDrawer();*/
           },
           child: Card(
             elevation: 2,
@@ -206,6 +211,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       IconButton(
                           onPressed: () {
                             drawerKey.currentState!.closeDrawer();
+                       //     Scaffold.of(context).closeDrawer();
                           },
                           icon: Icon(
                             Icons.clear,

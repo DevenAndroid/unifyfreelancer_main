@@ -138,11 +138,10 @@ class _StripPaymentState extends State<StripPayment> {
                         ).then((value) {
                           if(value.status == true){
                             Get.toNamed(MyRouter.bottomNavbar);
-
+                            print("Subscription....." + value.toString());
                           }
                           log(jsonEncode(value));
-                          showToast(value.message);
-
+                          showToast(value.message.toString());
                         }
 
                         );

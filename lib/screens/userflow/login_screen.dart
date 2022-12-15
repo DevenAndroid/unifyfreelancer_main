@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../repository/login_repository.dart';
 import '../../repository/social_login_repository.dart';
 import '../../resources/app_assets.dart';
@@ -36,17 +38,17 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   RxBool eyeHide = true.obs;
 
-
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
     GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignIn!.authentication;
+        await googleSignIn!.authentication;
     final userCredentials = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
     await FirebaseAuth.instance.signInWithCredential(userCredentials);
-    socialLoginApi(context, googleSignInAuthentication.accessToken.toString(), "google");
+    socialLoginApi(
+        context, googleSignInAuthentication.accessToken.toString(), "google");
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
@@ -69,50 +71,30 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   socialLoginApi(context, authToken, provider) {
-    socialLoginRepo(context: context, accessToken: authToken, provider: provider).then((value) async {
+    socialLoginRepo(
+            context: context, accessToken: authToken, provider: provider)
+        .then((value) async {
       showToast(value.message.toString());
       log(jsonEncode(value));
-      if (value.status == true) {
+      if (value.status!) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
         pref.setBool("shownIntro", true);
-        // try {
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .set({"userId": value.data!.user.id.toString()}).catchError((e) {
-        //     showToast(e.toString());
-        //   });
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .set({"lastMessage": "Good Morning"});
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .collection("FirebaseMessages")
-        //       .add({
-        //     "message": "Good Morning",
-        //     "timeStamp": DateTime.now().millisecondsSinceEpoch
-        //   });
-        // } catch (e) {
-        //   showToast(e.toString());
-        // }
-        if(value.data!.user!.isProfileComplete == true){
-          Get.offAllNamed(MyRouter.bottomNavbar);
-          pref.setBool("isProfileCompleted", true);
-        }
-        else{
+        //   pref.setBool("isSubscribed", false);
+        if(value.data!.user!.isProfileComplete!)
+        {
+          if(value.data!.user!.isSubscription!){
+            Get.offAllNamed(MyRouter.bottomNavbar);
+          }
+          else{
+            Get.offAllNamed(MyRouter.subscriptionScreen);
+          }
+        } else {
           Get.offAllNamed(MyRouter.questionsScreen);
         }
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,10 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 left: 16.0,
                 bottom: 40.h,
                 child: Container(
-                  // height: 400.h,
-                  // margin: EdgeInsets.symmetric(horizontal: 16.0),
+                    // height: 400.h,
+                    // margin: EdgeInsets.symmetric(horizontal: 16.0),
                     padding:
-                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -184,7 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               RequiredValidator(
                                   errorText: 'Please enter your email'),
                               EmailValidator(
-                                  errorText: 'Please type a valid email address')
+                                  errorText:
+                                      'Please type a valid email address')
                             ])),
                         SizedBox(
                           height: 16.h,
@@ -197,21 +180,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             suffixIcon: eyeHide == false
                                 ? InkWell(
-                                onTap: () => setState(() {
-                                  eyeHide = true.obs;
-                                }),
-                                child: Icon(Icons.remove_red_eye_outlined))
+                                    onTap: () => setState(() {
+                                          eyeHide = true.obs;
+                                        }),
+                                    child: Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
-                                onTap: () => setState(() {
-                                  eyeHide = false.obs;
-                                }),
-                                child: Icon(Icons.visibility_off_outlined)),
+                                    onTap: () => setState(() {
+                                          eyeHide = false.obs;
+                                        }),
+                                    child: Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([
-                              RequiredValidator(errorText: 'Please enter your password'),
+                              RequiredValidator(
+                                  errorText: 'Please enter your password'),
                             ]),
-
                           );
                         }),
                         SizedBox(
@@ -239,21 +222,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         CommonButton(AppStrings.buttonLogin, () {
                           if (_formKey.currentState!.validate()) {
                             login(usernameController.text,
-                                passwordController.text, context)
+                                    passwordController.text, context)
                                 .then((value) async {
-                              showToast(value.message.toString(),
+                              showToast(
+                                value.message.toString(),
                               );
                               if (value.status == true) {
                                 SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
                                 pref.setBool("shownIntro", true);
-                                if(value.data!.user!.isProfileComplete == true){
-                                  Get.offAllNamed(MyRouter.bottomNavbar);
-                                  pref.setBool('isProfileCompleted', true);
-                                }
-                                else{
+                             //   pref.setBool("isSubscribed", false);
+                                if(value.data!.user!.isProfileComplete!)
+                                {
+                                  if(value.data!.user!.isSubscription!){
+                                    Get.offAllNamed(MyRouter.bottomNavbar);
+                                  }
+                                  else{
+                                    Get.offAllNamed(MyRouter.subscriptionScreen);
+                                  }
+                                } else {
                                   Get.offAllNamed(MyRouter.questionsScreen);
-                                  pref.setBool('isProfileCompleted', false);
                                 }
                               }
                             });
@@ -290,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     bottom: AddSize.padding10),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.circular(AddSize.size10),
+                                      BorderRadius.circular(AddSize.size10),
                                   border: Border.all(color: Colors.grey),
                                 ),
                                 child: Image.asset(
@@ -314,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       bottom: AddSize.padding10),
                                   decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.circular(AddSize.size10),
+                                        BorderRadius.circular(AddSize.size10),
                                     border: Border.all(color: Colors.grey),
                                   ),
                                   child: Image.asset(
