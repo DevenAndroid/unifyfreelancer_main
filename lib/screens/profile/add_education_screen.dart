@@ -424,6 +424,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           obSecure: false.obs,
                           controller: _descriptionController,
                           hintText: "Description".obs,
+                          validator: MultiValidator([
+                          MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                          ]),
                         ),
                       ])),
               Row(

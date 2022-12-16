@@ -1,26 +1,25 @@
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-import '../../models/Model_common_response.dart';
-import '../../resources/helper.dart';
-import '../../utils/api_contant.dart';
+import '../models/Model_common_response.dart';
+import '../resources/helper.dart';
+import '../utils/api_contant.dart';
 
 
-Future<ModelCommonResponse> proposalWithdrawRepo({proposal_id,reason,description, context}) async {
+
+Future<ModelCommonResponse> editExperienceLevelRepo({experience_level, context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
-  map['proposal_id'] = proposal_id;
-  map['reason'] = reason;
-  map['description'] = description;
+  map['experience_level'] = experience_level;
+
 
   print(map);
   try {
-    http.Response response = await http.post(Uri.parse(ApiUrls.proposalWithdraw),
+    http.Response response = await http.post(Uri.parse(ApiUrls.editExperienceLevel),
         headers: await getAuthHeader(), body: jsonEncode(map));
 
     if (response.statusCode == 200) {
@@ -33,7 +32,7 @@ Future<ModelCommonResponse> proposalWithdrawRepo({proposal_id,reason,description
       return ModelCommonResponse(
           message: jsonDecode(response.body)["message"], status: false);
     }
-  } on SocketException catch (e) {
+  } on SocketException  {
     Helpers.hideLoader(loader);
     return ModelCommonResponse(message: "No Internet Access", status: false);
   } catch (e) {

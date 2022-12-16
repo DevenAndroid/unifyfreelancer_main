@@ -106,6 +106,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                   isMulti: true,
                   validator: MultiValidator([
                     RequiredValidator(errorText: 'Please enter description'),
+                      MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
                   ]),
                 ),
                 SizedBox(

@@ -79,14 +79,14 @@ class _BoxTextFieldState extends State<BoxTextField> {
           inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
+          textInputAction: TextInputAction.next,
           // autofocus: autofocus,
           minLines: widget.isMulti ? 4 : 1,
           maxLines: widget.isMulti ? null : 1,
           onTap: widget.onTap,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
-          obscureText:
-              widget.hintText == hintTextValue ? widget.obSecure!.value : false,
+          obscureText: widget.hintText == hintTextValue ? widget.obSecure!.value : false,
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(

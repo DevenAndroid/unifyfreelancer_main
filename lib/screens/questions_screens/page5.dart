@@ -598,6 +598,9 @@ class _Page5State extends State<Page5> {
                                       obSecure: false.obs,
                                       keyboardType: TextInputType.emailAddress,
                                       hintText: "Description".obs,
+                                      validator: MultiValidator([
+                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                      ]),
                                       /*validator: MultiValidator([
                                         RequiredValidator(
                                             errorText: 'Description is required'),

@@ -37,6 +37,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   dynamic description;
   dynamic price;
   dynamic type = "";
+  dynamic forInterview = "";
+  dynamic proposalId = "";
   dynamic clientID = "";
   List<ModelMilestones> milestone = <ModelMilestones>[
     ModelMilestones(description: "", amount: "", dueDate: "")
@@ -52,6 +54,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     description = Get.arguments[2];
     price = Get.arguments[3];
     type = Get.arguments[4];
+    forInterview = Get.arguments[5];
+    proposalId = Get.arguments[6];
     textLength = description.length;
     if (profileController.status.value.isSuccess &&
         type.toString().toLowerCase() == "hourly") {
@@ -1768,6 +1772,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                               if (type.toString().toLowerCase() == "fixed") {
                                 map['project_duration'] = controller.duration.toString()!;
                               }
+                              if(forInterview == "fromInvite"){
+                                map['invite_id'] = proposalId.toString();
+                              }
                               print(map);
                               sendProposalRepo(
                                       mapData: map,
@@ -1894,7 +1901,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                       if (pickedDate != null) {
                         print(pickedDate);
                         //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        _dueDateController.text = dateFormatForShow.format(pickedDate);
+                        _dueDateController.text = dateFormatForSend.format(pickedDate);
                     //    print(pickedDate.millisecondsSinceEpoch);
                         setState(() {
                           dateInput = _dueDateController.text;

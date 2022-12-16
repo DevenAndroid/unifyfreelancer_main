@@ -208,6 +208,9 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                     keyboardType: TextInputType.text,
                     hintText: "Description".obs,
                     isMulti: true,
+                  validator: MultiValidator([
+                    MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                  ]),
                 ),
                 SizedBox(
                   height: 25,
@@ -230,9 +233,7 @@ class _AddTestimonialsScreenState extends State<AddTestimonialsScreen> {
                         if (value.status == true) {
                           controller.getData();
                           Get.back();
-
                         }
-
                         showToast(value.message.toString());
                       });
                     }

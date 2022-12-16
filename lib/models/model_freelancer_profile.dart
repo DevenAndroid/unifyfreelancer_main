@@ -139,37 +139,37 @@ class Data {
 }
 
 class BasicInfo {
-  String? id;
-  String? profileImage;
-  String? visibility;
-  String? projectPreference;
-  String? experienceLevel;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? occuption;
-  String? description;
-  String? rating;
-  int? totalEarning;
-  int? totalJobs;
-  int? totalHours;
-  int? pendingProject;
-  String? amount;
-  String? timezone;
-  String? localTime;
-  String? address;
-  String? phone;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? hoursPerWeek;
-  int? categoryId;
-  String? category;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic visibility;
+  dynamic projectPreference;
+  dynamic experienceLevel;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic occuption;
+  dynamic description;
+  dynamic rating;
+  dynamic totalEarning;
+  dynamic totalJobs;
+  dynamic totalHours;
+  dynamic pendingProject;
+  dynamic amount;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic address;
+  dynamic phone;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic hoursPerWeek;
+  dynamic categoryId;
+  dynamic category;
+  dynamic isVerified;
   bool? isProfileComplete;
-  String? successRate;
-  String? subscriptionId;
+  dynamic successRate;
+  dynamic subscriptionId;
   bool? isSubscription;
   bool? isSaveTalent;
 
@@ -307,9 +307,9 @@ class Skills {
 
 class Portfolio {
   int? id;
-  String? name;
-  String? description;
-  String? image;
+  dynamic name;
+  dynamic description;
+  dynamic image;
 
   Portfolio({this.id, this.name, this.description, this.image});
 
@@ -331,16 +331,16 @@ class Portfolio {
 }
 
 class Testimonial {
-  int? id;
-  String? message;
-  String? requestSent;
-  String? status;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? title;
-  String? type;
-  String? description;
+  dynamic id;
+  dynamic message;
+  dynamic requestSent;
+  dynamic status;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic title;
+  dynamic type;
+  dynamic description;
 
   Testimonial(
       {this.id,
@@ -407,14 +407,14 @@ class Certificates {
 
 class Employment {
   int? id;
-  String? company;
-  String? city;
-  String? country;
-  String? startDate;
-  String? endDate;
-  int? currentlyWorking;
-  String? subject;
-  String? description;
+  dynamic company;
+  dynamic city;
+  dynamic country;
+  dynamic startDate;
+  dynamic endDate;
+  dynamic currentlyWorking;
+  dynamic subject;
+  dynamic description;
 
   Employment(
       {this.id,
@@ -456,13 +456,13 @@ class Employment {
 
 class Education {
   int? id;
-  String? school;
-  String? startYear;
-  String? endYear;
-  String? level;
-  String? degree;
-  String? areaStudy;
-  String? description;
+  dynamic school;
+  dynamic startYear;
+  dynamic endYear;
+  dynamic level;
+  dynamic degree;
+  dynamic areaStudy;
+  dynamic description;
 
   Education(
       {this.id,

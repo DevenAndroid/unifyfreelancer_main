@@ -56,7 +56,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
     });
   }
 
-  RxString currentSelectedDocument = "".obs;
+  RxString reasonValue = "".obs;
 
   void getData() {
     submittedRepo(id, type).then((value) {
@@ -786,135 +786,72 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                   SizedBox(
                                     height: AddSize.size5,
                                   ),
-                                  CustomTextField(
-                                    onTap: () {
-                                      showFilterButtonSheet(
-                                          context: context,
-                                          titleText: "Reason list",
-                                          widgets:
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                const Divider(
-                                                  color: Color(0xff6D2EF1),
-                                                ),
-                                                ListView.builder(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                    itemCount: modelReasonList
-                                                        .value.data!.length,
-                                                    itemBuilder: (context, index) {
-                                                      return Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          InkWell(
-                                                            onTap:(){
-                                                              currentSelectedDocument.value = modelReasonList
-                                                                  .value
-                                                                  .data![index]
-                                                                  .title
-                                                                  .toString();
-                                                              _reasonController.text = modelReasonList
-                                                                  .value
-                                                                  .data![index]
-                                                                  .title
-                                                                  .toString();
-                                                              Get.back();
-                                                            },
-                                                            child: Text(
-                                                                modelReasonList
-                                                                    .value
-                                                                    .data![index]
-                                                                    .title
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xff4D4D4D),
-                                                                    fontSize: AddSize
-                                                                        .font16,
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .w500)),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                        ],
-                                                      );
-                                                    })
-                                              ],
-                                            )
-                                          );
+                                  Obx(() {
+                                    return DropdownButtonFormField<
+                                        dynamic>(
+                                      isExpanded: true,
+                                      menuMaxHeight: AddSize.screenHeight * .54,
+                                      value: reasonValue.value == "" ? null : reasonValue.value,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please select reason';
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: "Select a reason",
+                                        hintStyle: TextStyle(
+                                            fontSize: 13,
+                                            color: Color(0xff596681)),
+                                        counterText: "",
+                                        filled: true,
+                                        fillColor: AppTheme.whiteColor,
+                                        focusColor: AppTheme.whiteColor,
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(horizontal: 8,
+                                        ),
+                                        focusedBorder:
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        border:OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                         ),
+                                      items: List.generate(
+                                          modelReasonList.value.data!.length,
+                                              (index) => DropdownMenuItem(
+                                            value: modelReasonList.value.data![index].title.toString(),
+                                            child: Text(
+                                              modelReasonList.value.data![index].title.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(
+                                                      0xff596681)),
+                                            ),
+                                            // onTap: (){
+                                            //      setState(() {
+                                            //        timezoneValue = controller.timezoneList.data![index].timezone.toString();
+                                            //        print(timezoneValue);
+                                            //      });
+                                            //
+                                            // },
+                                          )),
+                                      onChanged: (newValue) {
+                                        reasonValue.value = newValue;
+                                      },
+                                    );
+                                  }),
 
-
-                                    },
-                                    suffixIcon: Icon(Icons.keyboard_arrow_down),
-                                    readOnly: true,
-                                    controller: _reasonController,
-                                    obSecure: false.obs,
-                                    keyboardType: TextInputType.text,
-                                    hintText: "".obs,
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText: 'Please select a reason'),
-                                    ]),
-                                  ),
-
-                                  /*   DropdownButtonFormField<dynamic>(
-                              alignment: Alignment.centerLeft,
-                              decoration: InputDecoration(
-                                hintText: 'Select id',
-                                focusColor: AppTheme.textfield.withOpacity(0.5),
-                                hintStyle:
-                                TextStyle(color: Colors.grey.shade400),
-                                filled: true,
-                                fillColor: AppTheme.whiteColor.withOpacity(0.5),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: AddSize.padding12),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: AppTheme.greyTextColor
-                                          .withOpacity(0.5)),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppTheme.greyTextColor
-                                            .withOpacity(0.5)),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0))),
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppTheme.greyTextColor
-                                            .withOpacity(0.5),
-                                        width: 3.0),
-                                    borderRadius: BorderRadius.circular(15.0)),
-                              ),
-                              isDense: false,
-                              validator: (value) {
-                                if (value.toString().trim().isEmpty) {
-                                  return "Please select id";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              value: currentSelectedDocument,
-                              isExpanded: true,
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              items: List.generate(
-                                  modelReasonList.value.data!.length,
-                                      (index) => DropdownMenuItem(
-                                   //   value:  modelReasonList.value.data![index].id.toString(),
-                                      child: Text(modelReasonList.value.data![index].title.toString()
-                                      )
-                                      )
-                              ),
-                              onChanged: (val) {
-                                currentSelectedDocument = val;
-                                print(currentSelectedDocument);
-                              },
-                            ),*/
                                   SizedBox(
                                     height: AddSize.size10,
                                   ),
@@ -945,7 +882,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
                                           child: CustomOutlineButton(
-                                            title: 'Decline',
+                                            title: 'Cancel',
                                             backgroundColor:
                                                 AppTheme.whiteColor,
                                             onPressed: () {
@@ -961,7 +898,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(10.0),
                                           child: CustomOutlineButton(
-                                            title: 'Accept',
+                                            title: 'Decline',
                                             backgroundColor:
                                                 AppTheme.primaryColor,
                                             onPressed: () {
@@ -974,10 +911,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                                             .proposalData!
                                                             .id
                                                             .toString(),
-                                                        reason:
-                                                            _reasonController
-                                                                .text
-                                                                .trim(),
+                                                        reason: reasonValue.value,
                                                         description:
                                                             _messageController
                                                                 .text

@@ -528,6 +528,9 @@ class _Page6State extends State<Page6> {
                                       obSecure: false.obs,
                                       controller: _descriptionController,
                                       hintText: "Description".obs,
+                                      validator: MultiValidator([
+                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                      ]),
                                     ),
                                   ]),
                             ],

@@ -348,7 +348,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                   onTap: () {
-                    Get.toNamed(MyRouter.activeProposalScreen ,arguments: [controller.model.value.data!.activeProposal![index].id.toString()]);
+                    Get.toNamed(MyRouter.activeProposalScreen ,arguments: [controller.model.value.data!.activeProposal![index].id.toString(),"active"]);
                     print(controller.model.value.data!.activeProposal![index].id.toString());
                   },
                 child: Container(

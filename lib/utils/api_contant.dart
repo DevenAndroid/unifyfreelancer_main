@@ -73,6 +73,8 @@ class ApiUrls {
   static const String declineOffer = "${apiBaseUrl}decline-offer";
   static const String userDocumentVerify = "${apiBaseUrl}user-document-verify";
   static const String declineReasonList = "${apiBaseUrl}decline-reason-list/";
+  static const String setVisibility = "${apiBaseUrl}set-visibility";
+  static const String editExperienceLevel = "${apiBaseUrl}edit-experience-level";
 
 
 }

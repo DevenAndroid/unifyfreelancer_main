@@ -177,7 +177,7 @@ class _AddCertificationsScreenState extends State<AddCertificationsScreen> {
                     hintText: "Description".obs,
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Description is required'),
-                      MaxLengthValidator(100, errorText: "Max length is 100 characters")
+                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
                     ])),
                 
               ],

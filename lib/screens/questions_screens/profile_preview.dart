@@ -848,6 +848,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       obSecure: false.obs,
                                       keyboardType: TextInputType.emailAddress,
                                       hintText: "Description".obs,
+                                      validator: MultiValidator([
+                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                      ]),
 
                                     ),
                                     SizedBox(
@@ -1582,6 +1585,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       obSecure: false.obs,
                                       controller: _descriptionController,
                                       hintText: "Description".obs,
+                                      validator: MultiValidator([
+                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                      ]),
                                     ),
                                   ]),
                             ],

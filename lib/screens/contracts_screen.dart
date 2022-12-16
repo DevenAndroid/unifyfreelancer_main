@@ -241,8 +241,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      controller.model.value.data!.all![index].projectTitle
-                          .toString(),
+                      controller.model.value.data!.all![index].projectTitle.toString(),
                       style: TextStyle(
                           fontSize: 16,
                           color: AppTheme.darkBlueText,

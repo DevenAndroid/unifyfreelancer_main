@@ -525,6 +525,9 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             RequiredValidator(
                                 errorText: 'Description is required'),
                           ]),*/
+                          validator: MultiValidator([
+                            MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                          ]),
                         ),
                         SizedBox(
                           height: 15,

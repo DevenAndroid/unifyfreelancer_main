@@ -810,7 +810,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 model.value.data!.description.toString(),
                                                 model.value.data!.price.toString(),
                                                 model.value.data!.budgetType.toString(),
-                                                model.value.data!.clientData!.id,
+                                           "fromJob",
+                                           "0",
+                                           //     model.value.data!.clientData!.id,
                                               ]);
                                         },
                                         title: "Send Proposal",
