@@ -1029,7 +1029,7 @@ class _Page5State extends State<Page5> {
               " ${item.endDate != null ? "to" : ""}"
               " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}"
               " ${item.endDate != null ? "," : "- Present"}"
-              " ${item.city != null ? item.city.toString() : ""}"
+              " ${item.city != null ? item.city.toString()+"," : ""}"
               " ${item.country != null ? item.country.toString() : ""}",
               style: TextStyle(
                   fontWeight: FontWeight.w400,

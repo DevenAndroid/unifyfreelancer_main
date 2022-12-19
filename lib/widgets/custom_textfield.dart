@@ -62,6 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           textInputAction: TextInputAction.next,
         onFieldSubmitted: widget.onFieldSubmitted ,
         inputFormatters: widget.inputFormatters1,

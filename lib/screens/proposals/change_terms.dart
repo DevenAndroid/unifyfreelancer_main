@@ -33,7 +33,8 @@ class ChangeTermsScreen extends StatefulWidget {
 
 class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
   String? radioProjectType = "By project";
-  final dateFormatForShow = DateFormat('yyyy-MM-dd');
+  final dateFormatForShow = DateFormat('dd-MMM-yyyy');
+  final dateFormatForSend = DateFormat('yyyy-MM-dd');
   final controller = Get.put(JobsDetailController());
   List<ModelMilestones> milestone = <ModelMilestones>[
     // ModelMilestones(description: "", amount: "", dueDate: "")
@@ -44,6 +45,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
   String? type;
   Rx<ModelSubmittedProposal> model = ModelSubmittedProposal().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
+
+
 
   @override
   void initState() {
@@ -62,16 +65,13 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
             : "By milestone";
         if (model.value.data!.milestonedata!.isNotEmpty) {
           for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
-            milestonePrice = milestonePrice +
-                double.parse(
-                    model.value.data!.milestonedata![i].amount.toString());
+            milestonePrice = milestonePrice + double.parse(model.value.data!.milestonedata![i].amount.toString());
             print("milestone total price" + milestonePrice.toString());
             milestone.add(ModelMilestones(
-                description:
-                    model.value.data!.milestonedata![i].description.toString(),
+                description: model.value.data!.milestonedata![i].description.toString(),
                 amount: model.value.data!.milestonedata![i].amount.toString(),
-                dueDate:
-                    model.value.data!.milestonedata![i].dueDate.toString()));
+                dueDate: model.value.data!.milestonedata![i].dueDate.toString(),
+            ));
           }
         }
         if (model.value.data!.milestonedata!.isEmpty) {
@@ -892,10 +892,15 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               textColor: AppTheme.whiteColor,
               expandedValue: true,
               onPressed: () {
+                if( radioProjectType == "By milestone"){
+                  for(int i = 0; i < milestone.length; i++){
+                    milestone[i].dueDate = dateFormatForSend.format(DateTime.parse(milestone[i].dueDate.toString())).toString();
+                    print(milestone[i].dueDate);
+                  }
+                }
                 if (_formKey.currentState!.validate()) {
                   updateProposalRepo(
-                          model.value.data!.proposalData!.id.toString(),
-                          _priceController.text.trim(),
+                          model.value.data!.proposalData!.id.toString(), _priceController.text.trim(),
                       model.value.data!.projectData!.budgetType.toString().toLowerCase() == "hourly" ? ""
                               : radioProjectType == "By project" ? "single" : "multiple",
                           jsonEncode(milestone),
@@ -903,7 +908,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           context)
                       .then((value) {
                         if(value.status == true){
-                          Get.offAllNamed(MyRouter.bottomNavbar);
+                        //  Get.offAllNamed(MyRouter.bottomNavbar);
+                          Get.back();
+                          Get.back();
 
                         }
                         showToast(value.message.toString());
@@ -926,8 +933,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
   }
 
   Column mileStones(double deviceHeight, int index, listIndex) {
-    final TextEditingController _descriptionController =
-        TextEditingController();
+    final TextEditingController _descriptionController = TextEditingController();
     final TextEditingController _dueDateController = TextEditingController();
     final TextEditingController _amountController = TextEditingController();
 
@@ -937,7 +943,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
     map["amount"] = _amountController.text;*/
     // milestone.contains(index,ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
     _descriptionController.text = milestone[index].description.toString();
-    _dueDateController.text = milestone[index].dueDate.toString();
+    _dueDateController.text = milestone[index].dueDate.toString() != "" ? dateFormatForShow.format(DateTime.parse(milestone[index].dueDate.toString())) : "";
     _amountController.text = milestone[index].amount.toString();
 
     return Column(
@@ -1013,12 +1019,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                       if (pickedDate != null) {
                         print(pickedDate);
                         //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        _dueDateController.text =
-                            dateFormatForShow.format(pickedDate);
+                        _dueDateController.text = dateFormatForShow.format(pickedDate);
                         print(pickedDate.millisecondsSinceEpoch);
                         setState(() {
                           dateInput = _dueDateController.text;
-                          milestone[index].dueDate = dateInput.toString();
+                          milestone[index].dueDate = pickedDate.toString();
                         });
                       } else {
                         return null;
@@ -1036,9 +1041,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Due date is required'),
                     ]),
-                    onChanged: (value) {
+                    /*onChanged: (value) {
                       milestone[index].dueDate = value.toString();
-                    },
+                    },*/
                   ),
                 ],
               ),

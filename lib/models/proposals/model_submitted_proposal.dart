@@ -523,7 +523,7 @@ dynamic unansweredInvite;
 }
 
 class JobSkills {
-  String? id;
+  dynamic id;
   String? name;
 
   JobSkills({this.id, this.name});

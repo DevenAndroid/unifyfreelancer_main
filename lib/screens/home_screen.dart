@@ -200,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return InkWell(
                       onTap: () {
                         Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
-                          controller.modelJobList.value.data![index].id,
+                          controller.modelJobList.value.data![index].id.toString(),
                         ]);
                         print(controller.modelJobList.value.data![index].id);
                       },

@@ -2137,12 +2137,14 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  controller.model.value.data!.basicInfo!.occuption.toString(),
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.darkBlueText,
-                      fontSize: AddSize.font20),
+                Expanded(
+                  child: Text(
+                    controller.model.value.data!.basicInfo!.occuption.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.darkBlueText,
+                        fontSize: AddSize.font20),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),

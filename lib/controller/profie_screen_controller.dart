@@ -123,7 +123,7 @@ class ProfileScreenController extends GetxController {
         if(model.value.data!.basicInfo!.isProfileComplete!)
         {
           if(model.value.data!.basicInfo!.isSubscription!){
-            Get.offNamed(MyRouter.bottomNavbar);
+        //    Get.offNamed(MyRouter.bottomNavbar);
           }
           else{
             Get.offNamed(MyRouter.subscriptionScreen);

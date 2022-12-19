@@ -211,8 +211,8 @@ class Data {
 }
 
 class JobSkills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   JobSkills({this.id, this.name});
 

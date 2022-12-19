@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/controller/proposals_screen_controller.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
@@ -28,12 +28,8 @@ class InvitationsToInterview extends StatefulWidget {
 class _InvitationsToInterviewState extends State<InvitationsToInterview> {
   String? id;
   Rx<ModelInvite> model = ModelInvite().obs;
-  Rx<RxStatus> status = RxStatus
-      .empty()
-      .obs;
-  Rx<RxStatus> reasonListStatus = RxStatus
-      .empty()
-      .obs;
+  Rx<RxStatus> status = RxStatus.empty().obs;
+  Rx<RxStatus> reasonListStatus = RxStatus.empty().obs;
   Rx<ModelDeclineReasonList> modelReasonList = ModelDeclineReasonList().obs;
 
   void getReasonList() {
@@ -69,8 +65,16 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
     });
   }
 
+  final dateFormatForShow = DateFormat('dd-MMM-yyyy');
 
   final controller = Get.put(ProposalScreenController());
+
+  DateTime _parseDateStr(String inputString) {
+    DateFormat format = DateFormat.yMMMMd();
+    return format.parse(inputString);
+  }
+
+  DateFormat format = new DateFormat("MMM dd, yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -85,68 +89,76 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
         body: Obx(() {
           return status.value.isSuccess
               ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  contentSection(),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: CustomOutlineButton(
-                            title: 'Decline',
-                            backgroundColor: AppTheme.whiteColor,
-                            onPressed: () {
-                              declineOffer(context);
-                            },
-                            textColor: AppTheme.primaryColor,
-                            expandedValue: false,
+                  child: Column(
+                  children: [
+                    contentSection(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: CustomOutlineButton(
+                              title: 'Decline',
+                              backgroundColor: AppTheme.whiteColor,
+                              onPressed: () {
+                                declineOffer(context);
+                              },
+                              textColor: AppTheme.primaryColor,
+                              expandedValue: false,
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: CustomOutlineButton(
-                            title: 'Accept',
-                            backgroundColor: AppTheme.primaryColor,
-                            onPressed: () {
-                              Get.toNamed(
-                                  MyRouter.submitProposalScreen, arguments: [
-                                int.parse(model.value.data!.projectData!.id.toString()),
-                                model.value.data!.projectData!.name.toString(),
-                                model.value.data!.projectData!.description.toString(),
-                                model.value.data!.projectData!.price.toString(),
-                                model.value.data!.projectData!.budgetType.toString(),
-                               "fromInvite",
-                                model.value.data!.proposalData!.id.toString(),
-                               // model.value.data!.clientData!.id.toString(),
-                              ]);
-                            },
-                            textColor: AppTheme.whiteColor,
-                            expandedValue: false,
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: CustomOutlineButton(
+                              title: 'Accept',
+                              backgroundColor: AppTheme.primaryColor,
+                              onPressed: () {
+                                Get.toNamed(MyRouter.submitProposalScreen,
+                                    arguments: [
+                                      int.parse(model
+                                          .value.data!.projectData!.id
+                                          .toString()),
+                                      model.value.data!.projectData!.name
+                                          .toString(),
+                                      model.value.data!.projectData!.description
+                                          .toString(),
+                                      model.value.data!.projectData!.price
+                                          .toString(),
+                                      model.value.data!.projectData!.budgetType
+                                          .toString(),
+                                      "fromInvite",
+                                      model.value.data!.proposalData!.id
+                                          .toString(),
+                                      // model.value.data!.clientData!.id.toString(),
+                                    ]);
+                              },
+                              textColor: AppTheme.whiteColor,
+                              expandedValue: false,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ))
+                      ],
+                    )
+                  ],
+                ))
               : status.value.isError
-              ? CommonErrorWidget(
-            errorText: model.value.message.toString(),
-            onTap: () {
-              getData();
-            },
-          )
-              : CommonProgressIndicator();
+                  ? CommonErrorWidget(
+                      errorText: model.value.message.toString(),
+                      onTap: () {
+                        getData();
+                      },
+                    )
+                  : CommonProgressIndicator();
         }));
   }
 
 //contract information
   contentSection() {
+    final dateFormatForShow2 = DateFormat('dd-MMM-yyyy');
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
       width: double.infinity,
@@ -191,7 +203,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                 width: AddSize.size10,
               ),
               Text(
-                model.value.data!.projectData!.postedDate.toString(),
+                dateFormatForShow.format(format.parse(model.value.data!.projectData!.postedDate.toString())),
                 style: TextStyle(
                     color: Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
@@ -238,13 +250,13 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           SizedBox(
             height: AddSize.size10,
           ),
-
           Row(
             children: [
               Icon(Icons.verified,
                   color: model.value.data!.clientData!.paymentVerified == true
                       ? AppTheme.primaryColor
-                      : Colors.grey.withOpacity(.49), size: 20),
+                      : Colors.grey.withOpacity(.49),
+                  size: 20),
               SizedBox(
                 width: 3,
               ),
@@ -261,7 +273,6 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
               ),
             ],
           ),
-
           SizedBox(
             height: AddSize.size15,
           ),
@@ -300,9 +311,9 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           ),
           Theme(
             data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
-                    textColor: AppTheme.primaryColor,
-                    iconColor: AppTheme.primaryColor))
+                    expansionTileTheme: ExpansionTileThemeData(
+                        textColor: AppTheme.primaryColor,
+                        iconColor: AppTheme.primaryColor))
                 .copyWith(dividerColor: Colors.transparent),
             child: ListTileTheme(
               contentPadding: EdgeInsets.zero,
@@ -320,8 +331,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                       height: AddSize.size10,
                     ),
                     Text(
-                      "Proposals: ${model.value.data!.projectData!.proposalCount
-                          .toString()}",
+                      "Proposals: ${model.value.data!.projectData!.proposalCount.toString()}",
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.w500),
                     ),
@@ -336,9 +346,9 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           ),
           Theme(
             data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
-                    textColor: AppTheme.primaryColor,
-                    iconColor: AppTheme.primaryColor))
+                    expansionTileTheme: ExpansionTileThemeData(
+                        textColor: AppTheme.primaryColor,
+                        iconColor: AppTheme.primaryColor))
                 .copyWith(dividerColor: Colors.transparent),
             child: ListTileTheme(
               contentPadding: EdgeInsets.zero,
@@ -381,202 +391,217 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
             child: Obx(() {
               return reasonListStatus.value.isSuccess
                   ? Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SingleChildScrollView(
-
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Decline",
-                          style: TextStyle(
-                              color: AppTheme.darkBlueText,
-                              fontSize: AddSize.font16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: AddSize.size25,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Reason",
-                              style: TextStyle(
-                                  color: Color(0xff4D4D4D),
-                                  fontSize: AddSize.font16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: AddSize.size5,
-                            ),
-                            Obx(() {
-                              return DropdownButtonFormField<
-                                  dynamic>(
-                                isExpanded: true,
-                                menuMaxHeight: AddSize.screenHeight * .54,
-                                value: reasonValue.value == ""
-                                    ? null
-                                    : reasonValue.value,
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Please select reason';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Select a reason",
-                                  hintStyle: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xff596681)),
-                                  counterText: "",
-                                  filled: true,
-                                  fillColor: AppTheme.whiteColor,
-                                  focusColor: AppTheme.whiteColor,
-                                  contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 8,
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Decline",
+                                style: TextStyle(
+                                    color: AppTheme.darkBlueText,
+                                    fontSize: AddSize.font16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: AddSize.size25,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Reason",
+                                    style: TextStyle(
+                                        color: Color(0xff4D4D4D),
+                                        fontSize: AddSize.font16,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                  focusedBorder:
-                                  OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppTheme.primaryColor
-                                            .withOpacity(.15), width: 1.0),
-                                    borderRadius: BorderRadius.circular(8),
+                                  SizedBox(
+                                    height: AddSize.size5,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppTheme.primaryColor
-                                            .withOpacity(.15), width: 1.0),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: AppTheme.primaryColor
-                                            .withOpacity(.15), width: 1.0),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                // Down Arrow Icon
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down,
-                                ),
-                                items: List.generate(
-                                    modelReasonList.value.data!.length,
-                                        (index) =>
-                                        DropdownMenuItem(
-                                          value: modelReasonList.value
-                                              .data![index].title.toString(),
-                                          child: Text(
-                                            modelReasonList.value.data![index]
-                                                .title.toString(),
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: Color(
-                                                    0xff596681)),
-                                          ),
-                                          // onTap: (){
-                                          //      setState(() {
-                                          //        timezoneValue = controller.timezoneList.data![index].timezone.toString();
-                                          //        print(timezoneValue);
-                                          //      });
-                                          //
-                                          // },
-                                        )),
-                                onChanged: (newValue) {
-                                  reasonValue.value = newValue;
-                                },
-                              );
-                            }),
-
-                            SizedBox(
-                              height: AddSize.size10,
-                            ),
-                            Text(
-                              "Message (optional)",
-                              style: TextStyle(
-                                  color: Color(0xff4D4D4D),
-                                  fontSize: AddSize.font16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: AddSize.size5,
-                            ),
-                            CustomTextField(
-                              controller: _messageController,
-                              isMulti: true,
-                              obSecure: false.obs,
-                              keyboardType: TextInputType.text,
-                              hintText: "".obs,
-                            ),
-                            SizedBox(
-                              height: AddSize.size10,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: CustomOutlineButton(
-                                      title: 'Cancel',
-                                      backgroundColor: AppTheme.whiteColor,
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      textColor: AppTheme.primaryColor,
-                                      expandedValue: false,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: CustomOutlineButton(
-                                      title: 'Decline',
-                                      backgroundColor: AppTheme.primaryColor,
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          inviteDeclineRepo(invitaion_id: model.value.data!.proposalData!.id.toString(),
-                                              reason: reasonValue.value,
-                                              description: _messageController.text.trim(),
-                                              context: context
-                                          ).then((value) {
-                                            if (value.status == true) {
-                                              Get.offNamed(
-                                                  MyRouter.bottomNavbar);
-                                              controller.getData();
-                                            }
-                                            showToast(value.message.toString());
-                                          });
+                                  Obx(() {
+                                    return DropdownButtonFormField<dynamic>(
+                                      isExpanded: true,
+                                      menuMaxHeight: AddSize.screenHeight * .54,
+                                      value: reasonValue.value == ""
+                                          ? null
+                                          : reasonValue.value,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please select reason';
                                         }
                                       },
-                                      textColor: AppTheme.whiteColor,
-                                      expandedValue: false,
-                                    ),
+                                      decoration: InputDecoration(
+                                        hintText: "Select a reason",
+                                        hintStyle: TextStyle(
+                                            fontSize: 13,
+                                            color: Color(0xff596681)),
+                                        counterText: "",
+                                        filled: true,
+                                        fillColor: AppTheme.whiteColor,
+                                        focusColor: AppTheme.whiteColor,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppTheme.primaryColor
+                                                  .withOpacity(.15),
+                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                      ),
+                                      items: List.generate(
+                                          modelReasonList.value.data!.length,
+                                          (index) => DropdownMenuItem(
+                                                value: modelReasonList
+                                                    .value.data![index].title
+                                                    .toString(),
+                                                child: Text(
+                                                  modelReasonList
+                                                      .value.data![index].title
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color(0xff596681)),
+                                                ),
+                                                // onTap: (){
+                                                //      setState(() {
+                                                //        timezoneValue = controller.timezoneList.data![index].timezone.toString();
+                                                //        print(timezoneValue);
+                                                //      });
+                                                //
+                                                // },
+                                              )),
+                                      onChanged: (newValue) {
+                                        reasonValue.value = newValue;
+                                      },
+                                    );
+                                  }),
+                                  SizedBox(
+                                    height: AddSize.size10,
                                   ),
-                                ),
-                              ],
-                            ),
-
-
-                          ],
+                                  Text(
+                                    "Message (optional)",
+                                    style: TextStyle(
+                                        color: Color(0xff4D4D4D),
+                                        fontSize: AddSize.font16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: AddSize.size5,
+                                  ),
+                                  CustomTextField(
+                                    controller: _messageController,
+                                    isMulti: true,
+                                    obSecure: false.obs,
+                                    keyboardType: TextInputType.text,
+                                    hintText: "".obs,
+                                  ),
+                                  SizedBox(
+                                    height: AddSize.size10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: CustomOutlineButton(
+                                            title: 'Cancel',
+                                            backgroundColor:
+                                                AppTheme.whiteColor,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            textColor: AppTheme.primaryColor,
+                                            expandedValue: false,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: CustomOutlineButton(
+                                            title: 'Decline',
+                                            backgroundColor:
+                                                AppTheme.primaryColor,
+                                            onPressed: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                inviteDeclineRepo(
+                                                        invitaion_id: model
+                                                            .value
+                                                            .data!
+                                                            .proposalData!
+                                                            .id
+                                                            .toString(),
+                                                        reason:
+                                                            reasonValue.value,
+                                                        description:
+                                                            _messageController
+                                                                .text
+                                                                .trim(),
+                                                        context: context)
+                                                    .then((value) {
+                                                  if (value.status == true) {
+                                                    Get.offNamed(
+                                                        MyRouter.bottomNavbar);
+                                                    controller.getData();
+                                                  }
+                                                  showToast(
+                                                      value.message.toString());
+                                                });
+                                              }
+                                            },
+                                            textColor: AppTheme.whiteColor,
+                                            expandedValue: false,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              )   : reasonListStatus.value.isError
-                  ? CommonErrorWidget(
-                  errorText: modelReasonList.value.message.toString(),
-                  onTap: () {
-                    getReasonList();
-                  })
-                  : CommonProgressIndicator();
+                      ),
+                    )
+                  : reasonListStatus.value.isError
+                      ? CommonErrorWidget(
+                          errorText: modelReasonList.value.message.toString(),
+                          onTap: () {
+                            getReasonList();
+                          })
+                      : CommonProgressIndicator();
             }),
           );
         });
   }
-
 }

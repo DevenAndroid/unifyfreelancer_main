@@ -1748,6 +1748,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                   )),
                         CustomOutlineButton(
                           onPressed: () {
+                            /*for(var item in milestone){
+                              print(item.dueDate.toString());
+                            }*/
+                            if( radioProjectType == "By milestone"){
+                              for(int i = 0; i < milestone.length; i++){
+                                milestone[i].dueDate = dateFormatForSend.format(DateTime.parse(milestone[i].dueDate.toString())).toString();
+                                print(milestone[i].dueDate);
+                              }
+                            }
                             if (_formKey.currentState!.validate()) {
                               Map map = <String, String>{};
                               map['job_id'] = id.toString();
@@ -1825,7 +1834,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     map["amount"] = _amountController.text;*/
     // milestone.contains(index,ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
     _descriptionController.text = milestone[index].description.toString();
-    _dueDateController.text = milestone[index].dueDate.toString();
+    _dueDateController.text = milestone[index].dueDate.toString() != "" ? dateFormatForShow.format(DateTime.parse(milestone[index].dueDate.toString())) : "";
     _amountController.text = milestone[index].amount.toString();
 
     return Column(
@@ -1901,11 +1910,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                       if (pickedDate != null) {
                         print(pickedDate);
                         //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        _dueDateController.text = dateFormatForSend.format(pickedDate);
+                        _dueDateController.text = dateFormatForShow.format(pickedDate);
                     //    print(pickedDate.millisecondsSinceEpoch);
                         setState(() {
                           dateInput = _dueDateController.text;
-                          milestone[index].dueDate = dateInput.toString();
+                          milestone[index].dueDate = pickedDate.toString();
                         });
                       } else {
                         return null;
@@ -1923,9 +1932,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Please add due date'),
                     ]),
-                    onChanged: (value) {
+                   /* onChanged: (value) {
                       milestone[index].dueDate = value.toString();
-                    },
+                    },*/
                   ),
                 ],
               ),
@@ -1956,7 +1965,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                     },
                     obSecure: false.obs,
                     inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     hintText: "".obs,
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Please add amount'),

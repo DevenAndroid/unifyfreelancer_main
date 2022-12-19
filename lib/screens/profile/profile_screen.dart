@@ -2364,7 +2364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .employment![index]
                                                             .endDate
                                                             .toString()))
-                                                : "",
+                                                : " - Currently working",
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,

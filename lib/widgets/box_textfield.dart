@@ -76,6 +76,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
     }
     return Obx(() {
       return TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,

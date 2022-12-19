@@ -10,12 +10,15 @@ import '../utils/api_contant.dart';
 
 
 
-Future<ModelCommonResponse> setVisibilityRepo({visibility,project_preference, context}) async {
+Future<ModelCommonResponse> setVisibilityRepo({required visibility,project_preference, required context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   var map = <String, dynamic>{};
   map['visibility'] = visibility;
+
+if(project_preference != null){
   map['project_preference'] = project_preference;
+}
 
   print(map);
   try {

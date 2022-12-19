@@ -240,6 +240,15 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                               onChanged: (value) {
                                 print(value);
                                 visibilityValue.value = value;
+                                setVisibilityRepo(visibility: visibilityValue .value ,context: context).then((value1) {
+                                  print("Response......"+value1.toString());
+                                  if(value1.status == true){
+                               //     controller.getData();
+                                    print("Response......2222");
+                                  }
+                                  showToast(value1.message.toString());
+                                });
+
                               },
                             ),
                             SizedBox(
@@ -331,7 +340,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                 context: context).then((value1) {
                                   print("Response......"+value1.toString());
                                   if(value1.status == true){
-                                    controller.getData();
+                              //      controller.getData();
                                     print("Response......2222");
                                   }
                                   showToast(value1.message.toString());
@@ -435,7 +444,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                 print(expValue);
                                 editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
                                   if(value1.status == true){
-                                    controller.getData();
+                               //     controller.getData();
                                   }
                                   showToast(value1.message.toString());
                                 });
@@ -467,7 +476,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                 print(expValue);
                                 editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
                                   if(value1.status == true){
-                                    controller.getData();
+                             //       controller.getData();
                                   }
                                   showToast(value1.message.toString());
                                 });
@@ -499,7 +508,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                 print(expValue);
                                 editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
                                   if(value1.status == true){
-                                    controller.getData();
+                             //       controller.getData();
                                   }
                                   showToast(value1.message.toString());
                                 });

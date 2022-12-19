@@ -74,7 +74,12 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                             itemCount: controller.model.value.data!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () {},
+                               onTap: () {
+                                Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
+                                  controller.model.value.data![index].id.toString(),
+                                ]);
+                                print(controller.model.value.data![index].id);
+                              },
                                 child: Container(
                                     margin: const EdgeInsets.only(
                                         bottom: 15, right: 10, left: 10),

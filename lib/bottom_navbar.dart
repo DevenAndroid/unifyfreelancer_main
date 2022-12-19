@@ -8,6 +8,7 @@ import 'package:unifyfreelancer/Screens/contracts_screen.dart';
 import 'package:unifyfreelancer/Screens/home_screen.dart';
 import 'package:unifyfreelancer/Screens/messages_screen.dart';
 import 'package:unifyfreelancer/Screens/proposals_screen.dart';
+import 'package:unifyfreelancer/controller/contract_controller.dart';
 
 import 'Controller/bottom_nav_bar_controller.dart';
 
@@ -168,6 +169,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
                     padding: EdgeInsets.only(bottom: 10),
                     onPressed: () {
                       controller.updateIndexValue(2);
+                      final contractController = Get.put(ContractScreenController());
+                      contractController.getData();
                     },
                     child: Column(
                       children: [

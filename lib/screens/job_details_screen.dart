@@ -29,7 +29,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    id = int.parse(Get.arguments[0] ?? 0);
+    id = int.parse(Get.arguments[0].toString());
     getData();
   }
 

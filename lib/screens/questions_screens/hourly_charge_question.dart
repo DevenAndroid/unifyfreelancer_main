@@ -121,7 +121,7 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                             return "Please enter your hourly price";
                           }
                           else if(double.parse(value.isEmpty ? "0" : value) < 3){
-                            return "Minimum hourly price is 3 dollars";
+                            return "Minimum hourly price must be 3 \$";
                           }
                           else {
                             return null;
