@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,7 +67,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
         if (model.value.data!.milestonedata!.isNotEmpty) {
           for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
             milestonePrice = milestonePrice + double.parse(model.value.data!.milestonedata![i].amount.toString());
-            print("milestone total price" + milestonePrice.toString());
+            if (kDebugMode) {
+              print("milestone total price$milestonePrice");
+            }
             milestone.add(ModelMilestones(
                 description: model.value.data!.milestonedata![i].description.toString(),
                 amount: model.value.data!.milestonedata![i].amount.toString(),
@@ -75,14 +78,15 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           }
         }
         if (model.value.data!.milestonedata!.isEmpty) {
-          price = double.parse(
-              model.value.data!.proposalData!.bidAmount.toString());
+          price = double.parse(model.value.data!.proposalData!.bidAmount.toString());
           _priceController.text = price.toString();
           _feeController.text = ((price! * 20) / 100).toString();
           _receiveController.text = (price! - double.parse(_feeController.text)).toString();
         }
         if (model.value.data!.proposalData!.budgetType.toString() == "fixed") {
-          print("duration projext.......");
+          if (kDebugMode) {
+            print("duration project.......");
+          }
           controller.durationController.text = model.value.data!.proposalData!.projectDuration.toString();
         }
         status.value = RxStatus.success();
@@ -107,7 +111,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: PreferredSize(
+        appBar: const PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: CustomAppbar(
               isLikeButton: false,
@@ -132,7 +136,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         getData();
                       },
                     )
-                  : CommonProgressIndicator();
+                  : const CommonProgressIndicator();
         }));
   }
 
@@ -161,7 +165,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           Text(
             model.value.data!.projectData!.name.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font24,
                 fontWeight: FontWeight.w600),
           ),
@@ -183,7 +187,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               Text(
                 model.value.data!.projectData!.postedDate.toString(),
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w500),
               ),
@@ -195,7 +199,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           Text(
             model.value.data!.projectData!.description.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
                 fontWeight: FontWeight.w500),
           ),
@@ -228,7 +232,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           Text(
             "Your Proposed terms",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font20,
                 fontWeight: FontWeight.w600),
           ),
@@ -248,7 +252,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         Text(
                           "Client's budget: \$${model.value.data!.projectData!.price.toString()}",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w500),
                         ),
@@ -258,7 +262,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         Text(
                           "How do you want to be paid?",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w600),
                         ),
@@ -266,14 +270,14 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           height: AddSize.size10,
                         ),
                         RadioListTile(
-                            title: Text(
+                            title: const Text(
                               "By project",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
-                            subtitle: Text(
+                            subtitle: const Text(
                               "Get your entire payment at the end, when all work has been delivered",
                               style: TextStyle(
                                   fontSize: 12,
@@ -296,14 +300,14 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           height: AddSize.size10,
                         ),
                         RadioListTile(
-                            title: Text(
+                            title: const Text(
                               "By milestone",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
-                            subtitle: Text(
+                            subtitle: const Text(
                               "Divide the project into smaller segments, called milestones. You'll be paid for milestones as they are completed and approved",
                               style: TextStyle(
                                   fontSize: 12,
@@ -335,14 +339,14 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       Text(
                                         "How many milestones do you want to include?",
                                         style: TextStyle(
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                             fontSize: AddSize.font16,
                                             fontWeight: FontWeight.w600),
                                       ),
                                       ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: milestone.length,
                                           itemBuilder: (context, index) {
                                             print(milestone.length);
@@ -350,7 +354,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                             return mileStones(deviceHeight,
                                                 index, milestone[index]);
                                           }),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       InkWell(
@@ -362,7 +366,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                                 dueDate: ""));
                                           });
                                         },
-                                        child: Text("+ Add milestone",
+                                        child: const Text("+ Add milestone",
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,
@@ -391,7 +395,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       Text(
                                         "This includes all milestones, and is the amount your client will see",
                                         style: TextStyle(
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                             fontSize: AddSize.font16,
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -481,7 +485,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       Text(
                                         "Your estimated payment. after service fees",
                                         style: TextStyle(
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                             fontSize: AddSize.font16,
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -539,7 +543,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return RadioButtonsJobDetails();
+                                              return const RadioButtonsJobDetails();
                                             },
                                           );
                                         },
@@ -547,7 +551,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         controller:
                                             controller.durationController,
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
+                                          contentPadding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
                                           border: new OutlineInputBorder(
                                             borderRadius:
@@ -557,9 +561,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           ),
                                           hintText: "Select a duration",
                                           focusColor: AppTheme.primaryColor,
-                                          suffixIcon: Icon(Icons
+                                          suffixIcon: const Icon(Icons
                                               .keyboard_arrow_down_outlined),
-                                          hintStyle: TextStyle(
+                                          hintStyle: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                               color: AppTheme.hintTextColor),
@@ -613,11 +617,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       Text(
                                         "Total amount the client will see on your proposal",
                                         style: TextStyle(
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                             fontSize: AddSize.font14,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       CustomTextField(
@@ -645,7 +649,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         },
                                         obSecure: false.obs,
                                         hintText: "".obs,
-                                        prefix: Icon(Icons.attach_money),
+                                        prefix: const Icon(Icons.attach_money),
                                         validator: MultiValidator([
                                           RequiredValidator(
                                               errorText:
@@ -662,7 +666,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                             fontSize: AddSize.font16,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       CustomTextField(
@@ -671,7 +675,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         readOnly: true,
                                         obSecure: false.obs,
                                         hintText: "".obs,
-                                        prefix: Icon(Icons.attach_money),
+                                        prefix: const Icon(Icons.attach_money),
                                       ),
                                       SizedBox(
                                         height: AddSize.size10,
@@ -686,11 +690,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       Text(
                                         "Total amount the client will see on your proposal",
                                         style: TextStyle(
-                                            color: Color(0xff4D4D4D),
+                                            color: const Color(0xff4D4D4D),
                                             fontSize: AddSize.font14,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       CustomTextField(
@@ -699,7 +703,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         readOnly: true,
                                         obSecure: false.obs,
                                         hintText: "".obs,
-                                        prefix: Icon(Icons.attach_money),
+                                        prefix: const Icon(Icons.attach_money),
                                       ),
                                       Text(
                                         "How long will this project take?",
@@ -719,7 +723,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return RadioButtonsJobDetails();
+                                              return const RadioButtonsJobDetails();
                                             },
                                           );
                                         },
@@ -727,7 +731,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         controller:
                                             controller.durationController,
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
+                                          contentPadding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
                                           border: new OutlineInputBorder(
                                             borderRadius:
@@ -737,9 +741,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                           ),
                                           hintText: "Select a duration",
                                           focusColor: AppTheme.primaryColor,
-                                          suffixIcon: Icon(Icons
+                                          suffixIcon: const Icon(Icons
                                               .keyboard_arrow_down_outlined),
-                                          hintStyle: TextStyle(
+                                          hintStyle: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                               color: AppTheme.hintTextColor),
@@ -794,11 +798,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         Text(
                           "Total amount the client will see on your proposal",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font14,
                               fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -824,7 +828,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           },
                           obSecure: false.obs,
                           hintText: "".obs,
-                          prefix: Icon(Icons.attach_money),
+                          prefix: const Icon(Icons.attach_money),
                           validator: MultiValidator([
                             RequiredValidator(
                                 errorText: 'hourly price is required'),
@@ -840,7 +844,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -849,7 +853,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           readOnly: true,
                           obSecure: false.obs,
                           hintText: "".obs,
-                          prefix: Icon(Icons.attach_money),
+                          prefix: const Icon(Icons.attach_money),
                         ),
                         SizedBox(
                           height: AddSize.size10,
@@ -864,11 +868,11 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         Text(
                           "Total amount the client will see on your proposal",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font14,
                               fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -877,7 +881,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           readOnly: true,
                           obSecure: false.obs,
                           hintText: "".obs,
-                          prefix: Icon(Icons.attach_money),
+                          prefix: const Icon(Icons.attach_money),
                         ),
                       ],
                     ),
@@ -957,15 +961,15 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           children: [
             Text(
               "${index + 1} Description",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff180D31)),
+                  color: Color(0xff180D31)),
             ),
             index == 0
-                ? SizedBox()
+                ? const SizedBox()
                 : IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.clear,
                       color: AppTheme.primaryColor,
                       size: 20,
@@ -1001,12 +1005,12 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Due date",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff180D31)),
+                        color: Color(0xff180D31)),
                   ),
                   CustomTextField(
                     readOnly: true,
@@ -1029,7 +1033,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                         return null;
                       }
                     },
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.calendar_month_outlined,
                       size: 20,
                       color: AppTheme.primaryColor,
@@ -1048,23 +1052,23 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Amount",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff180D31)),
+                        color: Color(0xff180D31)),
                   ),
                   CustomTextField(
                     controller: _amountController,
-                    prefix: Icon(
+                    prefix: const Icon(
                       Icons.attach_money,
                       size: 20,
                       color: AppTheme.primaryColor,
@@ -1120,7 +1124,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
+                expansionTileTheme: const ExpansionTileThemeData(
                     textColor: AppTheme.primaryColor,
                     iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
@@ -1131,7 +1135,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               title: Text(
                 "Cover letter",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font20,
                     fontWeight: FontWeight.w600),
               ),
@@ -1141,7 +1145,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                 ),
                 Text(
                   model.value.data!.proposalData!.coverLetter.toString(),
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 ),
               ]),
         ),
@@ -1220,7 +1224,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
+                expansionTileTheme: const ExpansionTileThemeData(
                     textColor: AppTheme.primaryColor,
                     iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
@@ -1231,7 +1235,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
               title: Text(
                 "About the client",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font20,
                     fontWeight: FontWeight.w600),
               ),
@@ -1254,7 +1258,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                       model.value.data!.clientData!.paymentVerified == true
                           ? "Payment method verified"
                           : "Payment method not verified",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff4D4D4D),
@@ -1274,12 +1278,12 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       .value.data!.clientData!.rating
                                       .toString()) >
                                   index
-                              ? Icon(
+                              ? const Icon(
                                   Icons.star,
                                   color: AppTheme.pinkText,
                                   size: 20,
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.star_border_outlined,
                                   color: Colors.grey,
                                   size: 20,
@@ -1290,10 +1294,10 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                     ),
                     Text(
                       "${double.parse(model.value.data!.clientData!.rating.toString())} of ${double.parse(model.value.data!.clientData!.numberOfReview.toString())} reviews",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: const Color(0xff170048)),
+                          color: Color(0xff170048)),
                     ),
                   ],
                 ),
@@ -1323,7 +1327,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -1345,7 +1349,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -1367,7 +1371,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -1390,7 +1394,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -1410,7 +1414,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -1421,7 +1425,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                       ],

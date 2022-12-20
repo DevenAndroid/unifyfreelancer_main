@@ -79,7 +79,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
+        appBar: const PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: CustomAppbar(
               isLikeButton: false,
@@ -119,21 +119,14 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                               onPressed: () {
                                 Get.toNamed(MyRouter.submitProposalScreen,
                                     arguments: [
-                                      int.parse(model
-                                          .value.data!.projectData!.id
-                                          .toString()),
-                                      model.value.data!.projectData!.name
-                                          .toString(),
-                                      model.value.data!.projectData!.description
-                                          .toString(),
-                                      model.value.data!.projectData!.price
-                                          .toString(),
-                                      model.value.data!.projectData!.budgetType
-                                          .toString(),
+                                      int.parse(model.value.data!.projectData!.id.toString()),
+                                      model.value.data!.projectData!.name.toString(),
+                                      model.value.data!.projectData!.description.toString(),
+                                      model.value.data!.projectData!.price.toString(),
+                                      model.value.data!.projectData!.budgetType.toString(),
                                       "fromInvite",
-                                      model.value.data!.proposalData!.id
-                                          .toString(),
-                                      // model.value.data!.clientData!.id.toString(),
+                                      model.value.data!.proposalData!.id.toString(),
+                                       model.value.data!.projectData!.minPrice.toString(),
                                     ]);
                               },
                               textColor: AppTheme.whiteColor,
@@ -152,7 +145,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                         getData();
                       },
                     )
-                  : CommonProgressIndicator();
+                  : const CommonProgressIndicator();
         }));
   }
 
@@ -183,7 +176,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             model.value.data!.projectData!.name.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font24,
                 fontWeight: FontWeight.w600),
           ),
@@ -205,7 +198,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
               Text(
                 dateFormatForShow.format(format.parse(model.value.data!.projectData!.postedDate.toString())),
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w500),
               ),
@@ -217,7 +210,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             model.value.data!.projectData!.description.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
                 fontWeight: FontWeight.w500),
           ),
@@ -243,7 +236,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             "About the client",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font20,
                 fontWeight: FontWeight.w600),
           ),
@@ -257,7 +250,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                       ? AppTheme.primaryColor
                       : Colors.grey.withOpacity(.49),
                   size: 20),
-              SizedBox(
+              const SizedBox(
                 width: 3,
               ),
               Text(
@@ -279,7 +272,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             "Location",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font20,
                 fontWeight: FontWeight.w600),
           ),
@@ -289,7 +282,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             model.value.data!.clientData!.country.toString(),
             style: TextStyle(
-                color: Color(0xff403557),
+                color: const Color(0xff403557),
                 fontSize: AddSize.font18,
                 fontWeight: FontWeight.w600),
           ),
@@ -299,7 +292,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           Text(
             model.value.data!.clientData!.localTime.toString(),
             style: TextStyle(
-                color: Color(0xff403557),
+                color: const Color(0xff403557),
                 fontSize: AddSize.font16,
                 fontWeight: FontWeight.w500),
           ),
@@ -311,7 +304,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           ),
           Theme(
             data: ThemeData(
-                    expansionTileTheme: ExpansionTileThemeData(
+                    expansionTileTheme: const ExpansionTileThemeData(
                         textColor: AppTheme.primaryColor,
                         iconColor: AppTheme.primaryColor))
                 .copyWith(dividerColor: Colors.transparent),
@@ -322,7 +315,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                   title: Text(
                     "Activity on this job",
                     style: TextStyle(
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontSize: AddSize.font20,
                         fontWeight: FontWeight.w600),
                   ),
@@ -332,7 +325,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                     ),
                     Text(
                       "Proposals: ${model.value.data!.projectData!.proposalCount.toString()}",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.w500),
                     ),
                   ]),
@@ -346,7 +339,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
           ),
           Theme(
             data: ThemeData(
-                    expansionTileTheme: ExpansionTileThemeData(
+                    expansionTileTheme: const ExpansionTileThemeData(
                         textColor: AppTheme.primaryColor,
                         iconColor: AppTheme.primaryColor))
                 .copyWith(dividerColor: Colors.transparent),
@@ -357,7 +350,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                   title: Text(
                     "Original message from client",
                     style: TextStyle(
-                        color: Color(0xff4D4D4D),
+                        color: const Color(0xff4D4D4D),
                         fontSize: AddSize.font20,
                         fontWeight: FontWeight.w600),
                   ),
@@ -367,7 +360,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                     ),
                     Text(
                       model.value.data!.proposalData!.description.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.w500),
                     ),
                   ]),
@@ -395,7 +388,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           child: Column(
                             children: [
                               Text(
@@ -414,7 +407,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                                   Text(
                                     "Reason",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: AddSize.font16,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -435,7 +428,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                                       },
                                       decoration: InputDecoration(
                                         hintText: "Select a reason",
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                             fontSize: 13,
                                             color: Color(0xff596681)),
                                         counterText: "",
@@ -485,7 +478,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                                                   modelReasonList
                                                       .value.data![index].title
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 13,
                                                       color: Color(0xff596681)),
                                                 ),
@@ -508,7 +501,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                                   Text(
                                     "Message (optional)",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: AddSize.font16,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -599,7 +592,7 @@ class _InvitationsToInterviewState extends State<InvitationsToInterview> {
                           onTap: () {
                             getReasonList();
                           })
-                      : CommonProgressIndicator();
+                      : const CommonProgressIndicator();
             }),
           );
         });

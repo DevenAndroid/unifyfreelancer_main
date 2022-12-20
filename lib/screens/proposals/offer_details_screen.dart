@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
@@ -18,7 +17,6 @@ import '../../repository/proposals/accept_offer_repository.dart';
 import '../../repository/proposals/decline_offer_repository.dart';
 import '../../repository/proposals/decline_reason_list.dart';
 import '../../repository/proposals/offer_repository.dart';
-import '../../widgets/circular_widget.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
@@ -51,6 +49,13 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
+          if (model.value.data!.milestonedata!.isNotEmpty) {
+            for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
+              milestonePrice = milestonePrice + double.parse(model.value.data!.milestonedata![i].amount.toString());
+              if (kDebugMode) {
+                print("milestone total price$milestonePrice");
+              }
+        } }
       } else {
         showToast(value.message.toString());
         status.value = RxStatus.error();
@@ -73,12 +78,12 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
 
   final dateFormatForShow = DateFormat('dd-MMM-yyyy');
 
-
+  double milestonePrice = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: CustomAppbar(
             isLikeButton: false,
@@ -141,7 +146,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
             getData();
           },
         )
-            : CommonProgressIndicator();
+            : const CommonProgressIndicator();
       }),
     );
   }
@@ -162,7 +167,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
                         Text(
@@ -181,7 +186,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                             Text(
                               "Reason",
                               style: TextStyle(
-                                  color: Color(0xff4D4D4D),
+                                  color: const Color(0xff4D4D4D),
                                   fontSize: AddSize.font16,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -201,7 +206,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                                 },
                                 decoration: InputDecoration(
                                   hintText: "Select a reason",
-                                  hintStyle: TextStyle(
+                                  hintStyle: const TextStyle(
                                       fontSize: 13,
                                       color: Color(0xff596681)),
                                   counterText: "",
@@ -235,7 +240,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                                       value: modelReasonList.value.data![index].title.toString(),
                                       child: Text(
                                         modelReasonList.value.data![index].title.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 13,
                                             color: Color(
                                                 0xff596681)),
@@ -269,7 +274,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                             Text(
                               "Message (optional)",
                               style: TextStyle(
-                                  color: Color(0xff4D4D4D),
+                                  color: const Color(0xff4D4D4D),
                                   fontSize: AddSize.font16,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -347,7 +352,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   onTap: () {
                     getReasonList();
                   })
-                  : CommonProgressIndicator();
+                  : const CommonProgressIndicator();
             }),
           );
         });
@@ -416,7 +421,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                             ),*/
                   ),
                 ),
-                Positioned(
+                const Positioned(
                     right: 0,
                     top: 10,
                     child: Icon(
@@ -437,7 +442,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                       " " +
                       model.value.data!.clientData!.lastName.toString(),
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font18,
                       fontWeight: FontWeight.w600),
                 ),
@@ -445,7 +450,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_on,
                       color: AppTheme.primaryColor,
                     ),
@@ -461,14 +466,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                               : model.value.data!.clientData!.city.toString() +
                               ",",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
                           model.value.data!.clientData!.country.toString(),
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w500),
                         ),
@@ -479,7 +484,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                 Text(
                   model.value.data!.clientData!.timezone.toString(),
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font14,
                       fontWeight: FontWeight.w500),
                 )
@@ -571,7 +576,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
           Text(
             "Contract Terms",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font18,
                 fontWeight: FontWeight.w600),
           ),
@@ -589,7 +594,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                     TextSpan(
                       text: " only pay for the work you authorize.",
                       style: TextStyle(
-                          color: Color(0xff4D4D4D),
+                          color: const Color(0xff4D4D4D),
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500),
                     )
@@ -604,7 +609,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               Text(
                 "Payment option:",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w600),
               ),
@@ -635,15 +640,15 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                     Text(
                       "Pay by the hour:",
                       style: TextStyle(
-                          color: Color(0xff4D4D4D),
+                          color: const Color(0xff4D4D4D),
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      "\$${model.value.data!.proposalData!.amount ??
+                      "\$${model.value.data!.proposalData!.bidAmount ??
                           "0"}/per hour",
                       style: TextStyle(
-                          color: Color(0xff4D4D4D),
+                          color: const Color(0xff4D4D4D),
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500),
                     ),
@@ -655,14 +660,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                 Text(
                   "Weekly Limit",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
                   "Setting a weekly limit is a great way to help ensure you stay on budget",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w500),
                 ),
@@ -673,18 +678,18 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   "${model.value.data!.proposalData!.weeklyLimit ??
                       "0"} hrs /week",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
                   "\$${double.parse(
-                      model.value.data!.proposalData!.amount ?? "0") *
+                      model.value.data!.proposalData!.bidAmount.toString() ?? "0") *
                       double.parse(
                           (model.value.data!.proposalData!.weeklyLimit ?? "0")
                               .toString())} max/week",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font14,
                       fontWeight: FontWeight.w500),
                 ),
@@ -697,12 +702,21 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                 Text(
                   "Project Budget",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w600),
                 ),
+                if(model.value.data!.milestonedata!.isNotEmpty)
+                  Text(
+                    "\$${milestonePrice.toString()}",
+                    style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontSize: AddSize.font16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                if(model.value.data!.milestonedata!.isEmpty)
                 Text(
-                  "\$${model.value.data!.proposalData!.amount.toString()}",
+                  "\$${model.value.data!.proposalData!.bidAmount.toString()}",
                   style: TextStyle(
                       color: AppTheme.primaryColor,
                       fontSize: AddSize.font16,
@@ -721,14 +735,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               Text(
                 "Start Date:",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                dateFormatForShow.format(DateTime.parse(model.value.data!.proposalData!.date.toString())),
+                dateFormatForShow.format(DateTime.parse(model.value.data!.proposalData!.createdDate.toString())),
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w500),
               ),

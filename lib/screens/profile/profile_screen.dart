@@ -122,8 +122,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: 20),
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         content: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -132,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Stack(
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.topRight,
                     child: SizedBox(
                       height: 15,
@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       right: -15,
                       child: IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.clear,
                           size: 20,
                         ),
@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     "Edit Details",
                     style: TextStyle(
@@ -163,11 +163,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "First Name"),
-              SizedBox(
+              const AddText(text: "First Name"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -181,11 +181,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "Last Name"),
-              SizedBox(
+              const AddText(text: "Last Name"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -199,11 +199,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "Occupation"),
-              SizedBox(
+              const AddText(text: "Occupation"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -218,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               CustomOutlineButton(
@@ -230,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
             ],
@@ -241,6 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   final dateFormat = DateFormat('dd-MMM-yyyy');
+
 
   @override
   Widget build(BuildContext context) {
@@ -259,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     children: [
                       Container(
@@ -308,14 +309,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Image from Camera',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w600),
                                                   )),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 15,
                                               ),
                                               InkWell(
@@ -325,7 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .gallery);
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Image from Gallery',
                                                     style: TextStyle(
                                                         fontSize: 14,
@@ -425,7 +426,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xff180095)),
+                                        color: const Color(0xff180095)),
                                   ),
                                   Wrap(
                                     children: List.generate(
@@ -439,12 +440,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .rating
                                                         .toString()) >
                                                 index
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.star,
                                                 color: AppTheme.pinkText,
                                                 size: 16,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.star_border_outlined,
                                                 color: Colors.grey,
                                                 size: 16,
@@ -467,7 +468,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.flag_outlined,
                                         size: 20,
                                       ),
@@ -485,18 +486,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        padding: EdgeInsets.all(5),
+                                        margin: const EdgeInsets.only(left: 20),
+                                        padding: const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: AppTheme.whiteColor,
                                             border: Border.all(
-                                                color: Color(0xff707070))),
+                                                color: const Color(0xff707070))),
                                         child: InkWell(
                                           onTap: () {
                                             showDialogueUpdateBasicInfo();
                                           },
-                                          child: Icon(
+                                          child: const Icon(
                                             Icons.edit,
                                             color: AppTheme.primaryColor,
                                             size: 15,
@@ -744,157 +745,159 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       showDialog(
                                         context: context,
                                         builder: (ctx) => AlertDialog(
-                                          insetPadding: EdgeInsets.symmetric(
+                                          insetPadding: const EdgeInsets.symmetric(
                                               horizontal: 20),
-                                          contentPadding: EdgeInsets.symmetric(
+                                          contentPadding: const EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 10),
                                           content: Form(
                                             key: _formKey,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      child: SizedBox(
-                                                        height: 15,
-                                                        width: 20,
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      const Align(
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        child: SizedBox(
+                                                          height: 15,
+                                                          width: 20,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Positioned(
-                                                        top: -15,
-                                                        right: -15,
-                                                        child: IconButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          icon: Icon(
-                                                            Icons.clear,
-                                                            size: 20,
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                                Text(
-                                                  "Edit Your Title",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          AppTheme.textColor),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                BoxTextField(
-                                                  controller: controller
-                                                      .titleController,
-                                                  obSecure: false.obs,
-                                                  hintText:
-                                                      "Website design and development"
-                                                          .obs,
-                                                  validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Example: Full StackDeveloper | Web & Mobile'),
-                                                    MinLengthValidator(5,
-                                                        errorText:
-                                                            'Minimum length is 5 characters'),
-                                                    MaxLengthValidator(50,
-                                                        errorText:
-                                                            "Maximum length is 50 characters"),
-                                                  ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                BoxTextField(
-                                                  controller: controller
-                                                      .descriptionController,
-                                                  obSecure: false.obs,
-                                                  hintText: "description".obs,
-                                                  isMulti: true,
-                                                  validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Description required'),
-                                                    MinLengthValidator(100,
-                                                        errorText:
-                                                            'Minimum length is 100 characters'),
-                                                    MaxLengthValidator(5000,
-                                                        errorText:
-                                                            "Max Length is 5000 characters"),
-                                                  ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                CustomOutlineButton(
-                                                  title: "Change",
-                                                  backgroundColor:
-                                                      AppTheme.primaryColor,
-                                                  onPressed: () {
-                                                    if (_formKey.currentState!
-                                                        .validate()) {
-                                                      editDesignationInfoRepo(
-                                                              title: controller
-                                                                  .titleController
-                                                                  .text
-                                                                  .trim(),
-                                                              description:
-                                                                  controller
-                                                                      .descriptionController
-                                                                      .text
-                                                                      .trim(),
-                                                              context: context)
-                                                          .then((value) {
-                                                        if (value.status ==
-                                                            true) {
-                                                          showToast(value
-                                                              .message
-                                                              .toString());
-                                                          Get.back();
-                                                          print(jsonEncode(
-                                                              value));
-                                                          profileController
-                                                              .getData();
-                                                        } else {
-                                                          print(jsonEncode(
-                                                              value));
-                                                          showToast(value
-                                                              .message
-                                                              .toString());
-                                                        }
-                                                      });
-                                                    }
-                                                  },
-                                                  textColor:
-                                                      AppTheme.whiteColor,
-                                                  expandedValue: true,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
+                                                      Positioned(
+                                                          top: -15,
+                                                          right: -15,
+                                                          child: IconButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            icon: const Icon(
+                                                              Icons.clear,
+                                                              size: 20,
+                                                            ),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                  const Text(
+                                                    "Edit Your Title",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            AppTheme.textColor),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  BoxTextField(
+                                                    controller: controller
+                                                        .titleController,
+                                                    obSecure: false.obs,
+                                                    hintText:
+                                                        "Website design and development"
+                                                            .obs,
+                                                    validator: MultiValidator([
+                                                      RequiredValidator(
+                                                          errorText:
+                                                              'Example: Full StackDeveloper | Web & Mobile'),
+                                                      MinLengthValidator(5,
+                                                          errorText:
+                                                              'Minimum length is 5 characters'),
+                                                      MaxLengthValidator(50,
+                                                          errorText:
+                                                              "Maximum length is 50 characters"),
+                                                    ]),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  BoxTextField(
+                                                    controller: controller
+                                                        .descriptionController,
+                                                    obSecure: false.obs,
+                                                    hintText: "description".obs,
+                                                    isMulti: true,
+                                                    validator: MultiValidator([
+                                                      RequiredValidator(
+                                                          errorText:
+                                                              'Description required'),
+                                                      MinLengthValidator(100,
+                                                          errorText:
+                                                              'Minimum length is 100 characters'),
+                                                      MaxLengthValidator(5000,
+                                                          errorText:
+                                                              "Max Length is 5000 characters"),
+                                                    ]),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  CustomOutlineButton(
+                                                    title: "Change",
+                                                    backgroundColor:
+                                                        AppTheme.primaryColor,
+                                                    onPressed: () {
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                        editDesignationInfoRepo(
+                                                                title: controller
+                                                                    .titleController
+                                                                    .text
+                                                                    .trim(),
+                                                                description:
+                                                                    controller
+                                                                        .descriptionController
+                                                                        .text
+                                                                        .trim(),
+                                                                context: context)
+                                                            .then((value) {
+                                                          if (value.status ==
+                                                              true) {
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                            Get.back();
+                                                            print(jsonEncode(
+                                                                value));
+                                                            profileController
+                                                                .getData();
+                                                          } else {
+                                                            print(jsonEncode(
+                                                                value));
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                          }
+                                                        });
+                                                      }
+                                                    },
+                                                    textColor:
+                                                        AppTheme.whiteColor,
+                                                    expandedValue: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       );
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      padding: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.only(left: 20),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -904,7 +907,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
 
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
 
@@ -913,7 +916,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         .model.value.data!.basicInfo!.occuption
                                         .toString()
                                         .isEmpty
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : Text(
                                         profileController.model.value.data!
                                             .basicInfo!.occuption
@@ -952,7 +955,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         .toString(),
                                 style: TextStyle(
                                     fontSize: 13.sp, color: AppTheme.textColor),
+                                  maxLines: controller.descTextShowFlag.value ? 10000 : 6
                               ),
+                              SizedBox(
+                                  child: controller.textLength.value <= 200
+                                      ? const SizedBox()
+                                      : InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          controller.descTextShowFlag.value =
+                                          !controller.descTextShowFlag.value;
+                                        });
+                                      },
+                                      child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            controller.descTextShowFlag.value
+                                                ? const Text(
+                                              "Show Less",
+                                              style: TextStyle(
+                                                  color: AppTheme
+                                                      .primaryColor),
+                                            )
+                                                : const Text("Show More",
+                                                style: TextStyle(
+                                                    color: AppTheme
+                                                        .primaryColor))
+                                          ]))),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -988,24 +1018,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   InkWell(
                                     onTap: () {
                                       showModalBottomSheet<void>(
-                                        shape: RoundedRectangleBorder(
+                                        shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(30),
                                                 topRight: Radius.circular(30))),
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return RadioButtonsProfileScreen();
+                                          return const RadioButtonsProfileScreen();
                                         },
                                       );
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1033,18 +1063,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: List.generate(
                                         5,
                                         (index) => 5 > index
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.star,
                                                 color: AppTheme.primaryColor,
                                                 size: 17,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.star_border_outlined,
                                                 color: Colors.grey,
                                                 size: 17,
                                               )),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -1113,13 +1143,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () =>
                                         Get.toNamed(MyRouter.editSkillsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1133,7 +1163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: profileController
                                     .model.value.data!.skills!.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -1180,13 +1210,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addPortFolioScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1202,10 +1232,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: profileController.model.value.data!
                                             .portfolio!.length ==
                                         0
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : ListView.builder(
                                         shrinkWrap: true,
-                                        physics: BouncingScrollPhysics(),
+                                        physics: const BouncingScrollPhysics(),
                                         itemCount: profileController.model.value
                                             .data!.portfolio!.length,
                                         itemBuilder: (context, index) {
@@ -1215,7 +1245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           return Column(
                                             children: [
                                               Container(
-                                                margin: EdgeInsets.all(5),
+                                                margin: const EdgeInsets.all(5),
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
@@ -1236,7 +1266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       fit: BoxFit.cover),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Row(
@@ -1250,7 +1280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         color: AppTheme
                                                             .darkBlueText),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 5,
                                                   ),
                                                   Expanded(
@@ -1312,19 +1342,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
+                                                      margin: const EdgeInsets.only(
                                                           left: 15),
                                                       padding:
-                                                          EdgeInsets.all(5),
+                                                          const EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
                                                           shape:
                                                               BoxShape.circle,
                                                           color: AppTheme
                                                               .whiteColor,
                                                           border: Border.all(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xff707070))),
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: AppTheme
                                                             .primaryColor,
@@ -1334,7 +1364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Row(
@@ -1350,7 +1380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         color: AppTheme
                                                             .darkBlueText),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 5,
                                                   ),
                                                   Expanded(
@@ -1372,7 +1402,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Divider(
@@ -1423,13 +1453,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addTestimonialsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1444,11 +1474,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(
                                   width: deviceWidth,
                                   child: profileController.model.value.data!
-                                              .testimonial!.length ==
-                                          0
+                                              .testimonial!.isEmpty
                                       ? Container(
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.rectangle,
                                             color: AppTheme.whiteColor,
                                           ),
@@ -1470,7 +1499,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       fontSize: 13.sp,
                                                       fontWeight:
                                                           FontWeight.w300,
-                                                      color: Color(0xff363636)),
+                                                      color: const Color(0xff363636)),
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ],
@@ -1480,7 +1509,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: profileController.model
                                               .value.data!.testimonial!.length,
                                           itemBuilder: (BuildContext context,
@@ -1499,7 +1528,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 20,
                                                         ),
                                                         Row(
@@ -1518,7 +1547,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1543,7 +1572,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1562,7 +1591,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1587,7 +1616,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1606,7 +1635,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1631,7 +1660,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 20,
                                                         ),
                                                         Divider(
@@ -1648,7 +1677,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 20,
                                                         ),
                                                         Row(
@@ -1664,7 +1693,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1742,12 +1771,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 });
                                                               },
                                                               child: Container(
-                                                                margin: EdgeInsets
+                                                                margin: const EdgeInsets
                                                                     .only(
                                                                         left:
                                                                             15),
                                                                 padding:
-                                                                    EdgeInsets
+                                                                    const EdgeInsets
                                                                         .all(5),
                                                                 decoration: BoxDecoration(
                                                                     shape: BoxShape
@@ -1755,9 +1784,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                     color: AppTheme
                                                                         .whiteColor,
                                                                     border: Border.all(
-                                                                        color: Color(
+                                                                        color: const Color(
                                                                             0xff707070))),
-                                                                child: Icon(
+                                                                child: const Icon(
                                                                   Icons.delete,
                                                                   color: AppTheme
                                                                       .primaryColor,
@@ -1767,7 +1796,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1786,7 +1815,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1811,7 +1840,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1830,7 +1859,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1855,7 +1884,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1874,7 +1903,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1899,7 +1928,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 10,
                                                         ),
                                                         Row(
@@ -1918,7 +1947,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                   color: AppTheme
                                                                       .darkBlueText),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 5,
                                                             ),
                                                             Expanded(
@@ -1943,7 +1972,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 20,
                                                         ),
                                                         Divider(
@@ -1996,13 +2025,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addCertificationsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -2019,8 +2048,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .certificates!.length ==
                                           0
                                       ? Container(
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.rectangle,
                                             color: AppTheme.whiteColor,
                                           ),
@@ -2039,7 +2068,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w300,
-                                                    color: Color(0xff363636)),
+                                                    color: const Color(0xff363636)),
                                                 textAlign: TextAlign.center,
                                               ),
                                             ],
@@ -2048,7 +2077,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: showMoreCertificate.value
                                               ? profileController.model.value
                                                   .data!.certificates!.length
@@ -2069,7 +2098,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           itemBuilder: (context, index) {
                                             return Column(
                                               children: [
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
                                                 Row(
@@ -2154,12 +2183,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 },
                                                                 child:
                                                                     Container(
-                                                                  margin: EdgeInsets
+                                                                  margin: const EdgeInsets
                                                                       .only(
                                                                           left:
                                                                               15),
                                                                   padding:
-                                                                      EdgeInsets
+                                                                      const EdgeInsets
                                                                           .all(
                                                                               5),
                                                                   decoration: BoxDecoration(
@@ -2169,8 +2198,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                           .whiteColor,
                                                                       border: Border.all(
                                                                           color:
-                                                                              Color(0xff707070))),
-                                                                  child: Icon(
+                                                                              const Color(0xff707070))),
+                                                                  child: const Icon(
                                                                     Icons
                                                                         .delete,
                                                                     color: AppTheme
@@ -2181,7 +2210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               ),
                                                             ],
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             height: 5,
                                                           ),
                                                           Text(
@@ -2201,7 +2230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 color: AppTheme
                                                                     .darkBlueText),
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             height: 5,
                                                           ),
                                                         ],
@@ -2209,7 +2238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
                                                 Divider(
@@ -2260,13 +2289,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () =>
                                       Get.toNamed(MyRouter.addEmploymentScreen),
                                   child: Container(
-                                    padding: EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: AppTheme.whiteColor,
                                         border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
+                                            color: const Color(0xff707070))),
+                                    child: const Icon(
                                       Icons.add,
                                       color: AppTheme.primaryColor,
                                       size: 15,
@@ -2280,7 +2309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: profileController
                                     .model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
@@ -2297,7 +2326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             profileController.model.value.data!
                                                 .employment![index].subject
                                                 .toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Color(0xff363636)),
@@ -2320,7 +2349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .company
                                                         .toString()
                                                 : "",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Color(0xff363636)),
@@ -2341,7 +2370,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     .employment![index]
                                                     .startDate
                                                     .toString())),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                                 color: Color(0xff363636)),
@@ -2365,7 +2394,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .endDate
                                                             .toString()))
                                                 : " - Currently working",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                                 color: Color(0xff363636)),
@@ -2382,14 +2411,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 MyRouter.addEmploymentScreen,
                                                 arguments: index),
                                             child: Container(
-                                              padding: EdgeInsets.all(5),
+                                              padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: AppTheme.whiteColor,
                                                   border: Border.all(
                                                       color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
+                                                          const Color(0xff707070))),
+                                              child: const Icon(
                                                 Icons.edit,
                                                 color: AppTheme.primaryColor,
                                                 size: 15,
@@ -2419,15 +2448,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               });
                                             },
                                             child: Container(
-                                              margin: EdgeInsets.only(left: 15),
-                                              padding: EdgeInsets.all(5),
+                                              margin: const EdgeInsets.only(left: 15),
+                                              padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: AppTheme.whiteColor,
                                                   border: Border.all(
                                                       color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
+                                                          const Color(0xff707070))),
+                                              child: const Icon(
                                                 Icons.delete,
                                                 color: AppTheme.primaryColor,
                                                 size: 15,
@@ -2592,7 +2621,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   );
       }),
@@ -2637,12 +2666,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.hoursPerWeekScreen),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.edit,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2667,7 +2696,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 13.sp,
                     color: AppTheme.textColor),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Text(
@@ -2703,12 +2732,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => services(),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2746,13 +2775,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.addLanguageScreen),
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2762,12 +2791,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.editLanguageScreen),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.edit,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2781,7 +2810,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: profileController.model.value.data!.language!.length,
               itemBuilder: (context, index) {
                 return Padding(
@@ -2799,7 +2828,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
@@ -2827,18 +2856,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText),
             ),
+            if(profileController.model.value.data!.basicInfo!.isVerified.toString().toLowerCase() == "pending" || profileController.model.value.data!.basicInfo!.isVerified.toString().toLowerCase() == "reject")
             InkWell(
               onTap: () {
                 verification();
               },
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                padding: EdgeInsets.all(5),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppTheme.whiteColor,
-                    border: Border.all(color: Color(0xff707070))),
-                child: Icon(
+                    border: Border.all(color: const Color(0xff707070))),
+                child: const Icon(
                   Icons.add,
                   color: AppTheme.primaryColor,
                   size: 15,
@@ -2858,20 +2888,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: AppTheme.darkBlueText),
             ),
             Text(
-              "verified",
+              profileController.model.value.data!.basicInfo!.isVerified.toString(),
               style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
                   color: AppTheme.darkBlueText),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Icon(
               Icons.verified,
               color:
-                  profileController.model.value.data!.basicInfo!.isVerified ==
-                          true
+                  profileController.model.value.data!.basicInfo!.isVerified.toString().toLowerCase() == "approve"
                       ? AppTheme.primaryColor
                       : Colors.grey.withOpacity(.49),
               size: 20,
@@ -2945,13 +2974,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Get.toNamed(MyRouter.addEducationScreen);
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2981,7 +3010,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: profileController.model.value.data!.education!.length,
             itemBuilder: (context, index) {
               return Column(
@@ -2997,7 +3026,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff4D4D4D)),
+                        color: const Color(0xff4D4D4D)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3021,12 +3050,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   arguments: index);
                             },
                             child: Container(
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
+                                  border: Border.all(color: const Color(0xff707070))),
+                              child: const Icon(
                                 Icons.edit,
                                 color: AppTheme.primaryColor,
                                 size: 15,
@@ -3050,13 +3079,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               });
                             },
                             child: Container(
-                              margin: EdgeInsets.only(left: 15),
-                              padding: EdgeInsets.all(5),
+                              margin: const EdgeInsets.only(left: 15),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
+                                  border: Border.all(color: const Color(0xff707070))),
+                              child: const Icon(
                                 Icons.delete,
                                 color: AppTheme.primaryColor,
                                 size: 15,
@@ -3081,7 +3110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff4D4D4D)),
+                        color: const Color(0xff4D4D4D)),
                   ),
                   Divider(
                     color: AppTheme.pinkText.withOpacity(.29),
@@ -3138,7 +3167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         profileController
                             .model.value.data!.basicInfo!.totalEarning
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff0777FD)),
@@ -3164,7 +3193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         profileController.model.value.data!.basicInfo!.totalJobs
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff6B428B)),
@@ -3205,7 +3234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         profileController
                             .model.value.data!.basicInfo!.totalHours
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xffF66C6C)),
@@ -3225,14 +3254,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w500,
                             color: AppTheme.darkBlueText.withOpacity(0.47)),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                           profileController
                               .model.value.data!.basicInfo!.pendingProject
                               .toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.pinkText,
@@ -3258,7 +3287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: controller.modelOfService.value.data!.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -3346,7 +3375,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(
                       top: 10, right: 15, left: 15, bottom: 15),
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
                         SizedBox(
@@ -3365,6 +3394,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              "Id Proof",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.darkBlueText),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
                             DropdownButtonFormField<dynamic>(
                               alignment: Alignment.centerLeft,
                               decoration: InputDecoration(
@@ -3416,7 +3455,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           .replaceAll("_", " ")))),
                               onChanged: (val) {
                                 currentSelectedDocument = val;
-                                print(currentSelectedDocument);
+                                if (kDebugMode) {
+                                  print(currentSelectedDocument);
+                                }
                               },
                             ),
                             SizedBox(
@@ -3436,10 +3477,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onTap: () => pickFileToUpload(),
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 13, horizontal: 15),
                                 decoration: BoxDecoration(
-                                    color: Color(0xffE1EDFB),
+                                    color: const Color(0xffE1EDFB),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: documentFile.value.path == ""
@@ -3479,10 +3520,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               onTap: () => pickFileToUpload1(),
                               child: Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 13, horizontal: 15),
                                 decoration: BoxDecoration(
-                                    color: Color(0xffE1EDFB),
+                                    color: const Color(0xffE1EDFB),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: documentFile1.value.path == ""

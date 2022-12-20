@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,6 +41,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
   dynamic forInterview = "";
   dynamic proposalId = "";
   dynamic clientID = "";
+  dynamic minPrice = "";
   List<ModelMilestones> milestone = <ModelMilestones>[
     ModelMilestones(description: "", amount: "", dueDate: "")
   ];
@@ -56,6 +58,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
     type = Get.arguments[4];
     forInterview = Get.arguments[5];
     proposalId = Get.arguments[6];
+    minPrice = Get.arguments[7];
     textLength = description.length;
     if (profileController.status.value.isSuccess &&
         type.toString().toLowerCase() == "hourly") {
@@ -141,13 +144,13 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
             ? Form(
                 key: _formKey,
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -168,7 +171,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                             maxLines: descTextShowFlag ? 10000 : 6),
                         SizedBox(
                             child: textLength <= 200
-                                ? SizedBox()
+                                ? const SizedBox()
                                 : InkWell(
                                     onTap: () {
                                       setState(() {
@@ -180,13 +183,13 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             MainAxisAlignment.end,
                                         children: <Widget>[
                                           descTextShowFlag
-                                              ? Text(
+                                              ? const Text(
                                                   "Show Less",
                                                   style: TextStyle(
                                                       color: AppTheme
                                                           .primaryColor),
                                                 )
-                                              : Text("Show More",
+                                              : const Text("Show More",
                                                   style: TextStyle(
                                                       color: AppTheme
                                                           .primaryColor))
@@ -216,6 +219,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                       SizedBox(
                                         height: deviceHeight * .01,
                                       ),
+                                      if( type.toString().toLowerCase() == "hourly")
+                                        Text(
+                                          "Client's budget: \$${minPrice!.toString()} - \$${price!.toString()} /hr",
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              color: const Color(0xff180D31),
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                      if( type.toString().toLowerCase() == "fixed")
                                       Text(
                                         "Client's budget: \$${price!.isEmpty ? " -" : price} USD",
                                         style: TextStyle(
@@ -275,25 +287,24 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                         },
                                         controller: _bidController,
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
+                                          contentPadding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
-                                          border: new OutlineInputBorder(
+                                          border: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           hintText: '\$',
                                           focusColor: AppTheme.primaryColor,
                                           suffixIcon: _bidController
-                                                      .text.length ==
-                                                  0
-                                              ? Align(
+                                                      .text.isEmpty
+                                              ? const Align(
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.only(
+                                                        EdgeInsets.only(
                                                             right: 10.0),
                                                     child: Text(
                                                       "200.00",
@@ -303,27 +314,27 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                               .hintTextColor),
                                                     ),
                                                   ))
-                                              : SizedBox(),
-                                          hintStyle: TextStyle(
+                                              : const SizedBox(),
+                                          hintStyle: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                               color: AppTheme.hintTextColor),
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           errorBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                         ),
@@ -422,27 +433,26 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                           controller: _receiveController,
                                           decoration: InputDecoration(
                                             contentPadding:
-                                                EdgeInsets.symmetric(
+                                                const EdgeInsets.symmetric(
                                                     vertical: 5,
                                                     horizontal: 10),
-                                            border: new OutlineInputBorder(
+                                            border: OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
+                                                  BorderRadius.circular(
                                                       5.0),
-                                              borderSide: new BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: AppTheme.primaryColor),
                                             ),
                                             hintText: '\$',
                                             focusColor: AppTheme.primaryColor,
                                             suffixIcon: _receiveController
-                                                        .text.length ==
-                                                    0
-                                                ? Align(
+                                                        .text.isEmpty
+                                                ? const Align(
                                                     alignment:
                                                         Alignment.centerRight,
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.only(
+                                                          EdgeInsets.only(
                                                               right: 10.0),
                                                       child: Text(
                                                         "150.00",
@@ -452,30 +462,30 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                 .hintTextColor),
                                                       ),
                                                     ))
-                                                : SizedBox(),
-                                            hintStyle: TextStyle(
+                                                : const SizedBox(),
+                                            hintStyle: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppTheme.hintTextColor),
                                             focusedBorder: OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
+                                                  BorderRadius.circular(
                                                       5.0),
-                                              borderSide: new BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: AppTheme.primaryColor),
                                             ),
                                             enabledBorder: OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
+                                                  BorderRadius.circular(
                                                       5.0),
-                                              borderSide: new BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: AppTheme.primaryColor),
                                             ),
                                             errorBorder: OutlineInputBorder(
                                               borderRadius:
-                                                  new BorderRadius.circular(
+                                                  BorderRadius.circular(
                                                       5.0),
-                                              borderSide: new BorderSide(
+                                              borderSide: const BorderSide(
                                                   color: AppTheme.primaryColor),
                                             ),
                                           )),
@@ -499,44 +509,44 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                         controller: _letterController,
                                         maxLines: 4,
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
+                                          contentPadding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
-                                          border: new OutlineInputBorder(
+                                          border: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           focusColor: AppTheme.primaryColor,
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           disabledBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           focusedErrorBorder:
                                               OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           errorBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                         ),
@@ -634,7 +644,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                           .value =
                                                                       File("");
                                                                 },
-                                                                child: Icon(Icons
+                                                                child: const Icon(Icons
                                                                     .clear, color: AppTheme.pinkText,)),
                                                       ),
                                                       SizedBox(
@@ -648,7 +658,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                               ? "Attach Files"
                                                               : fileName.value
                                                                   .toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontSize: 15,
                                                               fontWeight:
                                                                   FontWeight
@@ -661,9 +671,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                   ),
                                                 ),
                                                 Container(
-                                                  padding: EdgeInsets.all(15),
+                                                  padding: const EdgeInsets.all(15),
                                                   color: AppTheme.pinkText,
-                                                  child: Text(
+                                                  child: const Text(
                                                     "Choose File",
                                                     style: TextStyle(
                                                         fontSize: 14,
@@ -706,14 +716,14 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                         height: deviceHeight * .02,
                                       ),
                                       RadioListTile(
-                                          title: Text(
+                                          title: const Text(
                                             "By project",
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: AppTheme.darkBlueText,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          subtitle: Text(
+                                          subtitle: const Text(
                                             "Get your entire payment at the end, when all work has been delivered",
                                             style: TextStyle(
                                                 fontSize: 12,
@@ -736,14 +746,14 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             });
                                           }),
                                       RadioListTile(
-                                          title: Text(
+                                          title: const Text(
                                             "By milestone",
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: AppTheme.darkBlueText,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          subtitle: Text(
+                                          subtitle: const Text(
                                             "Divide the project into smaller segments, called milestones. You'll be paid for milestones as they are completed and approved",
                                             style: TextStyle(
                                                 fontSize: 12,
@@ -761,7 +771,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                             setState(() {
                                               radioProjectType =
                                                   value.toString();
-                                              print(radioProjectType);
+                                              if (kDebugMode) {
+                                                print(radioProjectType);
+                                              }
                                               // milestone.add(ModelMilestones(description: "", amount: "", dueDate: ""));
                                             });
                                           }),
@@ -790,13 +802,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                   ListView.builder(
                                                       shrinkWrap: true,
                                                       physics:
-                                                          NeverScrollableScrollPhysics(),
+                                                          const NeverScrollableScrollPhysics(),
                                                       itemCount:
                                                           milestone.length,
                                                       itemBuilder:
                                                           (context, index) {
-                                                        print(milestone.length);
-                                                        print(milestone);
+                                                        if (kDebugMode) {
+                                                          print(milestone.length);
+                                                          print(milestone);
+                                                        }
                                                         return mileStones(
                                                             deviceHeight,
                                                             index,
@@ -848,15 +862,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                     maxLines: 4,
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets.symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -865,45 +879,45 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       disabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       focusedErrorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -938,7 +952,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         context: context,
                                                         builder: (BuildContext
                                                             context) {
-                                                          return RadioButtonsJobDetails();
+                                                          return const RadioButtonsJobDetails();
                                                         },
                                                       );
                                                     },
@@ -947,15 +961,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         .durationController,
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets.symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -963,9 +977,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                           "Select a duration",
                                                       focusColor:
                                                           AppTheme.primaryColor,
-                                                      suffixIcon: Icon(Icons
+                                                      suffixIcon: const Icon(Icons
                                                           .keyboard_arrow_down_outlined),
-                                                      hintStyle: TextStyle(
+                                                      hintStyle: const TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -974,27 +988,27 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1042,7 +1056,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                               .value =
                                                                               File("");
                                                                         },
-                                                                        child: Icon(Icons
+                                                                        child: const Icon(Icons
                                                                             .clear, color: AppTheme.pinkText,)),
                                                                   ),
                                                                   SizedBox(
@@ -1056,7 +1070,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                           : fileName
                                                                               .value
                                                                               .toString(),
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           fontSize:
                                                                               15,
                                                                           fontWeight:
@@ -1071,11 +1085,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                             ),
                                                             Container(
                                                               padding:
-                                                                  EdgeInsets
+                                                                  const EdgeInsets
                                                                       .all(15),
                                                               color: AppTheme
                                                                   .pinkText,
-                                                              child: Text(
+                                                              child: const Text(
                                                                 "Choose File",
                                                                 style: TextStyle(
                                                                     fontSize:
@@ -1171,15 +1185,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                     controller: _bidController,
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets.symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1187,15 +1201,13 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusColor:
                                                           AppTheme.primaryColor,
                                                       suffixIcon: _bidController
-                                                                  .text
-                                                                  .length ==
-                                                              0
-                                                          ? Align(
+                                                                  .text.isEmpty
+                                                          ? const Align(
                                                               alignment: Alignment
                                                                   .centerRight,
                                                               child: Padding(
                                                                 padding:
-                                                                    const EdgeInsets
+                                                                    EdgeInsets
                                                                             .only(
                                                                         right:
                                                                             10.0),
@@ -1208,8 +1220,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                           .hintTextColor),
                                                                 ),
                                                               ))
-                                                          : SizedBox(),
-                                                      hintStyle: TextStyle(
+                                                          : const SizedBox(),
+                                                      hintStyle: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -1218,27 +1230,27 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1354,18 +1366,18 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       decoration:
                                                           InputDecoration(
                                                         contentPadding:
-                                                            EdgeInsets
+                                                            const EdgeInsets
                                                                 .symmetric(
                                                                     vertical: 5,
                                                                     horizontal:
                                                                         10),
                                                         border:
-                                                            new OutlineInputBorder(
+                                                            OutlineInputBorder(
                                                           borderRadius:
-                                                              new BorderRadius
+                                                              BorderRadius
                                                                       .circular(
                                                                   5.0),
-                                                          borderSide: new BorderSide(
+                                                          borderSide: const BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor),
                                                         ),
@@ -1373,14 +1385,12 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         focusColor: AppTheme
                                                             .primaryColor,
                                                         suffixIcon: _receiveController
-                                                                    .text
-                                                                    .length ==
-                                                                0
-                                                            ? Align(
+                                                                    .text.isEmpty
+                                                            ? const Align(
                                                                 alignment: Alignment
                                                                     .centerRight,
                                                                 child: Padding(
-                                                                  padding: const EdgeInsets
+                                                                  padding: EdgeInsets
                                                                           .only(
                                                                       right:
                                                                           10.0),
@@ -1393,8 +1403,8 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                             .hintTextColor),
                                                                   ),
                                                                 ))
-                                                            : SizedBox(),
-                                                        hintStyle: TextStyle(
+                                                            : const SizedBox(),
+                                                        hintStyle: const TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:
                                                                 FontWeight.w600,
@@ -1403,30 +1413,30 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         focusedBorder:
                                                             OutlineInputBorder(
                                                           borderRadius:
-                                                              new BorderRadius
+                                                              BorderRadius
                                                                       .circular(
                                                                   5.0),
-                                                          borderSide: new BorderSide(
+                                                          borderSide: const BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor),
                                                         ),
                                                         enabledBorder:
                                                             OutlineInputBorder(
                                                           borderRadius:
-                                                              new BorderRadius
+                                                              BorderRadius
                                                                       .circular(
                                                                   5.0),
-                                                          borderSide: new BorderSide(
+                                                          borderSide: const BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor),
                                                         ),
                                                         errorBorder:
                                                             OutlineInputBorder(
                                                           borderRadius:
-                                                              new BorderRadius
+                                                              BorderRadius
                                                                       .circular(
                                                                   5.0),
-                                                          borderSide: new BorderSide(
+                                                          borderSide: const BorderSide(
                                                               color: AppTheme
                                                                   .primaryColor),
                                                         ),
@@ -1455,15 +1465,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                     maxLines: 4,
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets.symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1472,45 +1482,45 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       disabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       focusedErrorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1586,7 +1596,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         context: context,
                                                         builder: (BuildContext
                                                             context) {
-                                                          return RadioButtonsJobDetails();
+                                                          return const RadioButtonsJobDetails();
                                                         },
                                                       );
                                                     },
@@ -1595,15 +1605,15 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                         .durationController,
                                                     decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets.symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1611,9 +1621,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                           "Select a duration",
                                                       focusColor:
                                                           AppTheme.primaryColor,
-                                                      suffixIcon: Icon(Icons
+                                                      suffixIcon: const Icon(Icons
                                                           .keyboard_arrow_down_outlined),
-                                                      hintStyle: TextStyle(
+                                                      hintStyle: const TextStyle(
                                                           fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -1622,27 +1632,27 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
-                                                        borderSide: new BorderSide(
+                                                        borderSide: const BorderSide(
                                                             color: AppTheme
                                                                 .primaryColor),
                                                       ),
@@ -1690,7 +1700,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                               .value =
                                                                               File("");
                                                                         },
-                                                                        child: Icon(Icons
+                                                                        child: const Icon(Icons
                                                                             .clear, color: AppTheme.pinkText,)),
                                                                   ),
                                                                   SizedBox(
@@ -1704,7 +1714,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                           : fileName
                                                                               .value
                                                                               .toString(),
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           fontSize:
                                                                               15,
                                                                           fontWeight:
@@ -1719,11 +1729,11 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                             ),
                                                             Container(
                                                               padding:
-                                                                  EdgeInsets
+                                                                  const EdgeInsets
                                                                       .all(15),
                                                               color: AppTheme
                                                                   .pinkText,
-                                                              child: Text(
+                                                              child: const Text(
                                                                 "Choose File",
                                                                 style: TextStyle(
                                                                     fontSize:
@@ -1818,7 +1828,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                     onTap: () {
                       profileController.getData();
                     })
-                : CommonProgressIndicator();
+                : const CommonProgressIndicator();
       }),
     );
   }
@@ -1854,9 +1864,9 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                   color: const Color(0xff180D31)),
             ),
             index == 0
-                ? SizedBox()
+                ? const SizedBox()
                 : IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.clear,
                       color: AppTheme.primaryColor,
                       size: 20,
@@ -1920,7 +1930,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                         return null;
                       }
                     },
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.calendar_month_outlined,
                       size: 20,
                       color: AppTheme.primaryColor,
@@ -1939,7 +1949,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Expanded(
@@ -1955,7 +1965,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                   ),
                   CustomTextField(
                     controller: _amountController,
-                    prefix: Icon(
+                    prefix: const Icon(
                       Icons.attach_money,
                       size: 20,
                       color: AppTheme.primaryColor,

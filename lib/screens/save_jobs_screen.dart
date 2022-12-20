@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -43,7 +44,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
           titleText: "Save Jobs",
         ),
       ),
-      drawer: AppDrawerScreen(),
+    //  drawer: AppDrawerScreen(),
       body: Obx(() {
         return controller.status.value.isSuccess
             ? SingleChildScrollView(
@@ -78,7 +79,9 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                 Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
                                   controller.model.value.data![index].id.toString(),
                                 ]);
-                                print(controller.model.value.data![index].id);
+                                if (kDebugMode) {
+                                  print(controller.model.value.data![index].id);
+                                }
                               },
                                 child: Container(
                                     margin: const EdgeInsets.only(
@@ -161,7 +164,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                           });
                                                         });
                                                       },
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.favorite_border,
                                                         size: 22,
                                                         color: AppTheme
@@ -197,7 +200,7 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                                           });
                                                         });
                                                       },
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.favorite,
                                                         size: 22,
                                                         color: AppTheme
@@ -247,11 +250,27 @@ class _SaveJobsScreenState extends State<SaveJobsScreen> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
+                                                if( controller.model.value
+                                                    .data![index].budgetType
+                                                    .toString() == "hourly")
+                                                  Text(
+                                                    "\$${controller.model.value
+                                                        .data![index].minPrice.toString()} - \$${controller.model.value
+                                                        .data![index].price.toString()}",
+                                                    style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                        FontWeight.w600,
+                                                        color: AppTheme
+                                                            .darkBlueText),
+                                                  ),
+
+                                                if( controller.model.value
+                                                    .data![index].budgetType
+                                                    .toString() == "fixed")
                                                 Text(
-                                                  "\$" +
-                                                      controller.model.value
-                                                          .data![index].price
-                                                          .toString(),
+                                                  "\$${controller.model.value
+                                                          .data![index].price}",
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
                                                       fontWeight:

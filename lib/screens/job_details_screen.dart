@@ -252,7 +252,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 5,
                                                   ),
                                                   Text(
@@ -278,7 +278,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 5,
                                                   ),
                                                   Text(
@@ -295,7 +295,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               )
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Row(
@@ -314,7 +314,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 5,
                                                   ),
                                                   Text(
@@ -362,7 +362,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                         maxLines: descTextShowFlag ? 10000 : 6),
                                     SizedBox(
                                         child: textLength <= 200
-                                            ? SizedBox()
+                                            ? const SizedBox()
                                             : InkWell(
                                                 onTap: () {
                                                   setState(() {
@@ -375,13 +375,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                         MainAxisAlignment.end,
                                                     children: <Widget>[
                                                       descTextShowFlag
-                                                          ? Text(
+                                                          ? const Text(
                                                               "Show Less",
                                                               style: TextStyle(
                                                                   color: AppTheme
                                                                       .primaryColor),
                                                             )
-                                                          : Text("Show More",
+                                                          : const Text("Show More",
                                                               style: TextStyle(
                                                                   color: AppTheme
                                                                       .primaryColor))
@@ -420,7 +420,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                       children: List.generate(
                                           model.value.data!.jobSkills!.length,
                                           (index) => Container(
-                                              margin: EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(right: 4),
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                     backgroundColor:
@@ -434,7 +434,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                 BorderRadius.all(
                                                       Radius.circular(30),
                                                     )),
-                                                    padding: EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets.symmetric(
                                                       horizontal: 20,
                                                     ),
                                                     textStyle: const TextStyle(
@@ -445,7 +445,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   model.value.data!
                                                       .jobSkills![index].name
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: AppTheme.primaryColor),
                                                 ),
                                               ))),
@@ -605,7 +605,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     Theme(
                                       data: ThemeData(
                                               expansionTileTheme:
-                                                  ExpansionTileThemeData(
+                                                  const ExpansionTileThemeData(
                                                       textColor:
                                                           AppTheme.primaryColor,
                                                       iconColor:
@@ -617,7 +617,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                         child: ExpansionTile(
                                             title: Text(
                                               "Clients recent history (${model.value.data!.clientRecentHistory!.length.toString()})",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 16.0,
                                                   fontWeight: FontWeight.w500),
                                             ),
@@ -663,14 +663,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                     children: List.generate(
                                                                         5,
                                                                         (index) => 4 > index
-                                                                            ? Icon(
+                                                                            ? const Icon(
                                                                                 Icons.star,
                                                                                 color:
                                                                                     AppTheme.primaryColor,
                                                                                 size:
                                                                                     16,
                                                                               )
-                                                                            : Icon(
+                                                                            : const Icon(
                                                                                 Icons.star_border_outlined,
                                                                                 color:
                                                                                     Colors.grey,
@@ -754,7 +754,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                   color: const Color(
                                                                       0xff170048)),
                                                             ),
-                                                            SizedBox()
+                                                            const SizedBox()
                                                           ],
                                                         ),
                                                         SizedBox(
@@ -812,6 +812,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                 model.value.data!.budgetType.toString(),
                                            "fromJob",
                                            "0",
+                                                model.value.data!.minPrice.toString(),
                                            //     model.value.data!.clientData!.id,
                                               ]);
                                         },
@@ -838,7 +839,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                 BorderRadius.all(
                                                       Radius.circular(30),
                                                     )),
-                                                    padding: EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets.symmetric(
                                                         horizontal: 25,
                                                         vertical: 15),
                                                     textStyle: const TextStyle(
@@ -919,7 +920,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         ],
                       ),
                     )
-                  : Center(
+                  : const Center(
                       child: CircularProgressIndicator(),
                     );
         }));
@@ -959,8 +960,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.lightbulb_outline,color: AppTheme.primaryColor,),
-              SizedBox(
+              const Icon(Icons.lightbulb_outline,color: AppTheme.primaryColor,),
+              const SizedBox(
                 width: 10,
               ),
               Text("You are already invited for this job",  style: TextStyle(
@@ -1009,7 +1010,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                               ? AppTheme.primaryColor
                               : Colors.grey.withOpacity(.49),
                       size: 20),
-                  SizedBox(
+                  const SizedBox(
                     width: 3,
                   ),
                   Text(
@@ -1036,12 +1037,12 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     .value.data!.clientData!.rating
                                     .toString()) >
                                 index
-                            ? Icon(
+                            ? const Icon(
                                 Icons.star,
                                 color: AppTheme.primaryColor,
                                 size: 16,
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.star_border_outlined,
                                 color: Colors.grey,
                                 size: 16,

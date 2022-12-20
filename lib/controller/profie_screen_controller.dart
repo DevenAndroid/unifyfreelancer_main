@@ -16,6 +16,13 @@ import '../repository/languages_list_repository.dart';
 import '../repository/profile_screen_repository.dart';
 
 class ProfileScreenController extends GetxController {
+
+  // description length
+  RxString descText = "".obs;
+  RxBool descTextShowFlag = false.obs;
+  RxInt textLength = 0.obs;
+
+
   RxString timeValue = "".obs;
 
   Rx<ModelFreelancerProfile> model = ModelFreelancerProfile().obs;
@@ -95,6 +102,10 @@ class ProfileScreenController extends GetxController {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
+        // description length
+        descText.value = model.value.data!.basicInfo!.description.toString();
+        textLength.value = descText.value.length;
+
         titleController.text = value.data!.basicInfo!.occuption.toString();
         descriptionController.text = value.data!.basicInfo!.description.toString();
         if(value.data!.basicInfo!.amount.toString() == "0.00"){

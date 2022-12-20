@@ -47,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
     await FirebaseAuth.instance.signInWithCredential(userCredentials);
-    socialLoginApi(
-        context, googleSignInAuthentication.accessToken.toString(), "google");
+    socialLoginApi(context, googleSignInAuthentication.accessToken.toString(), "google");
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +33,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: CustomAppbar(
             isLikeButton: false,
@@ -46,7 +47,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -72,7 +73,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                             controller: controller.searchController,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintStyle: TextStyle(
+                                hintStyle: const TextStyle(
                                     color: AppTheme.textColor, fontSize: 14),
                                 filled: true,
                                 fillColor: Colors.white24,
@@ -128,7 +129,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                       )*/
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   if (controller.status.value.isSuccess) jobsList(),
@@ -141,7 +142,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                     ),
                   if (controller.status.value.isEmpty)
                     Column(
-                      children: [
+                      children: const [
                         SizedBox(
                           height: 100,
                         ),
@@ -158,8 +159,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Obx(() {
       return controller.loading.value == true
-          ? CommonProgressIndicator()
-          : controller.model.value.data!.length == 0
+          ? const CommonProgressIndicator()
+          : controller.model.value.data!.isEmpty
               ? Center(
                   child: Text("No data found",
                       style: TextStyle(
@@ -169,7 +170,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                       )))
               : Expanded(
                   child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
                         ListView.builder(
@@ -183,7 +184,9 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                     arguments: [
                                       controller.modelForPagination[index].id,
                                     ]);
-                                print(controller.modelForPagination[index].id);
+                                if (kDebugMode) {
+                                  print(controller.modelForPagination[index].id);
+                                }
                               },
                               child: Container(
                                   margin: const EdgeInsets.only(
@@ -247,13 +250,13 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         color:
                                                             Color(0xff6D2EF1),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 10,
                                                       ),
                                                       ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
-                                                              NeverScrollableScrollPhysics(),
+                                                              const NeverScrollableScrollPhysics(),
                                                           itemCount: controller
                                                               .dislikeReasons
                                                               .value
@@ -273,8 +276,9 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                             job_id: controller.modelForPagination[index].id.toString(),
                                                                             reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                                             context: context).then((value) {
-                                                                      print("remove job response::::" +
-                                                                          value.message.toString());
+                                                                      if (kDebugMode) {
+                                                                        print("remove job response::::${value.message}");
+                                                                      }
                                                                       if (value.status == true) {}
                                                                       showToast(value.message.toString());
                                                                       controller.modelForPagination.removeWhere((element) => element.id == controller.modelForPagination[index].id);
@@ -300,7 +304,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                SizedBox(
+                                                                const SizedBox(
                                                                   height: 15,
                                                                 )
                                                               ],
@@ -424,13 +428,27 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              if(controller
+                                                  .modelForPagination[index]
+                                                  .budgetType
+                                                  .toString().toLowerCase() == "hourly" )
+                                                Text(
+                                                  "\$${controller.modelForPagination[index].minPrice.toString()} - \$${controller.modelForPagination[index].price.toString()}",
+                                                  style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                      AppTheme.darkBlueText),
+                                                ),
+                                              if(controller
+                                                  .modelForPagination[index]
+                                                  .budgetType
+                                                  .toString().toLowerCase() == "fixed" )
                                               Text(
-                                                "\$" +
-                                                    controller
+                                                "\$${controller
                                                         .modelForPagination[
                                                             index]
-                                                        .price
-                                                        .toString(),
+                                                        .price}",
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
@@ -459,8 +477,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w600,
-                                                    color:
-                                                        AppTheme.darkBlueText),
+                                                    color: AppTheme.darkBlueText),
                                               ),
                                               Text(
                                                 "Project type",
@@ -497,7 +514,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                     .skills!
                                                     .length ==
                                                 0
-                                            ? SizedBox()
+                                            ? const SizedBox()
                                             : Column(
                                                 children: [
                                                   const Divider(
@@ -511,7 +528,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                     height: 45.h,
                                                     child: ListView.builder(
                                                         physics:
-                                                            BouncingScrollPhysics(),
+                                                            const BouncingScrollPhysics(),
                                                         scrollDirection:
                                                             Axis.horizontal,
                                                         itemCount: controller
@@ -522,7 +539,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         itemBuilder:
                                                             (context, index2) {
                                                           return Container(
-                                                              margin: EdgeInsets
+                                                              margin: const EdgeInsets
                                                                   .only(
                                                                       right: 4,
                                                                       bottom:
@@ -540,7 +557,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                       Radius.circular(
                                                                           30),
                                                                     )),
-                                                                    padding: EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets.symmetric(
                                                                       horizontal:
                                                                           20,
                                                                     ),
@@ -559,7 +576,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                           index2]
                                                                       .name
                                                                       .toString(),
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       color: AppTheme
                                                                           .primaryColor),
                                                                 ),

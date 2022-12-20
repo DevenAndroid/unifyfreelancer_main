@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: TabBar(
                               labelColor: AppTheme.primaryColor,
                               labelStyle:
-                                  TextStyle(fontWeight: FontWeight.w600),
+                                  const TextStyle(fontWeight: FontWeight.w600),
                               unselectedLabelColor: AppTheme.blackColor,
                               padding: EdgeInsets.zero,
                               isScrollable: true,
@@ -184,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       child: controller.status.value.isSuccess
-          ? controller.modelJobList.value.data!.length == 0
+          ? controller.modelJobList.value.data!.isEmpty
               ? Center(
                   child: Text("No my  feed",
                       style: TextStyle(
@@ -202,7 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
                           controller.modelJobList.value.data![index].id.toString(),
                         ]);
-                        print(controller.modelJobList.value.data![index].id);
+                        if (kDebugMode) {
+                          print(controller.modelJobList.value.data![index].id);
+                        }
                       },
                       child: Container(
                           margin: const EdgeInsets.only(
@@ -258,12 +261,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const Divider(
                                                 color: Color(0xff6D2EF1),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               ListView.builder(
                                                   shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
+                                                  physics: const NeverScrollableScrollPhysics(),
                                                   itemCount: controller.dislikeReasons.value.data!.length,
                                                   itemBuilder: (context, index2) {
                                                     return Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,7 +278,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     job_id: controller.modelJobList.value.data![index].id.toString(),
                                                                     reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                                     context: context).then((value) {
-                                                                      print("remove job response::::"+value.message.toString());
+                                                                      if (kDebugMode) {
+                                                                        print("remove job response::::${value.message}");
+                                                                      }
                                                               if (value.status == true) {}
                                                               showToast(value.message.toString());
                                                               controller.getData();
@@ -290,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 15,
                                                         )
                                                       ],
@@ -398,11 +403,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+
+                                      if(controller.modelJobList.value.data![index].budgetType.toString() == "hourly")
+                                        Text(
+                                          "\$${controller.modelJobList.value
+                                              .data![index].minPrice.toString()} - \$${controller.modelJobList.value
+                                              .data![index].price.toString()}",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                      if(controller.modelJobList.value.data![index].budgetType.toString() == "fixed")
                                       Text(
-                                        "\$" +
-                                            controller.modelJobList.value
-                                                .data![index].price
-                                                .toString(),
+                                        "\$${controller.modelJobList.value
+                                                .data![index].price}",
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -462,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: controller.modelJobList.value
                                             .data![index].skills!.length ==
                                         0
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : Column(
                                         children: [
                                           const Divider(
@@ -476,7 +491,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 45.h,
                                             child: ListView.builder(
                                                 physics:
-                                                    BouncingScrollPhysics(),
+                                                    const BouncingScrollPhysics(),
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 itemCount: controller
@@ -487,7 +502,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .length,
                                                 itemBuilder: (context, index2) {
                                                   return Container(
-                                                      margin: EdgeInsets.only(
+                                                      margin: const EdgeInsets.only(
                                                           right: 4, bottom: 10),
                                                       child: ElevatedButton(
                                                         style: ElevatedButton
@@ -509,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .circular(
                                                                           30),
                                                                 )),
-                                                                padding: EdgeInsets
+                                                                padding: const EdgeInsets
                                                                     .symmetric(
                                                                   horizontal:
                                                                       20,
@@ -529,7 +544,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .skills![index2]
                                                               .name
                                                               .toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: AppTheme
                                                                   .primaryColor),
                                                         ),
@@ -567,7 +582,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 )
-              : Center(
+              : const Center(
                   child: CircularProgressIndicator(),
                 ),
     );
@@ -578,7 +593,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       child: controller.status2.value.isSuccess
-          ? controller.modeRecentJobList.value.data!.length == 0
+          ? controller.modeRecentJobList.value.data!.isEmpty
               ? Center(
                   child: Text("No most recent",
                       style: TextStyle(
@@ -596,8 +611,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
                           controller.modeRecentJobList.value.data![index].id
                         ]);
-                        print(
+                        if (kDebugMode) {
+                          print(
                             controller.modeRecentJobList.value.data![index].id);
+                        }
                       },
                       child: Container(
                           margin: const EdgeInsets.only(
@@ -654,12 +671,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const Divider(
                                                 color: Color(0xff6D2EF1),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               ListView.builder(
                                                   shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
+                                                  physics: const NeverScrollableScrollPhysics(),
                                                   itemCount: controller.dislikeReasons.value.data!.length,
                                                   itemBuilder: (context, index2) {
                                                     return Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -671,7 +688,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 job_id: controller.modeRecentJobList.value.data![index].id.toString(),
                                                                 reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                                 context: context).then((value) {
-                                                              print("remove recent job response::::"+value.message.toString());
+                                                              if (kDebugMode) {
+                                                                print("remove recent job response::::${value.message}");
+                                                              }
                                                               if (value.status == true) {}
                                                               showToast(value.message.toString());
 
@@ -695,7 +714,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 15,
                                                         )
                                                       ],
@@ -737,7 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                               });
                                             },
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.favorite_border,
                                               size: 22,
                                               color: AppTheme.primaryColor,
@@ -763,7 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                               });
                                             },
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.favorite,
                                               size: 22,
                                               color: AppTheme.primaryColor,
@@ -809,11 +828,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      if(controller.modeRecentJobList.value
+                                          .data![index].budgetType
+                                          .toString().toLowerCase() == "hourly")
+                                        Text(
+                                          "\$${controller.modeRecentJobList.value.data![index].minPrice.toString()} - \$${controller.modeRecentJobList.value.data![index].price.toString()}",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                      if(controller.modeRecentJobList.value
+                                          .data![index].budgetType
+                                          .toString().toLowerCase() == "fixed")
                                       Text(
-                                        "\$" +
-                                            controller.modeRecentJobList.value
-                                                .data![index].price
-                                                .toString(),
+                                        "\$${controller.modeRecentJobList.value.data![index].price}",
                                         style: TextStyle(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
@@ -875,7 +904,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: controller.modeRecentJobList.value
                                               .data![index].skills!.length ==
                                           0
-                                      ? SizedBox()
+                                      ? const SizedBox()
                                       : Column(
                                           children: [
                                             const Divider(
@@ -889,7 +918,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 45.h,
                                               child: ListView.builder(
                                                   physics:
-                                                      BouncingScrollPhysics(),
+                                                      const BouncingScrollPhysics(),
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   itemCount: controller
@@ -901,7 +930,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   itemBuilder:
                                                       (context, index2) {
                                                     return Container(
-                                                        margin: EdgeInsets.only(
+                                                        margin: const EdgeInsets.only(
                                                             right: 4,
                                                             bottom: 10),
                                                         child: ElevatedButton(
@@ -924,7 +953,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             30),
                                                                   )),
                                                                   padding:
-                                                                      EdgeInsets
+                                                                      const EdgeInsets
                                                                           .symmetric(
                                                                     horizontal:
                                                                         20,
@@ -944,7 +973,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .skills![index2]
                                                                 .name
                                                                 .toString(),
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 color: AppTheme
                                                                     .primaryColor),
                                                           ),
@@ -1020,7 +1049,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 )
-              : Center(
+              : const Center(
                   child: CircularProgressIndicator(),
                 ),
     );
@@ -1031,7 +1060,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       child: controller.status3.value.isSuccess
-          ? controller.modelBestJobList.value.data!.length == 0
+          ? controller.modelBestJobList.value.data!.isEmpty
           ? Center(
           child: Text("No best matches.",
               style: TextStyle(
@@ -1107,12 +1136,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const Divider(
                                       color: Color(0xff6D2EF1),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     ListView.builder(
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemCount: controller.dislikeReasons.value.data!.length,
                                         itemBuilder: (context, index2) {
                                           return Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -1124,7 +1153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       job_id: controller.modelBestJobList.value.data![index].id.toString(),
                                                       reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
                                                       context: context).then((value) {
-                                                    print("remove job response::::"+value.message.toString());
+                                                    if (kDebugMode) {
+                                                      print("remove job response::::${value.message}");
+                                                    }
                                                     if (value.status == true) {}
                                                     showToast(value.message.toString());
 
@@ -1148,7 +1179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 15,
                                               )
                                             ],
@@ -1186,7 +1217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   saveController.getData();
                                 });
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.favorite_border,
                                 size: 22,
                                 color: AppTheme.primaryColor,
@@ -1212,7 +1243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 });
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.favorite,
                                 size: 22,
                                 color: AppTheme.primaryColor,
@@ -1257,11 +1288,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
                           children: [
+                            if(controller.modelBestJobList.value.data![index].budgetType.toString().toLowerCase() == "hourly")
+                              Text(
+                                "\$${controller.modelBestJobList.value
+                                    .data![index].minPrice.toString()} - \$${controller.modelBestJobList.value
+                                    .data![index].price.toString()}",
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText),
+                              ),
+                            if(controller.modelBestJobList.value.data![index].budgetType.toString().toLowerCase() == "fixed")
                             Text(
-                              "\$" +
-                                  controller.modelBestJobList.value
-                                      .data![index].price
-                                      .toString(),
+                              "\$${controller.modelBestJobList.value
+                                      .data![index].price}",
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -1320,9 +1360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(
                       child: controller.modelBestJobList.value
-                          .data![index].skills!.length ==
-                          0
-                          ? SizedBox()
+                          .data![index].skills!.isEmpty
+                          ? const SizedBox()
                           : Column(
                         children: [
                           const Divider(
@@ -1336,7 +1375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 45.h,
                             child: ListView.builder(
                                 physics:
-                                BouncingScrollPhysics(),
+                                const BouncingScrollPhysics(),
                                 scrollDirection:
                                 Axis.horizontal,
                                 itemCount: controller
@@ -1347,7 +1386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .length,
                                 itemBuilder: (context, index2) {
                                   return Container(
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           right: 4, bottom: 10),
                                       child: ElevatedButton(
                                         style: ElevatedButton
@@ -1369,7 +1408,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .circular(
                                                       30),
                                                 )),
-                                            padding: EdgeInsets
+                                            padding: const EdgeInsets
                                                 .symmetric(
                                               horizontal:
                                               20,
@@ -1389,7 +1428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               .skills![index2]
                                               .name
                                               .toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: AppTheme
                                                   .primaryColor),
                                         ),
@@ -1466,7 +1505,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       )
-          : Center(
+          : const Center(
         child: CircularProgressIndicator(),
       ),
     );
