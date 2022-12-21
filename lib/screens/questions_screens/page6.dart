@@ -167,8 +167,7 @@ class _Page6State extends State<Page6> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(
-                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: Padding(
@@ -197,14 +196,14 @@ class _Page6State extends State<Page6> {
                           ),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Add Education",
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: AppTheme.titleText,
                                     fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Column(
@@ -280,7 +279,7 @@ class _Page6State extends State<Page6> {
                                                                     0),
                                                             dense: true,
                                                             visualDensity:
-                                                                VisualDensity(
+                                                                const VisualDensity(
                                                                     horizontal: -4,
                                                                     vertical: -4),
                                                             value: yearsList2[index]

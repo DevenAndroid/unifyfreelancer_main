@@ -194,8 +194,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                               height: AddSize.size5,
                             ),
                             Obx(() {
-                              return DropdownButtonFormField<
-                                  dynamic>(
+                              return DropdownButtonFormField<dynamic>(
                                 isExpanded: true,
                                 menuMaxHeight: AddSize.screenHeight * .54,
                                 value: reasonValue.value == "" ? null : reasonValue.value,

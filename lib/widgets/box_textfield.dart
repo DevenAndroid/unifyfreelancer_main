@@ -92,6 +92,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
           controller: widget.controller,
           decoration: InputDecoration(
             filled: true,
+            errorMaxLines: 2,
             fillColor: AppTheme.primaryColor.withOpacity(.05),
             hintText: widget.hintText.value,
             errorText: widget.errorText,

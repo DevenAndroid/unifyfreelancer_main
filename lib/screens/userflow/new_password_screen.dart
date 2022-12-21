@@ -104,10 +104,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     ]),*/
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Please enter new password'),
-                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters, with 1 special character & 1 numerical'),
                       MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                       PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
-                          errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
+                          errorText: "Password must be at least 8 characters, with 1 special character & 1 numerical"),
                     ]),
                   ),
                   SizedBox(

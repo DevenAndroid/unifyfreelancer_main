@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/controller/jobs_list_controller.dart';
 import 'package:unifyfreelancer/controller/saved_job_controller.dart';
@@ -11,10 +12,12 @@ import '../repository/job_module/dislike_job_repository.dart';
 import '../repository/job_module/remove_saved_jobs.dart';
 import '../repository/job_module/saved_jobs_repository.dart';
 import '../resources/app_theme.dart';
+import '../resources/size.dart';
 import '../routers/my_router.dart';
 import '../utils/api_contant.dart';
 import '../widgets/common_outline_button.dart';
 import '../widgets/custom_appbar.dart';
+import '../widgets/custom_textfield.dart';
 import '../widgets/error_widget.dart';
 import '../widgets/progress_indicator.dart';
 
@@ -29,6 +32,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
   final controller = Get.put(SearchJobListController());
   final savedController = Get.put(SavedJobController());
   final jobController = Get.put(JobListController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,14 +109,9 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                           ),
                         ),
                       ),
-                      /*       InkWell(
+                             InkWell(
                         onTap: (){
-                          showFilterButtonSheet(context: context, titleText: "Filters", widgets: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                            ],
-                          ));
+                          Get.toNamed(MyRouter.filterScreen);
                         },
                         child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -126,7 +125,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               'assets/icon/fillter.svg',
                               color: AppTheme.primaryColor,
                             )),
-                      )*/
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -511,9 +510,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       SizedBox(
                                         child: controller
                                                     .modelForPagination[index]
-                                                    .skills!
-                                                    .length ==
-                                                0
+                                                    .skills!.isEmpty
                                             ? const SizedBox()
                                             : Column(
                                                 children: [
@@ -611,4 +608,21 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                 );
     });
   }
+
+ /* filtersSheet() {
+    return showFilterButtonSheet(context: context, titleText: "Filters", widgets: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(
+          color: AppTheme.primaryColor.withOpacity(.49),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+
+
+
+      ],
+    ));
+  }*/
 }

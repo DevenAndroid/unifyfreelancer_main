@@ -553,10 +553,10 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         decoration: InputDecoration(
                                           contentPadding: const EdgeInsets.symmetric(
                                               vertical: 5, horizontal: 10),
-                                          border: new OutlineInputBorder(
+                                          border: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           hintText: "Select a duration",
@@ -569,20 +569,20 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                               color: AppTheme.hintTextColor),
                                           focusedBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                           errorBorder: OutlineInputBorder(
                                             borderRadius:
-                                                new BorderRadius.circular(5.0),
-                                            borderSide: new BorderSide(
+                                                BorderRadius.circular(5.0),
+                                            borderSide: const BorderSide(
                                                 color: AppTheme.primaryColor),
                                           ),
                                         ),

@@ -22,6 +22,7 @@ import '../screens/add_milestone_screen.dart';
 import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/create_client_account.dart';
+import '../screens/filters.dart';
 import '../screens/payment/stripe_payment.dart';
 import '../screens/profile/add_certifications.dart';
 import '../screens/profile/add_education_screen.dart';
@@ -116,6 +117,7 @@ class MyRouter {
   static var submittedProposalScreen = "/submittedProposalScreen";
   static var changeTermsScreen = "/changeTermsScreen";
   static var activeProposalScreen = "/activeProposalScreen";
+  static var filterScreen = "/filterScreen";
 
   static var route = [
     GetPage(name: '/', page: () =>  const SplashScreen()),
@@ -175,5 +177,6 @@ class MyRouter {
     GetPage(name: MyRouter.submittedProposalScreen, page: () => const SubmittedProposalScreen()),
     GetPage(name: MyRouter.changeTermsScreen, page: () => const ChangeTermsScreen()),
     GetPage(name: MyRouter.activeProposalScreen, page: () => const ActiveProposalScreen()),
+    GetPage(name: MyRouter.filterScreen, page: () => const FilterScreen()),
   ];
 }

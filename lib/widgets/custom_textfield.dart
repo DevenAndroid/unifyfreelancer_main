@@ -79,6 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           decoration: InputDecoration(
             counter: Offstage(),
             filled: true,
+            errorMaxLines: 2,
             enabled: widget.enabled,
             fillColor: AppTheme.whiteColor,
             hintText: widget.hintText.value,

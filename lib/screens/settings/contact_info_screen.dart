@@ -58,14 +58,10 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
 
   assignData() {
     if (profileController.status.value.isSuccess) {
-      fNameController.text =
-          fixStrings(profileController.model.value.data!.basicInfo!.firstName);
-      lNameController.text =
-          fixStrings(profileController.model.value.data!.basicInfo!.lastName);
-      emailController.text =
-          fixStrings(profileController.model.value.data!.basicInfo!.email);
-      timezoneValue.value =
-          fixStrings(profileController.model.value.data!.basicInfo!.timezone);
+      fNameController.text = fixStrings(profileController.model.value.data!.basicInfo!.firstName);
+      lNameController.text = fixStrings(profileController.model.value.data!.basicInfo!.lastName);
+      emailController.text = fixStrings(profileController.model.value.data!.basicInfo!.email);
+      timeZoneController.text = fixStrings(profileController.model.value.data!.basicInfo!.timezone);
       phoneController.text =
           fixStrings(profileController.model.value.data!.basicInfo!.phone);
       addressController.text =
@@ -93,6 +89,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
   final TextEditingController zipController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
+  final TextEditingController timeZoneController = TextEditingController();
 
   final profileController = Get.put(ProfileScreenController());
   final controller = Get.put(ContactInfoController());
@@ -136,14 +133,14 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                 editProfile = true;
                               }),
                               child: Container(
-                                margin: EdgeInsets.only(left: 20),
-                                padding: EdgeInsets.all(7),
+                                margin: const EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.all(7),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppTheme.whiteColor,
                                     border:
-                                        Border.all(color: Color(0xff707070))),
-                                child: Icon(
+                                        Border.all(color: const Color(0xff707070))),
+                                child: const Icon(
                                   Icons.edit,
                                   color: AppTheme.primaryColor,
                                   size: 15,
@@ -183,7 +180,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(0xff393939)),
+                                              color: const Color(0xff393939)),
                                         ),
                                         SizedBox(
                                           height: 5.h,
@@ -214,7 +211,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(0xff393939)),
+                                              color: const Color(0xff393939)),
                                         ),
                                         SizedBox(
                                           height: 5.h,
@@ -245,7 +242,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w600,
-                                              color: Color(0xff393939)),
+                                              color: const Color(0xff393939)),
                                         ),
                                         SizedBox(
                                           height: 5.h,
@@ -282,7 +279,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                   textColor:
                                                       AppTheme.primaryColor,
                                                 )),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5,
                                             ),
                                             Expanded(
@@ -332,11 +329,11 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 left: 10, right: 10),
                                             height: 60,
                                             width: 60,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               color: AppTheme.primaryColor,
                                               shape: BoxShape.circle,
                                               // image: DecorationImage(
@@ -359,12 +356,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                           "",
                                                       errorWidget:
                                                           (_, __, ___) =>
-                                                              SizedBox(),
+                                                              const SizedBox(),
                                                       placeholder: (_, __) =>
-                                                          SizedBox(),
+                                                          const SizedBox(),
                                                       fit: BoxFit.cover,
                                                     )
-                                                  : SizedBox(),
+                                                  : const SizedBox(),
                                             ),
                                           ),
                                           Expanded(
@@ -417,7 +414,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                       .toString(),
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
-                                                      color: Color(0xff6B6B6B)),
+                                                      color: const Color(0xff6B6B6B)),
                                                 ),
                                               ],
                                             ),
@@ -436,7 +433,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                             showDialog(
                                                 context: context,
                                                 builder: (ctx) =>
-                                                    RadioButtonsContactInfo());
+                                                    const RadioButtonsContactInfo());
                                           })
                                     ],
                                   )),
@@ -449,7 +446,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                   profileController
                                           .model.value.data!.isAgency ==
                                       true
-                              ? SizedBox()
+                              ? const SizedBox()
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -556,7 +553,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                         ),
                                                       ],
                                                     )
-                                                  : SizedBox()),
+                                                  : const SizedBox()),
                                           SizedBox(
                                             height: 10.h,
                                           ),
@@ -620,7 +617,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                         ),
                                                       ],
                                                     )
-                                                  : SizedBox())
+                                                  : const SizedBox())
                                         ],
                                       ),
                                     ),
@@ -645,14 +642,14 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                 editContact = true;
                               }),
                               child: Container(
-                                margin: EdgeInsets.only(left: 20),
-                                padding: EdgeInsets.all(7),
+                                margin: const EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.all(7),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppTheme.whiteColor,
                                     border:
-                                        Border.all(color: Color(0xff707070))),
-                                child: Icon(
+                                        Border.all(color: const Color(0xff707070))),
+                                child: const Icon(
                                   Icons.edit,
                                   color: AppTheme.primaryColor,
                                   size: 15,
@@ -694,12 +691,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
                                             ),
-                                            Obx(() {
+                                            /*Obx(() {
                                               return DropdownButtonFormField<
                                                   dynamic>(
                                                 isExpanded: true,
@@ -805,7 +802,21 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                       newValue;
                                                 },
                                               );
-                                            }),
+                                            }),*/
+                                            BoxTextField(
+                                              readOnly: true,
+                                              onTap: (){
+                                                showTimeZoneSelectUi();
+                                              },
+                                              suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined),
+                                              obSecure: false.obs,
+                                              controller: timeZoneController,
+                                              hintText: "Select a timezone".obs,
+                                              keyboardType: TextInputType.phone,
+                                              validator: MultiValidator([
+                                                RequiredValidator(errorText: "Please select your time zone"),
+                                              ]),
+                                            ),
                                             SizedBox(
                                               height: 10.h,
                                             ),
@@ -821,7 +832,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
@@ -855,7 +866,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
@@ -900,7 +911,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
@@ -932,7 +943,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
@@ -961,7 +972,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                               style: TextStyle(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Color(0xff393939)),
+                                                  color: const Color(0xff393939)),
                                             ),
                                             SizedBox(
                                               height: 5.h,
@@ -979,7 +990,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                 }
                                                 showModalBottomSheet<void>(
                                                   isScrollControlled: true,
-                                                  shape: RoundedRectangleBorder(
+                                                  shape: const RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.only(
                                                               topLeft: Radius
@@ -1010,7 +1021,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                               onPressed: () =>
                                                                   Navigator.pop(
                                                                       context),
-                                                              icon: Icon(
+                                                              icon: const Icon(
                                                                 Icons.clear,
                                                                 color: AppTheme
                                                                     .blackColor,
@@ -1019,7 +1030,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                EdgeInsets.all(
+                                                                const EdgeInsets.all(
                                                                         10)
                                                                     .copyWith(
                                                                         top: 0),
@@ -1069,7 +1080,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                                 hintText:
                                                                     "Select country",
                                                                 prefixIcon:
-                                                                    Icon(Icons
+                                                                    const Icon(Icons
                                                                         .flag),
                                                                 hintStyle: const TextStyle(
                                                                     color: Color(
@@ -1130,7 +1141,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                               child: ListView
                                                                   .builder(
                                                                       physics:
-                                                                          BouncingScrollPhysics(),
+                                                                          const BouncingScrollPhysics(),
                                                                       shrinkWrap:
                                                                           true,
                                                                       itemCount:
@@ -1151,10 +1162,10 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                                               Navigator.pop(context);
                                                                             },
                                                                             child: Padding(
-                                                                                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                                                                                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                                                                                 child: Text(
                                                                                   searchList1[index].toString(),
-                                                                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                                                                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                                                                                 )),
                                                                           );
                                                                         });
@@ -1174,8 +1185,8 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                 fillColor: AppTheme.primaryColor
                                                     .withOpacity(.05),
                                                 hintText: 'Select country',
-                                                prefixIcon: Icon(Icons.flag),
-                                                suffixIcon: Icon(
+                                                prefixIcon: const Icon(Icons.flag),
+                                                suffixIcon: const Icon(
                                                   Icons.keyboard_arrow_down,
                                                   size: 20,
                                                 ),
@@ -1243,7 +1254,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                       textColor:
                                                           AppTheme.primaryColor,
                                                     )),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 3,
                                                 ),
                                                 Expanded(
@@ -1253,13 +1264,10 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                       backgroundColor:
                                                           AppTheme.primaryColor,
                                                       onPressed: () {
-                                                        if (_formKey1
-                                                            .currentState!
-                                                            .validate()) {
+                                                        if (_formKey1.currentState!.validate()) {
                                                           editLocationRepo(
                                                                   timezone:
-                                                                      timezoneValue
-                                                                          .value,
+                                                                      timeZoneController.text.trim(),
                                                                   phone: phoneController
                                                                       .text
                                                                       .trim(),
@@ -1333,7 +1341,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                 ],
                                               ),
                                             )
-                                          : Center(
+                                          : const Center(
                                               child:
                                                   CircularProgressIndicator(),
                                             ),
@@ -1345,7 +1353,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                       "Time Zone",
                                       style: TextStyle(
                                           fontSize: 14.sp,
-                                          color: Color(0xff393939)),
+                                          color: const Color(0xff393939)),
                                     ),
                                     SizedBox(
                                       height: 5.h,
@@ -1378,7 +1386,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                       "Phone",
                                       style: TextStyle(
                                           fontSize: 14.sp,
-                                          color: Color(0xff393939)),
+                                          color: const Color(0xff393939)),
                                     ),
                                     SizedBox(
                                       height: 5.h,
@@ -1411,7 +1419,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                       "Address",
                                       style: TextStyle(
                                           fontSize: 14.sp,
-                                          color: Color(0xff393939)),
+                                          color: const Color(0xff393939)),
                                     ),
                                     SizedBox(
                                       height: 5.h,
@@ -1459,9 +1467,118 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                         ],
                       ),
                     )
-                  : Center(
+                  : const Center(
                       child: CircularProgressIndicator(),
                     );
         }));
   }
-}
+
+  showTimeZoneSelectUi() {
+    for (var item in controller.timezoneList.value.data!) {
+      controller.searchList.add(item.timezone!.toString());
+    }
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: AddSize.size300 * 1.8,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.clear,
+                    color: AppTheme.primaryColor,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10).copyWith(top: 0),
+                child: TextFormField(
+                  onChanged: (String value) {
+                    if (value != "") {
+                      controller.searchList.clear();
+                      for (var item in controller.timezoneList.value.data!) {
+                        if (item.timezone!.toLowerCase().contains(value.toLowerCase())) {
+                          log(item.timezone!);
+                          controller.searchList.add(item.timezone.toString());
+                        }
+                      }
+                    } else {
+                      controller.searchList.clear();
+                      for (var item in controller.timezoneList.value.data!) {
+                        controller.searchList.add(item.timezone!.toString());
+                      }
+                    }
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppTheme.primaryColor.withOpacity(.05),
+                    hintText: "Select country",
+                    prefixIcon: const Icon(Icons.flag),
+                    hintStyle:
+                    const TextStyle(color: Color(0xff596681), fontSize: 15),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 20),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: AppTheme.primaryColor.withOpacity(.15),
+                          width: 1.0),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: AppTheme.primaryColor.withOpacity(.15),
+                          width: 1.0),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppTheme.primaryColor.withOpacity(.15),
+                            width: 1.0),
+                        borderRadius: BorderRadius.circular(8.0)),
+                  ),
+                ),
+              ),
+              Obx(() {
+                return Expanded(
+                  child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.searchList.length,
+                      itemBuilder: (context, index) {
+                        return Obx(() {
+                          return InkWell(
+                            onTap: () {
+                              timeZoneController.text = controller.searchList[index].toString();
+                              Get.back();
+                            },
+                            child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AddSize.size30,
+                                    vertical: AddSize.size10),
+                                child: Text(
+                                  controller.searchList[index].toString(),
+                                  style: TextStyle(
+                                      fontSize: AddSize.font16,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                          );
+                        });
+                      }),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+    );
+  }}

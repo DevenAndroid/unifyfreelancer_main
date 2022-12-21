@@ -341,6 +341,7 @@ class Testimonial {
   dynamic title;
   dynamic type;
   dynamic description;
+ bool? showText = false;
 
   Testimonial(
       {this.id,
@@ -352,6 +353,7 @@ class Testimonial {
         this.email,
         this.title,
         this.type,
+        this.showText,
         this.description});
 
   Testimonial.fromJson(Map<String, dynamic> json) {

@@ -192,7 +192,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.person_outline,
                               ),
                               controller: firstNameController,
@@ -206,7 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.person_outline,
                               ),
                               controller: lastNameController,
@@ -220,7 +220,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.mail_outline,
                               ),
                               controller: emailController,
@@ -275,10 +275,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               validator: MultiValidator([
                                 RequiredValidator(errorText: 'Please enter your password'),
-                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
+                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters, with 1 special character & 1 numerical'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                                 PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
-                                    errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
+                                    errorText: "Password must be at least 8 characters, with 1 special character & 1 numerical"),
                               ]),
                             );
                           }),
