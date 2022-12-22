@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_degree_list.dart';
 import '../../models/model_freelancer_profile.dart';
@@ -109,7 +111,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             child: Obx(() {
               return Form(
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -136,7 +138,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.grey.shade300),
-                                      margin: EdgeInsets.only(top: AddSize.size10),
+                                      margin:
+                                          EdgeInsets.only(top: AddSize.size10),
                                       child: profileImage.value.path == ""
                                           ? Icon(
                                               Icons.person_add_alt_1,
@@ -211,7 +214,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   size: AddSize.size10 * .8,
                                                   color: AppTheme.primaryColor,
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 2,
                                                 ),
                                                 Expanded(
@@ -343,7 +346,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 40.0),
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Container(
@@ -365,27 +368,27 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           ),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Add Work Experience",
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: AppTheme.titleText,
                                     fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Title*",
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppTheme.titleText,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     CustomTextField(
@@ -395,7 +398,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       hintText: "Web developer".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please enter your title'),
+                                            errorText:
+                                                'Please enter your title'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -418,7 +422,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       hintText: "Ex: Unify".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please enter your company'),
+                                            errorText:
+                                                'Please enter your company'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -435,17 +440,20 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       height: AddSize.size5,
                                     ),
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: CustomTextField(
                                             controller: cityController,
                                             obSecure: false.obs,
-                                            keyboardType: TextInputType.emailAddress,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
                                             hintText: "City".obs,
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'Please enter your city'),
+                                                  errorText:
+                                                      'Please enter your city'),
                                             ]),
                                           ),
                                         ),
@@ -455,56 +463,69 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         Expanded(
                                           child: TextFormField(
                                             onTap: () {
-                                              FocusManager.instance.primaryFocus!
+                                              FocusManager
+                                                  .instance.primaryFocus!
                                                   .unfocus();
                                               controller.searchList1.clear();
                                               for (var item in controller
-                                                  .countryList.value.countrylist!) {
+                                                  .countryList
+                                                  .value
+                                                  .countrylist!) {
                                                 controller.searchList1
                                                     .add(item.name.toString());
                                               }
                                               showModalBottomSheet<void>(
                                                 isScrollControlled: true,
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(
-                                                            AddSize.size30),
-                                                        topRight: Radius.circular(
-                                                            AddSize.size30))),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    AddSize
+                                                                        .size30),
+                                                            topRight: Radius
+                                                                .circular(AddSize
+                                                                    .size30))),
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return SizedBox(
-                                                    height: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        .7,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .7,
                                                     child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Align(
-                                                          alignment:
-                                                              Alignment.topRight,
+                                                          alignment: Alignment
+                                                              .topRight,
                                                           child: IconButton(
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     context),
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                               Icons.clear,
-                                                              color:
-                                                                  AppTheme.blackColor,
+                                                              color: AppTheme
+                                                                  .blackColor,
                                                             ),
                                                           ),
                                                         ),
                                                         Padding(
-                                                          padding: EdgeInsets.all(
-                                                                  AddSize.size10)
+                                                          padding: EdgeInsets
+                                                                  .all(AddSize
+                                                                      .size10)
                                                               .copyWith(top: 0),
                                                           child: TextFormField(
                                                             onChanged: (value) {
                                                               if (value != "") {
-                                                                controller.searchList1
+                                                                controller
+                                                                    .searchList1
                                                                     .clear();
                                                                 // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                                 for (var item
@@ -515,16 +536,19 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                   if (item.name
                                                                       .toString()
                                                                       .toLowerCase()
-                                                                      .contains(value
-                                                                          .toLowerCase())) {
+                                                                      .contains(
+                                                                          value
+                                                                              .toLowerCase())) {
                                                                     controller
                                                                         .searchList1
-                                                                        .add(item.name
+                                                                        .add(item
+                                                                            .name
                                                                             .toString());
                                                                   }
                                                                 }
                                                               } else {
-                                                                controller.searchList1
+                                                                controller
+                                                                    .searchList1
                                                                     .clear();
                                                                 for (var item
                                                                     in controller
@@ -533,7 +557,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                         .countrylist!) {
                                                                   controller
                                                                       .searchList1
-                                                                      .add(item.name
+                                                                      .add(item
+                                                                          .name
                                                                           .toString());
                                                                 }
                                                               }
@@ -543,21 +568,25 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                               filled: true,
                                                               fillColor: AppTheme
                                                                   .primaryColor
-                                                                  .withOpacity(.05),
+                                                                  .withOpacity(
+                                                                      .05),
                                                               hintText:
                                                                   "Select country",
                                                               prefixIcon:
-                                                                  Icon(Icons.flag),
-                                                              hintStyle:
-                                                                  const TextStyle(
-                                                                      color: Color(
-                                                                          0xff596681),
-                                                                      fontSize: 15),
+                                                                  const Icon(
+                                                                      Icons
+                                                                          .flag),
+                                                              hintStyle: const TextStyle(
+                                                                  color: Color(
+                                                                      0xff596681),
+                                                                  fontSize: 15),
                                                               contentPadding:
                                                                   const EdgeInsets
                                                                           .symmetric(
-                                                                      vertical: 14,
-                                                                      horizontal: 20),
+                                                                      vertical:
+                                                                          14,
+                                                                      horizontal:
+                                                                          20),
                                                               focusedBorder:
                                                                   OutlineInputBorder(
                                                                 borderSide: BorderSide(
@@ -566,10 +595,10 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                         .withOpacity(
                                                                             .15),
                                                                     width: 1.0),
-                                                                borderRadius: BorderRadius
-                                                                    .circular(AddSize
-                                                                            .size10 *
-                                                                        .8),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        AddSize.size10 *
+                                                                            .8),
                                                               ),
                                                               enabledBorder:
                                                                   OutlineInputBorder(
@@ -579,10 +608,10 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                         .withOpacity(
                                                                             .15),
                                                                     width: 1.0),
-                                                                borderRadius: BorderRadius
-                                                                    .circular(AddSize
-                                                                            .size10 *
-                                                                        .8),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        AddSize.size10 *
+                                                                            .8),
                                                               ),
                                                               border: OutlineInputBorder(
                                                                   borderSide: BorderSide(
@@ -590,62 +619,49 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                           .primaryColor
                                                                           .withOpacity(
                                                                               .15),
-                                                                      width: 1.0),
-                                                                  borderRadius: BorderRadius
-                                                                      .circular(AddSize
-                                                                              .size10 *
-                                                                          .8)),
+                                                                      width:
+                                                                          1.0),
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          AddSize.size10 *
+                                                                              .8)),
                                                             ),
                                                           ),
                                                         ),
                                                         Obx(() {
                                                           return Expanded(
-                                                            child: ListView.builder(
-                                                                physics:
-                                                                    BouncingScrollPhysics(),
-                                                                shrinkWrap: true,
-                                                                itemCount: controller
-                                                                    .searchList1
-                                                                    .length,
-                                                                itemBuilder:
-                                                                    (context, index) {
-                                                                  return Obx(() {
-                                                                    return InkWell(
-                                                                      onTap: () {
-                                                                        setState(() {
-                                                                          countryController
-                                                                                  .text =
-                                                                              controller
-                                                                                  .searchList1[index]
-                                                                                  .toString();
-                                                                        });
-                                                                        print(
-                                                                            countryController
-                                                                                .text);
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child: Padding(
-                                                                          padding: EdgeInsets.symmetric(
-                                                                              horizontal:
-                                                                                  AddSize
-                                                                                      .size30,
-                                                                              vertical:
-                                                                                  AddSize.size10),
-                                                                          child: Text(
-                                                                            controller
-                                                                                .searchList1[
-                                                                                    index]
-                                                                                .toString(),
-                                                                            style: TextStyle(
-                                                                                fontSize: AddSize
-                                                                                    .font14,
-                                                                                fontWeight:
-                                                                                    FontWeight.w600),
-                                                                          )),
-                                                                    );
-                                                                  });
-                                                                }),
+                                                            child: ListView
+                                                                .builder(
+                                                                    physics:
+                                                                        const BouncingScrollPhysics(),
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    itemCount: controller
+                                                                        .searchList1
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return Obx(
+                                                                          () {
+                                                                        return InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            setState(() {
+                                                                              countryController.text = controller.searchList1[index].toString();
+                                                                            });
+                                                                            print(countryController.text);
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child: Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: AddSize.size30, vertical: AddSize.size10),
+                                                                              child: Text(
+                                                                                controller.searchList1[index].toString(),
+                                                                                style: TextStyle(fontSize: AddSize.font14, fontWeight: FontWeight.w600),
+                                                                              )),
+                                                                        );
+                                                                      });
+                                                                    }),
                                                           );
                                                         }),
                                                       ],
@@ -657,15 +673,16 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                             readOnly: true,
                                             controller: countryController,
                                             decoration: InputDecoration(
+                                              errorMaxLines: 2,
                                               filled: true,
                                               fillColor: AppTheme.whiteColor,
                                               hintText: "Country",
                                               labelStyle: const TextStyle(
                                                   color: Colors.black),
-                                              suffixIcon:
-                                                  Icon(Icons.keyboard_arrow_down),
+                                              suffixIcon: const Icon(
+                                                  Icons.keyboard_arrow_down),
                                               hintStyle: TextStyle(
-                                                color: Color(0xff596681),
+                                                color: const Color(0xff596681),
                                                 fontSize: AddSize.size15,
                                               ),
                                               contentPadding: EdgeInsets.only(
@@ -675,34 +692,39 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                     color: AppTheme.primaryColor
                                                         .withOpacity(.15),
                                                     width: 1.0),
-                                                borderRadius: BorderRadius.circular(
-                                                    AddSize.size10 * .8),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        AddSize.size10 * .8),
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: AppTheme.primaryColor
                                                         .withOpacity(.15),
                                                     width: 1.0),
-                                                borderRadius: BorderRadius.circular(
-                                                    AddSize.size10 * .8),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        AddSize.size10 * .8),
                                               ),
                                               border: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: AppTheme.primaryColor
+                                                      color: AppTheme
+                                                          .primaryColor
                                                           .withOpacity(.15),
                                                       width: 1.0),
-                                                  borderRadius: BorderRadius.circular(
-                                                      AddSize.size10 * .8)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          AddSize.size10 * .8)),
                                             ),
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'Please select your country'),
+                                                  errorText:
+                                                      'Please select your country'),
                                             ]),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Text(
@@ -719,13 +741,14 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       controller: fromController,
                                       readOnly: true,
                                       onTap: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: dateInput == ""
-                                                ? DateTime.now()
-                                                : DateTime.parse(dateInput),
-                                            firstDate: DateTime(1950),
-                                            lastDate: DateTime.now());
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                                context: context,
+                                                initialDate: dateInput == ""
+                                                    ? DateTime.now()
+                                                    : DateTime.parse(dateInput),
+                                                firstDate: DateTime(1950),
+                                                lastDate: DateTime.now());
                                         if (pickedDate != null) {
                                           fromController.text =
                                               dateFormat.format(pickedDate);
@@ -744,7 +767,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       ),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please select your start date'),
+                                            errorText:
+                                                'Please select your start date'),
                                       ]),
                                     ),
                                     Row(
@@ -752,18 +776,22 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         Obx(() {
                                           return Checkbox(
                                               materialTapTargetSize:
-                                                  MaterialTapTargetSize.shrinkWrap,
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
                                               value: endDatePresent.value,
-                                              activeColor: AppTheme.primaryColor,
+                                              activeColor:
+                                                  AppTheme.primaryColor,
                                               onChanged: (newValue) {
-                                                endDatePresent.value = newValue!;
-                                                if (endDatePresent.value == true) {
+                                                endDatePresent.value =
+                                                    newValue!;
+                                                if (endDatePresent.value ==
+                                                    true) {
                                                   toController.clear();
                                                   dateInput2 = "";
                                                 }
                                               });
                                         }),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Text(
@@ -790,11 +818,14 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                               ? DateTime.now()
                                                               : DateTime.parse(
                                                                   dateInput2),
-                                                          firstDate: DateTime(1950),
-                                                          lastDate: DateTime.now());
+                                                          firstDate:
+                                                              DateTime(1950),
+                                                          lastDate:
+                                                              DateTime.now());
                                                   if (pickedDate != null) {
                                                     toController.text =
-                                                        dateFormat.format(pickedDate);
+                                                        dateFormat
+                                                            .format(pickedDate);
                                                     setState(() {
                                                       dateInput2 =
                                                           "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
@@ -817,16 +848,18 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   if (value == null ||
                                                       value.isEmpty) {
                                                     return 'Please select your end date';
-                                                  } else if (DateTime.parse(dateInput)
-                                                          .compareTo(DateTime.parse(
-                                                              dateInput2)) <
+                                                  } else if (DateTime.parse(
+                                                              dateInput)
+                                                          .compareTo(
+                                                              DateTime.parse(
+                                                                  dateInput2)) <
                                                       0) {
                                                     return null;
                                                   } else {
                                                     return "End date must be grater then start date";
                                                   }
                                                 })
-                                            : SizedBox(),
+                                            : const SizedBox(),
                                       );
                                     }),
                                     SizedBox(
@@ -849,9 +882,10 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       keyboardType: TextInputType.emailAddress,
                                       hintText: "Description".obs,
                                       validator: MultiValidator([
-                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                        MaxLengthValidator(200,
+                                            errorText:
+                                                "Description maximum length is 200 characters")
                                       ]),
-
                                     ),
                                     SizedBox(
                                       height: AddSize.size15,
@@ -887,9 +921,11 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                   if (_formKey.currentState!.validate()) {
                                     questionEmployment(
                                             id: item.id ?? "",
-                                            subject: titleController.text.trim(),
-                                            description:
-                                                descriptionController.text.trim(),
+                                            subject:
+                                                titleController.text.trim(),
+                                            description: descriptionController
+                                                .text
+                                                .trim(),
                                             company:
                                                 companyController.text.trim(),
                                             city: cityController.text.trim(),
@@ -1222,13 +1258,14 @@ class _ProfilePreviewState extends State<ProfilePreview> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 40.0),
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Container(
@@ -1278,10 +1315,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       controller: _schoolController,
                                       obSecure: false.obs,
                                       keyboardType: TextInputType.text,
-                                      hintText: "Ex: Northwestern University".obs,
+                                      hintText:
+                                          "Ex: Northwestern University".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please enter your school name'),
+                                            errorText:
+                                                'Please enter your school name'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1311,10 +1350,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   ListView.builder(
                                                       shrinkWrap: true,
                                                       reverse: true,
-                                                      itemCount: yearsList2.length,
+                                                      itemCount:
+                                                          yearsList2.length,
                                                       physics:
-                                                          BouncingScrollPhysics(),
-                                                      itemBuilder: (context, index) {
+                                                          const BouncingScrollPhysics(),
+                                                      itemBuilder:
+                                                          (context, index) {
                                                         return Obx(() {
                                                           return RadioListTile(
                                                             title: Text(
@@ -1322,7 +1363,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      AddSize.size15,
+                                                                      AddSize
+                                                                          .size15,
                                                                   color: AppTheme
                                                                       .darkBlueText,
                                                                   fontWeight:
@@ -1330,23 +1372,30 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                           .w500),
                                                             ),
                                                             contentPadding:
-                                                                const EdgeInsets.all(
-                                                                    0),
+                                                                const EdgeInsets
+                                                                    .all(0),
                                                             dense: true,
                                                             visualDensity:
-                                                                VisualDensity(
-                                                                    horizontal: -4,
-                                                                    vertical: -4),
-                                                            value: yearsList2[index]
+                                                                const VisualDensity(
+                                                                    horizontal:
+                                                                        -4,
+                                                                    vertical:
+                                                                        -4),
+                                                            value: yearsList2[
+                                                                    index]
                                                                 .toString(),
-                                                            groupValue: time2.value,
+                                                            groupValue:
+                                                                time2.value,
                                                             onChanged: (value) {
-                                                              time2.value =
-                                                                  value.toString();
-                                                              _fromController.text =
-                                                                  value.toString();
-                                                              print(_fromController
-                                                                  .text);
+                                                              time2.value = value
+                                                                  .toString();
+                                                              _fromController
+                                                                      .text =
+                                                                  value
+                                                                      .toString();
+                                                              print(
+                                                                  _fromController
+                                                                      .text);
                                                               Get.back();
                                                             },
                                                           );
@@ -1360,10 +1409,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       obSecure: false.obs,
                                       controller: _fromController,
                                       hintText: "From".obs,
-                                      suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                      suffixIcon:
+                                          const Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please select start year'),
+                                            errorText:
+                                                'Please select start year'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1393,9 +1444,10 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                     ListView.builder(
                                                         shrinkWrap: true,
                                                         reverse: true,
-                                                        itemCount: yearsList.length,
+                                                        itemCount:
+                                                            yearsList.length,
                                                         physics:
-                                                            BouncingScrollPhysics(),
+                                                            const BouncingScrollPhysics(),
                                                         itemBuilder:
                                                             (context, index) {
                                                           return Obx(() {
@@ -1404,8 +1456,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                 yearsList[index]
                                                                     .toString(),
                                                                 style: TextStyle(
-                                                                    fontSize: AddSize
-                                                                        .size15,
+                                                                    fontSize:
+                                                                        AddSize
+                                                                            .size15,
                                                                     color: AppTheme
                                                                         .darkBlueText,
                                                                     fontWeight:
@@ -1417,19 +1470,27 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                       .all(0),
                                                               dense: true,
                                                               visualDensity:
-                                                                  VisualDensity(
-                                                                      horizontal: -4,
-                                                                      vertical: -4),
-                                                              value: yearsList[index]
+                                                                  const VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              value: yearsList[
+                                                                      index]
                                                                   .toString(),
-                                                              groupValue: time.value,
-                                                              onChanged: (value) {
-                                                                time.value =
-                                                                    value.toString();
-                                                                _toController.text =
-                                                                    value.toString();
-                                                                print(_toController
-                                                                    .text);
+                                                              groupValue:
+                                                                  time.value,
+                                                              onChanged:
+                                                                  (value) {
+                                                                time.value = value
+                                                                    .toString();
+                                                                _toController
+                                                                        .text =
+                                                                    value
+                                                                        .toString();
+                                                                print(
+                                                                    _toController
+                                                                        .text);
                                                                 Get.back();
                                                               },
                                                             );
@@ -1443,14 +1504,16 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         obSecure: false.obs,
                                         controller: _toController,
                                         hintText: "To".obs,
-                                        suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                        suffixIcon: const Icon(
+                                            Icons.keyboard_arrow_down),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return 'Please select end year';
-                                          } else if (int.parse(
-                                                  _fromController.text.toString()) <
-                                              int.parse(
-                                                  _toController.text.toString())) {
+                                          } else if (int.parse(_fromController
+                                                  .text
+                                                  .toString()) <
+                                              int.parse(_toController.text
+                                                  .toString())) {
                                             return null;
                                           } else {
                                             return "End year must be grater then start date";
@@ -1488,20 +1551,24 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                   ListView.builder(
                                                       shrinkWrap: true,
                                                       reverse: true,
-                                                      itemCount:
-                                                          degree.value.data!.length,
+                                                      itemCount: degree
+                                                          .value.data!.length,
                                                       physics:
-                                                          BouncingScrollPhysics(),
-                                                      itemBuilder: (context, index) {
+                                                          const BouncingScrollPhysics(),
+                                                      itemBuilder:
+                                                          (context, index) {
                                                         return Obx(() {
                                                           return RadioListTile(
                                                             title: Text(
-                                                              degree.value
-                                                                  .data![index].title
+                                                              degree
+                                                                  .value
+                                                                  .data![index]
+                                                                  .title
                                                                   .toString(),
                                                               style: TextStyle(
                                                                   fontSize:
-                                                                      AddSize.size15,
+                                                                      AddSize
+                                                                          .size15,
                                                                   color: AppTheme
                                                                       .darkBlueText,
                                                                   fontWeight:
@@ -1509,25 +1576,33 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                           .w500),
                                                             ),
                                                             contentPadding:
-                                                                const EdgeInsets.all(
-                                                                    0),
+                                                                const EdgeInsets
+                                                                    .all(0),
                                                             dense: true,
                                                             visualDensity:
-                                                                VisualDensity(
-                                                                    horizontal: -4,
-                                                                    vertical: -4),
-                                                            value: degree.value
-                                                                .data![index].title
+                                                                const VisualDensity(
+                                                                    horizontal:
+                                                                        -4,
+                                                                    vertical:
+                                                                        -4),
+                                                            value: degree
+                                                                .value
+                                                                .data![index]
+                                                                .title
                                                                 .toString(),
                                                             groupValue:
-                                                                selectedDegree.value,
+                                                                selectedDegree
+                                                                    .value,
                                                             onChanged: (value) {
                                                               setState(() {
-                                                                selectedDegree.value =
-                                                                    value.toString();
+                                                                selectedDegree
+                                                                        .value =
+                                                                    value
+                                                                        .toString();
                                                                 _degreeController
                                                                         .text =
-                                                                    value.toString();
+                                                                    value
+                                                                        .toString();
                                                                 Get.back();
                                                               });
                                                             },
@@ -1542,10 +1617,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       obSecure: false.obs,
                                       controller: _degreeController,
                                       hintText: "Degree".obs,
-                                      suffixIcon: Icon(Icons.keyboard_arrow_down),
+                                      suffixIcon:
+                                          const Icon(Icons.keyboard_arrow_down),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Please select your degree'),
+                                            errorText:
+                                                'Please select your degree'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -1586,7 +1663,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                       controller: _descriptionController,
                                       hintText: "Description".obs,
                                       validator: MultiValidator([
-                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                        MaxLengthValidator(200,
+                                            errorText:
+                                                "Description maximum length is 200 characters")
                                       ]),
                                     ),
                                   ]),
@@ -1619,11 +1698,13 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                   if (_formKey.currentState!.validate()) {
                                     questionEducation(
                                             id: item.id ?? "",
-                                            school: _schoolController.text.trim(),
+                                            school:
+                                                _schoolController.text.trim(),
                                             start_year:
                                                 _fromController.text.trim(),
                                             end_year: _toController.text.trim(),
-                                            degree: _degreeController.text.trim(),
+                                            degree:
+                                                _degreeController.text.trim(),
                                             area_study:
                                                 _areaController.text.trim(),
                                             description: _descriptionController
@@ -1692,7 +1773,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear +11; i++) {
+    for (var i = currentYear - 70; i < currentYear + 11; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -1711,7 +1792,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   Container educationData(Education item) {
     return Container(
       padding: EdgeInsets.all(AddSize.padding16),
-      decoration: BoxDecoration(color: AppTheme.whiteColor),
+      decoration: const BoxDecoration(color: AppTheme.whiteColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1733,12 +1814,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     showEducationDialog(item);
                   },
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Icon(
+                        border: Border.all(color: const Color(0xff707070))),
+                    child: const Icon(
                       Icons.edit,
                       color: AppTheme.primaryColor,
                       size: 15,
@@ -1751,12 +1832,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                   showDeleteDialog(item: item);
                 },
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.delete,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -1798,11 +1879,11 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         height: AddSize.screenHeight,
         width: AddSize.screenWidth,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1845,40 +1926,36 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       height: AddSize.size10,
                     ),
                     Text(
-                      "You're almost there, ${controller.model.value.data!.basicInfo!.firstName.toString()}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.darkBlueText,
-                          fontSize: AddSize.font20),
-                      textAlign: TextAlign.center
-                    ),
+                        "You're almost there, ${controller.model.value.data!.basicInfo!.firstName.toString()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font20),
+                        textAlign: TextAlign.center),
                     SizedBox(
                       height: AddSize.size10,
                     ),
                     Text(
-                      "Please review your information below to check it's accurate and then submit your profile.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.darkBlueText,
-                          fontSize: AddSize.font14),
-                        textAlign: TextAlign.center
-                    ),
+                        "Please review your information below to check it's accurate and then submit your profile.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font14),
+                        textAlign: TextAlign.center),
                     Text(
-                      "Our team will verify it behind the scenes and let you know once it's ready.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.darkBlueText,
-                          fontSize: AddSize.font14),
-                        textAlign: TextAlign.center
-                    ),
+                        "Our team will verify it behind the scenes and let you know once it's ready.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font14),
+                        textAlign: TextAlign.center),
                     Text(
-                      "You can make changes later on once you're live on the platform.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.darkBlueText,
-                          fontSize: AddSize.font14),
-                        textAlign: TextAlign.center
-                    ),
+                        "You can make changes later on once you're live on the platform.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.darkBlueText,
+                            fontSize: AddSize.font14),
+                        textAlign: TextAlign.center),
                     SizedBox(
                       height: AddSize.size10,
                     ),
@@ -1891,7 +1968,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           if (value.status == true) {
                             Get.offAllNamed(MyRouter.subscriptionScreen);
                             SharedPreferences pref =
-                            await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                             pref.setBool('isProfileCompleted', true);
                           }
                           showToast(value.message.toString());
@@ -1912,7 +1989,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   Container employmentData(Employment item) {
     return Container(
       padding: EdgeInsets.all(AddSize.padding16),
-      decoration: BoxDecoration(color: AppTheme.whiteColor),
+      decoration: const BoxDecoration(color: AppTheme.whiteColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1938,7 +2015,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
+                        border: Border.all(color: const Color(0xff707070))),
                     child: Icon(
                       Icons.edit,
                       color: AppTheme.primaryColor,
@@ -1956,7 +2033,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
+                      border: Border.all(color: const Color(0xff707070))),
                   child: Icon(
                     Icons.delete,
                     color: AppTheme.primaryColor,
@@ -1980,9 +2057,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             children: [
               Text(
                 "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
-                    " ${item.endDate != null ? "to" : ""}"
-                    " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
-
+                " ${item.endDate != null ? "to" : ""}"
+                " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     color: AppTheme.textColor,
@@ -1991,8 +2067,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               Expanded(
                 child: Text(
                   " ${item.endDate != null ? "," : "- Present"}"
-                      " ${item.city != null ? item.city.toString() : ""}"
-                      " ${item.country != null ? item.country.toString() : ""}",
+                  " ${item.city != null ? item.city.toString() : ""}"
+                  " ${item.country != null ? item.country.toString() : ""}",
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: AppTheme.textColor,
@@ -2035,26 +2111,33 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 Column(
                   children: [
                     SizedBox(
-                      child:  controller.profileImage.value.toString() == ""||controller.profileImage.value.toString() == "null" ? SvgPicture.asset("assets/images/user.svg") : Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.grey.shade300),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(1000),
-                            child: CachedNetworkImage(
-                              imageUrl: controller.profileImage.value ?? "",
-                              errorWidget: (_, __, ___) => SvgPicture.asset("assets/images/user.svg"),
-                              placeholder: (_, __) => SvgPicture.asset("assets/images/user.svg"),
-                              fit: BoxFit.cover,
-                            ) /*Image.file(
+                      child: controller.profileImage.value.toString() == "" ||
+                              controller.profileImage.value.toString() == "null"
+                          ? SvgPicture.asset("assets/images/user.svg")
+                          : Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey.shade300),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        controller.profileImage.value ?? "",
+                                    errorWidget: (_, __, ___) =>
+                                        SvgPicture.asset(
+                                            "assets/images/user.svg"),
+                                    placeholder: (_, __) => SvgPicture.asset(
+                                        "assets/images/user.svg"),
+                                    fit: BoxFit.cover,
+                                  ) /*Image.file(
                               profileImage.value,
                               fit: BoxFit.cover,
                             ),*/
-                        ),
-                        height: AddSize.size80 * 1.2,
-                        width: AddSize.size80 * 1.2,
-                      ),
+                                  ),
+                              height: AddSize.size80 * 1.2,
+                              width: AddSize.size80 * 1.2,
+                            ),
                     ),
-
                     SizedBox(
                       height: AddSize.size10,
                     ),
@@ -2073,10 +2156,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        controller.model.value.data!.basicInfo!.firstName
-                                .toString() + " "+
-                            controller.model.value.data!.basicInfo!.lastName
-                                .toString(),
+                        "${controller.model.value.data!.basicInfo!.firstName.toString()} ${controller.model.value.data!.basicInfo!.lastName.toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText,
@@ -2088,23 +2168,20 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.location_on,
                             color: Color(0xff878787),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                           ),
                           Expanded(
                             child: Text(
-                              controller.model.value.data!.basicInfo!.city.toString() +
-                                  " " +
-                                  controller
-                                      .model.value.data!.basicInfo!.country
-                                      .toString(),
+                              "${controller.model.value.data!.basicInfo!.city} ${controller
+                                      .model.value.data!.basicInfo!.country}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xff878787),
+                                  color: const Color(0xff878787),
                                   fontSize: AddSize.font14),
                             ),
                           ),
@@ -2139,7 +2216,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               children: [
                 Expanded(
                   child: Text(
-                    controller.model.value.data!.basicInfo!.occuption.toString(),
+                    controller.model.value.data!.basicInfo!.occuption
+                        .toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
@@ -2154,8 +2232,9 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
-                          insetPadding: EdgeInsets.symmetric(horizontal: 20),
-                          contentPadding: EdgeInsets.symmetric(
+                          insetPadding:
+                              const EdgeInsets.symmetric(horizontal: 20),
+                          contentPadding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10),
                           content: Form(
                             key: _formKey,
@@ -2165,7 +2244,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               children: [
                                 Stack(
                                   children: [
-                                    Align(
+                                    const Align(
                                       alignment: Alignment.topRight,
                                       child: SizedBox(
                                         height: 15,
@@ -2178,21 +2257,21 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         child: IconButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.clear,
                                             size: 20,
                                           ),
                                         ))
                                   ],
                                 ),
-                                Text(
+                                const Text(
                                   "Edit Your Title",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: AppTheme.textColor),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 BoxTextField(
@@ -2210,7 +2289,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         errorText: "Maximum length is 100"),
                                   ]),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 BoxTextField(
@@ -2224,7 +2303,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         errorText: 'Please enter description'),
                                   ]),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 CustomOutlineButton(
@@ -2257,7 +2336,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                   textColor: AppTheme.whiteColor,
                                   expandedValue: true,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                               ],
@@ -2267,12 +2346,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2289,7 +2368,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               controller.model.value.data!.basicInfo!.description.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff878787),
+                  color: const Color(0xff878787),
                   fontSize: AddSize.font14),
             ),
             SizedBox(
@@ -2318,12 +2397,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       Get.toNamed(MyRouter.hoursPerWeekScreen);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2340,7 +2419,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               "\$" + controller.model.value.data!.basicInfo!.amount.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff878787),
+                  color: const Color(0xff878787),
                   fontSize: AddSize.font14),
             ),
             SizedBox(
@@ -2369,12 +2448,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       Get.toNamed(MyRouter.editSkillsScreen);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2401,7 +2480,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           color: AppTheme.darkBlueText,
                           fontSize: AddSize.font14),
                     ),
-                    backgroundColor: Color(0xffEAEEF2),
+                    backgroundColor: const Color(0xffEAEEF2),
                     onSelected: (value) {},
                   ),
                 ),
@@ -2433,12 +2512,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       services();
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.add,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2455,7 +2534,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               controller.serviceController.text.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff878787),
+                  color: const Color(0xff878787),
                   fontSize: AddSize.font14),
             ),
             SizedBox(
@@ -2484,12 +2563,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       showDialogue(item: Employment());
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.add,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2529,12 +2608,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       showEducationDialog(Education());
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.add,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2579,14 +2658,14 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       : "",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff878787),
+                      color: const Color(0xff878787),
                       fontSize: AddSize.font14),
                 ),
                 Text(
                   controller.model.value.data!.basicInfo!.country.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff878787),
+                      color: const Color(0xff878787),
                       fontSize: AddSize.font14),
                 ),
               ],
@@ -2616,12 +2695,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       Get.toNamed(MyRouter.addLanguageScreen);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.add,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2636,12 +2715,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                       Get.toNamed(MyRouter.editLanguageScreen);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2693,7 +2772,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             ),
             ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: controller.modelOfService.value.data!.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -2703,7 +2782,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                         Get.back();
 
                         addCategoryRepo(
-                                category_id:controller.modelOfService.value.data![index].id
+                                category_id: controller
+                                    .modelOfService.value.data![index].id
                                     .toString(),
                                 context: context)
                             .then((value) {
@@ -2732,7 +2812,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
     return Obx(() {
       return ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.model.value.data!.employment!.length,
         itemBuilder: (context, index1) {
           return Column(
@@ -2742,7 +2822,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 children: [
                   Text(
                     controller.model.value.data!.employment![index1].company
-                        .toString().capitalizeFirst!,
+                        .toString()
+                        .capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -2757,12 +2838,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                 .model.value.data!.employment![index1]);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppTheme.whiteColor,
-                            border: Border.all(color: Color(0xff707070))),
-                        child: Icon(
+                            border: Border.all(color: const Color(0xff707070))),
+                        child: const Icon(
                           Icons.edit,
                           color: AppTheme.primaryColor,
                           size: 15,
@@ -2777,12 +2858,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                               controller.model.value.data!.employment![index1]);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.delete,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2796,7 +2877,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               ),
               Text(
                 controller.model.value.data!.employment![index1].subject
-                    .toString().capitalizeFirst!,
+                    .toString()
+                    .capitalizeFirst!,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textColor,
@@ -2812,9 +2894,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                         fontSize: AddSize.font14),
                   ),
                   Text(
-                    controller.model.value.data!.employment![index1].endDate.toString() == "null"
-                        ? " - Currently working" : " - " +
-          "${dateFormat.format(DateTime.parse(controller.model.value.data!.employment![index1].endDate.toString()))}",
+                    controller.model.value.data!.employment![index1].endDate
+                                .toString() ==
+                            "null"
+                        ? " - Currently working"
+                        : " - " +
+                            "${dateFormat.format(DateTime.parse(controller.model.value.data!.employment![index1].endDate.toString()))}",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
@@ -2835,7 +2920,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
   educationList() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: controller.model.value.data!.education!.length,
       itemBuilder: (context, index) {
         return Obx(() {
@@ -2846,7 +2931,8 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 children: [
                   Text(
                     controller.model.value.data!.education![index].school
-                        .toString().capitalizeFirst!,
+                        .toString()
+                        .capitalizeFirst!,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
@@ -2860,12 +2946,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                             controller.model.value.data!.education![index]);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppTheme.whiteColor,
-                            border: Border.all(color: Color(0xff707070))),
-                        child: Icon(
+                            border: Border.all(color: const Color(0xff707070))),
+                        child: const Icon(
                           Icons.edit,
                           color: AppTheme.primaryColor,
                           size: 15,
@@ -2879,12 +2965,12 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                           item: controller.model.value.data!.education![index]);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
-                      child: Icon(
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: const Icon(
                         Icons.delete,
                         color: AppTheme.primaryColor,
                         size: 15,
@@ -2907,22 +2993,15 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               Row(
                 children: [
                   Text(
-                    controller.model.value.data!.education![index].areaStudy.toString() +
-                        controller.model.value.data!.education![index].startYear.toString(),
+                    controller.model.value.data!.education![index].areaStudy
+                        .toString(),
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
                         fontSize: AddSize.font14),
                   ),
                   Text(
-                    controller.model.value.data!.education![index].startYear
-                            .toString()
-                            .isNotEmpty
-                        ? " - " +
-                            controller
-                                .model.value.data!.education![index].endYear
-                                .toString()
-                        : "",
+                    " ${controller.model.value.data!.education![index].startYear} - ${controller.model.value.data!.education![index].endYear}",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: AppTheme.textColor,
@@ -2944,7 +3023,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
     return Obx(() {
       return ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.model.value.data!.language!.length,
         itemBuilder: (context, index) {
           return Row(
@@ -2962,7 +3041,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 controller.model.value.data!.language![index].level.toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: Color(0xff878787),
+                    color: const Color(0xff878787),
                     fontSize: AddSize.font14),
               ),
               SizedBox(

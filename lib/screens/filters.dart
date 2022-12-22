@@ -21,8 +21,8 @@ class _FilterScreenState extends State<FilterScreen> {
   RxString jobType = "".obs;
 
   List jobTypeList = [
-    "Short term",
-    "Long term",
+    "long_term",
+    "short_term",
   ];
 
   RxString projectDuration = "".obs;
@@ -132,7 +132,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     (index) => DropdownMenuItem(
                           value: jobTypeList[index].toString(),
                           child: Text(
-                            jobTypeList[index].toString(),
+                            jobTypeList[index].toString().capitalizeFirst!.replaceAll("_", " "),
                             style: const TextStyle(
                                 fontSize: 13, color: Color(0xff596681)),
                           ),

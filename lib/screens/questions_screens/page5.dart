@@ -69,7 +69,7 @@ class _Page5State extends State<Page5> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 30.0),
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Container(
@@ -91,27 +91,27 @@ class _Page5State extends State<Page5> {
                           ),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Add Work Experience",
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: AppTheme.titleText,
                                     fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Title*",
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppTheme.titleText,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     CustomTextField(
@@ -232,7 +232,7 @@ class _Page5State extends State<Page5> {
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     context),
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                               Icons.clear,
                                                               color: AppTheme
                                                                   .blackColor,
@@ -295,7 +295,7 @@ class _Page5State extends State<Page5> {
                                                                       .05),
                                                               hintText:
                                                                   "Select country",
-                                                              prefixIcon: Icon(
+                                                              prefixIcon: const Icon(
                                                                   Icons.flag),
                                                               hintStyle: const TextStyle(
                                                                   color: Color(
@@ -354,7 +354,7 @@ class _Page5State extends State<Page5> {
                                                             child: ListView
                                                                 .builder(
                                                                     physics:
-                                                                        BouncingScrollPhysics(),
+                                                                        const BouncingScrollPhysics(),
                                                                     shrinkWrap:
                                                                         true,
                                                                     itemCount: controller
@@ -394,23 +394,20 @@ class _Page5State extends State<Page5> {
                                             readOnly: true,
                                             controller: countryController,
                                             decoration: InputDecoration(
+                                              errorMaxLines: 2,
                                               filled: true,
                                               fillColor: AppTheme.whiteColor,
                                               hintText: "Country",
                                               labelStyle: const TextStyle(
                                                   color: Colors.black),
-                                              suffixIcon: Icon(
-                                                  Icons.keyboard_arrow_down),
+                                              suffixIcon: const Icon(Icons.keyboard_arrow_down),
                                               hintStyle: TextStyle(
-                                                color: Color(0xff596681),
+                                                color: const Color(0xff596681),
                                                 fontSize: AddSize.size15,
                                               ),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: AddSize.size10),
+                                              contentPadding: EdgeInsets.only(left: AddSize.size10),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppTheme.primaryColor
-                                                        .withOpacity(.15),
+                                                borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15),
                                                     width: 1.0),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -444,7 +441,7 @@ class _Page5State extends State<Page5> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Text(
@@ -513,7 +510,7 @@ class _Page5State extends State<Page5> {
                                                 }
                                               });
                                         }),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Text(
@@ -576,7 +573,7 @@ class _Page5State extends State<Page5> {
                                                     return "End date must be grater then start date";
                                                   }
                                                 })
-                                            : SizedBox(),
+                                            : const SizedBox(),
                                       );
                                     }),
                                     SizedBox(
@@ -793,7 +790,7 @@ class _Page5State extends State<Page5> {
           height: AddSize.screenHeight,
           width: AddSize.screenWidth,
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -831,7 +828,7 @@ class _Page5State extends State<Page5> {
                   ListView.builder(
                     itemCount: controller.model.value.data!.employment!.length,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => employmentData(
                         controller.model.value.data!.employment![index]),
                   ),
@@ -850,7 +847,7 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-                if (controller.model.value.data!.employment!.length == 0)
+                if (controller.model.value.data!.employment!.isEmpty)
                   Row(
                     children: [
                       Checkbox(
@@ -864,7 +861,7 @@ class _Page5State extends State<Page5> {
                                   newValue!;
                             });
                           }),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Expanded(
@@ -956,7 +953,7 @@ class _Page5State extends State<Page5> {
   Container employmentData(Employment item) {
     return Container(
       padding: EdgeInsets.all(AddSize.padding16),
-      decoration: BoxDecoration(color: AppTheme.whiteColor),
+      decoration: const BoxDecoration(color: AppTheme.whiteColor),
       child: Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -983,7 +980,7 @@ class _Page5State extends State<Page5> {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.whiteColor,
-                          border: Border.all(color: Color(0xff707070))),
+                          border: Border.all(color: const Color(0xff707070))),
                       child: Icon(
                         Icons.edit,
                         color: AppTheme.primaryColor,
@@ -1001,7 +998,7 @@ class _Page5State extends State<Page5> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
+                        border: Border.all(color: const Color(0xff707070))),
                     child: Icon(
                       Icons.delete,
                       color: AppTheme.primaryColor,
@@ -1029,7 +1026,7 @@ class _Page5State extends State<Page5> {
               " ${item.endDate != null ? "to" : ""}"
               " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}"
               " ${item.endDate != null ? "," : "- Present"}"
-              " ${item.city != null ? item.city.toString()+"," : ""}"
+              " ${item.city != null ? "${item.city}," : ""}"
               " ${item.country != null ? item.country.toString() : ""}",
               style: TextStyle(
                   fontWeight: FontWeight.w400,

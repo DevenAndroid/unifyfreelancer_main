@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Obx(() {
                           return BoxTextField(
                             obSecure: eyeHide,
-                            prefix: Icon(
+                            prefix: const Icon(
                               Icons.lock_outline,
                             ),
                             suffixIcon: eyeHide == false
@@ -182,12 +182,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () => setState(() {
                                           eyeHide = true.obs;
                                         }),
-                                    child: Icon(Icons.remove_red_eye_outlined))
+                                    child: const Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
                                     onTap: () => setState(() {
                                           eyeHide = false.obs;
                                         }),
-                                    child: Icon(Icons.visibility_off_outlined)),
+                                    child: const Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([

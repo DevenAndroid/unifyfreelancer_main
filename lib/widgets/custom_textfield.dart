@@ -77,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(
-            counter: Offstage(),
+            counter: const Offstage(),
             filled: true,
             errorMaxLines: 2,
             enabled: widget.enabled,
@@ -92,6 +92,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               color: Color(0xff596681),
               fontSize: 15,
             ),
+            /*errorStyle: const TextStyle(
+              overflow: TextOverflow.clip,
+            ),*/
             contentPadding: const EdgeInsets.only(left: 10,top: 10),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),

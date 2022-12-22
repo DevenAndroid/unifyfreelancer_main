@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -18,7 +17,6 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
-
 import '../../repository/add_category_repository.dart';
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
@@ -3110,6 +3108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             .then((value) {
                                           if (value.status == true) {
                                             Get.back();
+                                            profileController.getData();
                                           }
                                           showToast(value.message.toString());
                                         });

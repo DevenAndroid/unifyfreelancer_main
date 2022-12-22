@@ -437,21 +437,23 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  model.value.data!.clientData!.firstName.toString() +
-                      " " +
-                      model.value.data!.clientData!.lastName.toString(),
+                  "${model.value.data!.clientData!.firstName} ${model.value.data!.clientData!.lastName}",
                   style: TextStyle(
                       color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font18,
                       fontWeight: FontWeight.w600),
                 ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+               //   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Icon(
                       Icons.location_on,
                       color: AppTheme.primaryColor,
+                      size: 18,
                     ),
                     Row(
                       children: [
@@ -462,8 +464,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                               .toString()
                               .isEmpty
                               ? ""
-                              : model.value.data!.clientData!.city.toString() +
-                              ",",
+                              : "${model.value.data!.clientData!.city},",
                           style: TextStyle(
                               color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
@@ -481,7 +482,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   ],
                 ),
                 Text(
-                  model.value.data!.clientData!.timezone.toString(),
+                  "${model.value.data!.clientData!.localTime} Local time",
                   style: TextStyle(
                       color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font14,
@@ -613,7 +614,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                model.value.data!.projectData!.budgetType.toString(),
+                model.value.data!.proposalData!.budgetType.toString(),
                 style: TextStyle(
                     color: AppTheme.primaryColor,
                     fontSize: AddSize.font16,
@@ -625,7 +626,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
             height: AddSize.size15,
           ),
           SizedBox(
-            child: model.value.data!.projectData!.budgetType
+            child: model.value.data!.proposalData!.budgetType
                 .toString()
                 .toLowerCase() ==
                 "hourly"
@@ -653,10 +654,10 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                /*    SizedBox(
                   height: AddSize.size15,
                 ),
-                Text(
+                 Text(
                   "Weekly Limit",
                   style: TextStyle(
                       color: const Color(0xff4D4D4D),
@@ -681,17 +682,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w600),
                 ),
-                Text(
-                  "\$${double.parse(
-                      model.value.data!.proposalData!.bidAmount.toString() ?? "0") *
-                      double.parse(
-                          (model.value.data!.proposalData!.weeklyLimit ?? "0")
-                              .toString())} max/week",
+            //    if(model.value.data!.proposalData!.budgetType.toString().toLowerCase() == "hourly")
+               Text(
+                  "\$${double.parse(model.value.data!.proposalData!.bidAmount.toString() ?? "0") * double.parse((model.value.data!.proposalData!.weeklyLimit ?? "0").toString())} max/week",
                   style: TextStyle(
                       color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font14,
                       fontWeight: FontWeight.w500),
-                ),
+                ),*/
               ],
             )
                 : Row(

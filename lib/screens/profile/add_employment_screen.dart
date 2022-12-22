@@ -99,13 +99,13 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.whiteColor,
                     borderRadius: const BorderRadius.all(
@@ -123,14 +123,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Company*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -142,17 +142,17 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             RequiredValidator(errorText: 'Please enter your company'),
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Location*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
@@ -170,7 +170,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 ]),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Expanded(
@@ -183,7 +183,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   }
                                   showModalBottomSheet<void>(
                                     isScrollControlled: true,
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(30),
                                             topRight: Radius.circular(30))),
@@ -201,14 +201,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               child: IconButton(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.clear,
                                                   color: AppTheme.blackColor,
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.all(10)
+                                              padding: const EdgeInsets.all(10)
                                                   .copyWith(top: 0),
                                               child: TextFormField(
                                                 onChanged: (value) {
@@ -241,7 +241,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                   fillColor: AppTheme.primaryColor
                                                       .withOpacity(.05),
                                                   hintText: "Select country",
-                                                  prefixIcon: Icon(Icons.flag),
+                                                  prefixIcon: const Icon(Icons.flag),
                                                   hintStyle: const TextStyle(
                                                       color: Color(0xff596681),
                                                       fontSize: 15),
@@ -281,7 +281,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               return Expanded(
                                                 child: ListView.builder(
                                                     physics:
-                                                    BouncingScrollPhysics(),
+                                                    const BouncingScrollPhysics(),
                                                     shrinkWrap: true,
                                                     itemCount: searchList1.length,
                                                     itemBuilder: (context, index) {
@@ -299,7 +299,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                             Navigator.pop(context);
                                                           },
                                                           child: Padding(
-                                                              padding: EdgeInsets
+                                                              padding: const EdgeInsets
                                                                   .symmetric(
                                                                   horizontal:
                                                                   30,
@@ -307,7 +307,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                               child: Text(
                                                                 searchList1[index]
                                                                     .toString(),
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     fontSize: 14,
                                                                     fontWeight:
                                                                     FontWeight
@@ -328,11 +328,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 controller: countryController,
                                 decoration: InputDecoration(
                                   filled: true,
-
+                                  errorMaxLines: 2,
                                   fillColor: AppTheme.whiteColor,
                                   hintText: "Country",
                                   labelStyle: const TextStyle(color: Colors.black),
-                                  suffixIcon:  Icon(Icons.keyboard_arrow_down),
+                                  suffixIcon:  const Icon(Icons.keyboard_arrow_down),
                                   hintStyle: const TextStyle(
                                     color: Color(0xff596681),
                                     fontSize: 15,
@@ -361,17 +361,17 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Title*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -383,17 +383,17 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             RequiredValidator(errorText: 'Please enter your title'),
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Period*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -422,7 +422,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           },
                           obSecure: false.obs,
                           hintText: "Form".obs,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.calendar_month_outlined,
                             size: 22,
                             color: AppTheme.primaryColor,
@@ -444,10 +444,10 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                     acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
                                   });
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
-                            Text(
+                            const Text(
                               "I currently work here",
                               style: TextStyle(
                                   fontSize: 12,
@@ -480,7 +480,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               },
                               obSecure: false.obs,
                               hintText: "To".obs,
-                              suffixIcon: Icon(
+                              suffixIcon: const Icon(
                                 Icons.calendar_month_outlined,
                                 size: 22,
                                 color: AppTheme.primaryColor,
@@ -500,19 +500,19 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   errorText: 'To, date is required'),
                             ]),*/
                           )
-                              : SizedBox(),
+                              : const SizedBox(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Description",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -529,7 +529,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                             MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                       ])),
