@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
+import 'package:unifyfreelancer/screens/questions_screens/profile_details.dart';
 import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 import '../Screens/alerts_screen.dart';
 import '../Screens/chat_screen.dart';
@@ -21,6 +22,8 @@ import '../screens/add_milestone_screen.dart';
 import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/create_client_account.dart';
+import '../screens/filters.dart';
+import '../screens/payment/stripe_payment.dart';
 import '../screens/profile/add_certifications.dart';
 import '../screens/profile/add_education_screen.dart';
 import '../screens/profile/add_employment_screen.dart';
@@ -30,12 +33,18 @@ import '../screens/profile/add_portfolio_screen.dart';
 import '../screens/profile/add_testimonials_screen.dart';
 import '../screens/profile/edit_language_screen.dart';
 import '../screens/profile/hour_per_week_screen.dart';
+import '../screens/proposals/active_proposal_screen.dart';
+import '../screens/proposals/submitted_proposal_screen.dart';
+import '../screens/proposals/invitations_to_interview.dart';
+import '../screens/proposals/offer_details_screen.dart';
+import '../screens/proposals/change_terms.dart';
 import '../screens/request_milestone_changes.dart';
 import '../screens/search_jobs.dart';
 import '../screens/settings/change_password_screen.dart';
 import '../screens/settings/security_question_screen.dart';
 import '../screens/settings/billing_and_payment_process_screen.dart';
 import '../screens/profile/edit_skills_screen.dart';
+import '../screens/subcription_screen.dart';
 import '../screens/userflow/new_password_screen.dart';
 import '../screens/settings/billing_and_payment_screen.dart';
 import '../screens/settings/contact_info_screen.dart';
@@ -44,6 +53,7 @@ import '../screens/settings/my_teams_screen.dart';
 import '../screens/settings/password_and_security_screen.dart';
 import '../screens/settings/profile_setting_screen.dart';
 import '../screens/submit_proposal_screen.dart';
+import '../screens/questions_screens/questions_main_screen.dart';
 import '../screens/userflow/signup_screen.dart';
 import '../screens/settings/tax_information_screen.dart';
 import '../screens/userflow/forgot_password_screen.dart';
@@ -99,9 +109,18 @@ class MyRouter {
   static var addMilestoneScreen = "/addMilestoneScreen";
   static var requestMilestoneChangesScreen = "/requestMilestoneChangesScreen";
   static var searchJobScreen = "/searchJobScreen";
+  static var questionsScreen = "/questionsScreen";
+  static var subscriptionScreen = "/subscriptionScreen";
+  static var stripePaymentScreen = "/stripePaymentScreen";
+  static var offerDetailsScreen = "/offerDetailsScreen";
+  static var invitationsToInterview = "/invitationsToInterview";
+  static var submittedProposalScreen = "/submittedProposalScreen";
+  static var changeTermsScreen = "/changeTermsScreen";
+  static var activeProposalScreen = "/activeProposalScreen";
+  static var filterScreen = "/filterScreen";
 
   static var route = [
-    GetPage(name: '/', page: () => const SplashScreen()),
+    GetPage(name: '/', page: () =>  const SplashScreen()),
     GetPage(name: MyRouter.onBoardingScreen, page: () => OnBoardingScreen()),
     GetPage(name: MyRouter.signUpScreen, page: () => const SignUpScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => const LoginScreen()),
@@ -150,5 +169,14 @@ class MyRouter {
     GetPage(name: MyRouter.addMilestoneScreen, page: () => const AddMilestoneScreen()),
     GetPage(name: MyRouter.requestMilestoneChangesScreen, page: () => const RequestMilestoneChangesScreen()),
     GetPage(name: MyRouter.searchJobScreen, page: () => const SearchJobScreen()),
+    GetPage(name: MyRouter.questionsScreen, page: () => const QuestionsScreen()),
+    GetPage(name: MyRouter.subscriptionScreen, page: () => const SubscriptionScreen()),
+    GetPage(name: MyRouter.stripePaymentScreen, page: () => const StripPayment()),
+    GetPage(name: MyRouter.offerDetailsScreen, page: () => const OfferDetailsScreen()),
+    GetPage(name: MyRouter.invitationsToInterview, page: () => const InvitationsToInterview()),
+    GetPage(name: MyRouter.submittedProposalScreen, page: () => const SubmittedProposalScreen()),
+    GetPage(name: MyRouter.changeTermsScreen, page: () => const ChangeTermsScreen()),
+    GetPage(name: MyRouter.activeProposalScreen, page: () => const ActiveProposalScreen()),
+    GetPage(name: MyRouter.filterScreen, page: () => const FilterScreen()),
   ];
 }

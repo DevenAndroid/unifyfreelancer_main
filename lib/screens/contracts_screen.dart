@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controller/contract_controller.dart';
 import '../resources/app_theme.dart';
@@ -18,6 +19,7 @@ class ContractsScreen extends StatefulWidget {
 
 class _ContractsScreenState extends State<ContractsScreen> {
   final controller = Get.put(ContractScreenController());
+  final dateFormatForShow = DateFormat('dd-MMM-yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         height: deviceHeight * .02,
                       ),
                       Row(
-                        children: [
-                          Text(
+                        children: const [
+                           Text(
                             "Active Contracts",
                             style: TextStyle(
                                 fontSize: 20,
@@ -78,9 +80,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 13),
                               prefixIcon: Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
+                                    const BoxDecoration(shape: BoxShape.circle),
                                 child: SvgPicture.asset(
                                   'assets/icon/Search.svg',
                                   color: AppTheme.primaryColor,
@@ -99,10 +101,10 @@ class _ContractsScreenState extends State<ContractsScreen> {
                               children: <Widget>[
                                 TabBar(
                                   isScrollable: true,
-                                  labelColor: Color(0xff271943),
+                                  labelColor: const Color(0xff271943),
                                   labelStyle:
-                                      TextStyle(fontWeight: FontWeight.w500),
-                                  unselectedLabelColor: Color(0xff707070),
+                                      const TextStyle(fontWeight: FontWeight.w500),
+                                  unselectedLabelColor: const Color(0xff707070),
                                   // indicatorColor: const Color(0xffFA61FF),
                                   indicator: UnderlineTabIndicator(
                                     borderSide: BorderSide(
@@ -198,7 +200,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       ],
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   );
       }),
@@ -208,11 +210,17 @@ class _ContractsScreenState extends State<ContractsScreen> {
   all() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return ListView.builder(
+    return controller.model.value.data!.all!.isEmpty ? Center(
+        child: Text("No contracts found",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.darkBlueText,
+            ))) : ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: controller.model.value.data!.all!.length,
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -241,9 +249,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      controller.model.value.data!.all![index].projectTitle
-                          .toString(),
-                      style: TextStyle(
+                      controller.model.value.data!.all![index].projectTitle.toString(),
+                      style: const TextStyle(
                           fontSize: 16,
                           color: AppTheme.darkBlueText,
                           fontWeight: FontWeight.w600),
@@ -252,15 +259,15 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet<void>(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
                                 color: AppTheme.whiteColor,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -274,7 +281,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     alignment: Alignment.topRight,
                                     child: InkWell(
                                       onTap: () => Navigator.pop(context),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.clear,
                                         color: Colors.black,
                                       ),
@@ -323,9 +330,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       );
                     },
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: AppTheme.primaryColor, shape: BoxShape.circle),
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_horiz_outlined,
                         color: AppTheme.whiteColor,
                       ),
@@ -348,12 +355,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 height: deviceHeight * .02,
               ),
               Text(
-                "Hired by: " +
-                    controller.model.value.data!.all![index].client!.firstName
-                        .toString() +
-                    controller.model.value.data!.all![index].client!.lastName
-                        .toString(),
-                style: TextStyle(
+                "Hired by: ${controller.model.value.data!.all![index].client!.firstName} ${controller.model.value.data!.all![index].client!.lastName}",
+
+                style: const TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
@@ -381,13 +385,13 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                           ),*/
 
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Active: ',
                   style: TextStyle(
                       fontSize: 16,
                       color: AppTheme.textColor,
                       fontWeight: FontWeight.w600),
-                  children: const <TextSpan>[
+                  children: <TextSpan>[
                     TextSpan(
                       text: '2:30',
                       style: TextStyle(
@@ -408,9 +412,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: deviceHeight * .01,
               ),
-              Text(
-                "Oct 16 - Present",
-                style: TextStyle(
+               Text(
+                "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.all![index].createdAt.toString()))} - Present",
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppTheme.textColor3,
                 ),
@@ -437,11 +441,17 @@ class _ContractsScreenState extends State<ContractsScreen> {
   hourly() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return ListView.builder(
+    return controller.model.value.data!.hourly!.isEmpty ? Center(
+        child: Text("No contracts found",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.darkBlueText,
+            ))) :  ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: controller.model.value.data!.hourly!.length,
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -472,7 +482,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                     child: Text(
                       controller.model.value.data!.hourly![index].projectTitle
                           .toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: AppTheme.darkBlueText,
                           fontWeight: FontWeight.w600),
@@ -481,15 +491,15 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet<void>(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
                                 color: AppTheme.whiteColor,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -503,7 +513,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     alignment: Alignment.topRight,
                                     child: InkWell(
                                       onTap: () => Navigator.pop(context),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.clear,
                                         color: Colors.black,
                                       ),
@@ -552,9 +562,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       );
                     },
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: AppTheme.primaryColor, shape: BoxShape.circle),
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_horiz_outlined,
                         color: AppTheme.whiteColor,
                       ),
@@ -577,13 +587,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 height: deviceHeight * .02,
               ),*/
               Text(
-                "Hired by : "+
-                    controller
-                        .model.value.data!.hourly![index].client!.firstName
-                        .toString() +
-                    controller.model.value.data!.hourly![index].client!.lastName
-                        .toString(),
-                style: TextStyle(
+                "Hired by : ${controller
+                        .model.value.data!.hourly![index].client!.firstName} ${controller.model.value.data!.hourly![index].client!.lastName}",
+                style: const TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
@@ -610,13 +616,13 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                           ),*/
 
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Active: ',
                   style: TextStyle(
                       fontSize: 16,
                       color: AppTheme.textColor,
                       fontWeight: FontWeight.w600),
-                  children: const <TextSpan>[
+                  children: <TextSpan>[
                     TextSpan(
                       text: '2:30',
                       style: TextStyle(
@@ -637,9 +643,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: deviceHeight * .01,
               ),
-              Text(
-                "Oct 16 - Present",
-                style: TextStyle(
+               Text(
+                "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.hourly![index].createdAt.toString()))} - Present",
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppTheme.textColor3,
                 ),
@@ -666,11 +672,17 @@ class _ContractsScreenState extends State<ContractsScreen> {
   activeMilestone() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-   return ListView.builder(
+   return controller.model.value.data!.activeMilestone!.isEmpty ? Center(
+       child: Text("No contracts found",
+           style: TextStyle(
+             fontSize: 14.sp,
+             fontWeight: FontWeight.w600,
+             color: AppTheme.darkBlueText,
+           ))) :  ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: controller.model.value.data!.activeMilestone!.length,
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -699,8 +711,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      "Website design and develop",
-                      style: TextStyle(
+          controller.model.value.data!.activeMilestone![index].projectTitle
+              .toString().capitalizeFirst!,
+                      style: const TextStyle(
                           fontSize: 16,
                           color: AppTheme.darkBlueText,
                           fontWeight: FontWeight.w600),
@@ -709,15 +722,15 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet<void>(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
                                 color: AppTheme.whiteColor,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -731,7 +744,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     alignment: Alignment.topRight,
                                     child: InkWell(
                                       onTap: () => Navigator.pop(context),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.clear,
                                         color: Colors.black,
                                       ),
@@ -780,9 +793,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       );
                     },
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: AppTheme.primaryColor, shape: BoxShape.circle),
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_horiz_outlined,
                         color: AppTheme.whiteColor,
                       ),
@@ -793,9 +806,10 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
-                "Hired by:  Jolly trid",
-                style: TextStyle(
+               Text(
+                "Hired by : ${controller
+                    .model.value.data!.activeMilestone![index].client!.firstName} ${controller.model.value.data!.activeMilestone![index].client!.lastName}",
+                style: const TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
@@ -803,7 +817,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
+              const Text(
                 "Admin: Soft Co",
                 style: TextStyle(
                   fontSize: 14,
@@ -813,7 +827,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
+              const Text(
                 "Active: Waiting for Admin to fund new Milestone",
                 style: TextStyle(
                     fontSize: 12,
@@ -828,7 +842,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "\$2000.00",
                         style: TextStyle(
                             fontSize: 12,
@@ -838,7 +852,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Text(
+                      const Text(
                         "\$500.00",
                         style: TextStyle(
                             fontSize: 12,
@@ -853,7 +867,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Budget",
                         style: TextStyle(
                           fontSize: 12,
@@ -863,7 +877,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Text(
+                      const Text(
                         "in Escrow",
                         style: TextStyle(
                           fontSize: 12,
@@ -877,9 +891,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
-                "Oct 16 - Present",
-                style: TextStyle(
+               Text(
+                 "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.activeMilestone![index].createdAt.toString()))} - Present",
+                 style: const TextStyle(
                   fontSize: 12,
                   color: AppTheme.textColor3,
                 ),
@@ -906,11 +920,17 @@ class _ContractsScreenState extends State<ContractsScreen> {
   awaitingMilestones() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-   return ListView.builder(
+   return controller.model.value.data!.awaitingMilestone!.isEmpty ? Center(
+       child: Text("No contracts found",
+           style: TextStyle(
+             fontSize: 14.sp,
+             fontWeight: FontWeight.w600,
+             color: AppTheme.darkBlueText,
+           ))) :  ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
-      itemCount: 1,
-      padding: EdgeInsets.only(bottom: 20),
+      itemCount: controller.model.value.data!.awaitingMilestone!.length,
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -937,10 +957,11 @@ class _ContractsScreenState extends State<ContractsScreen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
+                 Expanded(
                     child: Text(
-                      "Website design and develop",
-                      style: TextStyle(
+                      controller.model.value.data!.awaitingMilestone![index].projectTitle
+                          .toString().capitalizeFirst!,
+                      style: const TextStyle(
                           fontSize: 16,
                           color: AppTheme.darkBlueText,
                           fontWeight: FontWeight.w600),
@@ -949,15 +970,15 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet<void>(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
                                 color: AppTheme.whiteColor,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30),
@@ -971,7 +992,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                     alignment: Alignment.topRight,
                                     child: InkWell(
                                       onTap: () => Navigator.pop(context),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.clear,
                                         color: Colors.black,
                                       ),
@@ -1020,9 +1041,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       );
                     },
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: AppTheme.primaryColor, shape: BoxShape.circle),
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_horiz_outlined,
                         color: AppTheme.whiteColor,
                       ),
@@ -1032,10 +1053,10 @@ class _ContractsScreenState extends State<ContractsScreen> {
               ),
               SizedBox(
                 height: 10.h,
-              ),
-              Text(
-                "Hired by:  Jolly trid",
-                style: TextStyle(
+              ), Text(
+                "Hired by : ${controller
+                    .model.value.data!.awaitingMilestone![index].client!.firstName} ${controller.model.value.data!.awaitingMilestone![index].client!.lastName}",
+                style: const TextStyle(
                     fontSize: 14,
                     color: AppTheme.textColor,
                     fontWeight: FontWeight.w600),
@@ -1043,7 +1064,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
+              const Text(
                 "Admin: Soft Co",
                 style: TextStyle(
                   fontSize: 14,
@@ -1053,7 +1074,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
+              const Text(
                 "Active: Waiting for Admin to fund new Milestone",
                 style: TextStyle(
                     fontSize: 12,
@@ -1068,7 +1089,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "\$2000.00",
                         style: TextStyle(
                             fontSize: 12,
@@ -1078,7 +1099,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Text(
+                      const Text(
                         "\$500.00",
                         style: TextStyle(
                             fontSize: 12,
@@ -1093,7 +1114,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Budget",
                         style: TextStyle(
                           fontSize: 12,
@@ -1103,7 +1124,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Text(
+                      const Text(
                         "in Escrow",
                         style: TextStyle(
                           fontSize: 12,
@@ -1117,9 +1138,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              Text(
-                "Oct 16 - Present",
-                style: TextStyle(
+            Text(
+                "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.awaitingMilestone![index].createdAt.toString()))} - Present",
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppTheme.textColor3,
                 ),
@@ -1150,7 +1171,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemCount: 1,
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
@@ -1177,7 +1198,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
               SizedBox(
                 height: deviceHeight * .02,
               ),
-              Text(
+              const Text(
                 "You have no fixed-price contracts with payment requests",
                 style: TextStyle(fontSize: 14, color: AppTheme.textColor),
                 textAlign: TextAlign.center,

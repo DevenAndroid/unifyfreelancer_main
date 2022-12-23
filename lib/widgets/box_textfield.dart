@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
+import 'package:unifyfreelancer/resources/size.dart';
 
 class BoxTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -15,11 +17,13 @@ class BoxTextField extends StatefulWidget {
   final bool isMulti;
   final bool autofocus;
   final bool enabled;
+ double? textSize;
   final String? errorText;
   final String? labelText;
   final RxString hintText;
   final Widget? prefix;
   final Widget? suffixIcon;
+  List<TextInputFormatter>? inputFormatters1 = [];
 
   BoxTextField({
     this.controller,
@@ -39,6 +43,8 @@ class BoxTextField extends StatefulWidget {
     this.onSaved,
     this.labelText,
     this.suffixIcon,
+    this.textSize = 0,
+    this.inputFormatters1,
   });
 
   @override
@@ -70,23 +76,29 @@ class _BoxTextFieldState extends State<BoxTextField> {
     }
     return Obx(() {
       return TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
+          textInputAction: TextInputAction.next,
           // autofocus: autofocus,
           minLines: widget.isMulti ? 4 : 1,
           maxLines: widget.isMulti ? null : 1,
           onTap: widget.onTap,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
-          obscureText:
-              widget.hintText == hintTextValue ? widget.obSecure!.value : false,
+          obscureText: widget.hintText == hintTextValue ? widget.obSecure!.value : false,
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(
             filled: true,
+            errorMaxLines: 2,
             fillColor: AppTheme.primaryColor.withOpacity(.05),
             hintText: widget.hintText.value,
             errorText: widget.errorText,
+            /*errorStyle: TextStyle(
+              fontSize: widget.textSize == 0 ? AddSize.font14*.9 : widget.textSize
+            ),*/
             labelText: widget.labelText,
             labelStyle: const TextStyle(color: Colors.black),
             prefixIcon: widget.prefix,
@@ -106,7 +118,7 @@ class _BoxTextFieldState extends State<BoxTextField> {
 */
             // labelStyle: TextStyle(fontSize: lableFontSize()),
             // labelText: label,
-            hintStyle: const TextStyle(color: Color(0xff596681), fontSize: 13),
+            hintStyle: TextStyle(color: Color(0xff596681), fontSize: AddSize.font14*.92),
             contentPadding:
                 const EdgeInsets.only(right: 0, left: 10, top: 14, bottom: 14),
             focusedBorder: OutlineInputBorder(

@@ -17,8 +17,8 @@ class AddOtherExperiencesScreen extends StatefulWidget {
 class _AddOtherExperiencesScreenState extends State<AddOtherExperiencesScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _subjectController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class _AddOtherExperiencesScreenState extends State<AddOtherExperiencesScreen> {
           physics: const BouncingScrollPhysics(),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             decoration: BoxDecoration(
               color: AppTheme.whiteColor,
               borderRadius: const BorderRadius.all(
@@ -64,7 +64,7 @@ class _AddOtherExperiencesScreenState extends State<AddOtherExperiencesScreen> {
                     obSecure: false.obs,
                     keyboardType: TextInputType.text,
                     hintText: "Subject".obs),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 CustomTextField(

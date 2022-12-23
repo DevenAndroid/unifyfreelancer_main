@@ -1,29 +1,22 @@
 {
   "project_info": {
-    "project_number": "691890923145",
-    "firebase_url": "https://unifyclientapp-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "unifyclientapp",
-    "storage_bucket": "unifyclientapp.appspot.com"
+    "project_number": "475938716705",
+    "project_id": "unify-a8e0a",
+    "storage_bucket": "unify-a8e0a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:691890923145:android:8e0fea30f593257fa74858",
+        "mobilesdk_app_id": "1:475938716705:android:f3e313f74319bdb1bdf760",
         "android_client_info": {
           "package_name": "com.eoxysit.unifyfreelancer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "691890923145-7m0k108l06mnuj4moslpgef8rife1519.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.eoxysit.unifyfreelancer",
-            "certificate_hash": "205c7d0d77c9701d6bf996964859863de86a5c0e"
-          }
-        },
-        {
-          "client_id": "691890923145-ee7vns2ne08439levgbsthdva5i9oef5.apps.googleusercontent.com",
+
+          "client_id": "475938716705-h0fhmlpc7fdc5815ogi0a2lo0a4jb7ha.apps.googleusercontent.com",
+
           "client_type": 1,
           "android_info": {
             "package_name": "com.eoxysit.unifyfreelancer",
@@ -31,28 +24,21 @@
           }
         },
         {
-          "client_id": "691890923145-4lg8ohqcnso26lgqgdfosvc7c1ni8bo6.apps.googleusercontent.com",
+          "client_id": "475938716705-21j0uk0v67tq2qfqbh3p2ck68l17fs0m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDiAPhPm2zqzW4kZcN0bCjYxa8116kM_GI"
+          "current_key": "AIzaSyDI2QdhWXAS-gCFxRRtmOP8VGXdu8mKD5E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "691890923145-4lg8ohqcnso26lgqgdfosvc7c1ni8bo6.apps.googleusercontent.com",
+              "client_id": "475938716705-21j0uk0v67tq2qfqbh3p2ck68l17fs0m.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "691890923145-qghhnatng2vuhqfs70nmv9mcc4q1qru9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.unifyclient"
-              }
             }
           ]
         }
@@ -60,22 +46,14 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:691890923145:android:ae544d83883d01b0a74858",
+        "mobilesdk_app_id": "1:475938716705:android:2c5b679f9758bd01bdf760",
         "android_client_info": {
           "package_name": "com.example.unifyclient"
         }
       },
       "oauth_client": [
         {
-          "client_id": "691890923145-6nh4fgbkir74hanqqbmego8uodbdejdj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.unifyclient",
-            "certificate_hash": "c05a63d10f89e84ada21921971f3530b7de406f6"
-          }
-        },
-        {
-          "client_id": "691890923145-e33ltabe0tvg0u52g9j6e8895plvq0l0.apps.googleusercontent.com",
+          "client_id": "475938716705-1n69a67p6dv3f4ir4rdor8utevm58p5p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.unifyclient",
@@ -83,28 +61,21 @@
           }
         },
         {
-          "client_id": "691890923145-4lg8ohqcnso26lgqgdfosvc7c1ni8bo6.apps.googleusercontent.com",
+          "client_id": "475938716705-21j0uk0v67tq2qfqbh3p2ck68l17fs0m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDiAPhPm2zqzW4kZcN0bCjYxa8116kM_GI"
+          "current_key": "AIzaSyDI2QdhWXAS-gCFxRRtmOP8VGXdu8mKD5E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "691890923145-4lg8ohqcnso26lgqgdfosvc7c1ni8bo6.apps.googleusercontent.com",
+              "client_id": "475938716705-21j0uk0v67tq2qfqbh3p2ck68l17fs0m.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "691890923145-qghhnatng2vuhqfs70nmv9mcc4q1qru9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.unifyclient"
-              }
             }
           ]
         }

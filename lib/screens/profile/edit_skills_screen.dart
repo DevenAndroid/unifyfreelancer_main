@@ -23,7 +23,6 @@ class EditSkillsScreen extends StatefulWidget {
 
 class _EditSkillsScreenState extends State<EditSkillsScreen> {
   final controller = Get.put(ProfileScreenController());
-
   ModelSkillListResponse skillList = ModelSkillListResponse();
   RxList<Data> selectedList = <Data>[].obs;
   RxList<Data> tempList = <Data>[].obs;
@@ -143,24 +142,38 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                               selectedColor: AppTheme.primaryColor,
                               backgroundColor: Colors.white,
                               onSelected: (value) {
-                                tempList[index].isSelected!.value = value;
-                                for (var i = 0;
-                                    i < skillList.data!.length;
-                                    i++) {
-                                  if (tempList[index].id.toString() ==
-                                      skillList.data![i].id.toString()) {
-                                    skillList.data![i].isSelected!.value =
-                                        value;
-                                    break;
+                                if(value == true && validateNumber() == false || value == false) {
+                                  tempList[index].isSelected!.value = value;
+                                  for (var i = 0; i <
+                                      skillList.data!.length; i++) {
+                                    if (tempList[index].id.toString() ==
+                                        skillList.data![i].id.toString()) {
+                                      skillList.data![i].isSelected!.value =
+                                          value;
+                                      break;
+                                    }
                                   }
+                                  filterSelectedSkills();
+                                } else {
+                                  showToast("Max limit is 10 skills");
                                 }
-                                filterSelectedSkills();
                               });
                         })),
               );
             })
           ],
         ));
+  }
+
+ bool validateNumber(){
+    int value = 0;
+    for (var item in skillList.data!) {
+      if (item.isSelected!.value == true) {
+        value++;
+      }
+    }
+    print(value);
+    return value <10 ? false : true;
   }
 
   filterSelectedSkills() {

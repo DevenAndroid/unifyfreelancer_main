@@ -23,38 +23,49 @@ class ModelProposal {
 }
 
 class Data {
-  List<SubmittedProposal>? submittedProposal;
-  List<SubmittedProposal>? activeProposal;
-  List<SubmittedProposal>? interviewForInvitation;
+  List<Offers>? offers;
+  List<Offers>? submittedProposal;
+  List<Offers>? activeProposal;
+  List<Offers>? interviewForInvitation;
 
   Data(
-      {this.submittedProposal,
+      {this.offers,
+        this.submittedProposal,
         this.activeProposal,
         this.interviewForInvitation});
 
   Data.fromJson(Map<String, dynamic> json) {
+    if (json['offers'] != null) {
+      offers = <Offers>[];
+      json['offers'].forEach((v) {
+        offers!.add(new Offers.fromJson(v));
+      });
+    }
     if (json['submittedProposal'] != null) {
-      submittedProposal = <SubmittedProposal>[];
+      submittedProposal = <Offers>[];
       json['submittedProposal'].forEach((v) {
-        submittedProposal!.add(new SubmittedProposal.fromJson(v));
+        submittedProposal!.add(new Offers.fromJson(v));
       });
     }
     if (json['activeProposal'] != null) {
-      activeProposal = <SubmittedProposal>[];
+      activeProposal = <Offers>[];
       json['activeProposal'].forEach((v) {
-        activeProposal!.add(new SubmittedProposal.fromJson(v));
+        activeProposal!.add(new Offers.fromJson(v));
       });
     }
     if (json['interviewForInvitation'] != null) {
-      interviewForInvitation = <SubmittedProposal>[];
+      interviewForInvitation = <Offers>[];
       json['interviewForInvitation'].forEach((v) {
-        interviewForInvitation!.add(new SubmittedProposal.fromJson(v));
+        interviewForInvitation!.add(new Offers.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.offers != null) {
+      data['offers'] = this.offers!.map((v) => v.toJson()).toList();
+    }
     if (this.submittedProposal != null) {
       data['submittedProposal'] =
           this.submittedProposal!.map((v) => v.toJson()).toList();
@@ -71,46 +82,46 @@ class Data {
   }
 }
 
-class SubmittedProposal {
+class Offers {
+  String? id;
   String? projectId;
-  String? proposalId;
   String? clientId;
   String? name;
-  String? proposalDescription;
-  String? projectDescription;
   String? status;
+  String? budgetType;
+  String? date;
   String? time;
 
-  SubmittedProposal(
-      {this.projectId,
-        this.proposalId,
+  Offers(
+      {this.id,
+        this.projectId,
         this.clientId,
         this.name,
-        this.proposalDescription,
-        this.projectDescription,
         this.status,
+        this.budgetType,
+        this.date,
         this.time});
 
-  SubmittedProposal.fromJson(Map<String, dynamic> json) {
+  Offers.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     projectId = json['project_id'];
-    proposalId = json['proposal_id'];
     clientId = json['client_id'];
     name = json['name'];
-    proposalDescription = json['proposal_description'];
-    projectDescription = json['project_description'];
     status = json['status'];
+    budgetType = json['budget_type'];
+    date = json['date'];
     time = json['time'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['project_id'] = this.projectId;
-    data['proposal_id'] = this.proposalId;
     data['client_id'] = this.clientId;
     data['name'] = this.name;
-    data['proposal_description'] = this.proposalDescription;
-    data['project_description'] = this.projectDescription;
     data['status'] = this.status;
+    data['budget_type'] = this.budgetType;
+    data['date'] = this.date;
     data['time'] = this.time;
     return data;
   }

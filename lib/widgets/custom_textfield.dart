@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final ValueChanged<String>? onChanged;
   final FormFieldSetter<String>? onSaved;
+  final   ValueChanged<String>? onFieldSubmitted;
   final bool isMulti;
   final bool autofocus;
   final bool enabled;
@@ -21,6 +22,7 @@ class CustomTextField extends StatefulWidget {
   final RxString hintText;
   final Widget? suffixIcon;
   final Widget? prefix;
+
   List<TextInputFormatter>? inputFormatters1 = [];
 
   CustomTextField({
@@ -40,7 +42,9 @@ class CustomTextField extends StatefulWidget {
     this.onEditingCompleted,
     this.onChanged,
     this.onSaved,
-    this.labelText, this.inputFormatters1 ,
+    this.labelText,
+    this.inputFormatters1,
+    this.onFieldSubmitted ,
 
   });
 
@@ -58,6 +62,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Obx(() {
       return TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          textInputAction: TextInputAction.next,
+        onFieldSubmitted: widget.onFieldSubmitted ,
         inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
@@ -70,7 +77,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(
+            counter: const Offstage(),
             filled: true,
+            errorMaxLines: 2,
             enabled: widget.enabled,
             fillColor: AppTheme.whiteColor,
             hintText: widget.hintText.value,
@@ -83,10 +92,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
               color: Color(0xff596681),
               fontSize: 15,
             ),
+            /*errorStyle: const TextStyle(
+              overflow: TextOverflow.clip,
+            ),*/
             contentPadding: const EdgeInsets.only(left: 10,top: 10),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+              borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
               borderRadius: BorderRadius.circular(8),
             ),
             enabledBorder: OutlineInputBorder(

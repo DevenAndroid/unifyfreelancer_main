@@ -14,6 +14,7 @@ class RadioButtonsJobDetails extends StatefulWidget {
 class _RadioButtonsState extends State<RadioButtonsJobDetails> {
   final controller = Get.put(JobsDetailController());
   String? time;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -69,43 +70,46 @@ class _RadioButtonsState extends State<RadioButtonsJobDetails> {
               onChanged: (value) {
                 setState(() {
                   time = value.toString();
-                  controller.coverLaterText.value = value.toString();
+                  controller.duration.value = value.toString();
+                  controller.durationController.text = value.toString();
                 });
               },
             ),
             RadioListTile(
               title: Text(
-                "3 to 4 month",
+                "3 to 6 months",
                 style:
                     TextStyle(fontSize: 14, color: AppTheme.settingsTextColor),
               ),
               contentPadding: const EdgeInsets.all(0),
               dense: true,
               visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-              value: "3 to 4 month",
+              value: "3 to 6 months",
               groupValue: time,
               onChanged: (value) {
                 setState(() {
                   time = value.toString();
-                  controller.coverLaterText.value = value.toString();
+                  controller.duration.value = value.toString();
+                  controller.durationController.text = value.toString();
                 });
               },
             ),
             RadioListTile(
               title: Text(
-                "3 to 6 month",
+                "1 to 3 months",
                 style:
                     TextStyle(fontSize: 14, color: AppTheme.settingsTextColor),
               ),
               contentPadding: const EdgeInsets.all(0),
               dense: true,
               visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-              value: "3 to 6 month",
+              value: "1 to 3 months",
               groupValue: time,
               onChanged: (value) {
                 setState(() {
                   time = value.toString();
-                  controller.coverLaterText.value = value.toString();
+                  controller.duration.value = value.toString();
+                  controller.durationController.text = value.toString();
                 });
               },
             ),
@@ -123,7 +127,8 @@ class _RadioButtonsState extends State<RadioButtonsJobDetails> {
               onChanged: (value) {
                 setState(() {
                   time = value.toString();
-                  controller.coverLaterText.value = value.toString();
+                  controller.duration.value = value.toString();
+                  controller.durationController.text = value.toString();
                 });
               },
             ),

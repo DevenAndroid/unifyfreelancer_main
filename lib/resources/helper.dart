@@ -4,12 +4,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:unifyfreelancer/resources/size.dart';
 
 import 'app_theme.dart';
 import '../widgets/circular_widget.dart';
 
 class Helpers {
-  /// Auth Services
 
   late BuildContext context;
   late DateTime currentBackPressTime;
@@ -20,8 +21,7 @@ class Helpers {
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
+    if (now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       return Future.value(false);
     }
@@ -49,7 +49,34 @@ class Helpers {
         left: 0,
         child: Material(
           color: AppTheme.primaryColor.withOpacity(0.02),
-          child: CupertinoActivityIndicator(radius: 30,),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoadingAnimationWidget.threeArchedCircle(color: AppTheme.primaryColor, size: AddSize.size40),
+            ],
+          ),
+        ),
+      );
+    });
+    return loader;
+  }
+
+  static OverlayEntry overlayLoaderWithAnimation(context) {
+    OverlayEntry loader = OverlayEntry(builder: (context) {
+      final size = MediaQuery.of(context).size;
+      return Positioned(
+        height: size.height,
+        width: size.width,
+        top: 0,
+        left: 0,
+        child: Material(
+          color: AppTheme.primaryColor.withOpacity(0.02),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoadingAnimationWidget.threeArchedCircle(color: AppTheme.primaryColor, size: AddSize.size40),
+            ],
+          ),
         ),
       );
     });

@@ -8,10 +8,13 @@ import 'package:unifyfreelancer/Screens/contracts_screen.dart';
 import 'package:unifyfreelancer/Screens/home_screen.dart';
 import 'package:unifyfreelancer/Screens/messages_screen.dart';
 import 'package:unifyfreelancer/Screens/proposals_screen.dart';
+import 'package:unifyfreelancer/controller/contract_controller.dart';
 
 import 'Controller/bottom_nav_bar_controller.dart';
 
+import 'controller/jobs_list_controller.dart';
 import 'controller/profie_screen_controller.dart';
+import 'controller/proposals_screen_controller.dart';
 import 'resources/app_theme.dart';
 import 'widgets/appDrawer.dart';
 import 'widgets/custom_appbar.dart';
@@ -50,16 +53,16 @@ class _BottomNavbarState extends State<BottomNavbar> {
     return Obx(() {
       return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
+          preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Obx(() {
             return CustomAppbar(
               isLikeButton: true,
               isProfileImage: true,
-              titleText: "${screenTitle[controller.pageIndex.value]}",
+              titleText: screenTitle[controller.pageIndex.value],
             );
           }),
         ),
-        drawer: AppDrawerScreen(),
+        drawer: const AppDrawerScreen(),
         body: pages.elementAt(controller.pageIndex.value),
         extendBody: true,
         // extendBodyBehindAppBar: true,
@@ -94,9 +97,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
             children: [
               Flexible(
                 child: MaterialButton(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   onPressed: () {
                     controller.updateIndexValue(0);
+                    final jobController = Get.put(JobListController());
+                    jobController.getData();
+                    jobController.getDataBestJob();
+                    jobController.getDataRecentJob();
                   },
                   child: Column(
                     children: [
@@ -127,9 +134,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
               ),
               Flexible(
                 child: MaterialButton(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   onPressed: () {
                     controller.updateIndexValue(1);
+                    final controllerRefresh = Get.put(ProposalScreenController());
+                    controllerRefresh.getData();
                   },
                   child: Column(
                     children: [
@@ -162,9 +171,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: MaterialButton(
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     onPressed: () {
                       controller.updateIndexValue(2);
+                      final contractController = Get.put(ContractScreenController());
+                      contractController.getData();
                     },
                     child: Column(
                       children: [
@@ -229,7 +240,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
               ),
               Flexible(
                 child: MaterialButton(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   onPressed: () {
                     controller.updateIndexValue(4);
                   },

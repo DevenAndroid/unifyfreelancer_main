@@ -23,30 +23,49 @@ class ModelSingleJob {
 }
 
 class Data {
-  String? id;
-  String? clientId;
-  String? image;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
+  dynamic id;
+  dynamic clientId;
+  dynamic image;
+  dynamic imageName;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
   dynamic minPrice;
   dynamic price;
-  String? projectDuration;
-  String? scop;
-  String? status;
-  String? experienceLevel;
-  String? categories;
-  String? createdAt;
-  List<Skills>? skills;
+  dynamic projectDuration;
+  dynamic scop;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic englishLevel;
+  dynamic categories;
+  dynamic categoryId;
+  dynamic createdAt;
+  dynamic postedDate;
+  List<JobSkills>? jobSkills;
   List<ProposalList>? proposalList;
   ClientData? clientData;
+  bool? isPrivate;
   bool? isProposalSend;
+  bool? isSaved;
+  dynamic serviceFee;
+  dynamic proposalCount;
+  dynamic inviteSent;
+  dynamic unansweredInvite;
+  dynamic interview;
+  dynamic hireRate;
+  dynamic openJobs;
+  dynamic totalHire;
+  dynamic totalActive;
+  dynamic inviteId;
+  bool? isInvited;
+  List<ClientRecentHistory>? clientRecentHistory;
 
   Data(
       {this.id,
         this.clientId,
         this.image,
+        this.imageName,
         this.name,
         this.type,
         this.description,
@@ -57,17 +76,35 @@ class Data {
         this.scop,
         this.status,
         this.experienceLevel,
+        this.englishLevel,
         this.categories,
+        this.categoryId,
         this.createdAt,
-        this.skills,
+        this.postedDate,
+        this.jobSkills,
         this.proposalList,
         this.clientData,
-        this.isProposalSend});
+        this.isPrivate,
+        this.isProposalSend,
+        this.isSaved,
+        this.serviceFee,
+        this.proposalCount,
+        this.inviteSent,
+        this.unansweredInvite,
+        this.interview,
+        this.hireRate,
+        this.openJobs,
+        this.totalHire,
+        this.totalActive,
+        this.inviteId,
+        this.isInvited,
+        this.clientRecentHistory});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     clientId = json['client_id'];
     image = json['image'];
+    imageName = json['image_name'];
     name = json['name'];
     type = json['type'];
     description = json['description'];
@@ -78,12 +115,15 @@ class Data {
     scop = json['scop'];
     status = json['status'];
     experienceLevel = json['experience_level'];
+    englishLevel = json['english_level'];
     categories = json['categories'];
+    categoryId = json['category_id'];
     createdAt = json['created_at'];
-    if (json['skills'] != null) {
-      skills = <Skills>[];
-      json['skills'].forEach((v) {
-        skills!.add(new Skills.fromJson(v));
+    postedDate = json['posted_date'];
+    if (json['job_skills'] != null) {
+      jobSkills = <JobSkills>[];
+      json['job_skills'].forEach((v) {
+        jobSkills!.add(new JobSkills.fromJson(v));
       });
     }
     if (json['proposal_list'] != null) {
@@ -95,7 +135,26 @@ class Data {
     clientData = json['client_data'] != null
         ? new ClientData.fromJson(json['client_data'])
         : null;
+    isPrivate = json['is_private'];
     isProposalSend = json['is_proposal_send'];
+    isSaved = json['is_saved'];
+    serviceFee = json['service_fee'];
+    proposalCount = json['proposal_count'];
+    inviteSent = json['invite_sent'];
+    unansweredInvite = json['unanswered_invite'];
+    interview = json['interview'];
+    hireRate = json['hire_rate'];
+    openJobs = json['open_jobs'];
+    totalHire = json['total_hire'];
+    totalActive = json['total_Active'];
+    inviteId = json['invite_id'];
+    isInvited = json['is_invited'];
+    if (json['client_recent_history'] != null) {
+      clientRecentHistory = <ClientRecentHistory>[];
+      json['client_recent_history'].forEach((v) {
+        clientRecentHistory!.add(new ClientRecentHistory.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +162,7 @@ class Data {
     data['id'] = this.id;
     data['client_id'] = this.clientId;
     data['image'] = this.image;
+    data['image_name'] = this.imageName;
     data['name'] = this.name;
     data['type'] = this.type;
     data['description'] = this.description;
@@ -113,10 +173,13 @@ class Data {
     data['scop'] = this.scop;
     data['status'] = this.status;
     data['experience_level'] = this.experienceLevel;
+    data['english_level'] = this.englishLevel;
     data['categories'] = this.categories;
+    data['category_id'] = this.categoryId;
     data['created_at'] = this.createdAt;
-    if (this.skills != null) {
-      data['skills'] = this.skills!.map((v) => v.toJson()).toList();
+    data['posted_date'] = this.postedDate;
+    if (this.jobSkills != null) {
+      data['job_skills'] = this.jobSkills!.map((v) => v.toJson()).toList();
     }
     if (this.proposalList != null) {
       data['proposal_list'] =
@@ -125,18 +188,35 @@ class Data {
     if (this.clientData != null) {
       data['client_data'] = this.clientData!.toJson();
     }
+    data['is_private'] = this.isPrivate;
     data['is_proposal_send'] = this.isProposalSend;
+    data['is_saved'] = this.isSaved;
+    data['service_fee'] = this.serviceFee;
+    data['proposal_count'] = this.proposalCount;
+    data['invite_sent'] = this.inviteSent;
+    data['unanswered_invite'] = this.unansweredInvite;
+    data['interview'] = this.interview;
+    data['hire_rate'] = this.hireRate;
+    data['open_jobs'] = this.openJobs;
+    data['total_hire'] = this.totalHire;
+    data['total_Active'] = this.totalActive;
+    data['invite_id'] = this.inviteId;
+    data['is_invited'] = this.isInvited;
+    if (this.clientRecentHistory != null) {
+      data['client_recent_history'] =
+          this.clientRecentHistory!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class Skills {
-  String? id;
-  String? name;
+class JobSkills {
+  dynamic id;
+  dynamic name;
 
-  Skills({this.id, this.name});
+  JobSkills({this.id, this.name});
 
-  Skills.fromJson(Map<String, dynamic> json) {
+  JobSkills.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }
@@ -150,71 +230,118 @@ class Skills {
 }
 
 class ProposalList {
-  String? freelancerId;
-  String? freelancerName;
-  String? profileImage;
-  String? proposalId;
-  String? proposalDescription;
-  String? status;
-  String? amount;
-  String? time;
+  dynamic freelancerId;
+  dynamic inviteId;
+  dynamic freelancerName;
+  dynamic profileImage;
+  dynamic proposalId;
+  dynamic proposalDescription;
+  dynamic status;
+  dynamic proposalAmount;
+  dynamic hourRate;
+  dynamic time;
+  List<Skills>? skills;
 
   ProposalList(
       {this.freelancerId,
+        this.inviteId,
         this.freelancerName,
         this.profileImage,
         this.proposalId,
         this.proposalDescription,
         this.status,
-        this.amount,
-        this.time});
+        this.proposalAmount,
+        this.hourRate,
+        this.time,
+        this.skills});
 
   ProposalList.fromJson(Map<String, dynamic> json) {
     freelancerId = json['freelancer_id'];
+    inviteId = json['invite_id'];
     freelancerName = json['freelancer_name'];
     profileImage = json['profile_image'];
     proposalId = json['proposal_id'];
     proposalDescription = json['proposal_description'];
     status = json['status'];
-    amount = json['amount'];
+    proposalAmount = json['proposal_amount'];
+    hourRate = json['hour_rate'];
     time = json['time'];
+    if (json['skills'] != null) {
+      skills = <Skills>[];
+      json['skills'].forEach((v) {
+        skills!.add(new Skills.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['freelancer_id'] = this.freelancerId;
+    data['invite_id'] = this.inviteId;
     data['freelancer_name'] = this.freelancerName;
     data['profile_image'] = this.profileImage;
     data['proposal_id'] = this.proposalId;
     data['proposal_description'] = this.proposalDescription;
     data['status'] = this.status;
-    data['amount'] = this.amount;
+    data['proposal_amount'] = this.proposalAmount;
+    data['hour_rate'] = this.hourRate;
     data['time'] = this.time;
+    if (this.skills != null) {
+      data['skills'] = this.skills!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Skills {
+  int? skillId;
+  String? skillName;
+
+  Skills({this.skillId, this.skillName});
+
+  Skills.fromJson(Map<String, dynamic> json) {
+    skillId = json['skill_id'];
+    skillName = json['skill_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['skill_id'] = this.skillId;
+    data['skill_name'] = this.skillName;
     return data;
   }
 }
 
 class ClientData {
-  String? id;
-  String? profileImage;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? companyName;
-  String? website;
-  String? tagline;
-  String? industry;
-  String? employeeNo;
-  String? description;
-  String? companyPhone;
-  String? vatId;
-  String? timezone;
-  String? companyAddress;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic companyName;
+  dynamic website;
+  dynamic tagline;
+  dynamic industry;
+  dynamic employeeNo;
+  dynamic description;
+  dynamic companyPhone;
+  dynamic vatId;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic companyAddress;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic isVerified;
+  bool? paymentVerified;
+  dynamic rating;
+  dynamic numberOfReview;
+  dynamic jobPosted;
+  dynamic moneySpent;
+  dynamic ratePaidClient;
+  dynamic memberSince;
+  dynamic lastActivity;
 
   ClientData(
       {this.id,
@@ -231,12 +358,21 @@ class ClientData {
         this.companyPhone,
         this.vatId,
         this.timezone,
+        this.localTime,
         this.companyAddress,
         this.country,
         this.state,
         this.city,
         this.zipCode,
-        this.isVerified});
+        this.isVerified,
+        this.paymentVerified,
+        this.rating,
+        this.numberOfReview,
+        this.jobPosted,
+        this.moneySpent,
+        this.ratePaidClient,
+        this.memberSince,
+        this.lastActivity});
 
   ClientData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -253,12 +389,21 @@ class ClientData {
     companyPhone = json['company_phone'];
     vatId = json['vat_id'];
     timezone = json['timezone'];
+    localTime = json['local_time'];
     companyAddress = json['company_address'];
     country = json['country'];
     state = json['state'];
     city = json['city'];
     zipCode = json['zip_code'];
     isVerified = json['is_verified'];
+    paymentVerified = json['payment_verified'];
+    rating = json['rating'];
+    numberOfReview = json['number_of_review'];
+    jobPosted = json['job_posted'];
+    moneySpent = json['money_spent'];
+    ratePaidClient = json['rate_paid_client'];
+    memberSince = json['member_since'];
+    lastActivity = json['last_activity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -277,12 +422,62 @@ class ClientData {
     data['company_phone'] = this.companyPhone;
     data['vat_id'] = this.vatId;
     data['timezone'] = this.timezone;
+    data['local_time'] = this.localTime;
     data['company_address'] = this.companyAddress;
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
     data['is_verified'] = this.isVerified;
+    data['payment_verified'] = this.paymentVerified;
+    data['rating'] = this.rating;
+    data['number_of_review'] = this.numberOfReview;
+    data['job_posted'] = this.jobPosted;
+    data['money_spent'] = this.moneySpent;
+    data['rate_paid_client'] = this.ratePaidClient;
+    data['member_since'] = this.memberSince;
+    data['last_activity'] = this.lastActivity;
+    return data;
+  }
+}
+
+class ClientRecentHistory {
+  dynamic name;
+  dynamic description;
+  dynamic startDate;
+  dynamic endDate;
+  dynamic minPrice;
+  dynamic rating;
+  dynamic price;
+
+  ClientRecentHistory(
+      {this.name,
+        this.description,
+        this.startDate,
+        this.endDate,
+        this.minPrice,
+        this.rating,
+        this.price});
+
+  ClientRecentHistory.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    description = json['description'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+    minPrice = json['min_price'];
+    rating = json['rating'];
+    price = json['price'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
+    data['min_price'] = this.minPrice;
+    data['rating'] = this.rating;
+    data['price'] = this.price;
     return data;
   }
 }

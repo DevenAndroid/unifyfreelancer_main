@@ -76,12 +76,12 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
               ? Form(
             key: _formKey,
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
                     child: Text(
                       "Hours per week",
                       style: TextStyle(
@@ -100,42 +100,42 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
 
                       /// for pushing
                       children: [
-                        Text(
+                        const Text(
                           "Knowing how much can you work helps freelancer find the right jobs for you.",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                               color: AppTheme.textColor),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "I can currently work",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 12,
                               color: AppTheme.textColor),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: timeList.data!.length,
                             itemBuilder: (context, index) {
                               return Obx(() {
                                 return RadioListTile(
                                   title: Text(
                                     timeList.data![index].title.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         color: AppTheme.settingsTextColor),
                                   ),
                                   contentPadding: const EdgeInsets.all(0),
                                   dense: true,
-                                  visualDensity: VisualDensity(
+                                  visualDensity: const VisualDensity(
                                       horizontal: -4, vertical: -4),
                                   value:
                                   timeList.data![index].id.toString(),
@@ -147,17 +147,17 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                 );
                               });
                             }),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
-                        Text(
+                        const Text(
                           "Hourly price",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
                               color: AppTheme.textColor),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
@@ -167,26 +167,37 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                 inputFormatters1: [
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                prefix: Icon(Icons.attach_money),
+                                prefix: const Icon(Icons.attach_money),
                                 controller: _priceController,
                                 obSecure: false.obs,
                                 keyboardType: TextInputType.number,
                                 hintText: "5.00".obs,
-                                validator: MultiValidator([
+                                validator: (value){
+                                  if(value!.isEmpty && value.toString().trim() != ""){
+                                    return "Please enter your hourly price";
+                                  }
+                                  else if(double.parse(value.isEmpty ? "0" : value) < 3){
+                                    return "Minimum hourly price must be 3 \$";
+                                  }
+                                  else {
+                                    return null;
+                                  }
+                                },
+                                /*validator: MultiValidator([
                                   RequiredValidator(
                                       errorText:
-                                      'Hourly price is required'),
-                                ]),
+                                      'Please enter your hourly price'),
+                                ]),*/
                               ),
                             ),
-                            Text(
+                            const Text(
                               " / hour",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
                                   color: AppTheme.textColor),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 30,
                             )
                           ],
@@ -219,7 +230,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
               ],
             ),
           )
-              : Center(child: CircularProgressIndicator());
+              : const Center(child: CircularProgressIndicator());
         }),
         bottomNavigationBar: Obx(() {
           return status.value.isSuccess
@@ -265,7 +276,7 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
               ),
             ),
           ])
-              : SizedBox();
+              : const SizedBox();
         }));
   }
 }

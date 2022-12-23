@@ -13,6 +13,7 @@ class ProposalScreenController extends GetxController{
     // TODO: implement onInit
     super.onInit();
     getData();
+
   }
 
   getData(){
@@ -23,6 +24,14 @@ class ProposalScreenController extends GetxController{
       }
       else{
         status.value = RxStatus.error();
+        if(value.message == "No submit proposals"){
+          status.value = RxStatus.success();
+          model.value.data = Data(
+            activeProposal: [],
+            interviewForInvitation: [],
+            submittedProposal: []
+          );
+        }
       }
     });
 

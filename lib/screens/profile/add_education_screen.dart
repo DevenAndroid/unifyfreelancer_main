@@ -39,7 +39,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     yearsList2.clear();
     var currentYear = DateTime.now().year;
     var currentYear2 = DateTime.now().year;
-    for (var i = currentYear - 70; i < currentYear + 8; i++) {
+    for (var i = currentYear - 70; i < currentYear+11; i++) {
       yearsList.add(i);
     }
     log(yearsList.toString());
@@ -67,8 +67,6 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
     }
   }
 
-
-
   Rx time = "".obs;
   Rx time2 = "".obs;
   Rx selectedDegree = "".obs;
@@ -81,19 +79,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
   TextEditingController _areaController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  getData(){
+  getData() {
     degreeListRepo().then((value) {
-      degree.value = value ;
-      if(value.status == true){
-        setState(() {
-
-        });
-        if(kDebugMode){
-          print(value);
-        }
-
+      degree.value = value;
+      if (value.status == true) {
+        setState(() {});
       }
-
     });
   }
 
@@ -107,8 +98,8 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
             isProfileImage: false,
             titleText: "Add Education",
           )
-          // onPressedForLeading:,
-          ),
+        // onPressedForLeading:,
+      ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -137,7 +128,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "School",
+                          "School*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -152,14 +143,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           keyboardType: TextInputType.text,
                           hintText: "Ex: Northwestern University".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'School is required'),
+                            RequiredValidator(errorText: 'Please enter your school name'),
                           ]),
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         Text(
-                          "Dates Attended (Optional)",
+                          "Start year*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -192,12 +183,12 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
-                                                          AppTheme.darkBlueText,
+                                                      AppTheme.darkBlueText,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                      FontWeight.w500),
                                                 ),
                                                 contentPadding:
-                                                    const EdgeInsets.all(0),
+                                                const EdgeInsets.all(0),
                                                 dense: true,
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
@@ -229,14 +220,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'From year is required'),
+                                errorText: 'Please select start year'),
                           ]),
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         Text(
-                          "Proficiency level",
+                          "End year*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -246,73 +237,82 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 5,
                         ),
                         CustomTextField(
-                          onTap: () {
-                            showFilterButtonSheet(
-                                context: context,
-                                titleText: "To (or expected graduation year)",
-                                widgets: Obx(() {
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          reverse: true,
-                                          itemCount: yearsList.length,
-                                          physics: BouncingScrollPhysics(),
-                                          itemBuilder: (context, index) {
-                                            return Obx(() {
-                                              return RadioListTile(
-                                                title: Text(
-                                                  yearsList[index].toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color:
-                                                          AppTheme.darkBlueText,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                contentPadding:
-                                                    const EdgeInsets.all(0),
-                                                dense: true,
-                                                visualDensity: VisualDensity(
-                                                    horizontal: -4,
-                                                    vertical: -4),
-                                                value:
+                            onTap: () {
+                              showFilterButtonSheet(
+                                  context: context,
+                                  titleText: "To",
+                                  widgets: Obx(() {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        ListView.builder(
+                                            shrinkWrap: true,
+                                            reverse: true,
+                                            itemCount: yearsList.length,
+                                            physics: BouncingScrollPhysics(),
+                                            itemBuilder: (context, index) {
+                                              return Obx(() {
+                                                return RadioListTile(
+                                                  title: Text(
                                                     yearsList[index].toString(),
-                                                groupValue: time.value,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    time.value =
-                                                        value.toString();
-                                                    _toController.text =
-                                                        value.toString();
-                                                    print(_toController.text);
-                                                    Get.back();
-                                                  });
-                                                },
-                                              );
-                                            });
-                                          })
-                                    ],
-                                  );
-                                }));
-                          },
-                          readOnly: true,
-                          obSecure: false.obs,
-                          controller: _toController,
-                          hintText: "To (or expected graduation year)".obs,
-                          suffixIcon: Icon(Icons.keyboard_arrow_down),
-                          validator: MultiValidator([
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                        AppTheme.darkBlueText,
+                                                        fontWeight:
+                                                        FontWeight.w500),
+                                                  ),
+                                                  contentPadding:
+                                                  const EdgeInsets.all(0),
+                                                  dense: true,
+                                                  visualDensity: VisualDensity(
+                                                      horizontal: -4,
+                                                      vertical: -4),
+                                                  value:
+                                                  yearsList[index].toString(),
+                                                  groupValue: time.value,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      time.value =
+                                                          value.toString();
+                                                      _toController.text =
+                                                          value.toString();
+                                                      print(_toController.text);
+                                                      Get.back();
+                                                    });
+                                                  },
+                                                );
+                                              });
+                                            })
+                                      ],
+                                    );
+                                  }));
+                            },
+                            readOnly: true,
+                            obSecure: false.obs,
+                            controller: _toController,
+                            hintText: "To".obs,
+                            suffixIcon: Icon(Icons.keyboard_arrow_down),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select end year';
+                              } else   if (int.parse(_fromController.text.toString()) < int.parse(_toController.text.toString())) {
+                                return null;
+                              } else {
+                                return "End year must be grater then start date";
+                              }
+                            }
+                          /*  validator: MultiValidator([
                             RequiredValidator(errorText: 'To year is required'),
-                          ]),
+                          ]),*/
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         Text(
-                          "Degree",
+                          "Degree*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -341,23 +341,27 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                                             return Obx(() {
                                               return RadioListTile(
                                                 title: Text(
-                                                  degree.value.data![index].title.toString(),
+                                                  degree
+                                                      .value.data![index].title
+                                                      .toString(),
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color:
-                                                          AppTheme.darkBlueText,
+                                                      AppTheme.darkBlueText,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                      FontWeight.w500),
                                                 ),
                                                 contentPadding:
-                                                    const EdgeInsets.all(0),
+                                                const EdgeInsets.all(0),
                                                 dense: true,
                                                 visualDensity: VisualDensity(
                                                     horizontal: -4,
                                                     vertical: -4),
-                                                value:  degree.value.data![index].title.toString(),
+                                                value: degree
+                                                    .value.data![index].title
+                                                    .toString(),
                                                 groupValue:
-                                                    selectedDegree.value,
+                                                selectedDegree.value,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     selectedDegree.value =
@@ -380,14 +384,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           hintText: "Degree".obs,
                           suffixIcon: Icon(Icons.keyboard_arrow_down),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Degree is required'),
+                            RequiredValidator(errorText: 'Please select your degree'),
                           ]),
                         ),
                         SizedBox(
                           height: 15,
                         ),
                         Text(
-                          "Area of Study (Optional)",
+                          "Area of study (optional)",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -406,7 +410,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           height: 15,
                         ),
                         Text(
-                          "Description (Optional)",
+                          "Description (optional)",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
@@ -420,6 +424,9 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                           obSecure: false.obs,
                           controller: _descriptionController,
                           hintText: "Description".obs,
+                          validator: MultiValidator([
+                          MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                          ]),
                         ),
                       ])),
               Row(
@@ -447,17 +454,18 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             editEducationInfoRepo(
-                                    load == -100
-                                        ? load
-                                        : controller.model.value.data!
-                                            .education![load].id,
-                                    _schoolController.text.trim(),
-                                    _fromController.text.trim(),
-                                    _toController.text.trim(),
-                                    _degreeController.text.trim(),
-                                    _areaController.text.trim(),
-                                    _descriptionController.text.trim(),
-                                    context)
+                                id: load == -100
+                                    ? load
+                                    : controller.model.value.data!
+                                    .education![load].id,
+                                school: _schoolController.text.trim(),
+                                start_year: _fromController.text.trim(),
+                                end_year: _toController.text.trim(),
+                                degree: _degreeController.text.trim(),
+                                area_study: _areaController.text.trim(),
+                                description:
+                                _descriptionController.text.trim(),
+                                context: context)
                                 .then((value) {
                               if (value.status == true) {
                                 Get.back();

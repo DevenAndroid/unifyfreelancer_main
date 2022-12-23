@@ -139,30 +139,39 @@ class Data {
 }
 
 class BasicInfo {
-  String? id;
-  String? profileImage;
-  String? visibility;
-  String? projectPreference;
-  String? experienceLevel;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? occuption;
-  String? description;
-  String? rating;
-  int? totalEarning;
-  int? totalJobs;
-  int? totalHours;
-  int? pendingProject;
-  String? amount;
-  String? timezone;
-  String? address;
-  String? phone;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic visibility;
+  dynamic projectPreference;
+  dynamic experienceLevel;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic occuption;
+  dynamic description;
+  dynamic rating;
+  dynamic totalEarning;
+  dynamic totalJobs;
+  dynamic totalHours;
+  dynamic pendingProject;
+  dynamic amount;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic address;
+  dynamic phone;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic hoursPerWeek;
+  dynamic categoryId;
+  dynamic category;
+  dynamic isVerified;
+  bool? isProfileComplete;
+  dynamic successRate;
+  dynamic subscriptionId;
+  bool? isSubscription;
+  bool? isSaveTalent;
 
   BasicInfo(
       {this.id,
@@ -182,13 +191,22 @@ class BasicInfo {
         this.pendingProject,
         this.amount,
         this.timezone,
+        this.localTime,
         this.address,
         this.phone,
         this.country,
         this.state,
         this.city,
         this.zipCode,
-        this.isVerified});
+        this.hoursPerWeek,
+        this.categoryId,
+        this.category,
+        this.isVerified,
+        this.isProfileComplete,
+        this.successRate,
+        this.subscriptionId,
+        this.isSubscription,
+        this.isSaveTalent});
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -208,13 +226,22 @@ class BasicInfo {
     pendingProject = json['pending_project'];
     amount = json['amount'];
     timezone = json['timezone'];
+    localTime = json['local_time'];
     address = json['address'];
     phone = json['phone'];
     country = json['country'];
     state = json['state'];
     city = json['city'];
     zipCode = json['zip_code'];
+    hoursPerWeek = json['hours_per_week'];
+    categoryId = json['category_id'];
+    category = json['category'];
     isVerified = json['is_verified'];
+    isProfileComplete = json['is_profile_complete'];
+    successRate = json['success_rate'];
+    subscriptionId = json['subscription_id'];
+    isSubscription = json['is_subscription'];
+    isSaveTalent = json['isSaveTalent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -236,13 +263,22 @@ class BasicInfo {
     data['pending_project'] = this.pendingProject;
     data['amount'] = this.amount;
     data['timezone'] = this.timezone;
+    data['local_time'] = this.localTime;
     data['address'] = this.address;
     data['phone'] = this.phone;
     data['country'] = this.country;
     data['state'] = this.state;
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
+    data['hours_per_week'] = this.hoursPerWeek;
+    data['category_id'] = this.categoryId;
+    data['category'] = this.category;
     data['is_verified'] = this.isVerified;
+    data['is_profile_complete'] = this.isProfileComplete;
+    data['success_rate'] = this.successRate;
+    data['subscription_id'] = this.subscriptionId;
+    data['is_subscription'] = this.isSubscription;
+    data['isSaveTalent'] = this.isSaveTalent;
     return data;
   }
 }
@@ -271,9 +307,9 @@ class Skills {
 
 class Portfolio {
   int? id;
-  String? name;
-  String? description;
-  String? image;
+  dynamic name;
+  dynamic description;
+  dynamic image;
 
   Portfolio({this.id, this.name, this.description, this.image});
 
@@ -295,16 +331,17 @@ class Portfolio {
 }
 
 class Testimonial {
-  int? id;
-  String? message;
-  String? requestSent;
-  String? status;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? title;
-  String? type;
-  String? description;
+  dynamic id;
+  dynamic message;
+  dynamic requestSent;
+  dynamic status;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic title;
+  dynamic type;
+  dynamic description;
+ bool? showText = false;
 
   Testimonial(
       {this.id,
@@ -316,6 +353,7 @@ class Testimonial {
         this.email,
         this.title,
         this.type,
+        this.showText,
         this.description});
 
   Testimonial.fromJson(Map<String, dynamic> json) {
@@ -371,14 +409,14 @@ class Certificates {
 
 class Employment {
   int? id;
-  String? company;
-  String? city;
-  String? country;
-  String? startDate;
-  String? endDate;
-  int? currentlyWorking;
-  String? subject;
-  String? description;
+  dynamic company;
+  dynamic city;
+  dynamic country;
+  dynamic startDate;
+  dynamic endDate;
+  dynamic currentlyWorking;
+  dynamic subject;
+  dynamic description;
 
   Employment(
       {this.id,
@@ -420,13 +458,13 @@ class Employment {
 
 class Education {
   int? id;
-  String? school;
-  String? startYear;
-  String? endYear;
-  String? level;
-  String? degree;
-  String? areaStudy;
-  String? description;
+  dynamic school;
+  dynamic startYear;
+  dynamic endYear;
+  dynamic level;
+  dynamic degree;
+  dynamic areaStudy;
+  dynamic description;
 
   Education(
       {this.id,

@@ -28,13 +28,22 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
   final TextEditingController _descriptionController = TextEditingController();
 
   File imageFileToPick = File("");
+  RxString fileName = "".obs;
 
   pickImageFromDevice({required imageSource}) async {
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
       if (image == null) return;
-      imageFileToPick = File(image.path);
-      setState(() {});
+
+      if(File(image.path).lengthSync() / (1024 * 1024) < 10){
+        imageFileToPick = File(image.path);
+        fileName.value =  image.name.toString();
+        print(image.name.toString());
+        setState(() {});
+      }
+      else{
+        showToast("Your file size is greater then 10 MB");
+      }
     } catch (e) {
       throw Exception(e);
     }
@@ -83,7 +92,7 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                   keyboardType: TextInputType.text,
                   hintText: "Title".obs,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Title is required'),
+                    RequiredValidator(errorText: 'Please enter title'),
                   ]),
                 ),
                 SizedBox(
@@ -96,7 +105,8 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                   hintText: "Description".obs,
                   isMulti: true,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Description is required'),
+                    RequiredValidator(errorText: 'Please enter description'),
+                      MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
                   ]),
                 ),
                 SizedBox(
@@ -126,10 +136,16 @@ class _AddPortFolioScreenState extends State<AddPortFolioScreen> {
                               SizedBox(
                                 width: 15,
                               ),
-                              Text(
-                                "Attach Files",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w300),
+                              Expanded(
+                                child: Text(/* fileName.value == "" ?*/
+                                  "Attach Files" /*: fileName.value.toString()*/,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight:
+                                      FontWeight
+                                          .w300),
+                                  overflow: TextOverflow
+                                      .ellipsis,),
                               )
                             ],
                           ),

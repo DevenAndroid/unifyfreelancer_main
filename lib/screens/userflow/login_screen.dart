@@ -47,8 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken);
     await FirebaseAuth.instance.signInWithCredential(userCredentials);
-    socialLoginApi(
-        context, googleSignInAuthentication.accessToken.toString(), "google");
+    socialLoginApi(context, googleSignInAuthentication.accessToken.toString(), "google");
     log("Google Access Token... ${googleSignInAuthentication.accessToken!}");
     log(FirebaseAuth.instance.currentUser!.uid);
   }
@@ -75,37 +74,23 @@ class _LoginScreenState extends State<LoginScreen> {
             context: context, accessToken: authToken, provider: provider)
         .then((value) async {
       showToast(value.message.toString());
-      if (value.status == true) {
+      log(jsonEncode(value));
+      if (value.status!) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
         pref.setBool("shownIntro", true);
-        // try {
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .set({"userId": value.data!.user.id.toString()}).catchError((e) {
-        //     showToast(e.toString());
-        //   });
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .set({"lastMessage": "Good Morning"});
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .collection("FirebaseMessages")
-        //       .add({
-        //     "message": "Good Morning",
-        //     "timeStamp": DateTime.now().millisecondsSinceEpoch
-        //   });
-        // } catch (e) {
-        //   showToast(e.toString());
-        // }
-        Get.toNamed(MyRouter.bottomNavbar);
+        //   pref.setBool("isSubscribed", false);
+        if(value.data!.user!.isProfileComplete!)
+        {
+          if(value.data!.user!.isSubscription!){
+            Get.offAllNamed(MyRouter.bottomNavbar);
+          }
+          else{
+            Get.offAllNamed(MyRouter.subscriptionScreen);
+          }
+        } else {
+          Get.offAllNamed(MyRouter.questionsScreen);
+        }
       }
     });
   }
@@ -178,9 +163,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: AppStrings.userNameOrEmailID.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Username or email is required'),
+                                  errorText: 'Please enter your email'),
                               EmailValidator(
-                                  errorText: 'Enter a valid email address')
+                                  errorText:
+                                      'Please type a valid email address')
                             ])),
                         SizedBox(
                           height: 16.h,
@@ -188,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Obx(() {
                           return BoxTextField(
                             obSecure: eyeHide,
-                            prefix: Icon(
+                            prefix: const Icon(
                               Icons.lock_outline,
                             ),
                             suffixIcon: eyeHide == false
@@ -196,20 +182,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () => setState(() {
                                           eyeHide = true.obs;
                                         }),
-                                    child: Icon(Icons.remove_red_eye_outlined))
+                                    child: const Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
                                     onTap: () => setState(() {
                                           eyeHide = false.obs;
                                         }),
-                                    child: Icon(Icons.visibility_off_outlined)),
+                                    child: const Icon(Icons.visibility_off_outlined)),
                             controller: passwordController,
                             hintText: AppStrings.password.obs,
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Password is required'),
-                              MinLengthValidator(8,
-                                  errorText:
-                                      'Password must be at least 8 digits long'),
+                                  errorText: 'Please enter your password'),
                             ]),
                           );
                         }),
@@ -244,12 +227,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 value.message.toString(),
                               );
                               if (value.status == true) {
-                                SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
+                                SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString('cookie', jsonEncode(value.authToken));
-
                                 pref.setBool("shownIntro", true);
-                                Get.offAllNamed(MyRouter.bottomNavbar);
+                             //   pref.setBool("isSubscribed", false);
+                                if(value.data!.user!.isProfileComplete!)
+                                {
+                                  if(value.data!.user!.isSubscription!){
+                                    Get.offAllNamed(MyRouter.bottomNavbar);
+                                  }
+                                  else{
+                                    Get.offAllNamed(MyRouter.subscriptionScreen);
+                                  }
+                                } else {
+                                  Get.offAllNamed(MyRouter.questionsScreen);
+                                }
                               }
                             });
                           }

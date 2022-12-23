@@ -53,7 +53,9 @@ class OnBoardingScreen extends StatelessWidget {
                         top: AddSize.size50,
                         left: AddSize.padding16,
                         child: controller.currentIndex.value != 2
-                            ? const Text("Skip")
+                            ? InkWell(
+                          onTap: ()=>Get.toNamed(MyRouter.loginScreen),
+                            child: const Text("Skip"))
                             : const SizedBox())
                   ],
                 ),
@@ -84,18 +86,16 @@ class OnBoardingScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(),
-                            FittedBox(
-                              child: Text(
-                                controller
-                                    .contents[controller.currentIndex.value]
-                                    .title
-                                    .toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: AddSize.font24,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
+                            Text(
+                              controller
+                                  .contents[controller.currentIndex.value]
+                                  .title
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: AddSize.font24,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
                             ),
                             SizedBox(height: AddSize.size25),

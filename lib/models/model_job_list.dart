@@ -1,7 +1,7 @@
 class ModelJobsList {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<JobListData>? data;
   Meta? meta;
   Link? link;
 
@@ -11,9 +11,9 @@ class ModelJobsList {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <JobListData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new JobListData.fromJson(v));
       });
     }
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
@@ -37,24 +37,24 @@ class ModelJobsList {
   }
 }
 
-class Data {
-  String? id;
-  String? image;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
-  int? minPrice;
-  int? price;
-  String? projectDuration;
-  String? status;
-  String? experienceLevel;
-  String? scop;
-  String? categories;
+class JobListData {
+  dynamic id;
+  dynamic image;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
+  dynamic minPrice;
+  dynamic price;
+  dynamic projectDuration;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic scop;
+  dynamic categories;
   List<Skills>? skills;
   bool? isSaved;
 
-  Data(
+  JobListData(
       {this.id,
         this.image,
         this.name,
@@ -71,7 +71,7 @@ class Data {
         this.skills,
         this.isSaved});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  JobListData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     name = json['name'];
@@ -118,8 +118,8 @@ class Data {
 }
 
 class Skills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   Skills({this.id, this.name});
 
@@ -137,10 +137,10 @@ class Skills {
 }
 
 class Meta {
-  int? totalPage;
-  int? currentPage;
-  int? totalItem;
-  int? perPage;
+  dynamic totalPage;
+  dynamic currentPage;
+  dynamic totalItem;
+  dynamic perPage;
 
   Meta({this.totalPage, this.currentPage, this.totalItem, this.perPage});
 

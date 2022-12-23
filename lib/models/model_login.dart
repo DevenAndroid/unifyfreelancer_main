@@ -1,68 +1,49 @@
 class ModelLoginResponse {
-  ModelLoginResponse({
-    this.status,
-    this.message,
-    this.authToken,
-    this.data,
-  });
   bool? status;
   String? message;
   String? authToken;
   Data? data;
 
+  ModelLoginResponse({this.status, this.message, this.authToken, this.data});
+
   ModelLoginResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     authToken = json['auth_token'];
-    data = Data.fromJson(json['data']);
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['status'] = status;
-    _data['message'] = message;
-    _data['auth_token'] = authToken;
-    _data['data'] = data!.toJson();
-    return _data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['message'] = this.message;
+    data['auth_token'] = this.authToken;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
   }
 }
 
 class Data {
-  Data({
-    required this.user,
-  });
-  late final User user;
+  User? user;
+
+  Data({this.user});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = User.fromJson(json['user']);
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['user'] = user.toJson();
-    return _data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    return data;
   }
 }
 
 class User {
-  User({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.phone,
-    this.emailVerifiedAt,
-    this.status,
-    this.referalCode,
-    this.address,
-    this.country,
-    this.state,
-    this.city,
-    this.zipCode,
-    this.profileImage,
-    this.agreeTerms,
-    this.sendEmail,
-  });
   int? id;
   String? firstName;
   String? lastName;
@@ -70,6 +51,7 @@ class User {
   String? phone;
   bool? emailVerifiedAt;
   String? status;
+  String? onlineStatus;
   String? referalCode;
   String? address;
   String? country;
@@ -77,8 +59,39 @@ class User {
   String? city;
   String? zipCode;
   String? profileImage;
-  dynamic agreeTerms;
-  dynamic sendEmail;
+  bool? agreeTerms;
+  bool? sendEmail;
+  String? userType;
+  String? planId;
+  bool? isSubscription;
+  String? isVerified;
+  bool? isProfileComplete;
+  int? amount;
+
+  User(
+      {this.id,
+        this.firstName,
+        this.lastName,
+        this.email,
+        this.phone,
+        this.emailVerifiedAt,
+        this.status,
+        this.onlineStatus,
+        this.referalCode,
+        this.address,
+        this.country,
+        this.state,
+        this.city,
+        this.zipCode,
+        this.profileImage,
+        this.agreeTerms,
+        this.sendEmail,
+        this.userType,
+        this.planId,
+        this.isSubscription,
+        this.isVerified,
+        this.isProfileComplete,
+        this.amount});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,6 +101,7 @@ class User {
     phone = json['phone'];
     emailVerifiedAt = json['email_verified_at'];
     status = json['status'];
+    onlineStatus = json['online_status'];
     referalCode = json['referal_code'];
     address = json['address'];
     country = json['country'];
@@ -97,26 +111,39 @@ class User {
     profileImage = json['profile_image'];
     agreeTerms = json['agree_terms'];
     sendEmail = json['send_email'];
+    userType = json['user_type'];
+    planId = json['plan_id'];
+    isSubscription = json['is_subscription'];
+    isVerified = json['is_verified'];
+    isProfileComplete = json['is_profile_complete'];
+    amount = json['amount'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['first_name'] = firstName;
-    _data['last_name'] = lastName;
-    _data['email'] = email;
-    _data['phone'] = phone;
-    _data['email_verified_at'] = emailVerifiedAt;
-    _data['status'] = status;
-    _data['referal_code'] = referalCode;
-    _data['address'] = address;
-    _data['country'] = country;
-    _data['state'] = state;
-    _data['city'] = city;
-    _data['zip_code'] = zipCode;
-    _data['profile_image'] = profileImage;
-    _data['agree_terms'] = agreeTerms;
-    _data['send_email'] = sendEmail;
-    return _data;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['status'] = this.status;
+    data['online_status'] = this.onlineStatus;
+    data['referal_code'] = this.referalCode;
+    data['address'] = this.address;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['zip_code'] = this.zipCode;
+    data['profile_image'] = this.profileImage;
+    data['agree_terms'] = this.agreeTerms;
+    data['send_email'] = this.sendEmail;
+    data['user_type'] = this.userType;
+    data['plan_id'] = this.planId;
+    data['is_subscription'] = this.isSubscription;
+    data['is_verified'] = this.isVerified;
+    data['is_profile_complete'] = this.isProfileComplete;
+    data['amount'] = this.amount;
+    return data;
   }
 }

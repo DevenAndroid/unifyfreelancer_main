@@ -9,18 +9,19 @@ class AppStrings {
 
   // Login Screen Strings
   static const String loginYourAccount = "LOGIN YOUR ACCOUNT";
-  static const String userNameOrEmailID = "User Name or Email ID";
+  static const String userNameOrEmailID = "Email id";
   static const String password = "Password";
   static const String forgotPassword = "Forgot Password?";
   static const String orLoginWith = "Or login with...";
+  static const String orSignupWith = "Or Signup with...";
   static const String newToUnify = "New To Unify?";
   static const String register = "Register";
 
   //Signup Screen Strings
   static const String signUpYourAccount = "SIGNUP YOUR ACCOUNT";
-  static const String firstName = "First Name";
-  static const String lastName = "Last Name";
-  static const String emailID = "Email ID";
+  static const String firstName = "First name";
+  static const String lastName = "Last name";
+  static const String emailID = "Email id";
   static const String understandAndAgree =
       "Yes, I Understand and agree to the User Agreement";
   static const String unifyTermsOfService = "Unify Terms of Service";

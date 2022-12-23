@@ -3,26 +3,43 @@ class Assets {
   Assets._();
 
   static const String assetsIconAlerts = 'assets/icon/Alerts.svg';
+  static const String assetsIconScript = 'assets/icon/script.svg';
+  static const String fontsPoppinsRegular = 'assets/fonts/Poppins-Regular.ttf';
   static const String iconAlerts = 'assets/icon/alerts.png';
   static const String iconAppleIcon = 'assets/icon/apple_icon.png';
   static const String iconBadge = 'assets/icon/badge.svg';
+  static const String iconCertificate = 'assets/icon/certificate.svg';
+  static const String iconCompany = 'assets/icon/company.svg';
+  static const String iconContactInfo = 'assets/icon/contact_info.svg';
   static const String iconContracts = 'assets/icon/Contracts.svg';
   static const String iconCrown = 'assets/icon/crown.png';
-  static const String iconDegree = 'assets/icon/degree.png';
+  static const String iconCrown2 = 'assets/icon/crown2.svg';
+  static const String iconEmailIcon = 'assets/icon/email_icon.png';
+  static const String iconFillter = 'assets/icon/fillter.svg';
   static const String iconGoogleIcon = 'assets/icon/google_icon.png';
-  static const String iconHeart = 'assets/icon/heart.png';
+  static const String iconHeart = 'assets/icon/heart.svg';
+  static const String iconIdea = 'assets/icon/idea.svg';
+  static const String iconImg = 'assets/icon/img.png';
+  static const String iconLeaves = 'assets/icon/leaves.svg';
   static const String iconMessage = 'assets/icon/message.svg';
+  static const String iconMoney = 'assets/icon/money.svg';
   static const String iconOptions = 'assets/icon/options.png';
   static const String iconProposals = 'assets/icon/Proposals.svg';
+  static const String iconRating = 'assets/icon/rating.svg';
   static const String iconRocket = 'assets/icon/rocket.png';
   static const String iconScript = 'assets/icon/script.png';
   static const String iconSearch = 'assets/icon/Search.svg';
+  static const String iconSearch1 = 'assets/icon/search1.svg';
+  static const String iconStar = 'assets/icon/star.svg';
   static const String iconTax = 'assets/icon/tax.png';
   static const String iconUnifyFreelancer = 'assets/icon/unifyFreelancer.png';
+  static const String iconUnifyicon = 'assets/icon/unifyicon.png';
+  static const String iconVentureCapital = 'assets/icon/venture-capital.svg';
   static const String imagesCard = 'assets/images/card.png';
   static const String imagesCertification = 'assets/images/certification.png';
   static const String imagesFiles = 'assets/images/files.png';
   static const String imagesInvestment = 'assets/images/investment.png';
+  static const String imagesLike = 'assets/images/like.svg';
   static const String imagesLoginBg = 'assets/images/loginBg.png';
   static const String imagesLogo = 'assets/images/Logo.png';
   static const String imagesOnBoarding01 = 'assets/images/onBoarding_01.png';
@@ -30,5 +47,7 @@ class Assets {
   static const String imagesOnBoarding03 = 'assets/images/onBoarding_03.png';
   static const String imagesSplashBgImage = 'assets/images/splashBgImage.png';
   static const String imagesTestimonials = 'assets/images/testimonials.png';
+  static const String imagesUnify = 'assets/images/Unify.png';
+  static const String imagesUser = 'assets/images/user.svg';
 
 }

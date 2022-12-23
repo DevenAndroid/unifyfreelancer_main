@@ -85,22 +85,29 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide = true.obs;
-                                  eyeHide2 = true.obs;
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide = false.obs;
-                                  eyeHide2 = false.obs;
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: passwordController,
                     obSecure: eyeHide,
                     hintText: "  New password".obs,
-                    validator: MultiValidator([
+                  /*  validator: MultiValidator([
                       RequiredValidator(errorText: 'Password is required'),
-                      MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
-                      MaxLengthValidator(16, errorText: 'Max length is 16 '),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters with symbol & letter. '),
+                      MaxLengthValidator(16, errorText: "Password maximum length is 16"),
+                      PatternValidator(r"(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
+                          errorText: "Password must be at least 8 characters with symbol & letter. "),
+                    ]),*/
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: 'Please enter new password'),
+                      MinLengthValidator(8, errorText: 'Password must be at least 8 characters, with 1 special character & 1 numerical'),
+                      MaxLengthValidator(16, errorText: "Password maximum length is 16"),
+                      PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
+                          errorText: "Password must be at least 8 characters, with 1 special character & 1 numerical"),
                     ]),
                   ),
                   SizedBox(
@@ -121,13 +128,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                         ? InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = true.obs;
-                                  eyeHide = true.obs;
+
                                 }),
                             child: Icon(Icons.remove_red_eye_outlined))
                         : InkWell(
                             onTap: () => setState(() {
                                   eyeHide2 = false.obs;
-                                  eyeHide = false.obs;
+
                                 }),
                             child: Icon(Icons.visibility_off_outlined)),
                     controller: confirmPasswordController,
@@ -135,7 +142,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     hintText: "  Confirm new password".obs,
                     validator: (value) {
                       if (value == "") {
-                        return "Confirm password required";
+                        return "Please enter confirm password";
                       } else if (value.toString() !=
                           passwordController.text.trim()) {
                         return "Confirm password is not matching with password";

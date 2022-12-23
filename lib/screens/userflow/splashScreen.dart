@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
         print("object" + pref.getString('cookie').toString());
         Get.offAllNamed(MyRouter.bottomNavbar);
       } else {
-        if(pref.getBool("shownIntro") == null){
+        if (pref.getBool("shownIntro") == null) {
           Get.offAllNamed(MyRouter.onBoardingScreen);
         } else {
           Get.offAllNamed(MyRouter.loginScreen);

@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class JobsDetailController extends GetxController{
-   RxString coverLaterText = "".obs;
+   TextEditingController durationController = TextEditingController();
+   RxString duration = "".obs;
+
 }
