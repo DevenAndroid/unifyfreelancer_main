@@ -14,7 +14,9 @@
       },
       "oauth_client": [
         {
+
           "client_id": "475938716705-h0fhmlpc7fdc5815ogi0a2lo0a4jb7ha.apps.googleusercontent.com",
+
           "client_type": 1,
           "android_info": {
             "package_name": "com.eoxysit.unifyfreelancer",
