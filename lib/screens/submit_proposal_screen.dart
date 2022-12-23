@@ -455,7 +455,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                           EdgeInsets.only(
                                                               right: 10.0),
                                                       child: Text(
-                                                        "150.00",
+                                                        "00.00",
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             color: AppTheme
@@ -1395,7 +1395,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                                                       right:
                                                                           10.0),
                                                                   child: Text(
-                                                                    "150.00",
+                                                                    "00.00",
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             16,

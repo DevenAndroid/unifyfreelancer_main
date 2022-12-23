@@ -2166,18 +2166,19 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                         height: AddSize.size5,
                       ),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    //    crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Icon(
                             Icons.location_on,
                             color: Color(0xff878787),
+                            size: 18,
                           ),
                           const SizedBox(
                             width: 2,
                           ),
                           Expanded(
                             child: Text(
-                              "${controller.model.value.data!.basicInfo!.city} ${controller
+                              "${controller.model.value.data!.basicInfo!.city}, ${controller
                                       .model.value.data!.basicInfo!.country}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -2626,9 +2627,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             SizedBox(
               height: AddSize.size20,
             ),
-            SizedBox(
-              height: AddSize.size10,
-            ),
+
             educationList(),
             SizedBox(
               height: AddSize.size20,
@@ -2649,13 +2648,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             Row(
               children: [
                 Text(
-                  controller.model.value.data!.basicInfo!.city
-                          .toString()
-                          .isNotEmpty
-                      ? controller.model.value.data!.basicInfo!.city
-                              .toString() +
-                          ","
-                      : "",
+                  "${controller.model.value.data!.basicInfo!.city}, ",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: const Color(0xff878787),
@@ -2760,7 +2753,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
     });
   }
 
-  void services() {
+   services() {
     return showFilterButtonSheet(
         context: context,
         titleText: "Select a service",
