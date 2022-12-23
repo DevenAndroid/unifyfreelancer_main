@@ -28,6 +28,9 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
   void initState() {
     super.initState();
     controller.priceController.text = controller.priceController.text;
+    price = 3.00;
+    _unifyFeeController.text = ((price! * 20) / 100).toString();
+    _rateController.text = (price! - double.parse(_unifyFeeController.text)).toString();
   }
 
   double? price;
@@ -113,10 +116,20 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                         obSecure: false.obs,
                         hintText: "".obs,
                         prefix: Icon(Icons.attach_money),
-                        validator: MultiValidator([
-                          RequiredValidator(
-                              errorText: 'Please enter your hourly price'),
-                        ]),
+                        validator: (value){
+                          if(value!.isEmpty && value.toString().trim() != ""){
+                            return "Please enter your hourly price";
+                          }
+                          else if(double.parse(value.isEmpty ? "0" : value) < 3){
+                            return "Minimum hourly price must be 3 \$";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
+                        /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter your hourly price'),
+                        ]),*/
                       ),
                     ),
                     Text(

@@ -72,24 +72,24 @@ class Data {
 }
 
 class ProposalData {
-  int? id;
-  int? projectId;
-  int? clientId;
-  int? freelancerId;
-  Null? inviteId;
-  String? type;
-  String? budgetType;
-  Null? weeklyLimit;
-  String? projectDuration;
-  String? title;
-  Null? date;
-  String? coverLetter;
-  String? image;
-  String? status;
-  String? additionalStatus;
-  String? createdAt;
-  String? updatedAt;
-  int? bidAmount;
+  dynamic id;
+  dynamic projectId;
+  dynamic clientId;
+  dynamic freelancerId;
+  dynamic  inviteId;
+  dynamic type;
+  dynamic budgetType;
+  dynamic weeklyLimit;
+  dynamic projectDuration;
+  dynamic title;
+  dynamic date;
+  dynamic coverLetter;
+  dynamic image;
+  dynamic status;
+  dynamic additionalStatus;
+  dynamic createdAt;
+  dynamic updatedAt;
+  dynamic bidAmount;
 
   ProposalData(
       {this.id,
@@ -523,7 +523,7 @@ dynamic unansweredInvite;
 }
 
 class JobSkills {
-  String? id;
+  dynamic id;
   String? name;
 
   JobSkills({this.id, this.name});

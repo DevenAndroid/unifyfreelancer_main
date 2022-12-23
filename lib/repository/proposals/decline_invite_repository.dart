@@ -16,7 +16,7 @@ Future<ModelCommonResponse> inviteDeclineRepo({invitaion_id,reason,description, 
   var map = <String, dynamic>{};
   map['invitaion_id'] = invitaion_id;
   map['reason'] = reason;
-  map['id'] = description;
+  map['description'] = description;
 
   print(map);
   try {

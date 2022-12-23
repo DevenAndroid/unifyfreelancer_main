@@ -98,8 +98,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
             key: _formKey,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               decoration: BoxDecoration(
                 color: AppTheme.whiteColor,
                 borderRadius: const BorderRadius.all(
@@ -119,14 +119,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Enter Verification Code",
                     style: TextStyle(
                         color: AppTheme.textColor,
                         fontSize: 15,
                         fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   /*  Text(
@@ -154,7 +154,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       color: AppTheme.textColor,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   /*OtpTextField(
@@ -182,7 +182,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     errorTextSpace: 20,
                     errorTextMargin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.25),
                     appContext: context,
-                    textStyle: TextStyle(color: AppTheme.subText),
+                    textStyle: const TextStyle(color: AppTheme.subText),
                     controller: otpController,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -221,7 +221,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       });
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   InkWell(
@@ -240,14 +240,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: RichText(
                       text: TextSpan(
                           text: "if you Don't receive a code ? ",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppTheme.textColor,
                             fontSize: 14,
                           ),
                           children: [
                             TextSpan(
                               text: start == 0 ? "Resend" :"",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: AppTheme.primaryColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600),
@@ -255,14 +255,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           ]),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   RichText(
                     text: TextSpan(
                       //style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(
+                        const TextSpan(
                             text: 'Resend otp again in ',
                             style: TextStyle(
                                 fontSize: 14,
@@ -270,11 +270,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             )),
                         TextSpan(
                             text: "00:$start",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: AppTheme.primaryColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500)),
-                        TextSpan(
+                        const TextSpan(
                             text: " sec",
                             style: TextStyle(
                                 fontSize: 14,
@@ -283,7 +283,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   CommonButton("Verify", () {

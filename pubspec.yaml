@@ -20,7 +20,7 @@ dependencies:
   intl: ^0.17.0
   get: ^4.6.5
   flutter_screenutil: ^5.6.0
-  flutter_launcher_icons: ^0.11.0
+#  flutter_launcher_icons: ^0.11.0
   form_field_validator: ^1.1.0
 #  flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.6
@@ -49,11 +49,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icon/unifyFreelancer.png"
-  min_sdk_android: 21
+#flutter_icons:
+#  android: "launcher_icon"
+#  ios: true
+#  image_path: "assets/icon/unifyIcon.png"
+#  min_sdk_android: 21
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

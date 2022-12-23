@@ -39,7 +39,9 @@ class Data {
   dynamic experienceLevel;
   dynamic englishLevel;
   dynamic categories;
+  dynamic categoryId;
   dynamic createdAt;
+  dynamic postedDate;
   List<JobSkills>? jobSkills;
   List<ProposalList>? proposalList;
   ClientData? clientData;
@@ -55,6 +57,8 @@ class Data {
   dynamic openJobs;
   dynamic totalHire;
   dynamic totalActive;
+  dynamic inviteId;
+  bool? isInvited;
   List<ClientRecentHistory>? clientRecentHistory;
 
   Data(
@@ -74,7 +78,9 @@ class Data {
         this.experienceLevel,
         this.englishLevel,
         this.categories,
+        this.categoryId,
         this.createdAt,
+        this.postedDate,
         this.jobSkills,
         this.proposalList,
         this.clientData,
@@ -90,6 +96,8 @@ class Data {
         this.openJobs,
         this.totalHire,
         this.totalActive,
+        this.inviteId,
+        this.isInvited,
         this.clientRecentHistory});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -109,7 +117,9 @@ class Data {
     experienceLevel = json['experience_level'];
     englishLevel = json['english_level'];
     categories = json['categories'];
+    categoryId = json['category_id'];
     createdAt = json['created_at'];
+    postedDate = json['posted_date'];
     if (json['job_skills'] != null) {
       jobSkills = <JobSkills>[];
       json['job_skills'].forEach((v) {
@@ -137,6 +147,8 @@ class Data {
     openJobs = json['open_jobs'];
     totalHire = json['total_hire'];
     totalActive = json['total_Active'];
+    inviteId = json['invite_id'];
+    isInvited = json['is_invited'];
     if (json['client_recent_history'] != null) {
       clientRecentHistory = <ClientRecentHistory>[];
       json['client_recent_history'].forEach((v) {
@@ -163,7 +175,9 @@ class Data {
     data['experience_level'] = this.experienceLevel;
     data['english_level'] = this.englishLevel;
     data['categories'] = this.categories;
+    data['category_id'] = this.categoryId;
     data['created_at'] = this.createdAt;
+    data['posted_date'] = this.postedDate;
     if (this.jobSkills != null) {
       data['job_skills'] = this.jobSkills!.map((v) => v.toJson()).toList();
     }
@@ -186,6 +200,8 @@ class Data {
     data['open_jobs'] = this.openJobs;
     data['total_hire'] = this.totalHire;
     data['total_Active'] = this.totalActive;
+    data['invite_id'] = this.inviteId;
+    data['is_invited'] = this.isInvited;
     if (this.clientRecentHistory != null) {
       data['client_recent_history'] =
           this.clientRecentHistory!.map((v) => v.toJson()).toList();
@@ -195,8 +211,8 @@ class Data {
 }
 
 class JobSkills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   JobSkills({this.id, this.name});
 
@@ -214,19 +230,21 @@ class JobSkills {
 }
 
 class ProposalList {
-  String? freelancerId;
-  String? freelancerName;
-  String? profileImage;
-  String? proposalId;
-  String? proposalDescription;
-  String? status;
+  dynamic freelancerId;
+  dynamic inviteId;
+  dynamic freelancerName;
+  dynamic profileImage;
+  dynamic proposalId;
+  dynamic proposalDescription;
+  dynamic status;
   dynamic proposalAmount;
   dynamic hourRate;
-  String? time;
+  dynamic time;
   List<Skills>? skills;
 
   ProposalList(
       {this.freelancerId,
+        this.inviteId,
         this.freelancerName,
         this.profileImage,
         this.proposalId,
@@ -239,6 +257,7 @@ class ProposalList {
 
   ProposalList.fromJson(Map<String, dynamic> json) {
     freelancerId = json['freelancer_id'];
+    inviteId = json['invite_id'];
     freelancerName = json['freelancer_name'];
     profileImage = json['profile_image'];
     proposalId = json['proposal_id'];
@@ -258,6 +277,7 @@ class ProposalList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['freelancer_id'] = this.freelancerId;
+    data['invite_id'] = this.inviteId;
     data['freelancer_name'] = this.freelancerName;
     data['profile_image'] = this.profileImage;
     data['proposal_id'] = this.proposalId;

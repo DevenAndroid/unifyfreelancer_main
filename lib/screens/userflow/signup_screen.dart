@@ -58,6 +58,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }));
   }
 
+  bool checkboxColor = false;
+
   loginWithGoogle(context) async {
     await GoogleSignIn().signOut();
     GoogleSignInAccount? googleSignIn = await GoogleSignIn().signIn();
@@ -99,36 +101,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('cookie', jsonEncode(value.authToken));
         pref.setBool("shownIntro", true);
-        // try {
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .set({"userId": value.data!.user.id.toString()}).catchError((e) {
-        //     showToast(e.toString());
-        //   });
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .set({"lastMessage": "Good Morning"});
-        //   firebaseFireStore
-        //       .collection("users")
-        //       .doc(value.data!.user.id.toString())
-        //       .collection("messages")
-        //       .doc(value.data!.user.firstName)
-        //       .collection("FirebaseMessages")
-        //       .add({
-        //     "message": "Good Morning",
-        //     "timeStamp": DateTime.now().millisecondsSinceEpoch
-        //   });
-        // } catch (e) {
-        //   showToast(e.toString());
-        // }
-        if(value.data!.user!.isProfileComplete == true){
-          Get.offAllNamed(MyRouter.bottomNavbar);
-        }
-        else{
+        //   pref.setBool("isSubscribed", false);
+        if(value.data!.user!.isProfileComplete!)
+        {
+          if(value.data!.user!.isSubscription!){
+            Get.offAllNamed(MyRouter.bottomNavbar);
+          }
+          else{
+            Get.offAllNamed(MyRouter.subscriptionScreen);
+          }
+        } else {
           Get.offAllNamed(MyRouter.questionsScreen);
         }
       }
@@ -210,35 +192,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.person_outline,
                               ),
                               controller: firstNameController,
                               hintText: AppStrings.firstName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'First name is required'),
+                                    errorText: 'Please enter your first name'),
                               ])),
                           SizedBox(
                             height: 12.h,
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.person_outline,
                               ),
                               controller: lastNameController,
                               hintText: AppStrings.lastName.obs,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                    errorText: 'Last name is required'),
+                                    errorText: 'Please enter your last name'),
                               ])),
                           SizedBox(
                             height: 12.h,
                           ),
                           BoxTextField(
                               obSecure: false.obs,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.mail_outline,
                               ),
                               controller: emailController,
@@ -251,16 +233,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ])*/
                             validator: (value) {
                               if (emailController.text.isEmpty) {
-                                return "Please enter email address.";
-                              } else if (emailController.text
-                                  .contains('+')) {
+                                return "Please enter your email";
+                              } else if (emailController.text.contains('+') || emailController.text.contains(' ')) {
                                 return "Email is invalid";
                               } else if (RegExp(
                                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(emailController.text)) {
                                 return null;
                               } else {
-                                return 'Please Enter valid email address';
+                                return 'Please type a valid email address';
                               }
                             },
                           ),
@@ -271,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return BoxTextField(
                               obSecure: eyeHide,
                               textSize: AddSize.size12,
-                              prefix: Icon(
+                              prefix: const Icon(
                                 Icons.lock_outline,
                               ),
                               suffixIcon: eyeHide == false
@@ -281,22 +262,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                                           }),
                                       child:
-                                          Icon(Icons.remove_red_eye_outlined))
+                                          const Icon(Icons.remove_red_eye_outlined))
                                   : InkWell(
                                       onTap: () => setState(() {
                                             eyeHide = false.obs;
                                           }),
                                       child:
-                                          Icon(Icons.visibility_off_outlined)),
+                                          const Icon(Icons.visibility_off_outlined)),
                               controller: passwordController,
                               hintText: AppStrings.password.obs,
 
                               validator: MultiValidator([
-                                RequiredValidator(errorText: 'Password is required'),
-                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters,\nwith 1 special character & 1 numerical'),
+                                RequiredValidator(errorText: 'Please enter your password'),
+                                MinLengthValidator(8, errorText: 'Password must be at least 8 characters, with 1 special character & 1 numerical'),
                                 MaxLengthValidator(16, errorText: "Password maximum length is 16"),
                                 PatternValidator(r"(?=.*\W)(?=.*?[#?!@$%^&*-])(?=.*[0-9])",
-                                    errorText: "Password must be at least 8 characters,\nwith 1 special character & 1 numerical"),
+                                    errorText: "Password must be at least 8 characters, with 1 special character & 1 numerical"),
                               ]),
                             );
                           }),
@@ -305,7 +286,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           BoxTextField(
                             obSecure: eyeHide2,
-                            prefix: Icon(
+                            prefix: const Icon(
                               Icons.lock_outline,
                             ),
                             suffixIcon: eyeHide2 == false
@@ -313,20 +294,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     onTap: () => setState(() {
                                           eyeHide2 = true.obs;
                                         }),
-                                    child: Icon(Icons.remove_red_eye_outlined))
+                                    child: const Icon(Icons.remove_red_eye_outlined))
                                 : InkWell(
                                     onTap: () => setState(() {
                                           eyeHide2 = false.obs;
                                         }),
-                                    child: Icon(Icons.visibility_off_outlined)),
+                                    child: const Icon(Icons.visibility_off_outlined)),
                             // controller: confirmPasswordController,
                             hintText: "Confirm password".obs,
                             validator: (value) {
                               if (value == "") {
-                                return "Confirm password is required";
+                                return "Please enter your confirm password";
                               } else if (value.toString() !=
                                   passwordController.text.trim()) {
-                                return "Confirm password is not matching with password";
+                                return "The confirm password is not matching with password";
                               } else {
                                 return null;
                               }
@@ -357,7 +338,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               }
                               showModalBottomSheet<void>(
                                 isScrollControlled: true,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(30),
                                         topRight: Radius.circular(30))),
@@ -375,14 +356,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           child: IconButton(
                                             onPressed: () =>
                                                 Navigator.pop(context),
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.clear,
                                               color: AppTheme.blackColor,
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(10)
+                                          padding: const EdgeInsets.all(10)
                                               .copyWith(top: 0),
                                           child: TextFormField(
                                             onChanged: (value) {
@@ -415,7 +396,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               fillColor: AppTheme.primaryColor
                                                   .withOpacity(.05),
                                               hintText: "Select country",
-                                              prefixIcon: Icon(Icons.flag),
+                                              prefixIcon: const Icon(Icons.flag),
                                               hintStyle: const TextStyle(
                                                   color: Color(0xff596681),
                                                   fontSize: 15),
@@ -455,7 +436,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           return Expanded(
                                             child: ListView.builder(
                                                 physics:
-                                                    BouncingScrollPhysics(),
+                                                    const BouncingScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: searchList1.length,
                                                 itemBuilder: (context, index) {
@@ -473,7 +454,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                         Navigator.pop(context);
                                                       },
                                                       child: Padding(
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
                                                                   horizontal:
                                                                       30,
@@ -481,7 +462,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                           child: Text(
                                                             searchList1[index]
                                                                 .toString(),
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
@@ -498,6 +479,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                               );
                             },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             readOnly: true,
                             controller: countryController,
                             decoration: InputDecoration(
@@ -505,8 +487,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               filled: true,
                               fillColor: AppTheme.primaryColor.withOpacity(.05),
                               hintText: 'Select country',
-                              prefixIcon: Icon(Icons.flag),
-                              suffixIcon: Icon(
+                              prefixIcon: const Icon(Icons.flag),
+                              suffixIcon: const Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 20,
                               ),
@@ -537,7 +519,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: 'Country is required'),
+                                  errorText: 'Please select your country'),
                             ]),
                           ),
                           SizedBox(
@@ -547,16 +529,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Checkbox(
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  value: acceptTermsOrPrivacy,
-                                  activeColor: AppTheme.primaryColor,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      acceptTermsOrPrivacy = newValue!;
-                                    });
-                                  }),
-                              SizedBox(
+                              Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: checkboxColor == false ? Colors.grey.withOpacity(.78) : Colors.red,
+
+                                ),
+                                child: Checkbox(
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    value: acceptTermsOrPrivacy,
+                                    activeColor: AppTheme.primaryColor,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        acceptTermsOrPrivacy = newValue!;
+                                      });
+                                    }),
+                              ),
+                              const SizedBox(
                                 width: 5,
                               ),
                               Expanded(
@@ -654,7 +642,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             }
                             if(acceptTermsOrPrivacy == false){
-                              showToast("Please accept terms and conditions");
+                            //  showToast("Please accept terms and conditions");
+                              setState(() {
+                                checkboxColor = true;
+                              });
                             }
                           }, deviceWidth, 50),
                           SizedBox(

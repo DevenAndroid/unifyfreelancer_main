@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
@@ -22,6 +23,7 @@ class BoxTextField extends StatefulWidget {
   final RxString hintText;
   final Widget? prefix;
   final Widget? suffixIcon;
+  List<TextInputFormatter>? inputFormatters1 = [];
 
   BoxTextField({
     this.controller,
@@ -42,6 +44,7 @@ class BoxTextField extends StatefulWidget {
     this.labelText,
     this.suffixIcon,
     this.textSize = 0,
+    this.inputFormatters1,
   });
 
   @override
@@ -73,20 +76,23 @@ class _BoxTextFieldState extends State<BoxTextField> {
     }
     return Obx(() {
       return TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          inputFormatters: widget.inputFormatters1,
           onChanged: widget.onChanged,
           onEditingComplete: widget.onEditingCompleted,
+          textInputAction: TextInputAction.next,
           // autofocus: autofocus,
           minLines: widget.isMulti ? 4 : 1,
           maxLines: widget.isMulti ? null : 1,
           onTap: widget.onTap,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
-          obscureText:
-              widget.hintText == hintTextValue ? widget.obSecure!.value : false,
+          obscureText: widget.hintText == hintTextValue ? widget.obSecure!.value : false,
           keyboardType: widget.keyboardType,
           controller: widget.controller,
           decoration: InputDecoration(
             filled: true,
+            errorMaxLines: 2,
             fillColor: AppTheme.primaryColor.withOpacity(.05),
             hintText: widget.hintText.value,
             errorText: widget.errorText,

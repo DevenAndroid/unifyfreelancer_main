@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/popups/radio_buttons_profile_screen.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
@@ -22,6 +25,7 @@ import '../../repository/delete_portfolio_info_repository.dart';
 import '../../repository/delete_testimonial_info_repository.dart';
 import '../../repository/edit_designation_info_repository.dart';
 import '../../repository/edit_name_info_repository.dart';
+import '../../repository/verification_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../widgets/box_textfield.dart';
@@ -41,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final profileController = Get.put(ProfileScreenController());
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
-  final TextEditingController _occputationController = TextEditingController();
+ // final TextEditingController _occputationController = TextEditingController();
 
 /*  final TextEditingController _designationController = TextEditingController();
   final TextEditingController _designationDescriptionController = TextEditingController();*/
@@ -94,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
     map["occcuption"] = controller.titleController.text.trim();
-    ;
+  //  ;
     editNameInfoRepo(
             mapData: map,
             fieldName1: "profile_image",
@@ -117,8 +121,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: 20),
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         content: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -127,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Stack(
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.topRight,
                     child: SizedBox(
                       height: 15,
@@ -139,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       right: -15,
                       child: IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.clear,
                           size: 20,
                         ),
@@ -148,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     "Edit Details",
                     style: TextStyle(
@@ -158,11 +163,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "First Name"),
-              SizedBox(
+              const AddText(text: "First Name"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -176,11 +181,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "Last Name"),
-              SizedBox(
+              const AddText(text: "Last Name"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -194,11 +199,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              AddText(text: "Occupation"),
-              SizedBox(
+              const AddText(text: "Occupation"),
+              const SizedBox(
                 height: 6,
               ),
               BoxTextField(
@@ -213,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               CustomOutlineButton(
@@ -225,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
             ],
@@ -234,6 +239,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  final dateFormat = DateFormat('dd-MMM-yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     children: [
                       Container(
@@ -301,14 +308,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Image from Camera',
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w600),
                                                   )),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 15,
                                               ),
                                               InkWell(
@@ -318,7 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             .gallery);
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Image from Gallery',
                                                     style: TextStyle(
                                                         fontSize: 14,
@@ -418,7 +425,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     style: TextStyle(
                                         fontSize: 20.sp,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xff180095)),
+                                        color: const Color(0xff180095)),
                                   ),
                                   Wrap(
                                     children: List.generate(
@@ -432,12 +439,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .rating
                                                         .toString()) >
                                                 index
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.star,
                                                 color: AppTheme.pinkText,
                                                 size: 16,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.star_border_outlined,
                                                 color: Colors.grey,
                                                 size: 16,
@@ -460,7 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.flag_outlined,
                                         size: 20,
                                       ),
@@ -478,18 +485,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        padding: EdgeInsets.all(5),
+                                        margin: const EdgeInsets.only(left: 20),
+                                        padding: const EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: AppTheme.whiteColor,
                                             border: Border.all(
-                                                color: Color(0xff707070))),
+                                                color:
+                                                    const Color(0xff707070))),
                                         child: InkWell(
                                           onTap: () {
                                             showDialogueUpdateBasicInfo();
                                           },
-                                          child: Icon(
+                                          child: const Icon(
                                             Icons.edit,
                                             color: AppTheme.primaryColor,
                                             size: 15,
@@ -737,157 +745,162 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       showDialog(
                                         context: context,
                                         builder: (ctx) => AlertDialog(
-                                          insetPadding: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
+                                          insetPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 20),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 10),
                                           content: Form(
                                             key: _formKey,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      child: SizedBox(
-                                                        height: 15,
-                                                        width: 20,
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      const Align(
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        child: SizedBox(
+                                                          height: 15,
+                                                          width: 20,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Positioned(
-                                                        top: -15,
-                                                        right: -15,
-                                                        child: IconButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          icon: Icon(
-                                                            Icons.clear,
-                                                            size: 20,
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                                Text(
-                                                  "Edit Your Title",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          AppTheme.textColor),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                BoxTextField(
-                                                  controller: controller
-                                                      .titleController,
-                                                  obSecure: false.obs,
-                                                  hintText:
-                                                      "Website design and development"
-                                                          .obs,
-                                                  validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Example: Full StackDeveloper | Web & Mobile'),
-                                                    MinLengthValidator(5,
-                                                        errorText:
-                                                            'Minimum length is 5 characters'),
-                                                    MaxLengthValidator(50,
-                                                        errorText:
-                                                            "Maximum length is 50 characters"),
-                                                  ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                BoxTextField(
-                                                  controller: controller
-                                                      .descriptionController,
-                                                  obSecure: false.obs,
-                                                  hintText: "description".obs,
-                                                  isMulti: true,
-                                                  validator: MultiValidator([
-                                                    RequiredValidator(
-                                                        errorText:
-                                                            'Description required'),
-                                                    MinLengthValidator(100,
-                                                        errorText:
-                                                            'Minimum length is 100 characters'),
-                                                    MaxLengthValidator(5000,
-                                                        errorText:
-                                                            "Max Length is 5000 characters"),
-                                                  ]),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                CustomOutlineButton(
-                                                  title: "Change",
-                                                  backgroundColor:
-                                                      AppTheme.primaryColor,
-                                                  onPressed: () {
-                                                    if (_formKey.currentState!
-                                                        .validate()) {
-                                                      editDesignationInfoRepo(
-                                                              title: controller
-                                                                  .titleController
-                                                                  .text
-                                                                  .trim(),
-                                                              description:
-                                                                  controller
-                                                                      .descriptionController
-                                                                      .text
-                                                                      .trim(),
-                                                              context: context)
-                                                          .then((value) {
-                                                        if (value.status ==
-                                                            true) {
-                                                          showToast(value
-                                                              .message
-                                                              .toString());
-                                                          Get.back();
-                                                          print(jsonEncode(
-                                                              value));
-                                                          profileController
-                                                              .getData();
-                                                        } else {
-                                                          print(jsonEncode(
-                                                              value));
-                                                          showToast(value
-                                                              .message
-                                                              .toString());
-                                                        }
-                                                      });
-                                                    }
-                                                  },
-                                                  textColor:
-                                                      AppTheme.whiteColor,
-                                                  expandedValue: true,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
+                                                      Positioned(
+                                                          top: -15,
+                                                          right: -15,
+                                                          child: IconButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            icon: const Icon(
+                                                              Icons.clear,
+                                                              size: 20,
+                                                            ),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                  const Text(
+                                                    "Edit Your Title",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            AppTheme.textColor),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  BoxTextField(
+                                                    controller: controller
+                                                        .titleController,
+                                                    obSecure: false.obs,
+                                                    hintText:
+                                                        "Website design and development"
+                                                            .obs,
+                                                    validator: MultiValidator([
+                                                      RequiredValidator(
+                                                          errorText:
+                                                              'Example: Full StackDeveloper | Web & Mobile'),
+                                                      MinLengthValidator(5,
+                                                          errorText:
+                                                              'Minimum length is 5 characters'),
+                                                      MaxLengthValidator(50,
+                                                          errorText:
+                                                              "Maximum length is 50 characters"),
+                                                    ]),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  BoxTextField(
+                                                    controller: controller
+                                                        .descriptionController,
+                                                    obSecure: false.obs,
+                                                    hintText: "description".obs,
+                                                    isMulti: true,
+                                                    validator: MultiValidator([
+                                                      RequiredValidator(
+                                                          errorText:
+                                                              'Description required'),
+                                                      MinLengthValidator(100,
+                                                          errorText:
+                                                              'Minimum length is 100 characters'),
+                                                      MaxLengthValidator(5000,
+                                                          errorText:
+                                                              "Max Length is 5000 characters"),
+                                                    ]),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  CustomOutlineButton(
+                                                    title: "Change",
+                                                    backgroundColor:
+                                                        AppTheme.primaryColor,
+                                                    onPressed: () {
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                        editDesignationInfoRepo(
+                                                                title: controller
+                                                                    .titleController
+                                                                    .text
+                                                                    .trim(),
+                                                                description:
+                                                                    controller
+                                                                        .descriptionController
+                                                                        .text
+                                                                        .trim(),
+                                                                context:
+                                                                    context)
+                                                            .then((value) {
+                                                          if (value.status ==
+                                                              true) {
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                            Get.back();
+                                                            print(jsonEncode(
+                                                                value));
+                                                            profileController
+                                                                .getData();
+                                                          } else {
+                                                            print(jsonEncode(
+                                                                value));
+                                                            showToast(value
+                                                                .message
+                                                                .toString());
+                                                          }
+                                                        });
+                                                      }
+                                                    },
+                                                    textColor:
+                                                        AppTheme.whiteColor,
+                                                    expandedValue: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       );
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.only(left: 20),
-                                      padding: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.only(left: 20),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -897,7 +910,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ],
                               ),
 
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
 
@@ -906,7 +919,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         .model.value.data!.basicInfo!.occuption
                                         .toString()
                                         .isEmpty
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : Text(
                                         profileController.model.value.data!
                                             .basicInfo!.occuption
@@ -935,17 +948,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 5.h,
                               ),
                               Text(
-                                profileController.model.value.data!.basicInfo!
-                                        .description
-                                        .toString()
-                                        .isEmpty
-                                    ? "Description"
-                                    : profileController.model.value.data!
-                                        .basicInfo!.description
-                                        .toString(),
-                                style: TextStyle(
-                                    fontSize: 13.sp, color: AppTheme.textColor),
-                              ),
+                                  profileController.model.value.data!.basicInfo!
+                                          .description
+                                          .toString()
+                                          .isEmpty
+                                      ? "Description"
+                                      : profileController.model.value.data!
+                                          .basicInfo!.description
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 13.sp,
+                                      color: AppTheme.textColor),
+                                  maxLines: controller.descTextShowFlag.value
+                                      ? 10000
+                                      : 6),
+                              SizedBox(
+                                  child: controller.textLength.value <= 200
+                                      ? const SizedBox()
+                                      : InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              controller
+                                                      .descTextShowFlag.value =
+                                                  !controller
+                                                      .descTextShowFlag.value;
+                                            });
+                                          },
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                controller
+                                                        .descTextShowFlag.value
+                                                    ? const Text(
+                                                        "Show Less",
+                                                        style: TextStyle(
+                                                            color: AppTheme
+                                                                .primaryColor),
+                                                      )
+                                                    : const Text("Show More",
+                                                        style: TextStyle(
+                                                            color: AppTheme
+                                                                .primaryColor))
+                                              ]))),
                               SizedBox(
                                 height: 5.h,
                               ),
@@ -981,24 +1026,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   InkWell(
                                     onTap: () {
                                       showModalBottomSheet<void>(
-                                        shape: RoundedRectangleBorder(
+                                        shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(30),
                                                 topRight: Radius.circular(30))),
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return RadioButtonsProfileScreen();
+                                          return const RadioButtonsProfileScreen();
                                         },
                                       );
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1026,18 +1071,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: List.generate(
                                         5,
                                         (index) => 5 > index
-                                            ? Icon(
+                                            ? const Icon(
                                                 Icons.star,
                                                 color: AppTheme.primaryColor,
                                                 size: 17,
                                               )
-                                            : Icon(
+                                            : const Icon(
                                                 Icons.star_border_outlined,
                                                 color: Colors.grey,
                                                 size: 17,
                                               )),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Text(
@@ -1106,13 +1151,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () =>
                                         Get.toNamed(MyRouter.editSkillsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.edit,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1126,7 +1171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: profileController
                                     .model.value.data!.skills!.length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -1173,13 +1218,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addPortFolioScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1195,10 +1240,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: profileController.model.value.data!
                                             .portfolio!.length ==
                                         0
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : ListView.builder(
                                         shrinkWrap: true,
-                                        physics: BouncingScrollPhysics(),
+                                        physics: const BouncingScrollPhysics(),
                                         itemCount: profileController.model.value
                                             .data!.portfolio!.length,
                                         itemBuilder: (context, index) {
@@ -1208,7 +1253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           return Column(
                                             children: [
                                               Container(
-                                                margin: EdgeInsets.all(5),
+                                                margin: const EdgeInsets.all(5),
                                                 height: MediaQuery.of(context)
                                                         .size
                                                         .height *
@@ -1229,7 +1274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       fit: BoxFit.cover),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Row(
@@ -1243,7 +1288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         color: AppTheme
                                                             .darkBlueText),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 5,
                                                   ),
                                                   Expanded(
@@ -1305,19 +1350,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       });
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 15),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 15),
                                                       padding:
-                                                          EdgeInsets.all(5),
+                                                          const EdgeInsets.all(
+                                                              5),
                                                       decoration: BoxDecoration(
                                                           shape:
                                                               BoxShape.circle,
                                                           color: AppTheme
                                                               .whiteColor,
                                                           border: Border.all(
-                                                              color: Color(
+                                                              color: const Color(
                                                                   0xff707070))),
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.delete,
                                                         color: AppTheme
                                                             .primaryColor,
@@ -1327,7 +1374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Row(
@@ -1343,7 +1390,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         color: AppTheme
                                                             .darkBlueText),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 5,
                                                   ),
                                                   Expanded(
@@ -1365,7 +1412,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               Divider(
@@ -1416,13 +1463,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addTestimonialsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -1434,521 +1481,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              SizedBox(
-                                  width: deviceWidth,
-                                  child: profileController.model.value.data!
-                                              .testimonial!.length ==
-                                          0
-                                      ? Container(
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            color: AppTheme.whiteColor,
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {},
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/testimonials.png",
-                                                  height: 100,
-                                                  width: 100,
-                                                ),
-                                                SizedBox(
-                                                  height: 10.h,
-                                                ),
-                                                Text(
-                                                  "Showcase your skills with non-Unify client testimonials",
-                                                  style: TextStyle(
-                                                      fontSize: 13.sp,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: Color(0xff363636)),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: profileController.model
-                                              .value.data!.testimonial!.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return profileController
-                                                        .model
-                                                        .value
-                                                        .data!
-                                                        .testimonial![index]
-                                                        .status
-                                                        .toString() ==
-                                                    "pending"
-                                                ? Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Message :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .message
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Request :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .requestSent
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Status :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .status
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                        Divider(
-                                                          color: AppTheme
-                                                              .pinkText
-                                                              .withOpacity(.29),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              "Name :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                        .model
-                                                                        .value
-                                                                        .data!
-                                                                        .testimonial![
-                                                                            index]
-                                                                        .firstName
-                                                                        .toString() +
-                                                                    " " +
-                                                                    profileController
-                                                                        .model
-                                                                        .value
-                                                                        .data!
-                                                                        .testimonial![
-                                                                            index]
-                                                                        .lastName
-                                                                        .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {
-                                                                deleteTestimonialInfoRepo(
-                                                                        profileController
-                                                                            .model
-                                                                            .value
-                                                                            .data!
-                                                                            .testimonial![
-                                                                                index]
-                                                                            .id,
-                                                                        context)
-                                                                    .then(
-                                                                        (value) {
-                                                                  if (value
-                                                                          .status ==
-                                                                      true) {
-                                                                    print(profileController
-                                                                        .model
-                                                                        .value
-                                                                        .data!
-                                                                        .testimonial![
-                                                                            index]
-                                                                        .id);
-                                                                    profileController
-                                                                        .model
-                                                                        .value
-                                                                        .data!
-                                                                        .testimonial!
-                                                                        .removeAt(
-                                                                            index);
-                                                                    profileController
-                                                                        .getData();
-                                                                  }
-                                                                  showToast(value
-                                                                      .message
-                                                                      .toString());
-                                                                  print(profileController
-                                                                      .model
-                                                                      .value
-                                                                      .data!
-                                                                      .testimonial![
-                                                                          index]
-                                                                      .id);
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            15),
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(5),
-                                                                decoration: BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    color: AppTheme
-                                                                        .whiteColor,
-                                                                    border: Border.all(
-                                                                        color: Color(
-                                                                            0xff707070))),
-                                                                child: Icon(
-                                                                  Icons.delete,
-                                                                  color: AppTheme
-                                                                      .primaryColor,
-                                                                  size: 15,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Email :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .email
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Title :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .title
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Type :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .type
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "Description :",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: AppTheme
-                                                                      .darkBlueText),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 5,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                profileController
-                                                                    .model
-                                                                    .value
-                                                                    .data!
-                                                                    .testimonial![
-                                                                        index]
-                                                                    .description
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                        Divider(
-                                                          color: AppTheme
-                                                              .pinkText
-                                                              .withOpacity(.29),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                          },
-                                        )),
+                              testimonials(),
+
                             ],
                           )),
                       Container(
@@ -1989,13 +1523,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     onTap: () => Get.toNamed(
                                         MyRouter.addCertificationsScreen),
                                     child: Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                           border: Border.all(
-                                              color: Color(0xff707070))),
-                                      child: Icon(
+                                              color: const Color(0xff707070))),
+                                      child: const Icon(
                                         Icons.add,
                                         color: AppTheme.primaryColor,
                                         size: 15,
@@ -2012,8 +1546,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               .certificates!.length ==
                                           0
                                       ? Container(
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.rectangle,
                                             color: AppTheme.whiteColor,
                                           ),
@@ -2032,7 +1566,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 style: TextStyle(
                                                     fontSize: 13.sp,
                                                     fontWeight: FontWeight.w300,
-                                                    color: Color(0xff363636)),
+                                                    color: const Color(
+                                                        0xff363636)),
                                                 textAlign: TextAlign.center,
                                               ),
                                             ],
@@ -2041,7 +1576,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemCount: showMoreCertificate.value
                                               ? profileController.model.value
                                                   .data!.certificates!.length
@@ -2062,14 +1597,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           itemBuilder: (context, index) {
                                             return Column(
                                               children: [
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
                                                 Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
+                                                    /* Container(
                                                         height: 85,
                                                         width: 70,
                                                         child: Image.network(
@@ -2077,7 +1612,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         )),
                                                     SizedBox(
                                                       width: 20,
-                                                    ),
+                                                    ),*/
                                                     Expanded(
                                                       child: Column(
                                                         crossAxisAlignment:
@@ -2147,14 +1682,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                 },
                                                                 child:
                                                                     Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              15),
+                                                                  margin: const EdgeInsets
+                                                                          .only(
+                                                                      left: 15),
                                                                   padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              5),
+                                                                      const EdgeInsets
+                                                                          .all(5),
                                                                   decoration: BoxDecoration(
                                                                       shape: BoxShape
                                                                           .circle,
@@ -2162,8 +1695,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                                           .whiteColor,
                                                                       border: Border.all(
                                                                           color:
-                                                                              Color(0xff707070))),
-                                                                  child: Icon(
+                                                                              const Color(0xff707070))),
+                                                                  child:
+                                                                      const Icon(
                                                                     Icons
                                                                         .delete,
                                                                     color: AppTheme
@@ -2174,32 +1708,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               ),
                                                             ],
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.verified,
-                                                                size: 15,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text(
-                                                                "Pending verification",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        13.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: AppTheme
-                                                                        .darkBlueText),
-                                                              ),
-                                                            ],
+                                                          Text(
+                                                            profileController
+                                                                .model
+                                                                .value
+                                                                .data!
+                                                                .certificates![
+                                                                    index]
+                                                                .description
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 13.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppTheme
+                                                                    .darkBlueText),
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             height: 5,
                                                           ),
                                                         ],
@@ -2207,7 +1736,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
                                                 Divider(
@@ -2258,13 +1787,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () =>
                                       Get.toNamed(MyRouter.addEmploymentScreen),
                                   child: Container(
-                                    padding: EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: AppTheme.whiteColor,
                                         border: Border.all(
-                                            color: Color(0xff707070))),
-                                    child: Icon(
+                                            color: const Color(0xff707070))),
+                                    child: const Icon(
                                       Icons.add,
                                       color: AppTheme.primaryColor,
                                       size: 15,
@@ -2278,7 +1807,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: profileController
                                     .model.value.data!.employment!.length,
                                 itemBuilder: (context, index) {
@@ -2295,7 +1824,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             profileController.model.value.data!
                                                 .employment![index].subject
                                                 .toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Color(0xff363636)),
@@ -2318,7 +1847,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .company
                                                         .toString()
                                                 : "",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Color(0xff363636)),
@@ -2331,10 +1860,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            profileController.model.value.data!
-                                                .employment![index].startDate
-                                                .toString(),
-                                            style: TextStyle(
+                                            dateFormat.format(DateTime.parse(
+                                                profileController
+                                                    .model
+                                                    .value
+                                                    .data!
+                                                    .employment![index]
+                                                    .startDate
+                                                    .toString())),
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                                 color: Color(0xff363636)),
@@ -2349,15 +1883,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .toString() !=
                                                     "null"
                                                 ? " - " +
-                                                    profileController
-                                                        .model
-                                                        .value
-                                                        .data!
-                                                        .employment![index]
-                                                        .endDate
-                                                        .toString()
-                                                : "",
-                                            style: TextStyle(
+                                                    dateFormat.format(DateTime
+                                                        .parse(profileController
+                                                            .model
+                                                            .value
+                                                            .data!
+                                                            .employment![index]
+                                                            .endDate
+                                                            .toString()))
+                                                : " - Currently working",
+                                            style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
                                                 color: Color(0xff363636)),
@@ -2374,14 +1909,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 MyRouter.addEmploymentScreen,
                                                 arguments: index),
                                             child: Container(
-                                              padding: EdgeInsets.all(5),
+                                              padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: AppTheme.whiteColor,
                                                   border: Border.all(
-                                                      color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
+                                                      color: const Color(
+                                                          0xff707070))),
+                                              child: const Icon(
                                                 Icons.edit,
                                                 color: AppTheme.primaryColor,
                                                 size: 15,
@@ -2411,15 +1946,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               });
                                             },
                                             child: Container(
-                                              margin: EdgeInsets.only(left: 15),
-                                              padding: EdgeInsets.all(5),
+                                              margin: const EdgeInsets.only(
+                                                  left: 15),
+                                              padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: AppTheme.whiteColor,
                                                   border: Border.all(
-                                                      color:
-                                                          Color(0xff707070))),
-                                              child: Icon(
+                                                      color: const Color(
+                                                          0xff707070))),
+                                              child: const Icon(
                                                 Icons.delete,
                                                 color: AppTheme.primaryColor,
                                                 size: 15,
@@ -2584,7 +2120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   );
       }),
@@ -2629,12 +2165,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.hoursPerWeekScreen),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.edit,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2659,7 +2195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 13.sp,
                     color: AppTheme.textColor),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Text(
@@ -2695,12 +2231,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => services(),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2738,13 +2274,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.addLanguageScreen),
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2754,12 +2290,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               InkWell(
                 onTap: () => Get.toNamed(MyRouter.editLanguageScreen),
                 child: Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.edit,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2773,7 +2309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: profileController.model.value.data!.language!.length,
               itemBuilder: (context, index) {
                 return Padding(
@@ -2791,7 +2327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
@@ -2805,41 +2341,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }),
-         /* Divider(
+          Divider(
             color: AppTheme.pinkText.withOpacity(.29),
           ),
           SizedBox(
             height: 10.h,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Verification",
-                style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkBlueText),
-              ),
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "Verification",
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.darkBlueText),
+            ),
+            if (profileController.model.value.data!.basicInfo!.isVerified
+                        .toString()
+                        .toLowerCase() ==
+                    "pending" ||
+                profileController.model.value.data!.basicInfo!.isVerified
+                        .toString()
+                        .toLowerCase() ==
+                    "reject")
               InkWell(
                 onTap: () {
                   verification();
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
                   ),
                 ),
               ),
-              *//* InkWell(
+          ]),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(children: [
+            Text(
+              "ID : ",
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.darkBlueText),
+            ),
+            Text(
+              profileController.model.value.data!.basicInfo!.isVerified
+                  .toString(),
+              style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.darkBlueText),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Icon(
+              Icons.verified,
+              color: profileController.model.value.data!.basicInfo!.isVerified
+                          .toString()
+                          .toLowerCase() ==
+                      "approve"
+                  ? AppTheme.primaryColor
+                  : Colors.grey.withOpacity(.49),
+              size: 20,
+            ),
+          ]),
+
+          /* InkWell(
                                 onTap: () {},
                                 child: Container(
                                   padding: EdgeInsets.all(5),
@@ -2854,7 +2431,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     size: 15,
                                   ),
                                 ),
-                              ),*//*
+                              ),*/ /*
             ],
           ),
           SizedBox(
@@ -2906,13 +2483,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Get.toNamed(MyRouter.addEducationScreen);
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(5),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
+                      border: Border.all(color: const Color(0xff707070))),
+                  child: const Icon(
                     Icons.add,
                     color: AppTheme.primaryColor,
                     size: 15,
@@ -2942,7 +2519,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: profileController.model.value.data!.education!.length,
             itemBuilder: (context, index) {
               return Column(
@@ -2958,7 +2535,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff4D4D4D)),
+                        color: const Color(0xff4D4D4D)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2982,12 +2559,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   arguments: index);
                             },
                             child: Container(
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
+                                  border: Border.all(
+                                      color: const Color(0xff707070))),
+                              child: const Icon(
                                 Icons.edit,
                                 color: AppTheme.primaryColor,
                                 size: 15,
@@ -3011,13 +2589,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               });
                             },
                             child: Container(
-                              margin: EdgeInsets.only(left: 15),
-                              padding: EdgeInsets.all(5),
+                              margin: const EdgeInsets.only(left: 15),
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.whiteColor,
-                                  border: Border.all(color: Color(0xff707070))),
-                              child: Icon(
+                                  border: Border.all(
+                                      color: const Color(0xff707070))),
+                              child: const Icon(
                                 Icons.delete,
                                 color: AppTheme.primaryColor,
                                 size: 15,
@@ -3030,6 +2609,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(
                     height: 5.h,
+                  ),
+                  Text(
+                    profileController
+                            .model.value.data!.education![index].startYear
+                            .toString() +
+                        " - " +
+                        profileController
+                            .model.value.data!.education![index].endYear
+                            .toString(),
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff4D4D4D)),
                   ),
                   Divider(
                     color: AppTheme.pinkText.withOpacity(.29),
@@ -3086,7 +2678,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         profileController
                             .model.value.data!.basicInfo!.totalEarning
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff0777FD)),
@@ -3112,7 +2704,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         profileController.model.value.data!.basicInfo!.totalJobs
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff6B428B)),
@@ -3153,7 +2745,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         profileController
                             .model.value.data!.basicInfo!.totalHours
                             .toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: Color(0xffF66C6C)),
@@ -3173,14 +2765,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w500,
                             color: AppTheme.darkBlueText.withOpacity(0.47)),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                           profileController
                               .model.value.data!.basicInfo!.pendingProject
                               .toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.pinkText,
@@ -3194,7 +2786,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-  void services() {
+   services() {
     return showFilterButtonSheet(
         context: context,
         titleText: "Select a service",
@@ -3206,7 +2798,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: controller.modelOfService.value.data!.length,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -3242,97 +2834,856 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-/*  verification(){
-    List dropDownValues = [
-      "Driving licences"
-    ];
-    return    showDialog(
+  verification() {
+    List dropDownValues = ["passport", "driving_license", "other"];
+    String currentSelectedDocument = dropDownValues.first;
+    final _formKey34 = GlobalKey<FormState>();
+
+    Rx<File> documentFile = File("").obs;
+    RxString fileName = "".obs;
+
+    pickFileToUpload() async {
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        fileName.value = result.files.first.name;
+        documentFile.value = File(result.files.single.path!);
+        setState(() {});
+      }
+    }
+
+    Rx<File> documentFile1 = File("").obs;
+    RxString fileName1 = "".obs;
+
+    pickFileToUpload1() async {
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        fileName1.value = result.files.first.name;
+        documentFile1.value = File(result.files.single.path!);
+        setState(() {});
+      }
+    }
+
+    return showDialog(
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
-            child: Form(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 40.0),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: AddSize.size5,
-                      ),
-                      Text(
-                        "User Verification",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                      ),
-                      SizedBox(
-                        height: AddSize.size5,
-                      ),
-                      DropdownButtonFormField<dynamic>(
-                        alignment: Alignment.centerLeft,
-                        decoration: InputDecoration(
-                          hintText: 'Select ID',
-                          focusColor: AppTheme.textfield.withOpacity(0.5),
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          filled: true,
-                          fillColor:
-                          AppTheme.whitebg.withOpacity(0.5),
-                          contentPadding: EdgeInsets.symmetric(horizontal: AddSize.padding12),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: AppTheme.boardercolor.withOpacity(0.5)),
-                            borderRadius:
-                            BorderRadius.circular(10.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppTheme.boardercolor
-                                      .withOpacity(0.5)),
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(10.0))),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppTheme.boardercolor
-                                      .withOpacity(0.5),
-                                  width: 3.0),
-                              borderRadius:
-                              BorderRadius.circular(15.0)),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Obx(() {
+              return Form(
+                key: _formKey34,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, right: 15, left: 15, bottom: 15),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: AddSize.size5,
                         ),
-                        isDense: false,
-                        validator: (value) {
-                          if (value == null) {
-                            return "Select ID Type";
-                          } else {
-                            return null;
-                          }
-                        },
-                        value: currentSelectedDocument.value == ""
-                            ? null
-                            : currentSelectedDocument.value,
-                        isExpanded: true,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: List.generate(
-                            dropDownValues.length,
-                                (index) => DropdownMenuItem(
-                                value: dropDownValues[index]
-                                    .slug
-                                    .toString(),
-                                child: Text(dropDownValues[index]
-                                    .title
-                                    .toString()))),
-                        onChanged: (val) {
-                          currentSelectedDocument.value = val;
-                        },
-                      ),
-
-                    ],
+                        Text(
+                          "User Verification",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                        ),
+                        SizedBox(
+                          height: AddSize.size20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Id Proof",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.darkBlueText),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            DropdownButtonFormField<dynamic>(
+                              alignment: Alignment.centerLeft,
+                              decoration: InputDecoration(
+                                hintText: 'Select id',
+                                focusColor: AppTheme.textfield.withOpacity(0.5),
+                                hintStyle:
+                                    TextStyle(color: Colors.grey.shade400),
+                                filled: true,
+                                fillColor: AppTheme.whiteColor.withOpacity(0.5),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: AddSize.padding12),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: AppTheme.greyTextColor
+                                          .withOpacity(0.5)),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppTheme.greyTextColor
+                                            .withOpacity(0.5)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: AppTheme.greyTextColor
+                                            .withOpacity(0.5),
+                                        width: 3.0),
+                                    borderRadius: BorderRadius.circular(15.0)),
+                              ),
+                              isDense: false,
+                              validator: (value) {
+                                if (value.toString().trim().isEmpty) {
+                                  return "Please select id";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              value: currentSelectedDocument,
+                              isExpanded: true,
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              items: List.generate(
+                                  dropDownValues.length,
+                                  (index) => DropdownMenuItem(
+                                      value: dropDownValues[index].toString(),
+                                      child: Text(dropDownValues[index]
+                                          .toString()
+                                          .capitalizeFirst!
+                                          .replaceAll("_", " ")))),
+                              onChanged: (val) {
+                                currentSelectedDocument = val;
+                                if (kDebugMode) {
+                                  print(currentSelectedDocument);
+                                }
+                              },
+                            ),
+                            SizedBox(
+                              height: AddSize.size25,
+                            ),
+                            Text(
+                              "Upload Documents",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.darkBlueText),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            InkWell(
+                              onTap: () => pickFileToUpload(),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffE1EDFB),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: documentFile.value.path == ""
+                                      ? RichText(
+                                          text: TextSpan(
+                                              text: "Upload ",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppTheme.primaryColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: "document front image",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: AppTheme
+                                                          .darkBlueText),
+                                                )
+                                              ]),
+                                        )
+                                      : Text(
+                                          fileName.value.toString(),
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            InkWell(
+                              onTap: () => pickFileToUpload1(),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 13, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffE1EDFB),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: documentFile1.value.path == ""
+                                      ? RichText(
+                                          text: TextSpan(
+                                              text: "Upload ",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppTheme.primaryColor),
+                                              children: [
+                                                TextSpan(
+                                                  text: "document back image",
+                                                  style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: AppTheme
+                                                          .darkBlueText),
+                                                )
+                                              ]),
+                                        )
+                                      : Text(
+                                          fileName1.value.toString(),
+                                          style: TextStyle(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: AddSize.size25,
+                            ),
+                            Row(children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'cancel',
+                                    backgroundColor: AppTheme.whiteColor,
+                                    onPressed: () => Get.back(),
+                                    textColor: AppTheme.primaryColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: CustomOutlineButton(
+                                    title: 'Save',
+                                    backgroundColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      if (_formKey34.currentState!.validate() &&
+                                          documentFile.value.path != "" &&
+                                          documentFile1.value.path != "") {
+                                        Map map = <String, String>{};
+                                        map["type"] =
+                                            currentSelectedDocument.toString();
+                                        userDocumentVerifyRepo(
+                                                mapData: map,
+                                                fieldName1: "document_front",
+                                                file1: documentFile.value,
+                                                fieldName2: "document_back",
+                                                file2: documentFile1.value,
+                                                context: context)
+                                            .then((value) {
+                                          if (value.status == true) {
+                                            Get.back();
+                                            profileController.getData();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      } else {
+                                        showToast(
+                                            'Please add front and back documents');
+                                      }
+                                    },
+                                    textColor: AppTheme.whiteColor,
+                                    expandedValue: false,
+                                  ),
+                                ),
+                              ),
+                            ])
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
           );
         });
-  }*/
+  }
+
+  testimonials() {
+    var deviceWidth = MediaQuery.of(context).size.width;
+    return  SizedBox(
+        width: deviceWidth,
+        child:
+        profileController.model.value.data!
+            .testimonial!.isEmpty
+            ? Container(
+          margin: const EdgeInsets.all(5),
+          decoration: const BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: AppTheme.whiteColor,
+          ),
+          child: InkWell(
+            onTap: () {},
+            child: Column(
+              children: [
+                Image.asset(
+                  "assets/images/testimonials.png",
+                  height: 100,
+                  width: 100,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  "Showcase your skills with non-Unify client testimonials",
+                  style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight:
+                      FontWeight.w300,
+                      color: const Color(
+                          0xff363636)),
+                  textAlign:
+                  TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        )
+            : ListView.builder(
+          shrinkWrap: true,
+          physics:
+          const NeverScrollableScrollPhysics(),
+          itemCount: profileController.model.value.data!.testimonial!.length,
+          itemBuilder: (BuildContext context, int index) {
+            return profileController.model.value.data!.testimonial![index].status.toString() == "pending"
+                ? Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment
+                      .start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                      children: [
+                        Text(
+                          "Message :",
+                          style: TextStyle(
+                              fontSize:
+                              14.sp,
+                              fontWeight:
+                              FontWeight
+                                  .w600,
+                              color: AppTheme
+                                  .darkBlueText),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Text(
+                            profileController
+                                .model
+                                .value
+                                .data!
+                                .testimonial![
+                            index]
+                                .message
+                                .toString(),
+                            style: TextStyle(
+                                fontSize: 14
+                                    .sp,
+                                fontWeight:
+                                FontWeight
+                                    .w500,
+                                color: AppTheme
+                                    .darkBlueText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                      children: [
+                        Text(
+                          "Request :",
+                          style: TextStyle(
+                              fontSize:
+                              14.sp,
+                              fontWeight:
+                              FontWeight
+                                  .w600,
+                              color: AppTheme
+                                  .darkBlueText),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Text(
+                            profileController
+                                .model
+                                .value
+                                .data!
+                                .testimonial![
+                            index]
+                                .requestSent
+                                .toString(),
+                            style: TextStyle(
+                                fontSize: 14
+                                    .sp,
+                                fontWeight:
+                                FontWeight
+                                    .w500,
+                                color: AppTheme
+                                    .darkBlueText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                      children: [
+                        Text(
+                          "Status :",
+                          style: TextStyle(
+                              fontSize:
+                              14.sp,
+                              fontWeight:
+                              FontWeight
+                                  .w600,
+                              color: AppTheme
+                                  .darkBlueText),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Text(
+                            profileController
+                                .model
+                                .value
+                                .data!
+                                .testimonial![
+                            index]
+                                .status
+                                .toString(),
+                            style: TextStyle(
+                                fontSize: 14
+                                    .sp,
+                                fontWeight:
+                                FontWeight
+                                    .w500,
+                                color: AppTheme
+                                    .darkBlueText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      color: AppTheme
+                          .pinkText
+                          .withOpacity(
+                          .29),
+                    ),
+                  ],
+                )
+                : Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment
+                      .start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Name :",
+                          style: TextStyle(
+                              fontSize:
+                              14.sp,
+                              fontWeight:
+                              FontWeight
+                                  .w600,
+                              color: AppTheme
+                                  .darkBlueText),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Text(
+                            "${profileController.model.value.data!.testimonial![index].firstName} ${profileController.model.value.data!.testimonial![index].lastName}",
+                            style: TextStyle(
+                                fontSize: 14
+                                    .sp,
+                                fontWeight:
+                                FontWeight
+                                    .w500,
+                                color: AppTheme
+                                    .darkBlueText),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            deleteTestimonialInfoRepo(
+                                profileController.model.value.data!.testimonial![index].id,
+                                context)
+                                .then((value) {
+                              if (value
+                                  .status ==
+                                  true) {
+                                print(profileController
+                                    .model
+                                    .value
+                                    .data!
+                                    .testimonial![index]
+                                    .id);
+                                profileController
+                                    .model
+                                    .value
+                                    .data!
+                                    .testimonial!
+                                    .removeAt(index);
+                                profileController
+                                    .getData();
+                              }
+                              showToast(value
+                                  .message
+                                  .toString());
+                              print(profileController
+                                  .model
+                                  .value
+                                  .data!
+                                  .testimonial![
+                              index]
+                                  .id);
+                            });
+                          },
+                          child:
+                          Container(
+                            margin: const EdgeInsets
+                                .only(
+                                left:
+                                15),
+                            padding:
+                            const EdgeInsets
+                                .all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape
+                                    .circle,
+                                color: AppTheme
+                                    .whiteColor,
+                                border: Border.all(
+                                    color:
+                                    const Color(0xff707070))),
+                            child:
+                            const Icon(
+                              Icons
+                                  .delete,
+                              color: AppTheme
+                                  .primaryColor,
+                              size: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      maxLines: profileController.model.value.data!.testimonial![index].showText == true
+                          ? 1000
+                          : 4,
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                          text:
+                          "Description : ",
+                          style: TextStyle(
+                              fontSize:
+                              14.sp,
+                              fontWeight:
+                              FontWeight
+                                  .w600,
+                              color: AppTheme
+                                  .darkBlueText),
+                          children: [
+                            TextSpan(
+                                text: profileController
+                                    .model
+                                    .value
+                                    .data!
+                                    .testimonial![
+                                index]
+                                    .description
+                                    .toString(),
+                                style: TextStyle(
+                                    fontSize:
+                                    14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppTheme.darkBlueText,),
+                                )
+                          ]),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                        child: profileController.model.value.data!.testimonial![index].description.toString().length <= 200
+                            ? const SizedBox()
+                            : InkWell(
+                            onTap: () {
+                              setState(() {
+                                profileController.model.value.data!.testimonial![index].showText = !profileController.model.value.data!.testimonial![index].showText!;
+                              });
+                            },
+                            child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.end,
+                                children: <Widget>[
+                                  profileController.model.value.data!.testimonial![index].showText!
+                                      ? const Text(
+                                    "Show Less",
+                                    style: TextStyle(
+                                        color: AppTheme
+                                            .primaryColor),
+                                  )
+                                      : const Text("Show More",
+                                      style: TextStyle(
+                                          color: AppTheme
+                                              .primaryColor))
+                                ]))),
+
+
+                    /*Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "Email :",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .email
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: AppTheme
+                                                                          .darkBlueText),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "Title :",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .title
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: AppTheme
+                                                                          .darkBlueText),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "Type :",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .type
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: AppTheme
+                                                                          .darkBlueText),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "Description :",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: AppTheme
+                                                                        .darkBlueText),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  profileController
+                                                                      .model
+                                                                      .value
+                                                                      .data!
+                                                                      .testimonial![
+                                                                          index]
+                                                                      .description
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: AppTheme
+                                                                          .darkBlueText),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),*/
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      color: AppTheme
+                          .pinkText
+                          .withOpacity(
+                          .29),
+                    ),
+                  ],
+                );
+          },
+        ));
+  }
 }

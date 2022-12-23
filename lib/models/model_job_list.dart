@@ -38,19 +38,19 @@ class ModelJobsList {
 }
 
 class JobListData {
-  String? id;
-  String? image;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
-  int? minPrice;
-  int? price;
-  String? projectDuration;
-  String? status;
-  String? experienceLevel;
-  String? scop;
-  String? categories;
+  dynamic id;
+  dynamic image;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
+  dynamic minPrice;
+  dynamic price;
+  dynamic projectDuration;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic scop;
+  dynamic categories;
   List<Skills>? skills;
   bool? isSaved;
 
@@ -118,8 +118,8 @@ class JobListData {
 }
 
 class Skills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   Skills({this.id, this.name});
 
@@ -137,10 +137,10 @@ class Skills {
 }
 
 class Meta {
-  int? totalPage;
-  int? currentPage;
-  int? totalItem;
-  int? perPage;
+  dynamic totalPage;
+  dynamic currentPage;
+  dynamic totalItem;
+  dynamic perPage;
 
   Meta({this.totalPage, this.currentPage, this.totalItem, this.perPage});
 

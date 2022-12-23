@@ -157,7 +157,7 @@ class _EditLanguageScreenState extends State<EditLanguageScreen> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: CustomOutlineButton(
-                title: 'cancel',
+                title: 'Cancel',
                 backgroundColor: AppTheme.whiteColor,
                 onPressed: () => Get.back(),
                 textColor: AppTheme.primaryColor,

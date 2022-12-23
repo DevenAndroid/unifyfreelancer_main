@@ -31,7 +31,9 @@ Future<ModelCommonResponse> editEmploymentInfoRepo({
   map['city'] = city;
   map['country'] = country;
   map['start_date'] = start_date;
-  map['end_date'] = end_date;
+  if(currently_working == 0){
+    map['end_date'] = end_date;
+  }
   map['currently_working'] = currently_working;
   print(map);
   try {

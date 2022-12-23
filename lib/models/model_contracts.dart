@@ -94,20 +94,20 @@ class Data {
 }
 
 class All {
-  String? id;
-  String? type;
-  String? weeklyLimit;
-  String? projectId;
-  String? projectTitle;
-  String? proposalId;
-  String? startTime;
-  String? endTime;
-  String? clientId;
-  String? freelancerId;
-  String? amount;
-  String? inEscrow;
-  String? status;
-  String? activeStatus;
+  dynamic id;
+  dynamic type;
+  dynamic weeklyLimit;
+  dynamic projectId;
+  dynamic projectTitle;
+  dynamic proposalId;
+  dynamic startTime;
+  dynamic endTime;
+  dynamic clientId;
+  dynamic freelancerId;
+  dynamic amount;
+  dynamic inEscrow;
+  dynamic status;
+  dynamic activeStatus;
   Project? project;
   Proposal? proposal;
   Client? client;
@@ -197,43 +197,43 @@ class All {
 }
 
 class Project {
-  String? id;
-  String? clientId;
-  String? image;
-  String? imageName;
-  String? name;
-  String? type;
-  String? description;
-  String? budgetType;
-  int? minPrice;
-  int? price;
-  String? projectDuration;
-  String? scop;
-  String? status;
-  String? experienceLevel;
-  String? englishLevel;
-  String? categories;
-  String? categoryId;
-  String? createdAt;
-  String? postedDate;
+  dynamic id;
+  dynamic clientId;
+  dynamic image;
+  dynamic imageName;
+  dynamic name;
+  dynamic type;
+  dynamic description;
+  dynamic budgetType;
+  dynamic minPrice;
+  dynamic price;
+  dynamic projectDuration;
+  dynamic scop;
+  dynamic status;
+  dynamic experienceLevel;
+  dynamic englishLevel;
+  dynamic categories;
+  dynamic categoryId;
+  dynamic createdAt;
+  dynamic postedDate;
   List<JobSkills>? jobSkills;
-  Null? proposalList;
-  Null? clientData;
-  bool? isPrivate;
-  bool? isProposalSend;
-  bool? isSaved;
-  int? serviceFee;
-  int? proposalCount;
-  Null? inviteSent;
-  Null? unansweredInvite;
-  String? interview;
-  String? hireRate;
-  String? openJobs;
-  String? totalHire;
-  String? totalActive;
-  Null? inviteId;
-  bool? isInvited;
-  Null? clientRecentHistory;
+  dynamic proposalList;
+  dynamic clientData;
+  dynamic isPrivate;
+  dynamic isProposalSend;
+  dynamic isSaved;
+  dynamic serviceFee;
+  dynamic proposalCount;
+  dynamic inviteSent;
+  dynamic unansweredInvite;
+  dynamic interview;
+  dynamic hireRate;
+  dynamic openJobs;
+  dynamic totalHire;
+  dynamic totalActive;
+  dynamic inviteId;
+  dynamic isInvited;
+  dynamic clientRecentHistory;
 
   Project(
       {this.id,
@@ -365,8 +365,8 @@ class Project {
 }
 
 class JobSkills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   JobSkills({this.id, this.name});
 
@@ -384,16 +384,16 @@ class JobSkills {
 }
 
 class Proposal {
-  String? id;
-  String? jobId;
-  String? userId;
-  String? bidAmount;
-  String? receiveAmount;
-  String? projectDuration;
-  String? coverLetter;
-  String? status;
-  String? platformFee;
-  String? image;
+ dynamic id;
+ dynamic jobId;
+ dynamic userId;
+ dynamic bidAmount;
+ dynamic receiveAmount;
+ dynamic projectDuration;
+ dynamic coverLetter;
+ dynamic status;
+ dynamic platformFee;
+ dynamic image;
 
   Proposal(
       {this.id,
@@ -437,35 +437,35 @@ class Proposal {
 }
 
 class Client {
-  String? id;
-  String? profileImage;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? companyName;
-  String? website;
-  String? tagline;
-  String? industry;
-  String? employeeNo;
-  String? description;
-  String? companyPhone;
-  String? vatId;
-  String? timezone;
-  String? localTime;
-  String? companyAddress;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic companyName;
+  dynamic website;
+  dynamic tagline;
+  dynamic industry;
+  dynamic employeeNo;
+  dynamic description;
+  dynamic companyPhone;
+  dynamic vatId;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic companyAddress;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic isVerified;
   bool? paymentVerified;
-  String? rating;
-  String? numberOfReview;
-  String? jobPosted;
-  String? moneySpent;
-  String? ratePaidClient;
-  String? memberSince;
-  String? lastActivity;
+  dynamic rating;
+  dynamic numberOfReview;
+  dynamic jobPosted;
+  dynamic moneySpent;
+  dynamic ratePaidClient;
+  dynamic memberSince;
+  dynamic lastActivity;
 
   Client(
       {this.id,
@@ -566,36 +566,36 @@ class Client {
 }
 
 class Freelancer {
-  String? id;
-  String? profileImage;
-  String? visibility;
-  String? projectPreference;
-  String? experienceLevel;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? occuption;
-  String? description;
-  String? rating;
-  int? totalEarning;
-  int? totalJobs;
-  int? totalHours;
-  int? pendingProject;
-  String? amount;
-  String? timezone;
-  String? localTime;
-  String? address;
-  String? phone;
-  String? country;
-  String? state;
-  String? city;
-  String? zipCode;
-  String? hoursPerWeek;
-  String? categoryId;
-  String? category;
-  String? isVerified;
+  dynamic id;
+  dynamic profileImage;
+  dynamic visibility;
+  dynamic projectPreference;
+  dynamic experienceLevel;
+  dynamic firstName;
+  dynamic lastName;
+  dynamic email;
+  dynamic occuption;
+  dynamic description;
+  dynamic rating;
+  dynamic totalEarning;
+  dynamic totalJobs;
+  dynamic totalHours;
+  dynamic pendingProject;
+  dynamic amount;
+  dynamic timezone;
+  dynamic localTime;
+  dynamic address;
+  dynamic phone;
+  dynamic country;
+  dynamic state;
+  dynamic city;
+  dynamic zipCode;
+  dynamic hoursPerWeek;
+  dynamic categoryId;
+  dynamic category;
+  dynamic isVerified;
   bool? isProfileComplete;
-  String? successRate;
+  dynamic successRate;
 
   Freelancer(
       {this.id,

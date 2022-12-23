@@ -631,7 +631,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Country is required'),
+                    RequiredValidator(errorText: 'Please select your country'),
                   ]),
                 ),
                 SizedBox(
@@ -653,7 +653,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Street address is required'),
+                    RequiredValidator(errorText: 'Please enter your address'),
                   ]),
                 ),
                 SizedBox(
@@ -675,7 +675,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'City is required'),
+                    RequiredValidator(errorText: 'Please enter your city'),
                   ]),
                 ),
                 SizedBox(
@@ -693,18 +693,29 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 ),
                 CustomTextField(
                   inputFormatters1: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9 ]')),
                   ],
                   controller: controller.zipController,
                   obSecure: false.obs,
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
-                  validator: MultiValidator([
-                    RequiredValidator(errorText: 'Zip/Postal code is required'),
+                 /* validator: MultiValidator([
+                    RequiredValidator(errorText: 'Please enter your zip code'),
                     MinLengthValidator(4,
-                        errorText: 'Minimum length is 4'),
-                    MaxLengthValidator(10, errorText: "Maximum length is 10")
-                  ]),
+                        errorText: 'Zip code minimum length is 4'),
+                    MaxLengthValidator(10, errorText: "Zip code maximum length is 10")
+                  ]),*/
+                  validator: (value){
+                    if(value!.trim().isEmpty){
+                      return "Please enter your zip code";
+                    }
+                    else if(value.trim().length < 4){
+                      return "Zip code minimum length is 4";
+                    }
+                    else if(value.trim().length > 10) {
+                      return "Zip code maximum length is 10";
+                    }
+                  },
                 ),
                 SizedBox(
                   height: AddSize.size15,
@@ -726,7 +737,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
                   validator: MultiValidator([
-                    RequiredValidator(errorText: 'Phone number is required'),
+                    RequiredValidator(errorText: "Please enter your phone number"),
                     MinLengthValidator(10,
                         errorText: 'Phone number minimum length is 10 digits'),
                     MaxLengthValidator(12,

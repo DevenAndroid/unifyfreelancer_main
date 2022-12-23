@@ -1,11 +1,11 @@
-class ModelCategoryList {
+class ModelDeclineReasonList {
   bool? status;
   String? message;
   List<Data>? data;
 
-  ModelCategoryList({this.status, this.message, this.data});
+  ModelDeclineReasonList({this.status, this.message, this.data});
 
-  ModelCategoryList.fromJson(Map<String, dynamic> json) {
+  ModelDeclineReasonList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
@@ -29,21 +29,19 @@ class ModelCategoryList {
 
 class Data {
   int? id;
-  String? name;
-  bool? checkboxData  = false;
+  String? title;
 
-  Data({this.id, this.name,this.checkboxData});
+  Data({this.id, this.title});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-
+    title = json['title'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
+    data['title'] = this.title;
     return data;
   }
 }

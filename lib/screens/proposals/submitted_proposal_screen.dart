@@ -7,7 +7,10 @@ import 'package:unifyfreelancer/controller/proposals_screen_controller.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+
+import '../../models/proposals/model_decline_reason_list.dart';
 import '../../models/proposals/model_submitted_proposal.dart';
+import '../../repository/proposals/decline_reason_list.dart';
 import '../../repository/proposals/submitted_proposal_repository.dart';
 import '../../repository/proposals/withdraw_proposal_repository.dart';
 import '../../utils/api_contant.dart';
@@ -30,6 +33,8 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
   String? type;
   Rx<ModelSubmittedProposal> model = ModelSubmittedProposal().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
+  Rx<RxStatus> reasonListStatus = RxStatus.empty().obs;
+  Rx<ModelDeclineReasonList> modelReasonList = ModelDeclineReasonList().obs;
 
   @override
   void initState() {
@@ -37,33 +42,48 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
     id = Get.arguments[0];
     type = Get.arguments[1];
     getData();
+    getReasonList();
   }
 
+  void getReasonList() {
+    declineReasonListRepo("withdraw").then((value) {
+      modelReasonList.value = value;
+      if (value.status == true) {
+        reasonListStatus.value = RxStatus.success();
+      } else {
+        reasonListStatus.value = RxStatus.error();
+      }
+    });
+  }
+
+  RxString reasonValue = "".obs;
+
   void getData() {
-    submittedRepo(id,type).then((value) {
+    submittedRepo(id, type).then((value) {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
 
-       if(model.value.data!.milestonedata!.isNotEmpty) {
-         for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
-           milestonePrice = milestonePrice +
-               int.parse(model.value.data!.milestonedata![i].amount.toString());
-           print("milestone total price" + milestonePrice.toString());
-         }
-       }
+        if (model.value.data!.milestonedata!.isNotEmpty) {
+          for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
+            milestonePrice = milestonePrice +
+                int.parse(
+                    model.value.data!.milestonedata![i].amount.toString());
+            print("milestone total price" + milestonePrice.toString());
+          }
+        }
       } else {
         showToast(value.message.toString());
         status.value = RxStatus.error();
       }
     });
   }
-  
+
   int milestonePrice = 0;
- // int totalPrice = 0;
 
-final controller = Get.put(ProposalScreenController());
+  // int totalPrice = 0;
 
+  final controller = Get.put(ProposalScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -119,9 +139,7 @@ final controller = Get.put(ProposalScreenController());
             ),
           ],
         ),
-        child:
-        Column(
-            crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             model.value.data!.projectData!.name.toString(),
             style: TextStyle(
@@ -167,8 +185,9 @@ final controller = Get.put(ProposalScreenController());
             height: AddSize.size20,
           ),
           InkWell(
-            onTap: (){
-              Get.toNamed(MyRouter.jobDetailsScreen,arguments: [model.value.data!.projectData!.id.toString()]);
+            onTap: () {
+              Get.toNamed(MyRouter.jobDetailsScreen,
+                  arguments: [model.value.data!.projectData!.id.toString()]);
               print(model.value.data!.projectData!.id.toString());
             },
             child: Text(
@@ -238,27 +257,32 @@ final controller = Get.put(ProposalScreenController());
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if(model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" && model.value.data!.milestonedata!.isNotEmpty)
-          Text(
-            "This includes all milestones, and is the amount your client will see",
-            style: TextStyle(
-                color: Color(0xff4D4D4D),
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w500),
-          ),
+          if (model.value.data!.projectData!.budgetType
+                      .toString()
+                      .toLowerCase() ==
+                  "fixed" &&
+              model.value.data!.milestonedata!.isNotEmpty)
+            Text(
+              "This includes all milestones, and is the amount your client will see",
+              style: TextStyle(
+                  color: Color(0xff4D4D4D),
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w500),
+            ),
           SizedBox(
             height: deviceHeight * .01,
           ),
-          
-          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
-          Text(
-            "\$${model.value.data!.proposalData!.bidAmount.toString()}",
-            style: TextStyle(
-                color: AppTheme.darkBlueText,
-                fontSize: AddSize.font16,
-                fontWeight: FontWeight.w600),
-          ),
-          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) !=
+              0)
+            Text(
+              "\$${model.value.data!.proposalData!.bidAmount.toString()}",
+              style: TextStyle(
+                  color: AppTheme.darkBlueText,
+                  fontSize: AddSize.font16,
+                  fontWeight: FontWeight.w600),
+            ),
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) ==
+              0)
             Text(
               "\$${milestonePrice}",
               style: TextStyle(
@@ -296,26 +320,24 @@ final controller = Get.put(ProposalScreenController());
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) != 0)
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) !=
+              0)
             Text(
-              "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) *
-                  int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
-              ).toString()}",
+              "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
               style: TextStyle(
                   color: AppTheme.darkBlueText,
                   fontSize: AddSize.font16,
                   fontWeight: FontWeight.w600),
             ),
-          if(int.parse(model.value.data!.proposalData!.bidAmount.toString()) == 0)
-            Text("\$${(milestonePrice - milestonePrice *
-                  int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100
-              ).toString()}",
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) ==
+              0)
+            Text(
+              "\$${(milestonePrice - milestonePrice * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
               style: TextStyle(
                   color: AppTheme.darkBlueText,
                   fontSize: AddSize.font16,
                   fontWeight: FontWeight.w600),
             ),
-
           SizedBox(
             height: AddSize.size30,
           ),
@@ -338,7 +360,8 @@ final controller = Get.put(ProposalScreenController());
                       fontWeight: FontWeight.bold,
                     )),
                 onPressed: () {
-                    Get.toNamed(MyRouter.changeTermsScreen , arguments: [id,"submit"]);
+                  Get.toNamed(MyRouter.changeTermsScreen,
+                      arguments: [id, "submit"]);
                 },
                 child: Text(
                   "Change terms",
@@ -720,7 +743,6 @@ final controller = Get.put(ProposalScreenController());
     );
   }
 
-
   withdrawProposal(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final _reasonController = TextEditingController();
@@ -729,132 +751,208 @@ final controller = Get.put(ProposalScreenController());
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Withdraw Proposal",
-                        style: TextStyle(
-                            color: AppTheme.darkBlueText,
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: AddSize.size25,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Reason",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: AddSize.size5,
-                          ),
-                          CustomTextField(
-                            controller: _reasonController,
-                            obSecure: false.obs,
-                            keyboardType: TextInputType.text,
-                            hintText: "".obs,
-                            validator: MultiValidator([
-                              RequiredValidator(
-                                  errorText: 'Reason is required'),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: AddSize.size10,
-                          ),
-                          Text(
-                            "Message (optional)",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: AddSize.size5,
-                          ),
-                          CustomTextField(
-                            controller: _messageController,
-                            isMulti: true,
-                            obSecure: false.obs,
-                            keyboardType: TextInputType.text,
-                            hintText: "".obs,
-                          ),
-                          SizedBox(
-                            height: AddSize.size10,
-                          ),
-                          Row(
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            child: Obx(() {
+              return reasonListStatus.value.isSuccess
+                  ? Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CustomOutlineButton(
-                                    title: 'Decline',
-                                    backgroundColor: AppTheme.whiteColor,
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    textColor: AppTheme.primaryColor,
-                                    expandedValue: false,
-                                  ),
-                                ),
+                              Text(
+                                "Withdraw Proposal",
+                                style: TextStyle(
+                                    color: AppTheme.darkBlueText,
+                                    fontSize: AddSize.font16,
+                                    fontWeight: FontWeight.w600),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CustomOutlineButton(
-                                    title: 'Accept',
-                                    backgroundColor: AppTheme.primaryColor,
-                                    onPressed: () {
-                                      if(_formKey.currentState!.validate()){
-                                        proposalWithdrawRepo(
-                                            proposal_id: model.value.data!.proposalData!.id.toString(),
-                                            reason: _reasonController.text.trim(),
-                                            description: _messageController.text.trim(),
-                                            context: context
-                                        ).then((value) {
-                                          if(value.status == true){
-                                            Get.offAllNamed(MyRouter.bottomNavbar);
-                                            controller.getData();
-                                          }
-                                          showToast(value.message.toString());
-                                        });
-                                      }
-
-                                    },
-                                    textColor: AppTheme.whiteColor,
-                                    expandedValue: false,
+                              SizedBox(
+                                height: AddSize.size25,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Reason",
+                                    style: TextStyle(
+                                        color: Color(0xff4D4D4D),
+                                        fontSize: AddSize.font16,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                ),
+                                  SizedBox(
+                                    height: AddSize.size5,
+                                  ),
+                                  Obx(() {
+                                    return DropdownButtonFormField<
+                                        dynamic>(
+                                      isExpanded: true,
+                                      menuMaxHeight: AddSize.screenHeight * .54,
+                                      value: reasonValue.value == "" ? null : reasonValue.value,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please select reason';
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: "Select a reason",
+                                        hintStyle: TextStyle(
+                                            fontSize: 13,
+                                            color: Color(0xff596681)),
+                                        counterText: "",
+                                        filled: true,
+                                        fillColor: AppTheme.whiteColor,
+                                        focusColor: AppTheme.whiteColor,
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(horizontal: 8,
+                                        ),
+                                        focusedBorder:
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        border:OutlineInputBorder(
+                                          borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                         ),
+                                      items: List.generate(
+                                          modelReasonList.value.data!.length,
+                                              (index) => DropdownMenuItem(
+                                            value: modelReasonList.value.data![index].title.toString(),
+                                            child: Text(
+                                              modelReasonList.value.data![index].title.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(
+                                                      0xff596681)),
+                                            ),
+                                            // onTap: (){
+                                            //      setState(() {
+                                            //        timezoneValue = controller.timezoneList.data![index].timezone.toString();
+                                            //        print(timezoneValue);
+                                            //      });
+                                            //
+                                            // },
+                                          )),
+                                      onChanged: (newValue) {
+                                        reasonValue.value = newValue;
+                                      },
+                                    );
+                                  }),
+
+                                  SizedBox(
+                                    height: AddSize.size10,
+                                  ),
+                                  Text(
+                                    "Message (optional)",
+                                    style: TextStyle(
+                                        color: Color(0xff4D4D4D),
+                                        fontSize: AddSize.font16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: AddSize.size5,
+                                  ),
+                                  CustomTextField(
+                                    controller: _messageController,
+                                    isMulti: true,
+                                    obSecure: false.obs,
+                                    keyboardType: TextInputType.text,
+                                    hintText: "".obs,
+                                  ),
+                                  SizedBox(
+                                    height: AddSize.size10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: CustomOutlineButton(
+                                            title: 'Cancel',
+                                            backgroundColor:
+                                                AppTheme.whiteColor,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            textColor: AppTheme.primaryColor,
+                                            expandedValue: false,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: CustomOutlineButton(
+                                            title: 'Decline',
+                                            backgroundColor:
+                                                AppTheme.primaryColor,
+                                            onPressed: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                proposalWithdrawRepo(
+                                                        proposal_id: model
+                                                            .value
+                                                            .data!
+                                                            .proposalData!
+                                                            .id
+                                                            .toString(),
+                                                        reason: reasonValue.value,
+                                                        description:
+                                                            _messageController
+                                                                .text
+                                                                .trim(),
+                                                        context: context)
+                                                    .then((value) {
+                                                  if (value.status == true) {
+                                                    Get.offAllNamed(
+                                                        MyRouter.bottomNavbar);
+                                                    controller.getData();
+                                                  }
+                                                  showToast(
+                                                      value.message.toString());
+                                                });
+                                              }
+                                            },
+                                            textColor: AppTheme.whiteColor,
+                                            expandedValue: false,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-
-
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+                    )
+                  : reasonListStatus.value.isError
+                      ? CommonErrorWidget(
+                          errorText: modelReasonList.value.message.toString(),
+                          onTap: () {
+                            getReasonList();
+                          })
+                      : CommonProgressIndicator();
+            }),
           );
         });
   }
-
 
   String companySize(double numberOfEmp) {
     if (numberOfEmp <= 10) {
@@ -867,5 +965,4 @@ final controller = Get.put(ProposalScreenController());
       return "Company size (1000+ people)";
     }
   }
-
 }

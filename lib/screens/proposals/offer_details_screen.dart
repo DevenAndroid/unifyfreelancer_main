@@ -1,21 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/progress_indicator.dart';
 
+import '../../models/proposals/model_decline_reason_list.dart';
 import '../../models/proposals/model_offer_proposal.dart';
 import '../../repository/proposals/accept_offer_repository.dart';
 import '../../repository/proposals/decline_offer_repository.dart';
+import '../../repository/proposals/decline_reason_list.dart';
 import '../../repository/proposals/offer_repository.dart';
-import '../../widgets/circular_widget.dart';
 import '../../widgets/common_outline_button.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_textfield.dart';
@@ -32,12 +33,15 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
   String? id;
   Rx<ModelOffer> model = ModelOffer().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
+  Rx<RxStatus> reasonListStatus = RxStatus.empty().obs;
+  Rx<ModelDeclineReasonList> modelReasonList = ModelDeclineReasonList().obs;
 
   @override
   void initState() {
     super.initState();
     id = Get.arguments[0];
     getData();
+    getReasonList();
   }
 
   void getData() {
@@ -45,6 +49,13 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
+          if (model.value.data!.milestonedata!.isNotEmpty) {
+            for (int i = 0; i < model.value.data!.milestonedata!.length; i++) {
+              milestonePrice = milestonePrice + double.parse(model.value.data!.milestonedata![i].amount.toString());
+              if (kDebugMode) {
+                print("milestone total price$milestonePrice");
+              }
+        } }
       } else {
         showToast(value.message.toString());
         status.value = RxStatus.error();
@@ -52,10 +63,27 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
     });
   }
 
+  void getReasonList() {
+    declineReasonListRepo("offer").then((value) {
+      modelReasonList.value = value;
+      if (value.status == true) {
+        reasonListStatus.value = RxStatus.success();
+      } else {
+        reasonListStatus.value = RxStatus.error();
+      }
+    });
+  }
+
+  RxString reasonValue = "".obs;
+
+  final dateFormatForShow = DateFormat('dd-MMM-yyyy');
+
+  double milestonePrice = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: CustomAppbar(
             isLikeButton: false,
@@ -65,60 +93,60 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
       body: Obx(() {
         return status.value.isSuccess
             ? SingleChildScrollView(
-                child: Column(
-                children: [
-                  profileSection(),
-                  //  companyInfoSection(),
-                  contractInfoSection(),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: CustomOutlineButton(
-                            title: 'Decline',
-                            backgroundColor: AppTheme.whiteColor,
-                            onPressed: () {
-                              declineOffer(context);
-                            },
-                            textColor: AppTheme.primaryColor,
-                            expandedValue: false,
-                          ),
+            child: Column(
+              children: [
+                profileSection(),
+                //  companyInfoSection(),
+                contractInfoSection(),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CustomOutlineButton(
+                          title: 'Decline',
+                          backgroundColor: AppTheme.whiteColor,
+                          onPressed: () {
+                            declineOffer(context);
+                          },
+                          textColor: AppTheme.primaryColor,
+                          expandedValue: false,
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: CustomOutlineButton(
-                            title: 'Accept',
-                            backgroundColor: AppTheme.primaryColor,
-                            onPressed: () {
-                              acceptOfferRepo(id).then((value) {
-                                if (value.status == true) {
-                                  Get.back();
-                                }
-                                showToast(value.message.toString());
-                              });
-                            },
-                            textColor: AppTheme.whiteColor,
-                            expandedValue: false,
-                          ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CustomOutlineButton(
+                          title: 'Accept',
+                          backgroundColor: AppTheme.primaryColor,
+                          onPressed: () {
+                            acceptOfferRepo(id).then((value) {
+                              if (value.status == true) {
+                                Get.back();
+                              }
+                              showToast(value.message.toString());
+                            });
+                          },
+                          textColor: AppTheme.whiteColor,
+                          expandedValue: false,
                         ),
                       ),
-                    ],
-                  )
-                ],
-              ))
+                    ),
+                  ],
+                )
+              ],
+            ))
             : status.value.isError
-                ? CommonErrorWidget(
-                    errorText: model.value.message.toString(),
-                    onTap: () {
-                      getData();
-                    },
-                  )
-                : CommonProgressIndicator();
+            ? CommonErrorWidget(
+          errorText: model.value.message.toString(),
+          onTap: () {
+            getData();
+          },
+        )
+            : const CommonProgressIndicator();
       }),
     );
   }
@@ -133,38 +161,103 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
           return Dialog(
             insetPadding: EdgeInsets.symmetric(
                 horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Decline offer",
-                        style: TextStyle(
-                            color: AppTheme.darkBlueText,
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: AddSize.size25,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Reason",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: AddSize.size5,
-                          ),
-                          CustomTextField(
+            child: Obx(() {
+              return reasonListStatus.value.isSuccess ? Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Decline offer",
+                          style: TextStyle(
+                              color: AppTheme.darkBlueText,
+                              fontSize: AddSize.font16,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: AddSize.size25,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Reason",
+                              style: TextStyle(
+                                  color: const Color(0xff4D4D4D),
+                                  fontSize: AddSize.font16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: AddSize.size5,
+                            ),
+                            Obx(() {
+                              return DropdownButtonFormField<dynamic>(
+                                isExpanded: true,
+                                menuMaxHeight: AddSize.screenHeight * .54,
+                                value: reasonValue.value == "" ? null : reasonValue.value,
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please select reason';
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Select a reason",
+                                  hintStyle: const TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xff596681)),
+                                  counterText: "",
+                                  filled: true,
+                                  fillColor: AppTheme.whiteColor,
+                                  focusColor: AppTheme.whiteColor,
+                                  contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 8,
+                                  ),
+                                  focusedBorder:
+                                  OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  border:OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                // Down Arrow Icon
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                ),
+                                items: List.generate(
+                                    modelReasonList.value.data!.length,
+                                        (index) => DropdownMenuItem(
+                                      value: modelReasonList.value.data![index].title.toString(),
+                                      child: Text(
+                                        modelReasonList.value.data![index].title.toString(),
+                                        style: const TextStyle(
+                                            fontSize: 13,
+                                            color: Color(
+                                                0xff596681)),
+                                      ),
+                                      // onTap: (){
+                                      //      setState(() {
+                                      //        timezoneValue = controller.timezoneList.data![index].timezone.toString();
+                                      //        print(timezoneValue);
+                                      //      });
+                                      //
+                                      // },
+                                    )),
+                                onChanged: (newValue) {
+                                  reasonValue.value = newValue;
+                                },
+                              );
+                            }),
+                            /*CustomTextField(
                             controller: _reasonController,
                             obSecure: false.obs,
                             keyboardType: TextInputType.text,
@@ -173,87 +266,93 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                               RequiredValidator(
                                   errorText: 'Reason is required'),
                             ]),
-                          ),
-                          SizedBox(
-                            height: AddSize.size10,
-                          ),
-                          Text(
-                            "Message (optional)",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(
-                            height: AddSize.size5,
-                          ),
-                          CustomTextField(
-                            controller: _messageController,
-                            isMulti: true,
-                            obSecure: false.obs,
-                            keyboardType: TextInputType.text,
-                            hintText: "".obs,
-                          ),
-                          SizedBox(
-                            height: AddSize.size10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CustomOutlineButton(
-                                    title: 'Decline',
-                                    backgroundColor: AppTheme.whiteColor,
-                                    onPressed: () {
-                                      Get.back();
-                                    },
-                                    textColor: AppTheme.primaryColor,
-                                    expandedValue: false,
+                          ),*/
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            Text(
+                              "Message (optional)",
+                              style: TextStyle(
+                                  color: const Color(0xff4D4D4D),
+                                  fontSize: AddSize.font16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: AddSize.size5,
+                            ),
+                            CustomTextField(
+                              controller: _messageController,
+                              isMulti: true,
+                              obSecure: false.obs,
+                              keyboardType: TextInputType.text,
+                              hintText: "".obs,
+                            ),
+                            SizedBox(
+                              height: AddSize.size10,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: CustomOutlineButton(
+                                      title: 'Cancel',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      textColor: AppTheme.primaryColor,
+                                      expandedValue: false,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CustomOutlineButton(
-                                    title: 'Accept',
-                                    backgroundColor: AppTheme.primaryColor,
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        declineOfferRepo(
-                                                offer_id: id,
-                                                reason: _reasonController.text
-                                                    .trim(),
-                                                description: _messageController
-                                                    .text
-                                                    .trim(),
-                                                context: context)
-                                            .then((value) {
-                                          if (value.status == true) {
-                                            Get.offAllNamed(
-                                                MyRouter.bottomNavbar);
-                                          }
-                                          showToast(value.message.toString());
-                                        });
-                                      }
-                                    },
-                                    textColor: AppTheme.whiteColor,
-                                    expandedValue: false,
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: CustomOutlineButton(
+                                      title: 'Decline',
+                                      backgroundColor: AppTheme.primaryColor,
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          declineOfferRepo(
+                                              offer_id: id,
+                                              reason: reasonValue.value,
+                                              description: _messageController
+                                                  .text.trim(),
+                                              context: context)
+                                              .then((value) {
+                                            if (value.status == true) {
+                                              Get.offAllNamed(
+                                                  MyRouter.bottomNavbar);
+                                            }
+                                            showToast(value.message.toString());
+                                          });
+                                        }
+                                      },
+                                      textColor: AppTheme.whiteColor,
+                                      expandedValue: false,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              )
+                  : reasonListStatus.value.isError
+                  ? CommonErrorWidget(
+                  errorText: modelReasonList.value.message.toString(),
+                  onTap: () {
+                    getReasonList();
+                  })
+                  : const CommonProgressIndicator();
+            }),
           );
         });
   }
@@ -285,41 +384,43 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               children: [
                 SizedBox(
                   child: model.value.data!.clientData!.profileImage
-                                  .toString() ==
-                              "" ||
-                          model.value.data!.clientData!.profileImage == null ||
-                          model.value.data!.clientData!.profileImage == "null"
+                      .toString() ==
+                      "" ||
+                      model.value.data!.clientData!.profileImage == null ||
+                      model.value.data!.clientData!.profileImage == "null"
                       ? SvgPicture.asset(
-                          "assets/images/user.svg",
-                          height: AddSize.size80,
-                          width: AddSize.size80,
-                        )
+                    "assets/images/user.svg",
+                    height: AddSize.size80,
+                    width: AddSize.size80,
+                  )
                       : ClipRRect(
-                          borderRadius: BorderRadius.circular(1000),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                model.value.data!.clientData!.profileImage ??
-                                    "",
-                            height: AddSize.size80,
-                            width: AddSize.size80,
-                            errorWidget: (_, __, ___) => SvgPicture.asset(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                        model.value.data!.clientData!.profileImage ??
+                            "",
+                        height: AddSize.size80,
+                        width: AddSize.size80,
+                        errorWidget: (_, __, ___) =>
+                            SvgPicture.asset(
                               "assets/images/user.svg",
                               height: AddSize.size80,
                               width: AddSize.size80,
                             ),
-                            placeholder: (_, __) => SvgPicture.asset(
+                        placeholder: (_, __) =>
+                            SvgPicture.asset(
                               "assets/images/user.svg",
                               height: AddSize.size80,
                               width: AddSize.size80,
                             ),
-                            fit: BoxFit.cover,
-                          ) /*Image.file(
+                        fit: BoxFit.cover,
+                      ) /*Image.file(
                               profileImage.value,
                               fit: BoxFit.cover,
                             ),*/
-                          ),
+                  ),
                 ),
-                Positioned(
+                const Positioned(
                     right: 0,
                     top: 10,
                     child: Icon(
@@ -336,37 +437,43 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  model.value.data!.clientData!.firstName.toString() +
-                      " " +
-                      model.value.data!.clientData!.lastName.toString(),
+                  "${model.value.data!.clientData!.firstName} ${model.value.data!.clientData!.lastName}",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font18,
                       fontWeight: FontWeight.w600),
                 ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+               //   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.location_on,
                       color: AppTheme.primaryColor,
+                      size: 18,
                     ),
                     Row(
                       children: [
                         Text(
-                          model.value.data!.clientData!.city.toString().isEmpty
+                          model.value.data!
+                              .clientData!
+                              .city
+                              .toString()
+                              .isEmpty
                               ? ""
-                              : model.value.data!.clientData!.city.toString(),
+                              : "${model.value.data!.clientData!.city},",
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
                           model.value.data!.clientData!.country.toString(),
                           style: TextStyle(
-                              color: Color(0xff4D4D4D),
+                              color: const Color(0xff4D4D4D),
                               fontSize: AddSize.font16,
                               fontWeight: FontWeight.w500),
                         ),
@@ -375,9 +482,9 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                   ],
                 ),
                 Text(
-                  model.value.data!.clientData!.timezone.toString(),
+                  "${model.value.data!.clientData!.localTime} Local time",
                   style: TextStyle(
-                      color: Color(0xff4D4D4D),
+                      color: const Color(0xff4D4D4D),
                       fontSize: AddSize.font14,
                       fontWeight: FontWeight.w500),
                 )
@@ -469,7 +576,7 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
           Text(
             "Contract Terms",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font18,
                 fontWeight: FontWeight.w600),
           ),
@@ -484,14 +591,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
                       fontSize: AddSize.font16,
                       fontWeight: FontWeight.w600),
                   children: [
-                TextSpan(
-                  text: " only pay for the work you authorize.",
-                  style: TextStyle(
-                      color: Color(0xff4D4D4D),
-                      fontSize: AddSize.font16,
-                      fontWeight: FontWeight.w500),
-                )
-              ])),
+                    TextSpan(
+                      text: " only pay for the work you authorize.",
+                      style: TextStyle(
+                          color: const Color(0xff4D4D4D),
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500),
+                    )
+                  ])),
           SizedBox(
             height: AddSize.size20,
           ),
@@ -502,12 +609,12 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               Text(
                 "Payment option:",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                model.value.data!.projectData!.budgetType.toString(),
+                model.value.data!.proposalData!.budgetType.toString(),
                 style: TextStyle(
                     color: AppTheme.primaryColor,
                     fontSize: AddSize.font16,
@@ -519,89 +626,101 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
             height: AddSize.size15,
           ),
           SizedBox(
-            child: model.value.data!.projectData!.budgetType
-                        .toString()
-                        .toLowerCase() ==
-                    "hourly"
+            child: model.value.data!.proposalData!.budgetType
+                .toString()
+                .toLowerCase() ==
+                "hourly"
                 ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Pay by the hour:",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "\$${model.value.data!.proposalData!.amount ?? "0"}/per hour",
-                            style: TextStyle(
-                                color: Color(0xff4D4D4D),
-                                fontSize: AddSize.font16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: AddSize.size15,
-                      ),
-                      Text(
-                        "Weekly Limit",
-                        style: TextStyle(
-                            color: Color(0xff4D4D4D),
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        "Setting a weekly limit is a great way to help ensure you stay on budget",
-                        style: TextStyle(
-                            color: Color(0xff4D4D4D),
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: AddSize.size15,
-                      ),
-                      Text(
-                        "${model.value.data!.proposalData!.weeklyLimit ?? "0"} hrs /week",
-                        style: TextStyle(
-                            color: Color(0xff4D4D4D),
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        "\$${double.parse(model.value.data!.proposalData!.amount ?? "0") * double.parse(model.value.data!.proposalData!.weeklyLimit ?? "0")} max/week",
-                        style: TextStyle(
-                            color: Color(0xff4D4D4D),
-                            fontSize: AddSize.font14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  )
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Pay by the hour:",
+                      style: TextStyle(
+                          color: const Color(0xff4D4D4D),
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      "\$${model.value.data!.proposalData!.bidAmount ??
+                          "0"}/per hour",
+                      style: TextStyle(
+                          color: const Color(0xff4D4D4D),
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                /*    SizedBox(
+                  height: AddSize.size15,
+                ),
+                 Text(
+                  "Weekly Limit",
+                  style: TextStyle(
+                      color: const Color(0xff4D4D4D),
+                      fontSize: AddSize.font16,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  "Setting a weekly limit is a great way to help ensure you stay on budget",
+                  style: TextStyle(
+                      color: const Color(0xff4D4D4D),
+                      fontSize: AddSize.font16,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: AddSize.size15,
+                ),
+                Text(
+                  "${model.value.data!.proposalData!.weeklyLimit ??
+                      "0"} hrs /week",
+                  style: TextStyle(
+                      color: const Color(0xff4D4D4D),
+                      fontSize: AddSize.font16,
+                      fontWeight: FontWeight.w600),
+                ),
+            //    if(model.value.data!.proposalData!.budgetType.toString().toLowerCase() == "hourly")
+               Text(
+                  "\$${double.parse(model.value.data!.proposalData!.bidAmount.toString() ?? "0") * double.parse((model.value.data!.proposalData!.weeklyLimit ?? "0").toString())} max/week",
+                  style: TextStyle(
+                      color: const Color(0xff4D4D4D),
+                      fontSize: AddSize.font14,
+                      fontWeight: FontWeight.w500),
+                ),*/
+              ],
+            )
                 : Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Project Budget",
-                        style: TextStyle(
-                            color: Color(0xff4D4D4D),
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        "\$${model.value.data!.proposalData!.amount.toString()}",
-                        style: TextStyle(
-                            color: AppTheme.primaryColor,
-                            fontSize: AddSize.font16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Project Budget",
+                  style: TextStyle(
+                      color: const Color(0xff4D4D4D),
+                      fontSize: AddSize.font16,
+                      fontWeight: FontWeight.w600),
+                ),
+                if(model.value.data!.milestonedata!.isNotEmpty)
+                  Text(
+                    "\$${milestonePrice.toString()}",
+                    style: TextStyle(
+                        color: AppTheme.primaryColor,
+                        fontSize: AddSize.font16,
+                        fontWeight: FontWeight.w600),
                   ),
+                if(model.value.data!.milestonedata!.isEmpty)
+                Text(
+                  "\$${model.value.data!.proposalData!.bidAmount.toString()}",
+                  style: TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontSize: AddSize.font16,
+                      fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: AddSize.size10,
@@ -613,14 +732,14 @@ class _OfferDetailsScreenState extends State<OfferDetailsScreen> {
               Text(
                 "Start Date:",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                model.value.data!.proposalData!.date.toString(),
+                dateFormatForShow.format(DateTime.parse(model.value.data!.proposalData!.createdDate.toString())),
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w500),
               ),

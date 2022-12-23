@@ -76,10 +76,10 @@ class ProposalData {
   dynamic clientId;
   dynamic freelancerId;
   dynamic projectId;
-  String? status;
-  String? description;
-  String? createdAt;
-  String? updatedAt;
+  dynamic status;
+  dynamic description;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   ProposalData(
       {this.id,
@@ -406,8 +406,8 @@ class ProjectData {
 }
 
 class JobSkills {
-  String? id;
-  String? name;
+  dynamic id;
+  dynamic name;
 
   JobSkills({this.id, this.name});
 

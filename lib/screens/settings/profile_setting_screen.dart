@@ -3,8 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+import 'package:unifyfreelancer/widgets/error_widget.dart';
+import 'package:unifyfreelancer/widgets/progress_indicator.dart';
 
 import '../../repository/add_category_repository.dart';
+import '../../repository/edit_experience_level_repository.dart';
+import '../../repository/set_visibility_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../resources/size.dart';
 import '../../utils/api_contant.dart';
@@ -19,18 +23,29 @@ class ProfileSettingScreen extends StatefulWidget {
 }
 
 class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
+
+
+  RxString visibilityValue = "public".obs;
+  // RxString projectPreferenceValue = "".obs;
+
   var visibility = [
-    "Public",
-    "Only Freelancer users",
-    "Private",
+    "public",
+    "private",
+    "unify_users",
   ];
-  var items = [
-    "Both short term and long term projects",
-    "Long-term projects (3+ months)",
-    "Short term projects (less than 3 months)"
+  Rx<ModelProjectPreference> projectPreferenceValue = ModelProjectPreference(
+    title: ""
+  ).obs;
+
+  var items = <ModelProjectPreference>[
+    ModelProjectPreference(title:  "Both short term and long term projects",slug: "both"),
+    ModelProjectPreference(title:  "Long-term projects (3+ months)",slug: "long_term"),
+    ModelProjectPreference(title: "Short term projects (less than 3 months)",slug: "short_term"),
+
+
   ];
 
-  String? expValue;
+  String? expValue = "entry";
 
   final controller = Get.put(ProfileScreenController());
 
@@ -80,6 +95,18 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           ],
         ));
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    expValue = controller.model.value.data!.basicInfo!.experienceLevel.toString() == "" ? "entry" : controller.model.value.data!.basicInfo!.experienceLevel.toString();
+    visibilityValue.value = controller.model.value.data!.basicInfo!.visibility.toString() == "" ? "public" :  controller.model.value.data!.basicInfo!.visibility.toString();
+    for(int i = 0; i < items.length ; i++){
+     if( items[i].slug == controller.model.value.data!.basicInfo!.projectPreference.toString()){
+       projectPreferenceValue.value= items[i];
+     }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +121,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           ),
         ),
         body: Obx(() {
-          return SingleChildScrollView(
+          return controller.status.value.isSuccess ?
+          SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -154,7 +182,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             ),
                             DropdownButtonFormField<dynamic>(
                               isExpanded: true,
-                              value: null,
+                              value: visibilityValue.value == "" ? null : visibilityValue.value.toString(),
                               validator: (value) {
                                 if (value == null) {
                                   return 'Please select type';
@@ -201,8 +229,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                   visibility.length,
                                   (index) => DropdownMenuItem(
                                         value: visibility[index],
-                                        child: Text(
-                                          visibility[index].toString(),
+                                        child: Text(visibility[index].toString().capitalizeFirst!.replaceAll("_", " "),
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: Color(0xff596681)),
@@ -210,7 +237,19 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                       )),
                               // After selecting the desired option,it will
                               // change button value to selected value
-                              onChanged: (newValue) {},
+                              onChanged: (value) {
+                                print(value);
+                                visibilityValue.value = value;
+                                setVisibilityRepo(visibility: visibilityValue .value ,context: context).then((value1) {
+                                  print("Response......"+value1.toString());
+                                  if(value1.status == true){
+                               //     controller.getData();
+                                    print("Response......2222");
+                                  }
+                                  showToast(value1.message.toString());
+                                });
+
+                              },
                             ),
                             SizedBox(
                               height: 15.h,
@@ -236,14 +275,14 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             SizedBox(
                               height: 5.h,
                             ),
-                            DropdownButtonFormField<dynamic>(
+                            DropdownButtonFormField<ModelProjectPreference>(
                               isExpanded: true,
-                              value: null,
-                              validator: (value) {
+                              value: projectPreferenceValue.value.title == "" ? null : projectPreferenceValue.value,
+                            /*  validator: (value) {
                                 if (value == null) {
                                   return 'Please select type';
                                 }
-                              },
+                              },*/
                               decoration: InputDecoration(
                                 hintText: "Project preference",
                                 hintStyle: TextStyle(
@@ -286,7 +325,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                   (index) => DropdownMenuItem(
                                         value: items[index],
                                         child: Text(
-                                          items[index].toString(),
+                                          items[index].title.toString(),
                                           style: TextStyle(
                                               fontSize: 13,
                                               color: Color(0xff596681)),
@@ -294,7 +333,19 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                                       )),
                               // After selecting the desired option,it will
                               // change button value to selected value
-                              onChanged: (newValue) {},
+                              onChanged: (value) {
+                                projectPreferenceValue.value = value!;
+                                print(value!.slug);
+                                setVisibilityRepo(visibility: visibilityValue.value,project_preference: value.slug.toString(),
+                                context: context).then((value1) {
+                                  print("Response......"+value1.toString());
+                                  if(value1.status == true){
+                              //      controller.getData();
+                                    print("Response......2222");
+                                  }
+                                  showToast(value1.message.toString());
+                                });
+                              },
                             ),
                             SizedBox(
                               height: 10.h,
@@ -390,12 +441,19 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             onChanged: (value) {
                               setState(() {
                                 expValue = value.toString();
+                                print(expValue);
+                                editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
+                                  if(value1.status == true){
+                               //     controller.getData();
+                                  }
+                                  showToast(value1.message.toString());
+                                });
                               });
                             },
                           ),
                           RadioListTile(
                             title: Text(
-                              "Intermediate",
+                              "intermediate",
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -415,6 +473,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             onChanged: (value) {
                               setState(() {
                                 expValue = value.toString();
+                                print(expValue);
+                                editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
+                                  if(value1.status == true){
+                             //       controller.getData();
+                                  }
+                                  showToast(value1.message.toString());
+                                });
                               });
                             },
                           ),
@@ -435,11 +500,18 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                             dense: true,
                             visualDensity: const VisualDensity(
                                 horizontal: -4, vertical: -4),
-                            value: "Expert",
+                            value: "expert",
                             groupValue: expValue,
                             onChanged: (value) {
                               setState(() {
                                 expValue = value.toString();
+                                print(expValue);
+                                editExperienceLevelRepo(experience_level: expValue,context: context).then((value1) {
+                                  if(value1.status == true){
+                             //       controller.getData();
+                                  }
+                                  showToast(value1.message.toString());
+                                });
                               });
                             },
                           )
@@ -590,7 +662,30 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   )*/
                   ],
                 )),
-          );
+          ) : controller.status.value.isError ?
+          CommonErrorWidget(errorText: controller.model.value.message.toString(), onTap: (){
+            controller.getData();
+          }): CommonProgressIndicator();
         }));
+  }
+}
+
+
+class ModelProjectPreference {
+  String? title;
+  String? slug;
+
+  ModelProjectPreference({this.title, this.slug, });
+
+  ModelProjectPreference.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    slug = json['slug'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['slug'] = this.slug;
+    return data;
   }
 }

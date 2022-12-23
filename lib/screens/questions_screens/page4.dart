@@ -67,9 +67,8 @@ class Page4 extends StatelessWidget {
                     }
                   },*/
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Example: full stack developer | web & mobile'),
-                      MinLengthValidator(5, errorText: 'Minimum length is 5 characters'),
-                      MaxLengthValidator(50, errorText: "Maximum length is 50 characters"),
+                      RequiredValidator(errorText: 'Please enter your title'),
+                      MinLengthValidator(3, errorText: 'title minimum length is 3 characters'),
                     ]),
                     obSecure: false.obs,
                     hintText: "Example: full stack developer | web & mobile".obs,
@@ -85,10 +84,10 @@ class Page4 extends StatelessWidget {
                     isMulti: true,
                     controller: controller.descriptionController,
                     validator: MultiValidator([
-                      RequiredValidator(errorText: 'Description required'),
+                      RequiredValidator(errorText: 'Please enter your description '),
                       MinLengthValidator(100,
-                          errorText: 'Minimum length is 100 characters'),
-                      MaxLengthValidator(5000, errorText: "Max Length is 5000 characters"),
+                          errorText: 'Description minimum length is 100 characters'),
+                      MaxLengthValidator(5000, errorText: "Description max length is 5000 characters"),
                     ]),
                     obSecure: false.obs,
                     hintText: "Description...".obs,

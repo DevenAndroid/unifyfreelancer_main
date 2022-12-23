@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -40,7 +41,7 @@ class _StripPaymentState extends State<StripPayment> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AddSize.size100 * .82),
-        child: CustomAppbar(
+        child: const CustomAppbar(
           titleText: 'Payment',
           isLikeButton: false,
           isProfileImage: false,
@@ -138,11 +139,12 @@ class _StripPaymentState extends State<StripPayment> {
                         ).then((value) {
                           if(value.status == true){
                             Get.toNamed(MyRouter.bottomNavbar);
-
+                            if (kDebugMode) {
+                              print("Subscription.....$value");
+                            }
                           }
                           log(jsonEncode(value));
-                          showToast(value.message);
-
+                          showToast(value.message.toString());
                         }
 
                         );

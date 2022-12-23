@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
+
 import '../../controller/profie_screen_controller.dart';
 import '../../models/model_freelancer_profile.dart';
 import '../../repository/add_employment_repository.dart';
@@ -62,13 +62,14 @@ class _Page5State extends State<Page5> {
         context: context,
         builder: (context) {
           return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.size100 * .4),
             child: Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 30.0),
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Container(
@@ -90,27 +91,27 @@ class _Page5State extends State<Page5> {
                           ),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Add Work Experience",
                                 style: TextStyle(
                                     fontSize: 16,
                                     color: AppTheme.titleText,
                                     fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Title*",
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: AppTheme.titleText,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     CustomTextField(
@@ -120,7 +121,8 @@ class _Page5State extends State<Page5> {
                                       hintText: "Web developer".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Title is required'),
+                                            errorText:
+                                                'Please enter your title'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -139,11 +141,12 @@ class _Page5State extends State<Page5> {
                                     CustomTextField(
                                       controller: companyController,
                                       obSecure: false.obs,
-                                      keyboardType: TextInputType.emailAddress,
+                                      keyboardType: TextInputType.text,
                                       hintText: "Ex: Unify".obs,
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'Company is required'),
+                                            errorText:
+                                                'Please enter your company'),
                                       ]),
                                     ),
                                     SizedBox(
@@ -160,17 +163,20 @@ class _Page5State extends State<Page5> {
                                       height: AddSize.size5,
                                     ),
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: CustomTextField(
                                             controller: cityController,
                                             obSecure: false.obs,
-                                            keyboardType: TextInputType.emailAddress,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
                                             hintText: "City".obs,
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'City is required'),
+                                                  errorText:
+                                                      'Please enter your city'),
                                             ]),
                                           ),
                                         ),
@@ -180,56 +186,69 @@ class _Page5State extends State<Page5> {
                                         Expanded(
                                           child: TextFormField(
                                             onTap: () {
-                                              FocusManager.instance.primaryFocus!
+                                              FocusManager
+                                                  .instance.primaryFocus!
                                                   .unfocus();
                                               controller.searchList1.clear();
                                               for (var item in controller
-                                                  .countryList.value.countrylist!) {
+                                                  .countryList
+                                                  .value
+                                                  .countrylist!) {
                                                 controller.searchList1
                                                     .add(item.name.toString());
                                               }
                                               showModalBottomSheet<void>(
                                                 isScrollControlled: true,
                                                 shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(
-                                                            AddSize.size30),
-                                                        topRight: Radius.circular(
-                                                            AddSize.size30))),
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    AddSize
+                                                                        .size30),
+                                                            topRight: Radius
+                                                                .circular(AddSize
+                                                                    .size30))),
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return SizedBox(
-                                                    height: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        .7,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .7,
                                                     child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Align(
-                                                          alignment:
-                                                              Alignment.topRight,
+                                                          alignment: Alignment
+                                                              .topRight,
                                                           child: IconButton(
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     context),
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                               Icons.clear,
-                                                              color:
-                                                                  AppTheme.blackColor,
+                                                              color: AppTheme
+                                                                  .blackColor,
                                                             ),
                                                           ),
                                                         ),
                                                         Padding(
-                                                          padding: EdgeInsets.all(
-                                                                  AddSize.size10)
+                                                          padding: EdgeInsets
+                                                                  .all(AddSize
+                                                                      .size10)
                                                               .copyWith(top: 0),
                                                           child: TextFormField(
                                                             onChanged: (value) {
                                                               if (value != "") {
-                                                                controller.searchList1
+                                                                controller
+                                                                    .searchList1
                                                                     .clear();
                                                                 // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                                 for (var item
@@ -240,16 +259,19 @@ class _Page5State extends State<Page5> {
                                                                   if (item.name
                                                                       .toString()
                                                                       .toLowerCase()
-                                                                      .contains(value
-                                                                          .toLowerCase())) {
+                                                                      .contains(
+                                                                          value
+                                                                              .toLowerCase())) {
                                                                     controller
                                                                         .searchList1
-                                                                        .add(item.name
+                                                                        .add(item
+                                                                            .name
                                                                             .toString());
                                                                   }
                                                                 }
                                                               } else {
-                                                                controller.searchList1
+                                                                controller
+                                                                    .searchList1
                                                                     .clear();
                                                                 for (var item
                                                                     in controller
@@ -258,7 +280,8 @@ class _Page5State extends State<Page5> {
                                                                         .countrylist!) {
                                                                   controller
                                                                       .searchList1
-                                                                      .add(item.name
+                                                                      .add(item
+                                                                          .name
                                                                           .toString());
                                                                 }
                                                               }
@@ -268,21 +291,23 @@ class _Page5State extends State<Page5> {
                                                               filled: true,
                                                               fillColor: AppTheme
                                                                   .primaryColor
-                                                                  .withOpacity(.05),
+                                                                  .withOpacity(
+                                                                      .05),
                                                               hintText:
                                                                   "Select country",
-                                                              prefixIcon:
-                                                                  Icon(Icons.flag),
-                                                              hintStyle:
-                                                                  const TextStyle(
-                                                                      color: Color(
-                                                                          0xff596681),
-                                                                      fontSize: 15),
+                                                              prefixIcon: const Icon(
+                                                                  Icons.flag),
+                                                              hintStyle: const TextStyle(
+                                                                  color: Color(
+                                                                      0xff596681),
+                                                                  fontSize: 15),
                                                               contentPadding:
                                                                   const EdgeInsets
                                                                           .symmetric(
-                                                                      vertical: 14,
-                                                                      horizontal: 20),
+                                                                      vertical:
+                                                                          14,
+                                                                      horizontal:
+                                                                          20),
                                                               focusedBorder:
                                                                   OutlineInputBorder(
                                                                 borderSide: BorderSide(
@@ -291,10 +316,10 @@ class _Page5State extends State<Page5> {
                                                                         .withOpacity(
                                                                             .15),
                                                                     width: 1.0),
-                                                                borderRadius: BorderRadius
-                                                                    .circular(AddSize
-                                                                            .size10 *
-                                                                        .8),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        AddSize.size10 *
+                                                                            .8),
                                                               ),
                                                               enabledBorder:
                                                                   OutlineInputBorder(
@@ -304,10 +329,10 @@ class _Page5State extends State<Page5> {
                                                                         .withOpacity(
                                                                             .15),
                                                                     width: 1.0),
-                                                                borderRadius: BorderRadius
-                                                                    .circular(AddSize
-                                                                            .size10 *
-                                                                        .8),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        AddSize.size10 *
+                                                                            .8),
                                                               ),
                                                               border: OutlineInputBorder(
                                                                   borderSide: BorderSide(
@@ -315,62 +340,49 @@ class _Page5State extends State<Page5> {
                                                                           .primaryColor
                                                                           .withOpacity(
                                                                               .15),
-                                                                      width: 1.0),
-                                                                  borderRadius: BorderRadius
-                                                                      .circular(AddSize
-                                                                              .size10 *
-                                                                          .8)),
+                                                                      width:
+                                                                          1.0),
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                          AddSize.size10 *
+                                                                              .8)),
                                                             ),
                                                           ),
                                                         ),
                                                         Obx(() {
                                                           return Expanded(
-                                                            child: ListView.builder(
-                                                                physics:
-                                                                    BouncingScrollPhysics(),
-                                                                shrinkWrap: true,
-                                                                itemCount: controller
-                                                                    .searchList1
-                                                                    .length,
-                                                                itemBuilder:
-                                                                    (context, index) {
-                                                                  return Obx(() {
-                                                                    return InkWell(
-                                                                      onTap: () {
-                                                                        setState(() {
-                                                                          countryController
-                                                                                  .text =
-                                                                              controller
-                                                                                  .searchList1[index]
-                                                                                  .toString();
-                                                                        });
-                                                                        print(
-                                                                            countryController
-                                                                                .text);
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child: Padding(
-                                                                          padding: EdgeInsets.symmetric(
-                                                                              horizontal:
-                                                                                  AddSize
-                                                                                      .size30,
-                                                                              vertical:
-                                                                                  AddSize.size10),
-                                                                          child: Text(
-                                                                            controller
-                                                                                .searchList1[
-                                                                                    index]
-                                                                                .toString(),
-                                                                            style: TextStyle(
-                                                                                fontSize: AddSize
-                                                                                    .font14,
-                                                                                fontWeight:
-                                                                                    FontWeight.w600),
-                                                                          )),
-                                                                    );
-                                                                  });
-                                                                }),
+                                                            child: ListView
+                                                                .builder(
+                                                                    physics:
+                                                                        const BouncingScrollPhysics(),
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    itemCount: controller
+                                                                        .searchList1
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return Obx(
+                                                                          () {
+                                                                        return InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            setState(() {
+                                                                              countryController.text = controller.searchList1[index].toString();
+                                                                            });
+                                                                            print(countryController.text);
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child: Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: AddSize.size30, vertical: AddSize.size10),
+                                                                              child: Text(
+                                                                                controller.searchList1[index].toString(),
+                                                                                style: TextStyle(fontSize: AddSize.font14, fontWeight: FontWeight.w600),
+                                                                              )),
+                                                                        );
+                                                                      });
+                                                                    }),
                                                           );
                                                         }),
                                                       ],
@@ -382,52 +394,54 @@ class _Page5State extends State<Page5> {
                                             readOnly: true,
                                             controller: countryController,
                                             decoration: InputDecoration(
+                                              errorMaxLines: 2,
                                               filled: true,
                                               fillColor: AppTheme.whiteColor,
                                               hintText: "Country",
                                               labelStyle: const TextStyle(
                                                   color: Colors.black),
-                                              suffixIcon:
-                                                  Icon(Icons.keyboard_arrow_down),
+                                              suffixIcon: const Icon(Icons.keyboard_arrow_down),
                                               hintStyle: TextStyle(
-                                                color: Color(0xff596681),
+                                                color: const Color(0xff596681),
                                                 fontSize: AddSize.size15,
                                               ),
-                                              contentPadding: EdgeInsets.only(
-                                                  left: AddSize.size10),
+                                              contentPadding: EdgeInsets.only(left: AddSize.size10),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: AppTheme.primaryColor
-                                                        .withOpacity(.15),
+                                                borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15),
                                                     width: 1.0),
-                                                borderRadius: BorderRadius.circular(
-                                                    AddSize.size10 * .8),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        AddSize.size10 * .8),
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: AppTheme.primaryColor
                                                         .withOpacity(.15),
                                                     width: 1.0),
-                                                borderRadius: BorderRadius.circular(
-                                                    AddSize.size10 * .8),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        AddSize.size10 * .8),
                                               ),
                                               border: OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: AppTheme.primaryColor
+                                                      color: AppTheme
+                                                          .primaryColor
                                                           .withOpacity(.15),
                                                       width: 1.0),
-                                                  borderRadius: BorderRadius.circular(
-                                                      AddSize.size10 * .8)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          AddSize.size10 * .8)),
                                             ),
                                             validator: MultiValidator([
                                               RequiredValidator(
-                                                  errorText: 'Country is required'),
+                                                  errorText:
+                                                      'Please select your country'),
                                             ]),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Text(
@@ -445,13 +459,14 @@ class _Page5State extends State<Page5> {
                                       readOnly: true,
                                       onTap: () async {
                                         print(dateInput);
-                                        DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: dateInput == ""
-                                                ? DateTime.now()
-                                                : DateTime.parse(dateInput),
-                                            firstDate: DateTime(1950),
-                                            lastDate: DateTime.now());
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                                context: context,
+                                                initialDate: dateInput == ""
+                                                    ? DateTime.now()
+                                                    : DateTime.parse(dateInput),
+                                                firstDate: DateTime(1950),
+                                                lastDate: DateTime.now());
                                         if (pickedDate != null) {
                                           fromController.text =
                                               dateFormat.format(pickedDate);
@@ -471,7 +486,8 @@ class _Page5State extends State<Page5> {
                                       ),
                                       validator: MultiValidator([
                                         RequiredValidator(
-                                            errorText: 'From, date is required'),
+                                            errorText:
+                                                'Please select your start date'),
                                       ]),
                                     ),
                                     Row(
@@ -479,18 +495,22 @@ class _Page5State extends State<Page5> {
                                         Obx(() {
                                           return Checkbox(
                                               materialTapTargetSize:
-                                                  MaterialTapTargetSize.shrinkWrap,
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
                                               value: endDatePresent.value,
-                                              activeColor: AppTheme.primaryColor,
+                                              activeColor:
+                                                  AppTheme.primaryColor,
                                               onChanged: (newValue) {
-                                                endDatePresent.value = newValue!;
-                                                if (endDatePresent.value == true) {
+                                                endDatePresent.value =
+                                                    newValue!;
+                                                if (endDatePresent.value ==
+                                                    true) {
                                                   toController.clear();
                                                   dateInput2 = "";
                                                 }
                                               });
                                         }),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Text(
@@ -517,11 +537,14 @@ class _Page5State extends State<Page5> {
                                                               ? DateTime.now()
                                                               : DateTime.parse(
                                                                   dateInput2),
-                                                          firstDate: DateTime(1950),
-                                                          lastDate: DateTime.now());
+                                                          firstDate:
+                                                              DateTime(1950),
+                                                          lastDate:
+                                                              DateTime.now());
                                                   if (pickedDate != null) {
                                                     toController.text =
-                                                        dateFormat.format(pickedDate);
+                                                        dateFormat
+                                                            .format(pickedDate);
                                                     setState(() {
                                                       dateInput2 =
                                                           "${pickedDate.year}-${pickedDate.month < 10 ? "0" + pickedDate.month.toString() : pickedDate.month}-${pickedDate.day < 10 ? "0" + pickedDate.day.toString() : pickedDate.day}";
@@ -538,17 +561,19 @@ class _Page5State extends State<Page5> {
                                                 validator: (value) {
                                                   if (value == null ||
                                                       value.isEmpty) {
-                                                    return 'To, date is required';
-                                                  } else if (DateTime.parse(dateInput)
-                                                          .compareTo(DateTime.parse(
-                                                              dateInput2)) <
+                                                    return 'Please select your end date';
+                                                  } else if (DateTime.parse(
+                                                              dateInput)
+                                                          .compareTo(
+                                                              DateTime.parse(
+                                                                  dateInput2)) <
                                                       0) {
                                                     return null;
                                                   } else {
                                                     return "End date must be grater then start date";
                                                   }
                                                 })
-                                            : SizedBox(),
+                                            : const SizedBox(),
                                       );
                                     }),
                                     SizedBox(
@@ -570,6 +595,9 @@ class _Page5State extends State<Page5> {
                                       obSecure: false.obs,
                                       keyboardType: TextInputType.emailAddress,
                                       hintText: "Description".obs,
+                                      validator: MultiValidator([
+                                        MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
+                                      ]),
                                       /*validator: MultiValidator([
                                         RequiredValidator(
                                             errorText: 'Description is required'),
@@ -609,9 +637,11 @@ class _Page5State extends State<Page5> {
                                   if (_formKey.currentState!.validate()) {
                                     questionEmployment(
                                             id: item.id ?? "",
-                                            subject: titleController.text.trim(),
-                                            description:
-                                                descriptionController.text.trim(),
+                                            subject:
+                                                titleController.text.trim(),
+                                            description: descriptionController
+                                                .text
+                                                .trim(),
                                             company:
                                                 companyController.text.trim(),
                                             city: cityController.text.trim(),
@@ -751,8 +781,6 @@ class _Page5State extends State<Page5> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -762,7 +790,7 @@ class _Page5State extends State<Page5> {
           height: AddSize.screenHeight,
           width: AddSize.screenWidth,
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -800,7 +828,7 @@ class _Page5State extends State<Page5> {
                   ListView.builder(
                     itemCount: controller.model.value.data!.employment!.length,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => employmentData(
                         controller.model.value.data!.employment![index]),
                   ),
@@ -819,7 +847,7 @@ class _Page5State extends State<Page5> {
                 SizedBox(
                   height: AddSize.size20,
                 ),
-                if (controller.model.value.data!.employment!.length == 0)
+                if (controller.model.value.data!.employment!.isEmpty)
                   Row(
                     children: [
                       Checkbox(
@@ -829,13 +857,13 @@ class _Page5State extends State<Page5> {
                           activeColor: AppTheme.primaryColor,
                           onChanged: (newValue) {
                             setState(() {
-                              controller.nothingToAddForExperience.value = newValue!;
+                              controller.nothingToAddForExperience.value =
+                                  newValue!;
                             });
                           }),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
-
                       Expanded(
                         child: Text(
                           "Nothing to add? check the box and keep going",
@@ -908,10 +936,9 @@ class _Page5State extends State<Page5> {
                 textColor: AppTheme.whiteColor,
                 expandedValue: false,
                 onPressed: () {
-                    if (controller.nothingToAddForExperience.value == false) {
-                      showToast("Please check the checkbox");
+                  if (controller.nothingToAddForExperience.value == false) {
+                    showToast("Please select the checkbox");
                   } else {
-
                     controller.nextPage();
                   }
                 },
@@ -926,96 +953,88 @@ class _Page5State extends State<Page5> {
   Container employmentData(Employment item) {
     return Container(
       padding: EdgeInsets.all(AddSize.padding16),
-      decoration: BoxDecoration(color: AppTheme.whiteColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  item.subject.toString().capitalize!,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font16),
+      decoration: const BoxDecoration(color: AppTheme.whiteColor),
+      child: Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    item.subject.toString().capitalize!,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font16),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: AddSize.size15),
-                child: InkWell(
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AddSize.size15),
+                  child: InkWell(
+                    onTap: () {
+                      showDialogue(item: item);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(AddSize.size5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme.whiteColor,
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: Icon(
+                        Icons.edit,
+                        color: AppTheme.primaryColor,
+                        size: AddSize.size15,
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
                   onTap: () {
-                    showDialogue(item: item);
+                    showDeleteDialog(item: item);
                   },
                   child: Container(
                     padding: EdgeInsets.all(AddSize.size5),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppTheme.whiteColor,
-                        border: Border.all(color: Color(0xff707070))),
+                        border: Border.all(color: const Color(0xff707070))),
                     child: Icon(
-                      Icons.edit,
+                      Icons.delete,
                       color: AppTheme.primaryColor,
                       size: AddSize.size15,
                     ),
                   ),
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  showDeleteDialog(item: item);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(AddSize.size5),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppTheme.whiteColor,
-                      border: Border.all(color: Color(0xff707070))),
-                  child: Icon(
-                    Icons.delete,
-                    color: AppTheme.primaryColor,
-                    size: AddSize.size15,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AddSize.size10,
-          ),
-          Text(
-            item.company.toString().capitalizeFirst!,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: AppTheme.textColor,
-                fontSize: AddSize.font14),
-          ),
-          Row(
-            children: [
-              Text(
-                "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
-                " ${item.endDate != null ? "to" : ""}"
-                " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}",
-
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: AppTheme.textColor,
-                    fontSize: AddSize.font14),
-              ),
-              Expanded(
-                child: Text(
-                  " ${item.endDate != null ? "," : "- Present"}"
-                      " ${item.city != null ? item.city.toString() : ""}"
-                      " ${item.country != null ? item.country.toString() : ""}",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      fontSize: AddSize.font14),
-                ),
-              )
-            ],
-          ),
-        ],
+              ],
+            ),
+            SizedBox(
+              height: AddSize.size10,
+            ),
+            Text(
+              item.company.toString().capitalizeFirst!,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.textColor,
+                  fontSize: AddSize.font14),
+            ),
+            SizedBox(
+              height: AddSize.size5,
+            ),
+            Text(
+              "${item.startDate != null ? dateFormat.format(DateTime.parse(item.startDate!)) : ""}"
+              " ${item.endDate != null ? "to" : ""}"
+              " ${item.endDate != null ? dateFormat.format(DateTime.parse(item.endDate!)) : ""}"
+              " ${item.endDate != null ? "," : "- Present"}"
+              " ${item.city != null ? "${item.city}," : ""}"
+              " ${item.country != null ? item.country.toString() : ""}",
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: AppTheme.textColor,
+                  fontSize: AddSize.font14),
+            ),
+          ],
+        ),
       ),
     );
   }

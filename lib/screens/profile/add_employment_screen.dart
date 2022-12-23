@@ -42,6 +42,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
   RxList searchList1 = <String>[].obs;
 
   final dateFormat = DateFormat('dd-MMM-yyyy');
+  final dateFormat2 = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
@@ -56,11 +57,15 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       _cityController.text = controller.model.value.data!.employment![parentIndex].city.toString();
       countryController.text = controller.model.value.data!.employment![parentIndex].country.toString();
       _titleController.text = controller.model.value.data!.employment![parentIndex].subject.toString();
-      _fromController.text = controller.model.value.data!.employment![parentIndex].startDate.toString();
-      _toController.text = controller.model.value.data!.employment![parentIndex].endDate.toString();
-      _descriptionController.text = controller.model.value.data!.employment![parentIndex].description.toString();
+      _fromController.text = dateFormat.format(DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate.toString()));
+
+     if(controller.model.value.data!.employment![parentIndex].currentlyWorking == 0){
+       _toController.text = dateFormat.format(DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate.toString()));
+       dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+     }
+      _descriptionController.text = controller.model.value.data!.employment![parentIndex].description ?? "";
       dateInput = DateTime.parse(controller.model.value.data!.employment![parentIndex].startDate!).millisecondsSinceEpoch;
-      dateInput2 = DateTime.parse(controller.model.value.data!.employment![parentIndex].endDate!).millisecondsSinceEpoch;
+
 
       setState(() {
         acceptTermsOrPrivacy = controller.model.value.data!.employment![parentIndex].currentlyWorking == 1 ? true :false;
@@ -94,13 +99,13 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
               Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppTheme.whiteColor,
                     borderRadius: const BorderRadius.all(
@@ -118,36 +123,36 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Company*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
                           controller: _companyController,
                           obSecure: false.obs,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.text,
                           hintText: "Ex: Unify".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Company is required'),
+                            RequiredValidator(errorText: 'Please enter your company'),
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Location*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
@@ -161,11 +166,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 hintText: "City".obs,
                                 validator: MultiValidator([
                                   RequiredValidator(
-                                      errorText: 'City is required'),
+                                      errorText: 'Please enter your city'),
                                 ]),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Expanded(
@@ -178,7 +183,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                   }
                                   showModalBottomSheet<void>(
                                     isScrollControlled: true,
-                                    shape: RoundedRectangleBorder(
+                                    shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(30),
                                             topRight: Radius.circular(30))),
@@ -196,14 +201,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               child: IconButton(
                                                 onPressed: () =>
                                                     Navigator.pop(context),
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.clear,
                                                   color: AppTheme.blackColor,
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.all(10)
+                                              padding: const EdgeInsets.all(10)
                                                   .copyWith(top: 0),
                                               child: TextFormField(
                                                 onChanged: (value) {
@@ -236,7 +241,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                   fillColor: AppTheme.primaryColor
                                                       .withOpacity(.05),
                                                   hintText: "Select country",
-                                                  prefixIcon: Icon(Icons.flag),
+                                                  prefixIcon: const Icon(Icons.flag),
                                                   hintStyle: const TextStyle(
                                                       color: Color(0xff596681),
                                                       fontSize: 15),
@@ -276,7 +281,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                               return Expanded(
                                                 child: ListView.builder(
                                                     physics:
-                                                    BouncingScrollPhysics(),
+                                                    const BouncingScrollPhysics(),
                                                     shrinkWrap: true,
                                                     itemCount: searchList1.length,
                                                     itemBuilder: (context, index) {
@@ -294,7 +299,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                             Navigator.pop(context);
                                                           },
                                                           child: Padding(
-                                                              padding: EdgeInsets
+                                                              padding: const EdgeInsets
                                                                   .symmetric(
                                                                   horizontal:
                                                                   30,
@@ -302,7 +307,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                               child: Text(
                                                                 searchList1[index]
                                                                     .toString(),
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     fontSize: 14,
                                                                     fontWeight:
                                                                     FontWeight
@@ -323,11 +328,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 controller: countryController,
                                 decoration: InputDecoration(
                                   filled: true,
-
+                                  errorMaxLines: 2,
                                   fillColor: AppTheme.whiteColor,
                                   hintText: "Country",
                                   labelStyle: const TextStyle(color: Colors.black),
-                                  suffixIcon:  Icon(Icons.keyboard_arrow_down),
+                                  suffixIcon:  const Icon(Icons.keyboard_arrow_down),
                                   hintStyle: const TextStyle(
                                     color: Color(0xff596681),
                                     fontSize: 15,
@@ -350,23 +355,23 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 ),
                                 validator: MultiValidator([
                                   RequiredValidator(
-                                      errorText: 'Country is required'),
+                                      errorText: 'Please select your country'),
                                 ]),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Title*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -375,20 +380,20 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Web developer".obs,
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Title is required'),
+                            RequiredValidator(errorText: 'Please enter your title'),
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Period*",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -406,7 +411,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
                                 dateInput = pickedDate.millisecondsSinceEpoch;
-                               if (dateInput > dateInput2 ){
+                                if (dateInput > dateInput2 ){
                                   dateInput2 = 0;
                                   _toController.text = "";
                                 }
@@ -417,14 +422,14 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           },
                           obSecure: false.obs,
                           hintText: "Form".obs,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.calendar_month_outlined,
                             size: 22,
                             color: AppTheme.primaryColor,
                           ),
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'From date is required'),
+                                errorText: 'Please select your start date'),
                           ]),
                         ),
                         Row(
@@ -436,13 +441,13 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                 onChanged: (newValue) {
                                   setState(() {
                                     acceptTermsOrPrivacy = newValue!;
-                                  acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
+                                    acceptTermsOrPrivacy == true ?  _toController.text = "" : _toController.text = "";
                                   });
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
-                            Text(
+                            const Text(
                               "I currently work here",
                               style: TextStyle(
                                   fontSize: 12,
@@ -454,60 +459,60 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         SizedBox(
                           child: acceptTermsOrPrivacy == false
                               ? CustomTextField(
-                                  controller: _toController,
-                                  readOnly: true,
-                                  onTap: () async {
-                                    DateTime? pickedDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
-                                        firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
-                                        //DateTime.now() - not to allow to choose before today.
-                                        lastDate: DateTime.now());
+                              controller: _toController,
+                              readOnly: true,
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: dateInput2 == 0 ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(dateInput2),
+                                    firstDate: dateInput == 0 ? DateTime(1950) : DateTime.fromMillisecondsSinceEpoch(dateInput),
+                                    //DateTime.now() - not to allow to choose before today.
+                                    lastDate: DateTime.now());
 
-                                    if (pickedDate != null) {
-                                      print(pickedDate);
-                                      _toController.text = dateFormat.format(pickedDate);
-                                      setState(() {
-                                        dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
-                                        print(dateInput2);
-                                      });
-                                    } else {}
-                                  },
-                                  obSecure: false.obs,
-                                  hintText: "To".obs,
-                                  suffixIcon: Icon(
-                                    Icons.calendar_month_outlined,
-                                    size: 22,
-                                    color: AppTheme.primaryColor,
-                                  ),
+                                if (pickedDate != null) {
+                                  print(pickedDate);
+                                  _toController.text = dateFormat.format(pickedDate);
+                                  setState(() {
+                                    dateInput2 = pickedDate.millisecondsSinceEpoch;//set output date to TextField value.
+                                    print(dateInput2);
+                                  });
+                                } else {}
+                              },
+                              obSecure: false.obs,
+                              hintText: "To".obs,
+                              suffixIcon: const Icon(
+                                Icons.calendar_month_outlined,
+                                size: 22,
+                                color: AppTheme.primaryColor,
+                              ),
                               validator: (value) {
                                 if (value == null ||
                                     value.isEmpty) {
-                                  return 'To date is required';
+                                  return 'Please select your end date';
                                 } else if (int.parse(dateInput.toString()).compareTo(int.parse(dateInput2.toString())) < 0) {
                                   return null;
                                 } else {
                                   return "End date must be grater then start date";
                                 }
                               }
-                                  /* validator: MultiValidator([
+                            /* validator: MultiValidator([
                               RequiredValidator(
                                   errorText: 'To, date is required'),
                             ]),*/
-                                )
-                              : SizedBox(),
+                          )
+                              : const SizedBox(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text(
+                        const Text(
                           "Description",
                           style: TextStyle(
                               fontSize: 14,
                               color: AppTheme.titleText,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         CustomTextField(
@@ -516,12 +521,15 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.emailAddress,
                           hintText: "Description".obs,
-                          validator: MultiValidator([
+                          /*validator: MultiValidator([
                             RequiredValidator(
                                 errorText: 'Description is required'),
+                          ]),*/
+                          validator: MultiValidator([
+                            MaxLengthValidator(200, errorText: "Description maximum length is 200 characters")
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                       ])),
@@ -551,26 +559,25 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                         backgroundColor: AppTheme.primaryColor,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                           editEmploymentInfoRepo(
-                             id: parentIndex == -10000 ? parentIndex :
-                             controller.model.value.data!.employment![parentIndex].id.toString(),
-                               subject: _titleController.text.trim(),
-                               description: _descriptionController.text.trim(),
-                               company: _companyController.text.trim(),
-                               city: _cityController.text.trim(),
-                               country: countryController.text.trim(),
-                               start_date: _fromController.text.trim(),
-                               end_date: _toController.text.trim(),
-                               currently_working:
-                               acceptTermsOrPrivacy == true ? 1 : 0,
-                               context: context)
-                               .then((value) {
-                             if (value.status == true) {
-                               Get.back();
-                               controller.getData();
-                             }
-                             showToast(value.message.toString());
-                           });
+                            editEmploymentInfoRepo(
+                                id: parentIndex == -10000 ? parentIndex :
+                                controller.model.value.data!.employment![parentIndex].id.toString(),
+                                subject: _titleController.text.trim(),
+                                description: _descriptionController.text.trim(),
+                                company: _companyController.text.trim(),
+                                city: _cityController.text.trim(),
+                                country: countryController.text.trim(),
+                                start_date: dateFormat2.format(DateTime.fromMillisecondsSinceEpoch(dateInput)),
+                                end_date: dateFormat2.format(DateTime.fromMillisecondsSinceEpoch(dateInput2)),
+                                currently_working: acceptTermsOrPrivacy == true ? 1 : 0,
+                                context: context)
+                                .then((value) {
+                              if (value.status == true) {
+                                Get.back();
+                                controller.getData();
+                              }
+                              showToast(value.message.toString());
+                            });
                           }
                         },
                         textColor: AppTheme.whiteColor,

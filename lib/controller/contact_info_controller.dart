@@ -13,6 +13,7 @@ class ContactInfoController extends GetxController{
 
   Rx<ModelCloseAccountReasonList> reasons = ModelCloseAccountReasonList().obs;
   Rx<ModelTimeZone> timezoneList = ModelTimeZone().obs;
+  RxList searchList = <String>[].obs;
 
   @override
   void onInit() {
