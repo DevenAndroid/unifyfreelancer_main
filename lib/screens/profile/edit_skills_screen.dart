@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -24,8 +25,8 @@ class EditSkillsScreen extends StatefulWidget {
 class _EditSkillsScreenState extends State<EditSkillsScreen> {
   final controller = Get.put(ProfileScreenController());
   ModelSkillListResponse skillList = ModelSkillListResponse();
-  RxList<Data> selectedList = <Data>[].obs;
-  RxList<Data> tempList = <Data>[].obs;
+  RxList<AllData> selectedList = <AllData>[].obs;
+  RxList<AllData> tempList = <AllData>[].obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
 
   TextEditingController textEditingController = TextEditingController();
@@ -56,6 +57,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
             if(item.skillId.toString() == skillList.data![i].id.toString()){
               skillList.data![i].isSelected!.value = true;
               selectedList.add(skillList.data![i]);
+              //break;
             }
           }
         }
@@ -172,7 +174,9 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
         value++;
       }
     }
-    print(value);
+    if (kDebugMode) {
+      print(value);
+    }
     return value <10 ? false : true;
   }
 
@@ -202,27 +206,27 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
             ? SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Skills",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
-                      Text(
+                      const Text(
                         "Keeping your skills up to date helps you get the jobs you want,",
                         style:
                             TextStyle(fontSize: 12, color: AppTheme.textColor),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Container(
@@ -249,7 +253,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                           readOnly: true,
                           decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   color: AppTheme.textColor, fontSize: 14),
                               filled: true,
                               fillColor: Colors.white24,
@@ -257,12 +261,12 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 13),
                               prefixIcon: Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration:
-                                    BoxDecoration(shape: BoxShape.circle),
+                                    const BoxDecoration(shape: BoxShape.circle),
                                 child: SvgPicture.asset(
                                   'assets/icon/Search.svg',
-                                  color: Color(0xff756C87),
+                                  color: const Color(0xff756C87),
                                 ),
                               )),
                           onChanged: (value) {},
@@ -270,7 +274,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                       ),
 
 
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
 
@@ -326,7 +330,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                       ],
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   );
       }),
@@ -384,7 +388,7 @@ class _EditSkillsScreenState extends State<EditSkillsScreen> {
                   ),
                 ],
               )
-            : SizedBox();
+            : const SizedBox();
       }),
     );
   }

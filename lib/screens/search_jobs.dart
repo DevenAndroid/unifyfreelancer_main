@@ -109,7 +109,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                           ),
                         ),
                       ),
-                           /*  InkWell(
+                             InkWell(
                         onTap: (){
                           Get.toNamed(MyRouter.filterScreen);
                         },
@@ -125,7 +125,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               'assets/icon/fillter.svg',
                               color: AppTheme.primaryColor,
                             )),
-                      )*/
+                      )
                     ],
                   ),
                   const SizedBox(

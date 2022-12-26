@@ -9,7 +9,6 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../controller/jobs_list_controller.dart';
-import '../controller/search_controller.dart';
 import '../repository/job_module/dislike_job_repository.dart';
 import '../repository/job_module/remove_saved_jobs.dart';
 import '../repository/job_module/saved_jobs_repository.dart';
@@ -28,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
   final controller = Get.put(JobListController());
   final saveController = Get.put(SavedJobController());
   final TextEditingController _searchController = TextEditingController();
@@ -77,12 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 15),
                         suffixIcon: InkWell(
-                          onTap: (){
-                            Get.toNamed(MyRouter.searchJobScreen,arguments: [_searchController.text.toString()]);
-
+                          onTap: () {
+                            Get.toNamed(MyRouter.searchJobScreen, arguments: [
+                              _searchController.text.toString()
+                            ]);
                           },
                           child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               padding: const EdgeInsets.all(10),
                               decoration: const BoxDecoration(
                                 color: AppTheme.primaryColor,
@@ -93,11 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: AppTheme.whiteColor,
                               )),
                         )),
-                    onFieldSubmitted: (value){
-                      if(value.isNotEmpty){
-                        Get.toNamed(MyRouter.searchJobScreen,arguments: [value.toString()]);
+                    onFieldSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        Get.toNamed(MyRouter.searchJobScreen,
+                            arguments: [value.toString()]);
                       }
-
                     },
                   ),
                 ),
@@ -113,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Center(
                             child: TabBar(
                               labelColor: AppTheme.primaryColor,
-                              labelStyle:
-                                  const TextStyle(fontWeight: FontWeight.w600),
+                              labelStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600),
                               unselectedLabelColor: AppTheme.blackColor,
                               padding: EdgeInsets.zero,
                               isScrollable: true,
@@ -127,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               automaticIndicatorColorAdjustment: true,
-                              unselectedLabelStyle:
-                                  const TextStyle(fontWeight: FontWeight.w400),
+                              unselectedLabelStyle: const TextStyle(
+                                  fontWeight: FontWeight.w400),
                               tabs: [
                                 Tab(
                                   child: Text(
@@ -138,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
-
                                 Tab(
                                   child: Text(
                                     "Most Recent",
@@ -193,371 +194,431 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
                       )))
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: controller.modelJobList.value.data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
-                          controller.modelJobList.value.data![index].id.toString(),
-                        ]);
-                        if (kDebugMode) {
-                          print(controller.modelJobList.value.data![index].id);
-                        }
-                      },
-                      child: Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 15, right: 10, left: 10),
-                          width: deviceWidth,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AppTheme.whiteColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    controller.getData();
+                  },
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: controller.modelJobList.value.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
+                            controller.modelJobList.value.data![index].id
+                                .toString(),
+                          ]);
+                          if (kDebugMode) {
+                            print(
+                                controller.modelJobList.value.data![index].id);
+                          }
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 15, right: 10, left: 10),
+                            width: deviceWidth,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppTheme.whiteColor,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: deviceWidth * .01,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                        controller.modelJobList.value.data![index].name.toString().capitalizeFirst!,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.pinkText,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      showFilterButtonSheet(
-                                          context: context,
-                                          titleText: "Dislike reasons",
-                                          widgets: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Divider(
-                                                color: Color(0xff6D2EF1),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics: const NeverScrollableScrollPhysics(),
-                                                  itemCount: controller.dislikeReasons.value.data!.length,
-                                                  itemBuilder: (context, index2) {
-                                                    return Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        InkWell(
-                                                          onTap: () {
-                                                            Get.back();
-                                                            dislikeJobRepo(
-                                                                    job_id: controller.modelJobList.value.data![index].id.toString(),
-                                                                    reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
-                                                                    context: context).then((value) {
-                                                                      if (kDebugMode) {
-                                                                        print("remove job response::::${value.message}");
-                                                                      }
-                                                              if (value.status == true) {}
-                                                              showToast(value.message.toString());
-                                                              controller.getData();
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            controller.dislikeReasons.value.data![index2].name.toString(),
-                                                            style: TextStyle(
-                                                              fontSize: 12.sp,
-                                                              fontWeight: FontWeight.w500,
-                                                              color: AppTheme.darkBlueText,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: deviceWidth * .01,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                          controller.modelJobList.value
+                                              .data![index].name
+                                              .toString()
+                                              .capitalizeFirst!,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.pinkText,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        showFilterButtonSheet(
+                                            context: context,
+                                            titleText: "Dislike reasons",
+                                            widgets: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Divider(
+                                                  color: Color(0xff6D2EF1),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: controller
+                                                        .dislikeReasons
+                                                        .value
+                                                        .data!
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, index2) {
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Get.back();
+                                                              dislikeJobRepo(
+                                                                      job_id: controller
+                                                                          .modelJobList
+                                                                          .value
+                                                                          .data![
+                                                                              index]
+                                                                          .id
+                                                                          .toString(),
+                                                                      reason_id: controller
+                                                                          .dislikeReasons
+                                                                          .value
+                                                                          .data![
+                                                                              index2]
+                                                                          .id
+                                                                          .toString(),
+                                                                      context:
+                                                                          context)
+                                                                  .then(
+                                                                      (value) {
+                                                                if (kDebugMode) {
+                                                                  print(
+                                                                      "remove job response::::${value.message}");
+                                                                }
+                                                                if (value
+                                                                        .status ==
+                                                                    true) {}
+                                                                showToast(value
+                                                                    .message
+                                                                    .toString());
+                                                                controller
+                                                                    .getData();
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              controller
+                                                                  .dislikeReasons
+                                                                  .value
+                                                                  .data![index2]
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppTheme
+                                                                    .darkBlueText,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        )
-                                                      ],
-                                                    );
-                                                  })
-                                            ],
-                                          ));
-                                    },
-                                    child: Icon(
-                                      Icons.thumb_down_alt_outlined,
-                                      size: 22.sp,
-                                      color: AppTheme.primaryColor,
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          )
+                                                        ],
+                                                      );
+                                                    })
+                                              ],
+                                            ));
+                                      },
+                                      child: Icon(
+                                        Icons.thumb_down_alt_outlined,
+                                        size: 22.sp,
+                                        color: AppTheme.primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  SizedBox(
-                                    child: controller.modelJobList.value.data![index].isSaved ==
-                                            false
-                                        ? InkWell(
-                                            onTap: () {
-                                              savedJobsRepo(
-                                                      job_id: int.parse(
-                                                          controller
-                                                              .modelJobList
-                                                              .value
-                                                              .data![index]
-                                                              .id
-                                                              .toString()),
-                                                      context: context)
-                                                  .then((value) {
-                                                if (value.status == true) {}
-                                                controller.getData();
-                                                showToast(value.message.toString());
-                                                saveController.getData();
-                                              });
-                                            },
-                                            child: Icon(
-                                              Icons.favorite_border,
-                                              size: 22.sp,
-                                              color: AppTheme.primaryColor,
-                                            ))
-                                        : InkWell(
-                                            onTap: () {
-                                              removeSavedJobsRepo(
-                                                      job_id: int.parse(
-                                                          controller
-                                                              .modelJobList
-                                                              .value
-                                                              .data![index]
-                                                              .id
-                                                              .toString()),
-                                                      context: context)
-                                                  .then((value) {
-                                                if (value.status == true) {}
-                                                controller.getData();
-                                                saveController.getData();
-                                                showToast(value.message.toString());
-
-                                              });
-                                            },
-                                            child: Icon(
-                                              Icons.favorite,
-                                              size: 22.sp,
-                                              color: AppTheme.primaryColor,
-                                            )),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Text(
-                                controller.modelJobList.value.data![index].type
-                                    .toString().capitalizeFirst!.replaceAll("_", " "),
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText,
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    SizedBox(
+                                      child: controller.modelJobList.value
+                                                  .data![index].isSaved ==
+                                              false
+                                          ? InkWell(
+                                              onTap: () {
+                                                savedJobsRepo(
+                                                        job_id: int.parse(
+                                                            controller
+                                                                .modelJobList
+                                                                .value
+                                                                .data![index]
+                                                                .id
+                                                                .toString()),
+                                                        context: context)
+                                                    .then((value) {
+                                                  if (value.status == true) {}
+                                                  controller.getData();
+                                                  showToast(
+                                                      value.message.toString());
+                                                  saveController.getData();
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.favorite_border,
+                                                size: 22.sp,
+                                                color: AppTheme.primaryColor,
+                                              ))
+                                          : InkWell(
+                                              onTap: () {
+                                                removeSavedJobsRepo(
+                                                        job_id: int.parse(
+                                                            controller
+                                                                .modelJobList
+                                                                .value
+                                                                .data![index]
+                                                                .id
+                                                                .toString()),
+                                                        context: context)
+                                                    .then((value) {
+                                                  if (value.status == true) {}
+                                                  controller.getData();
+                                                  saveController.getData();
+                                                  showToast(
+                                                      value.message.toString());
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.favorite,
+                                                size: 22.sp,
+                                                color: AppTheme.primaryColor,
+                                              )),
+                                    )
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Text(
-                                  controller.modelJobList.value.data![index]
-                                      .description
-                                      .toString().capitalizeFirst!,
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                  controller
+                                      .modelJobList.value.data![index].type
+                                      .toString()
+                                      .capitalizeFirst!
+                                      .replaceAll("_", " "),
                                   style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w300,
-                                      color: AppTheme.greyTextColor),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-
-                                      if(controller.modelJobList.value.data![index].budgetType.toString() == "hourly")
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                    controller.modelJobList.value.data![index]
+                                        .description
+                                        .toString()
+                                        .capitalizeFirst!,
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w300,
+                                        color: AppTheme.greyTextColor),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (controller.modelJobList.value
+                                                .data![index].budgetType
+                                                .toString() ==
+                                            "hourly")
+                                          Text(
+                                            "\$${controller.modelJobList.value.data![index].minPrice.toString()} - \$${controller.modelJobList.value.data![index].price.toString()}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
+                                        if (controller.modelJobList.value
+                                                .data![index].budgetType
+                                                .toString() ==
+                                            "fixed")
+                                          Text(
+                                            "\$${controller.modelJobList.value.data![index].price}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
                                         Text(
-                                          "\$${controller.modelJobList.value
-                                              .data![index].minPrice.toString()} - \$${controller.modelJobList.value
-                                              .data![index].price.toString()}",
+                                          "Budget",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller.modelJobList.value
+                                              .data![index].budgetType
+                                              .toString()
+                                              .capitalizeFirst!,
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w600,
                                               color: AppTheme.darkBlueText),
                                         ),
-                                      if(controller.modelJobList.value.data![index].budgetType.toString() == "fixed")
-                                      Text(
-                                        "\$${controller.modelJobList.value
-                                                .data![index].price}",
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.darkBlueText),
-                                      ),
-                                      Text(
-                                        "Budget",
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff6B6B6B)),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        controller.modelJobList.value
-                                            .data![index].budgetType
-                                            .toString().capitalizeFirst!,
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.darkBlueText),
-                                      ),
-                                      Text(
-                                        "Project type",
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff6B6B6B)),
-                                      ),
-                                    ],
-                                  ),
-                                  //Send proposal button
-                                  /*CustomOutlineButton(
-                                      title: "Send Proposal",
-                                      backgroundColor: AppTheme.whiteColor,
-                                      textColor: AppTheme.primaryColor,
-                                      onPressed: () {
-                                        Get.toNamed(MyRouter.jobDetailsScreen,
-                                            arguments: [
-                                              controller.modelJobList.value
-                                                  .data![index].id,
-                                            ]);
-                                        print(controller.modelJobList.value
-                                            .data![index].id);
-                                      }),*/
-                                ],
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              SizedBox(
-                                child: controller.modelJobList.value
-                                            .data![index].skills!.length ==
-                                        0
-                                    ? const SizedBox()
-                                    : Column(
-                                        children: [
-                                          const Divider(
-                                            color: Color(0xff6D2EF1),
-                                          ),
-                                          SizedBox(
-                                            height: deviceHeight * .01,
-                                          ),
-                                          SizedBox(
-                                            width: deviceWidth,
-                                            height: 45.h,
-                                            child: ListView.builder(
-                                                physics:
-                                                    const BouncingScrollPhysics(),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: controller
-                                                    .modelJobList
-                                                    .value
-                                                    .data![index]
-                                                    .skills!
-                                                    .length,
-                                                itemBuilder: (context, index2) {
-                                                  return Container(
-                                                      margin: const EdgeInsets.only(
-                                                          right: 4, bottom: 10),
-                                                      child: ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    AppTheme
-                                                                        .whiteColor,
-                                                                side:
-                                                                    const BorderSide(
-                                                                  color: Color(
-                                                                      0xff6D2EF1),
-                                                                ),
-                                                                shape:
-                                                                    const RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius
-                                                                                .all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          30),
-                                                                )),
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                  horizontal:
-                                                                      20,
-                                                                ),
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                )),
-                                                        onPressed: () {},
-                                                        child: Text(
-                                                          controller
-                                                              .modelJobList
-                                                              .value
-                                                              .data![index]
-                                                              .skills![index2]
-                                                              .name
-                                                              .toString(),
-                                                          style: const TextStyle(
-                                                              color: AppTheme
-                                                                  .primaryColor),
-                                                        ),
-                                                      ));
-                                                }),
-                                          ),
-                                        ],
-                                      ),
-                              ),
-                            ],
-                          )),
-                    );
-                  },
+                                        Text(
+                                          "Project type",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
+                                        ),
+                                      ],
+                                    ),
+                                    //Send proposal button
+                                    /*CustomOutlineButton(
+                                        title: "Send Proposal",
+                                        backgroundColor: AppTheme.whiteColor,
+                                        textColor: AppTheme.primaryColor,
+                                        onPressed: () {
+                                          Get.toNamed(MyRouter.jobDetailsScreen,
+                                              arguments: [
+                                                controller.modelJobList.value
+                                                    .data![index].id,
+                                              ]);
+                                          print(controller.modelJobList.value
+                                              .data![index].id);
+                                        }),*/
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                SizedBox(
+                                  child: controller.modelJobList.value
+                                              .data![index].skills!.length ==
+                                          0
+                                      ? const SizedBox()
+                                      : Column(
+                                          children: [
+                                            const Divider(
+                                              color: Color(0xff6D2EF1),
+                                            ),
+                                            SizedBox(
+                                              height: deviceHeight * .01,
+                                            ),
+                                            SizedBox(
+                                              width: deviceWidth,
+                                              height: 45.h,
+                                              child: ListView.builder(
+                                                  physics:
+                                                      const BouncingScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: controller
+                                                      .modelJobList
+                                                      .value
+                                                      .data![index]
+                                                      .skills!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index2) {
+                                                    return Container(
+                                                        margin: const EdgeInsets
+                                                                .only(
+                                                            right: 4,
+                                                            bottom: 10),
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      AppTheme
+                                                                          .whiteColor,
+                                                                  side:
+                                                                      const BorderSide(
+                                                                    color: Color(
+                                                                        0xff6D2EF1),
+                                                                  ),
+                                                                  shape:
+                                                                      const RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius
+                                                                              .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            30),
+                                                                  )),
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                  ),
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  )),
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            controller
+                                                                .modelJobList
+                                                                .value
+                                                                .data![index]
+                                                                .skills![index2]
+                                                                .name
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                color: AppTheme
+                                                                    .primaryColor),
+                                                          ),
+                                                        ));
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                ),
+                              ],
+                            )),
+                      );
+                    },
+                  ),
                 )
           : controller.status.value.isError
               ? SizedBox(
@@ -601,430 +662,479 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
                       )))
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: controller.modeRecentJobList.value.data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
-                          controller.modeRecentJobList.value.data![index].id
-                        ]);
-                        if (kDebugMode) {
-                          print(
-                            controller.modeRecentJobList.value.data![index].id);
-                        }
-                      },
-                      child: Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 15, right: 10, left: 10),
-                          width: deviceWidth,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: AppTheme.whiteColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    controller.getDataRecentJob();
+                  },
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: controller.modeRecentJobList.value.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
+                            controller.modeRecentJobList.value.data![index].id
+                          ]);
+                          if (kDebugMode) {
+                            print(controller
+                                .modeRecentJobList.value.data![index].id);
+                          }
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 15, right: 10, left: 10),
+                            width: deviceWidth,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppTheme.whiteColor,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: deviceWidth * .01,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                        controller.modeRecentJobList.value
-                                            .data![index].name
-                                            .toString().capitalizeFirst!,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.pinkText,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      showFilterButtonSheet(
-                                          context: context,
-                                          titleText: "Dislike reasons",
-                                          widgets: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              const Divider(
-                                                color: Color(0xff6D2EF1),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              ListView.builder(
-                                                  shrinkWrap: true,
-                                                  physics: const NeverScrollableScrollPhysics(),
-                                                  itemCount: controller.dislikeReasons.value.data!.length,
-                                                  itemBuilder: (context, index2) {
-                                                    return Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        InkWell(
-                                                          onTap: () {
-                                                            Get.back();
-                                                            dislikeJobRepo(
-                                                                job_id: controller.modeRecentJobList.value.data![index].id.toString(),
-                                                                reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
-                                                                context: context).then((value) {
-                                                              if (kDebugMode) {
-                                                                print("remove recent job response::::${value.message}");
-                                                              }
-                                                              if (value.status == true) {}
-                                                              showToast(value.message.toString());
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: deviceWidth * .01,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                          controller.modeRecentJobList.value
+                                              .data![index].name
+                                              .toString()
+                                              .capitalizeFirst!,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.pinkText,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        showFilterButtonSheet(
+                                            context: context,
+                                            titleText: "Dislike reasons",
+                                            widgets: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Divider(
+                                                  color: Color(0xff6D2EF1),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: controller
+                                                        .dislikeReasons
+                                                        .value
+                                                        .data!
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, index2) {
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Get.back();
+                                                              dislikeJobRepo(
+                                                                      job_id: controller
+                                                                          .modeRecentJobList
+                                                                          .value
+                                                                          .data![
+                                                                              index]
+                                                                          .id
+                                                                          .toString(),
+                                                                      reason_id: controller
+                                                                          .dislikeReasons
+                                                                          .value
+                                                                          .data![
+                                                                              index2]
+                                                                          .id
+                                                                          .toString(),
+                                                                      context:
+                                                                          context)
+                                                                  .then(
+                                                                      (value) {
+                                                                if (kDebugMode) {
+                                                                  print(
+                                                                      "remove recent job response::::${value.message}");
+                                                                }
+                                                                if (value
+                                                                        .status ==
+                                                                    true) {}
+                                                                showToast(value
+                                                                    .message
+                                                                    .toString());
 
-                                                              controller.getDataRecentJob();
-                                                            });
-                                                          },
-                                                          child: Text(
-                                                            controller
-                                                                .dislikeReasons
-                                                                .value
-                                                                .data![index2]
-                                                                .name
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w500,
-                                                              color: AppTheme
-                                                                  .darkBlueText,
+                                                                controller
+                                                                    .getDataRecentJob();
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              controller
+                                                                  .dislikeReasons
+                                                                  .value
+                                                                  .data![index2]
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppTheme
+                                                                    .darkBlueText,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        )
-                                                      ],
-                                                    );
-                                                  })
-                                            ],
-                                          ));
-                                    },
-                                    child: Icon(
-                                      Icons.thumb_down_alt_outlined,
-                                      size: 22.sp,
-                                      color: AppTheme.primaryColor,
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          )
+                                                        ],
+                                                      );
+                                                    })
+                                              ],
+                                            ));
+                                      },
+                                      child: Icon(
+                                        Icons.thumb_down_alt_outlined,
+                                        size: 22.sp,
+                                        color: AppTheme.primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  SizedBox(
-                                    child: controller.modeRecentJobList.value
-                                                .data![index].isSaved ==
-                                            false
-                                        ? InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                savedJobsRepo(
-                                                        job_id: int.parse(
-                                                            controller
-                                                                .modeRecentJobList
-                                                                .value
-                                                                .data![index]
-                                                                .id
-                                                                .toString()),
-                                                        context: context)
-                                                    .then((value) {
-                                                  if (value.status == true) {}
-                                                  showToast(value.message.toString());
-                                                  controller.getDataRecentJob();
-                                                  saveController.getData();
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    SizedBox(
+                                      child: controller.modeRecentJobList.value
+                                                  .data![index].isSaved ==
+                                              false
+                                          ? InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  savedJobsRepo(
+                                                          job_id: int.parse(
+                                                              controller
+                                                                  .modeRecentJobList
+                                                                  .value
+                                                                  .data![index]
+                                                                  .id
+                                                                  .toString()),
+                                                          context: context)
+                                                      .then((value) {
+                                                    if (value.status == true) {}
+                                                    showToast(value.message
+                                                        .toString());
+                                                    controller
+                                                        .getDataRecentJob();
+                                                    saveController.getData();
+                                                  });
                                                 });
-                                              });
-                                            },
-                                            child: const Icon(
-                                              Icons.favorite_border,
-                                              size: 22,
-                                              color: AppTheme.primaryColor,
-                                            ))
-                                        : InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                removeSavedJobsRepo(
-                                                        job_id: int.parse(
-                                                            controller
-                                                                .modeRecentJobList
-                                                                .value
-                                                                .data![index]
-                                                                .id
-                                                                .toString()),
-                                                        context: context)
-                                                    .then((value) {
-                                                  if (value.status == true) {}
-                                                  controller.getDataRecentJob();
-                                                  showToast(value.message.toString());
-                                                  saveController.getData();
-
+                                              },
+                                              child: const Icon(
+                                                Icons.favorite_border,
+                                                size: 22,
+                                                color: AppTheme.primaryColor,
+                                              ))
+                                          : InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  removeSavedJobsRepo(
+                                                          job_id: int.parse(
+                                                              controller
+                                                                  .modeRecentJobList
+                                                                  .value
+                                                                  .data![index]
+                                                                  .id
+                                                                  .toString()),
+                                                          context: context)
+                                                      .then((value) {
+                                                    if (value.status == true) {}
+                                                    controller
+                                                        .getDataRecentJob();
+                                                    showToast(value.message
+                                                        .toString());
+                                                    saveController.getData();
+                                                  });
                                                 });
-                                              });
-                                            },
-                                            child: const Icon(
-                                              Icons.favorite,
-                                              size: 22,
-                                              color: AppTheme.primaryColor,
-                                            )),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Text(
-                                controller
-                                    .modeRecentJobList.value.data![index].type
-                                    .toString().capitalizeFirst!.replaceAll("_", " "),
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText,
+                                              },
+                                              child: const Icon(
+                                                Icons.favorite,
+                                                size: 22,
+                                                color: AppTheme.primaryColor,
+                                              )),
+                                    )
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Text(
-                                  controller.modeRecentJobList.value
-                                      .data![index].description
-                                      .toString().capitalizeFirst!,
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                  controller
+                                      .modeRecentJobList.value.data![index].type
+                                      .toString()
+                                      .capitalizeFirst!
+                                      .replaceAll("_", " "),
                                   style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w300,
-                                      color: AppTheme.greyTextColor),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if(controller.modeRecentJobList.value
-                                          .data![index].budgetType
-                                          .toString().toLowerCase() == "hourly")
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkBlueText,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                    controller.modeRecentJobList.value
+                                        .data![index].description
+                                        .toString()
+                                        .capitalizeFirst!,
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w300,
+                                        color: AppTheme.greyTextColor),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (controller.modeRecentJobList.value
+                                                .data![index].budgetType
+                                                .toString()
+                                                .toLowerCase() ==
+                                            "hourly")
+                                          Text(
+                                            "\$${controller.modeRecentJobList.value.data![index].minPrice.toString()} - \$${controller.modeRecentJobList.value.data![index].price.toString()}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
+                                        if (controller.modeRecentJobList.value
+                                                .data![index].budgetType
+                                                .toString()
+                                                .toLowerCase() ==
+                                            "fixed")
+                                          Text(
+                                            "\$${controller.modeRecentJobList.value.data![index].price}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
                                         Text(
-                                          "\$${controller.modeRecentJobList.value.data![index].minPrice.toString()} - \$${controller.modeRecentJobList.value.data![index].price.toString()}",
+                                          "Budget",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller.modeRecentJobList.value
+                                              .data![index].budgetType
+                                              .toString()
+                                              .capitalizeFirst!,
                                           style: TextStyle(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w600,
                                               color: AppTheme.darkBlueText),
                                         ),
-                                      if(controller.modeRecentJobList.value
-                                          .data![index].budgetType
-                                          .toString().toLowerCase() == "fixed")
-                                      Text(
-                                        "\$${controller.modeRecentJobList.value.data![index].price}",
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.darkBlueText),
-                                      ),
-                                      Text(
-                                        "Budget",
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff6B6B6B)),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        controller.modeRecentJobList.value
-                                            .data![index].budgetType
-                                            .toString().capitalizeFirst!,
-                                        style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppTheme.darkBlueText),
-                                      ),
-                                      Text(
-                                        "Project type",
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff6B6B6B)),
-                                      ),
-                                    ],
-                                  ),
+                                        Text(
+                                          "Project type",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
+                                        ),
+                                      ],
+                                    ),
 
-                                  //send proposal button
-                                  /* CustomOutlineButton(
-                                title: "Send Proposal",
-                                backgroundColor: AppTheme.whiteColor,
-                                textColor: AppTheme.primaryColor,
-                                onPressed: () {
-                                  Get.toNamed(MyRouter.jobDetailsScreen,
-                                      arguments: [
-                                        controller.modeRecentJobList.value
-                                            .data![index].id
-                                      ]);
-                                  print(controller
-                                      .modeRecentJobList.value.data![index].id);
-                                },
-                              ),*/
-                                ],
-                              ),
-                              SizedBox(
-                                height: deviceHeight * .01,
-                              ),
-                              SizedBox(
-                                  child: controller.modeRecentJobList.value
-                                              .data![index].skills!.length ==
-                                          0
-                                      ? const SizedBox()
-                                      : Column(
-                                          children: [
-                                            const Divider(
-                                              color: Color(0xff6D2EF1),
-                                            ),
-                                            SizedBox(
-                                              height: deviceHeight * .01,
-                                            ),
-                                            SizedBox(
-                                              width: deviceWidth,
-                                              height: 45.h,
-                                              child: ListView.builder(
-                                                  physics:
-                                                      const BouncingScrollPhysics(),
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: controller
-                                                      .modeRecentJobList
-                                                      .value
-                                                      .data![index]
-                                                      .skills!
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, index2) {
-                                                    return Container(
-                                                        margin: const EdgeInsets.only(
-                                                            right: 4,
-                                                            bottom: 10),
-                                                        child: ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  backgroundColor:
-                                                                      AppTheme
-                                                                          .whiteColor,
-                                                                  side:
-                                                                      const BorderSide(
-                                                                    color: Color(
-                                                                        0xff6D2EF1),
-                                                                  ),
-                                                                  shape:
-                                                                      const RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius
-                                                                              .all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            30),
-                                                                  )),
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .symmetric(
-                                                                    horizontal:
-                                                                        20,
-                                                                  ),
-                                                                  textStyle:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  )),
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            controller
-                                                                .modeRecentJobList
-                                                                .value
-                                                                .data![index]
-                                                                .skills![index2]
-                                                                .name
-                                                                .toString(),
-                                                            style: const TextStyle(
-                                                                color: AppTheme
-                                                                    .primaryColor),
-                                                          ),
-                                                        )
-
-                                                        /*CustomOutlineButton(
-                                                          title: stackButtonsList[index],
-                                                          backgroundColor: AppTheme.whiteColor,
-                                                          textColor: AppTheme.primaryColor,
-                                                          expandedValue: false,
-                                                          onPressed: () {},
-                                                        ),*/
-                                                        );
-                                                  }),
-                                              /*
-                                                Stack(
-                                                  children:
-                                                  List.generate(stackButtonsList.length, (index11)
-                                                  => Positioned(left: stackButtonsList[index11].positionPoint,
-                                                        child: CustomOutlineButton(backgroundColor: AppTheme.whiteColor,
-                                                          textColor: AppTheme.primaryColor, title: stackButtonsList[index11].titleText.toString(),
-                                                          onPressed: () {
-                                                            String titleName = "";
-                                                            double positionName = 0;
-                                                            titleName = stackButtonsList[index11].titleText!;
-                                                            positionName =
-                                                                stackButtonsList[
-                                                                        index11]
-                                                                    .positionPoint!;
-                                                            stackButtonsList
-                                                                .removeAt(index11);
-                                                            stackButtonsList.add(
-                                                                StackButtons(
-                                                                    titleText:
-                                                                        titleName,
-                                                                    positionPoint:
-                                                                        positionName));
-                                                            setState(() {});
-                                                          },
-                                                        )),
+                                    //send proposal button
+                                    /* CustomOutlineButton(
+                                  title: "Send Proposal",
+                                  backgroundColor: AppTheme.whiteColor,
+                                  textColor: AppTheme.primaryColor,
+                                  onPressed: () {
+                                    Get.toNamed(MyRouter.jobDetailsScreen,
+                                        arguments: [
+                                          controller.modeRecentJobList.value
+                                              .data![index].id
+                                        ]);
+                                    print(controller
+                                        .modeRecentJobList.value.data![index].id);
+                                  },
+                                ),*/
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                SizedBox(
+                                    child:
+                                        controller
+                                                    .modeRecentJobList
+                                                    .value
+                                                    .data![index]
+                                                    .skills!
+                                                    .length ==
+                                                0
+                                            ? const SizedBox()
+                                            : Column(
+                                                children: [
+                                                  const Divider(
+                                                    color: Color(0xff6D2EF1),
                                                   ),
-                                                  // children: [
-                                                  // ],
-                                                ),*/
-                                            ),
-                                          ],
-                                        ))
-                            ],
-                          )),
-                    );
-                  },
+                                                  SizedBox(
+                                                    height: deviceHeight * .01,
+                                                  ),
+                                                  SizedBox(
+                                                    width: deviceWidth,
+                                                    height: 45.h,
+                                                    child: ListView.builder(
+                                                        physics:
+                                                            const BouncingScrollPhysics(),
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount: controller
+                                                            .modeRecentJobList
+                                                            .value
+                                                            .data![index]
+                                                            .skills!
+                                                            .length,
+                                                        itemBuilder:
+                                                            (context, index2) {
+                                                          return Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      right: 4,
+                                                                      bottom:
+                                                                          10),
+                                                              child:
+                                                                  ElevatedButton(
+                                                                style: ElevatedButton.styleFrom(
+                                                                    backgroundColor: AppTheme.whiteColor,
+                                                                    side: const BorderSide(
+                                                                      color: Color(
+                                                                          0xff6D2EF1),
+                                                                    ),
+                                                                    shape: const RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.all(
+                                                                      Radius.circular(
+                                                                          30),
+                                                                    )),
+                                                                    padding: const EdgeInsets.symmetric(
+                                                                      horizontal:
+                                                                          20,
+                                                                    ),
+                                                                    textStyle: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    )),
+                                                                onPressed:
+                                                                    () {},
+                                                                child: Text(
+                                                                  controller
+                                                                      .modeRecentJobList
+                                                                      .value
+                                                                      .data![
+                                                                          index]
+                                                                      .skills![
+                                                                          index2]
+                                                                      .name
+                                                                      .toString(),
+                                                                  style: const TextStyle(
+                                                                      color: AppTheme
+                                                                          .primaryColor),
+                                                                ),
+                                                              )
+
+                                                              /*CustomOutlineButton(
+                                                            title: stackButtonsList[index],
+                                                            backgroundColor: AppTheme.whiteColor,
+                                                            textColor: AppTheme.primaryColor,
+                                                            expandedValue: false,
+                                                            onPressed: () {},
+                                                          ),*/
+                                                              );
+                                                        }),
+                                                    /*
+                                                  Stack(
+                                                    children:
+                                                    List.generate(stackButtonsList.length, (index11)
+                                                    => Positioned(left: stackButtonsList[index11].positionPoint,
+                                                          child: CustomOutlineButton(backgroundColor: AppTheme.whiteColor,
+                                                            textColor: AppTheme.primaryColor, title: stackButtonsList[index11].titleText.toString(),
+                                                            onPressed: () {
+                                                              String titleName = "";
+                                                              double positionName = 0;
+                                                              titleName = stackButtonsList[index11].titleText!;
+                                                              positionName =
+                                                                  stackButtonsList[
+                                                                          index11]
+                                                                      .positionPoint!;
+                                                              stackButtonsList
+                                                                  .removeAt(index11);
+                                                              stackButtonsList.add(
+                                                                  StackButtons(
+                                                                      titleText:
+                                                                          titleName,
+                                                                      positionPoint:
+                                                                          positionName));
+                                                              setState(() {});
+                                                            },
+                                                          )),
+                                                    ),
+                                                    // children: [
+                                                    // ],
+                                                  ),*/
+                                                  ),
+                                                ],
+                                              ))
+                              ],
+                            )),
+                      );
+                    },
+                  ),
                 )
           : controller.status2.value.isError
               ? SizedBox(
@@ -1061,453 +1171,506 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       child: controller.status3.value.isSuccess
           ? controller.modelBestJobList.value.data!.isEmpty
-          ? Center(
-          child: Text("No best matches.",
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.darkBlueText,
-              )))
-          : ListView.builder(
-        shrinkWrap: true,
-        physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: controller.modelBestJobList.value.data!.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
-                controller.modelBestJobList.value.data![index].id,
-              ]);
-              print(
-                  controller.modelBestJobList.value.data![index].id);
-            },
-            child: Container(
-                margin: const EdgeInsets.only(
-                    bottom: 15, right: 10, left: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(
-                          0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: deviceWidth * .01,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                              controller.modelBestJobList.value
-                                  .data![index].name
-                                  .toString().capitalizeFirst!,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.pinkText,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showFilterButtonSheet(
-                                context: context,
-                                titleText: "Dislike reasons",
-                                widgets: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    const Divider(
-                                      color: Color(0xff6D2EF1),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: controller.dislikeReasons.value.data!.length,
-                                        itemBuilder: (context, index2) {
-                                          return Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Get.back();
-                                                  dislikeJobRepo(
-                                                      job_id: controller.modelBestJobList.value.data![index].id.toString(),
-                                                      reason_id: controller.dislikeReasons.value.data![index2].id.toString(),
-                                                      context: context).then((value) {
-                                                    if (kDebugMode) {
-                                                      print("remove job response::::${value.message}");
-                                                    }
-                                                    if (value.status == true) {}
-                                                    showToast(value.message.toString());
-
-                                                    controller.getDataBestJob();
-                                                  });
-                                                },
-                                                child: Text(
-                                                  controller
-                                                      .dislikeReasons
-                                                      .value
-                                                      .data![index2]
-                                                      .name
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w500,
-                                                    color: AppTheme
-                                                        .darkBlueText,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              )
-                                            ],
-                                          );
-                                        })
-                                  ],
-                                ));
-                          },
-                          child: Icon(
-                            Icons.thumb_down_alt_outlined,
-                            size: 22.sp,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        SizedBox(
-                          child: controller.modelBestJobList.value
-                              .data![index].isSaved == false
-                              ? InkWell(
-                              onTap: () {
-                                savedJobsRepo(
-                                    job_id: int.parse(controller
-                                            .modelBestJobList
-                                            .value
-                                            .data![index]
-                                            .id
-                                            .toString()),
-                                    context: context)
-                                    .then((value) {
-                                  if (value.status == true) {}
-                                  showToast(value.message.toString());
-                                  controller.getDataBestJob();
-                                  saveController.getData();
-                                });
-                              },
-                              child: const Icon(
-                                Icons.favorite_border,
-                                size: 22,
-                                color: AppTheme.primaryColor,
-                              ))
-                              : InkWell(
-                              onTap: () {
-                                setState(() {
-                                  removeSavedJobsRepo(
-                                      job_id: int.parse(
-                                          controller
-                                              .modelBestJobList
-                                              .value
-                                              .data![index]
-                                              .id
-                                              .toString()),
-                                      context: context)
-                                      .then((value) {
-                                    if (value.status == true) {}
-                                    controller.getDataBestJob();
-                                    showToast(value.message.toString());
-                                    saveController.getData();
-
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.favorite,
-                                size: 22,
-                                color: AppTheme.primaryColor,
-                              )),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: deviceHeight * .01,
-                    ),
-                    Text(
-                      controller.modelBestJobList.value.data![index].type.toString().capitalizeFirst!.replaceAll("_", " "),
+              ? Center(
+                  child: Text("No best matches.",
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.darkBlueText,
-                      ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight * .01,
-                    ),
-                    Text(
-                        controller.modelBestJobList.value.data![index]
-                            .description
-                            .toString().capitalizeFirst!,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w300,
-                          color: AppTheme.greyTextColor,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
-                    SizedBox(
-                      height: deviceHeight * .01,
-                    ),
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            if(controller.modelBestJobList.value.data![index].budgetType.toString().toLowerCase() == "hourly")
-                              Text(
-                                "\$${controller.modelBestJobList.value
-                                    .data![index].minPrice.toString()} - \$${controller.modelBestJobList.value
-                                    .data![index].price.toString()}",
-                                style: TextStyle(
+                      )))
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    controller.getDataBestJob();
+                  },
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: controller.modelBestJobList.value.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
+                            controller.modelBestJobList.value.data![index].id,
+                          ]);
+                          print(controller
+                              .modelBestJobList.value.data![index].id);
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 15, right: 10, left: 10),
+                            width: deviceWidth,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppTheme.whiteColor,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: deviceWidth * .01,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                          controller.modelBestJobList.value
+                                              .data![index].name
+                                              .toString()
+                                              .capitalizeFirst!,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.pinkText,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        showFilterButtonSheet(
+                                            context: context,
+                                            titleText: "Dislike reasons",
+                                            widgets: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Divider(
+                                                  color: Color(0xff6D2EF1),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: controller
+                                                        .dislikeReasons
+                                                        .value
+                                                        .data!
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, index2) {
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              Get.back();
+                                                              dislikeJobRepo(
+                                                                      job_id: controller
+                                                                          .modelBestJobList
+                                                                          .value
+                                                                          .data![
+                                                                              index]
+                                                                          .id
+                                                                          .toString(),
+                                                                      reason_id: controller
+                                                                          .dislikeReasons
+                                                                          .value
+                                                                          .data![
+                                                                              index2]
+                                                                          .id
+                                                                          .toString(),
+                                                                      context:
+                                                                          context)
+                                                                  .then(
+                                                                      (value) {
+                                                                if (kDebugMode) {
+                                                                  print(
+                                                                      "remove job response::::${value.message}");
+                                                                }
+                                                                if (value
+                                                                        .status ==
+                                                                    true) {}
+                                                                showToast(value
+                                                                    .message
+                                                                    .toString());
+
+                                                                controller
+                                                                    .getDataBestJob();
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              controller
+                                                                  .dislikeReasons
+                                                                  .value
+                                                                  .data![index2]
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: AppTheme
+                                                                    .darkBlueText,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          )
+                                                        ],
+                                                      );
+                                                    })
+                                              ],
+                                            ));
+                                      },
+                                      child: Icon(
+                                        Icons.thumb_down_alt_outlined,
+                                        size: 22.sp,
+                                        color: AppTheme.primaryColor,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    SizedBox(
+                                      child: controller.modelBestJobList.value
+                                                  .data![index].isSaved ==
+                                              false
+                                          ? InkWell(
+                                              onTap: () {
+                                                savedJobsRepo(
+                                                        job_id: int.parse(
+                                                            controller
+                                                                .modelBestJobList
+                                                                .value
+                                                                .data![index]
+                                                                .id
+                                                                .toString()),
+                                                        context: context)
+                                                    .then((value) {
+                                                  if (value.status == true) {}
+                                                  showToast(
+                                                      value.message.toString());
+                                                  controller.getDataBestJob();
+                                                  saveController.getData();
+                                                });
+                                              },
+                                              child: const Icon(
+                                                Icons.favorite_border,
+                                                size: 22,
+                                                color: AppTheme.primaryColor,
+                                              ))
+                                          : InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  removeSavedJobsRepo(
+                                                          job_id: int.parse(
+                                                              controller
+                                                                  .modelBestJobList
+                                                                  .value
+                                                                  .data![index]
+                                                                  .id
+                                                                  .toString()),
+                                                          context: context)
+                                                      .then((value) {
+                                                    if (value.status == true) {}
+                                                    controller.getDataBestJob();
+                                                    showToast(value.message
+                                                        .toString());
+                                                    saveController.getData();
+                                                  });
+                                                });
+                                              },
+                                              child: const Icon(
+                                                Icons.favorite,
+                                                size: 22,
+                                                color: AppTheme.primaryColor,
+                                              )),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                  controller
+                                      .modelBestJobList.value.data![index].type
+                                      .toString()
+                                      .capitalizeFirst!
+                                      .replaceAll("_", " "),
+                                  style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: AppTheme.darkBlueText),
-                              ),
-                            if(controller.modelBestJobList.value.data![index].budgetType.toString().toLowerCase() == "fixed")
-                            Text(
-                              "\$${controller.modelBestJobList.value
-                                      .data![index].price}",
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText),
-                            ),
-                            Text(
-                              "Budget",
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff6B6B6B)),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller.modelBestJobList.value
-                                  .data![index].budgetType
-                                  .toString().capitalizeFirst!,
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText),
-                            ),
-                            Text(
-                              "Project type",
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff6B6B6B)),
-                            ),
-                          ],
-                        ),
-
-                        //Send proposal button
-                        /*CustomOutlineButton(
-                                  title: "Send Proposal",
-                                  backgroundColor: AppTheme.whiteColor,
-                                  textColor: AppTheme.primaryColor,
-                                  onPressed: () {
-                                    Get.toNamed(MyRouter.jobDetailsScreen,
-                                        arguments: [
-                                          controller.modelBestJobList.value
-                                              .data![index].id,
-                                        ]);
-                                    print(controller.modelBestJobList.value
-                                        .data![index].id);
-                                  }),*/
-                      ],
-                    ),
-                    SizedBox(
-                      height: deviceHeight * .01,
-                    ),
-                    SizedBox(
-                      child: controller.modelBestJobList.value
-                          .data![index].skills!.isEmpty
-                          ? const SizedBox()
-                          : Column(
-                        children: [
-                          const Divider(
-                            color: Color(0xff6D2EF1),
-                          ),
-                          SizedBox(
-                            height: deviceHeight * .01,
-                          ),
-                          SizedBox(
-                            width: deviceWidth,
-                            height: 45.h,
-                            child: ListView.builder(
-                                physics:
-                                const BouncingScrollPhysics(),
-                                scrollDirection:
-                                Axis.horizontal,
-                                itemCount: controller
-                                    .modelBestJobList
-                                    .value
-                                    .data![index]
-                                    .skills!
-                                    .length,
-                                itemBuilder: (context, index2) {
-                                  return Container(
-                                      margin: const EdgeInsets.only(
-                                          right: 4, bottom: 10),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton
-                                            .styleFrom(
-                                            backgroundColor:
-                                            AppTheme
-                                                .whiteColor,
-                                            side:
-                                            const BorderSide(
-                                              color: Color(
-                                                  0xff6D2EF1),
-                                            ),
-                                            shape:
-                                            const RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius
-                                                    .all(
-                                                  Radius
-                                                      .circular(
-                                                      30),
-                                                )),
-                                            padding: const EdgeInsets
-                                                .symmetric(
-                                              horizontal:
-                                              20,
-                                            ),
-                                            textStyle:
-                                            const TextStyle(
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold,
-                                            )),
-                                        onPressed: () {},
-                                        child: Text(
-                                          controller
-                                              .modelBestJobList
-                                              .value
-                                              .data![index]
-                                              .skills![index2]
-                                              .name
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: AppTheme
-                                                  .primaryColor),
+                                    color: AppTheme.darkBlueText,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Text(
+                                    controller.modelBestJobList.value
+                                        .data![index].description
+                                        .toString()
+                                        .capitalizeFirst!,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w300,
+                                      color: AppTheme.greyTextColor,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        if (controller.modelBestJobList.value
+                                                .data![index].budgetType
+                                                .toString()
+                                                .toLowerCase() ==
+                                            "hourly")
+                                          Text(
+                                            "\$${controller.modelBestJobList.value.data![index].minPrice.toString()} - \$${controller.modelBestJobList.value.data![index].price.toString()}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
+                                        if (controller.modelBestJobList.value
+                                                .data![index].budgetType
+                                                .toString()
+                                                .toLowerCase() ==
+                                            "fixed")
+                                          Text(
+                                            "\$${controller.modelBestJobList.value.data![index].price}",
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppTheme.darkBlueText),
+                                          ),
+                                        Text(
+                                          "Budget",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
                                         ),
-                                      )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller.modelBestJobList.value
+                                              .data![index].budgetType
+                                              .toString()
+                                              .capitalizeFirst!,
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppTheme.darkBlueText),
+                                        ),
+                                        Text(
+                                          "Project type",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6B6B6B)),
+                                        ),
+                                      ],
+                                    ),
 
+                                    //Send proposal button
                                     /*CustomOutlineButton(
-                                                          title: stackButtonsList[index],
-                                                          backgroundColor: AppTheme.whiteColor,
-                                                          textColor: AppTheme.primaryColor,
-                                                          expandedValue: false,
+                                    title: "Send Proposal",
+                                    backgroundColor: AppTheme.whiteColor,
+                                    textColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      Get.toNamed(MyRouter.jobDetailsScreen,
+                                          arguments: [
+                                            controller.modelBestJobList.value
+                                                .data![index].id,
+                                          ]);
+                                      print(controller.modelBestJobList.value
+                                          .data![index].id);
+                                    }),*/
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: deviceHeight * .01,
+                                ),
+                                SizedBox(
+                                  child: controller.modelBestJobList.value
+                                          .data![index].skills!.isEmpty
+                                      ? const SizedBox()
+                                      : Column(
+                                          children: [
+                                            const Divider(
+                                              color: Color(0xff6D2EF1),
+                                            ),
+                                            SizedBox(
+                                              height: deviceHeight * .01,
+                                            ),
+                                            SizedBox(
+                                              width: deviceWidth,
+                                              height: 45.h,
+                                              child: ListView.builder(
+                                                  physics:
+                                                      const BouncingScrollPhysics(),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: controller
+                                                      .modelBestJobList
+                                                      .value
+                                                      .data![index]
+                                                      .skills!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index2) {
+                                                    return Container(
+                                                        margin: const EdgeInsets
+                                                                .only(
+                                                            right: 4,
+                                                            bottom: 10),
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      AppTheme
+                                                                          .whiteColor,
+                                                                  side:
+                                                                      const BorderSide(
+                                                                    color: Color(
+                                                                        0xff6D2EF1),
+                                                                  ),
+                                                                  shape:
+                                                                      const RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius
+                                                                              .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            30),
+                                                                  )),
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                  ),
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  )),
                                                           onPressed: () {},
-                                                        ),*/
-                                  );
-                                }),
-                            /*
-                                                Stack(
-                                                  children:
-                                                  List.generate(stackButtonsList.length, (index11)
-                                                  => Positioned(left: stackButtonsList[index11].positionPoint,
-                                                        child: CustomOutlineButton(backgroundColor: AppTheme.whiteColor,
-                                                          textColor: AppTheme.primaryColor, title: stackButtonsList[index11].titleText.toString(),
-                                                          onPressed: () {
-                                                            String titleName = "";
-                                                            double positionName = 0;
-                                                            titleName = stackButtonsList[index11].titleText!;
-                                                            positionName =
-                                                                stackButtonsList[
-                                                                        index11]
-                                                                    .positionPoint!;
-                                                            stackButtonsList
-                                                                .removeAt(index11);
-                                                            stackButtonsList.add(
-                                                                StackButtons(
-                                                                    titleText:
-                                                                        titleName,
-                                                                    positionPoint:
-                                                                        positionName));
-                                                            setState(() {});
-                                                          },
-                                                        )),
-                                                  ),
-                                                  // children: [
-                                                  // ],
-                                                ),*/
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
-          );
-        },
-      )
+                                                          child: Text(
+                                                            controller
+                                                                .modelBestJobList
+                                                                .value
+                                                                .data![index]
+                                                                .skills![index2]
+                                                                .name
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                color: AppTheme
+                                                                    .primaryColor),
+                                                          ),
+                                                        )
+
+                                                        /*CustomOutlineButton(
+                                                            title: stackButtonsList[index],
+                                                            backgroundColor: AppTheme.whiteColor,
+                                                            textColor: AppTheme.primaryColor,
+                                                            expandedValue: false,
+                                                            onPressed: () {},
+                                                          ),*/
+                                                        );
+                                                  }),
+                                              /*
+                                                  Stack(
+                                                    children:
+                                                    List.generate(stackButtonsList.length, (index11)
+                                                    => Positioned(left: stackButtonsList[index11].positionPoint,
+                                                          child: CustomOutlineButton(backgroundColor: AppTheme.whiteColor,
+                                                            textColor: AppTheme.primaryColor, title: stackButtonsList[index11].titleText.toString(),
+                                                            onPressed: () {
+                                                              String titleName = "";
+                                                              double positionName = 0;
+                                                              titleName = stackButtonsList[index11].titleText!;
+                                                              positionName =
+                                                                  stackButtonsList[
+                                                                          index11]
+                                                                      .positionPoint!;
+                                                              stackButtonsList
+                                                                  .removeAt(index11);
+                                                              stackButtonsList.add(
+                                                                  StackButtons(
+                                                                      titleText:
+                                                                          titleName,
+                                                                      positionPoint:
+                                                                          positionName));
+                                                              setState(() {});
+                                                            },
+                                                          )),
+                                                    ),
+                                                    // children: [
+                                                    // ],
+                                                  ),*/
+                                            ),
+                                          ],
+                                        ),
+                                )
+                              ],
+                            )),
+                      );
+                    },
+                  ),
+                )
           : controller.status3.value.isError
-          ? SizedBox(
-        width: double.maxFinite,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              controller.modelBestJobList.value.message.toString(),
-              // fontSize: AddSize.font16,
-            ),
-            IconButton(
-                onPressed: () {
-                  controller.getData();
-                  controller.getDataRecentJob();
-                  controller.getDataBestJob();
-                },
-                icon: Icon(
-                  Icons.change_circle_outlined,
-                  size: AddSize.size30,
-                ))
-          ],
-        ),
-      )
-          : const Center(
-        child: CircularProgressIndicator(),
-      ),
+              ? SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.modelBestJobList.value.message.toString(),
+                        // fontSize: AddSize.font16,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            controller.getData();
+                            controller.getDataRecentJob();
+                            controller.getDataBestJob();
+                          },
+                          icon: Icon(
+                            Icons.change_circle_outlined,
+                            size: AddSize.size30,
+                          ))
+                    ],
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
     );
   }
 }

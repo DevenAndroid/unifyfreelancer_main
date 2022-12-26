@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../controller/proposals_screen_controller.dart';
-import '../models/proposal_screen_model.dart';
 import '../resources/app_theme.dart';
 import '../resources/size.dart';
 import '../routers/my_router.dart';
@@ -17,6 +16,7 @@ class ProposalsScreen extends StatefulWidget {
 
 class _ProposalsScreenState extends State<ProposalsScreen> {
   final controller = Get.put(ProposalScreenController());
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,12 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
     return Scaffold(
       body: Obx(() {
         return RefreshIndicator(
-          onRefresh: ()async{
-            await controller.getData();
+          onRefresh: () async {
+            refreshKey.currentState?.show(atTop: false);
+            controller.getData();
           },
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 10.h),
@@ -40,9 +42,10 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                         children: [
                           TabBar(
                             isScrollable: true,
-                            labelColor: Color(0xff271943),
-                            labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                            unselectedLabelColor: Color(0xff707070),
+                            labelColor: const Color(0xff271943),
+                            labelStyle:
+                                const TextStyle(fontWeight: FontWeight.w500),
+                            unselectedLabelColor: const Color(0xff707070),
                             // indicatorColor: const Color(0xffFA61FF),
                             indicator: UnderlineTabIndicator(
                               borderSide: BorderSide(
@@ -93,7 +96,8 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                                 decoration: const BoxDecoration(
                                     border: Border(
                                         top: BorderSide(
-                                            color: AppTheme.pinkText, width: 0.5))),
+                                            color: AppTheme.pinkText,
+                                            width: 0.5))),
                                 height: deviceHeight - 195,
                                 child: TabBarView(children: [
                                   offers(),
@@ -136,7 +140,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                                 SizedBox(
                                   height: AddSize.size200,
                                 ),
-                                Center(
+                                const Center(
                                   child: CircularProgressIndicator(
                                       color: AppTheme.primaryColor),
                                 ),
@@ -154,7 +158,7 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
   offers() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return controller.model.value.data!.offers!.length == 0
+    return controller.model.value.data!.offers!.isEmpty
         ? Center(
             child: Text("No offers available",
                 style: TextStyle(
@@ -162,88 +166,96 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText,
                 )))
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: controller.model.value.data!.offers!.length,
-            padding: EdgeInsets.only(bottom: 30),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {
-                  Get.toNamed(MyRouter.offerDetailsScreen,
-                      arguments: [controller.model.value.data!.offers![index].id.toString()]);
-                  print(controller.model.value.data!.offers![index].id.toString());
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
-                  width: deviceWidth,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.whiteColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        controller.model.value.data!.offers![index].name
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!.offers![index].date
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!.offers![index].time
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12, color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              );
+        : RefreshIndicator(
+            onRefresh: () async {
+              refreshKey.currentState?.show(atTop: false);
+              controller.getData();
             },
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: controller.model.value.data!.offers!.length,
+              padding: const EdgeInsets.only(bottom: 30),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(MyRouter.offerDetailsScreen, arguments: [
+                      controller.model.value.data!.offers![index].id.toString()
+                    ]);
+                    print(controller.model.value.data!.offers![index].id
+                        .toString());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
+                    width: deviceWidth,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: AppTheme.whiteColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          controller.model.value.data!.offers![index].name
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller.model.value.data!.offers![index].date
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller.model.value.data!.offers![index].time
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           );
   }
 
   submittedProposals() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return controller.model.value.data!.submittedProposal!.length == 0
+    return controller.model.value.data!.submittedProposal!.isEmpty
         ? Center(
             child: Text("No submitted proposals",
                 style: TextStyle(
@@ -251,88 +263,102 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText,
                 )))
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: controller.model.value.data!.submittedProposal!.length,
-            padding: EdgeInsets.only(bottom: 30),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {
-                    Get.toNamed(MyRouter.submittedProposalScreen ,arguments: [controller.model.value.data!.submittedProposal![index].id.toString(),"submit"]);
-                  print(controller.model.value.data!.submittedProposal![index].id.toString());
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
-                  width: deviceWidth,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.whiteColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        controller
-                            .model.value.data!.submittedProposal![index].name
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!.submittedProposal![index].date.toString(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller
-                            .model.value.data!.submittedProposal![index].time
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12, color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              );
+        : RefreshIndicator(
+            onRefresh: () async {
+              refreshKey.currentState?.show(atTop: false);
+              controller.getData();
             },
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: controller.model.value.data!.submittedProposal!.length,
+              padding: const EdgeInsets.only(bottom: 30),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(MyRouter.submittedProposalScreen, arguments: [
+                      controller.model.value.data!.submittedProposal![index].id
+                          .toString(),
+                      "submit"
+                    ]);
+                    print(controller
+                        .model.value.data!.submittedProposal![index].id
+                        .toString());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
+                    width: deviceWidth,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: AppTheme.whiteColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          controller
+                              .model.value.data!.submittedProposal![index].name
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller
+                              .model.value.data!.submittedProposal![index].date
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller
+                              .model.value.data!.submittedProposal![index].time
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           );
   }
 
   activeProposals() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return controller.model.value.data!.activeProposal!.length == 0
+    return controller.model.value.data!.activeProposal!.isEmpty
         ? Center(
             child: Text("No active proposals",
                 style: TextStyle(
@@ -340,87 +366,101 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText,
                 )))
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: controller.model.value.data!.activeProposal!.length,
-            padding: EdgeInsets.only(bottom: 30),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                  onTap: () {
-                    Get.toNamed(MyRouter.activeProposalScreen ,arguments: [controller.model.value.data!.activeProposal![index].id.toString(),"active"]);
-                    print(controller.model.value.data!.activeProposal![index].id.toString());
-                  },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
-                  width: deviceWidth,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.whiteColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        controller.model.value.data!.activeProposal![index].name
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!.activeProposal![index].date
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!.activeProposal![index].time
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12, color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              );
+        : RefreshIndicator(
+            onRefresh: () async {
+              refreshKey.currentState?.show(atTop: false);
+              controller.getData();
             },
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: controller.model.value.data!.activeProposal!.length,
+              padding: const EdgeInsets.only(bottom: 30),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(MyRouter.activeProposalScreen, arguments: [
+                      controller.model.value.data!.activeProposal![index].id
+                          .toString(),
+                      "active"
+                    ]);
+                    print(controller.model.value.data!.activeProposal![index].id
+                        .toString());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
+                    width: deviceWidth,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: AppTheme.whiteColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          controller
+                              .model.value.data!.activeProposal![index].name
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller
+                              .model.value.data!.activeProposal![index].date
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller
+                              .model.value.data!.activeProposal![index].time
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           );
   }
 
   invitationsToInterview() {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
-    return controller.model.value.data!.interviewForInvitation!.length == 0
+    return controller.model.value.data!.interviewForInvitation!.isEmpty
         ? Center(
             child: Text("No invitations to interview",
                 style: TextStyle(
@@ -428,85 +468,96 @@ class _ProposalsScreenState extends State<ProposalsScreen> {
                   fontWeight: FontWeight.w600,
                   color: AppTheme.darkBlueText,
                 )))
-        : ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount:
-                controller.model.value.data!.interviewForInvitation!.length,
-            padding: EdgeInsets.only(bottom: 30),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {
-                  Get.toNamed(MyRouter.invitationsToInterview,
-                      arguments: [controller.model.value.data!.interviewForInvitation![index].id.toString()]);
-                  print(controller.model.value.data!.interviewForInvitation![index].id.toString());
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
-                  width: deviceWidth,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.whiteColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        controller.model.value.data!
-                            .interviewForInvitation![index].name
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.darkBlueText),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!
-                            .interviewForInvitation![index].date
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      Text(
-                        controller.model.value.data!
-                            .interviewForInvitation![index].time
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 12, color: AppTheme.greyTextColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              );
+        : RefreshIndicator(
+            onRefresh: () async {
+              refreshKey.currentState?.show(atTop: false);
+              controller.getData();
             },
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount:
+                  controller.model.value.data!.interviewForInvitation!.length,
+              padding: const EdgeInsets.only(bottom: 30),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(MyRouter.invitationsToInterview, arguments: [
+                      controller
+                          .model.value.data!.interviewForInvitation![index].id
+                          .toString()
+                    ]);
+                    print(controller
+                        .model.value.data!.interviewForInvitation![index].id
+                        .toString());
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 15, right: 10, left: 10),
+                    width: deviceWidth,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: AppTheme.whiteColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          controller.model.value.data!
+                              .interviewForInvitation![index].name
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.darkBlueText),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller.model.value.data!
+                              .interviewForInvitation![index].date
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: deviceHeight * .01,
+                        ),
+                        Text(
+                          controller.model.value.data!
+                              .interviewForInvitation![index].time
+                              .toString(),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.greyTextColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           );
   }
 }

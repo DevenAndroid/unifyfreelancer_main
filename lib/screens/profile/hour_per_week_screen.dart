@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/repository/hours_per_week_repository.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
@@ -142,7 +142,9 @@ class _HoursPerWeekScreenState extends State<HoursPerWeekScreen> {
                                   groupValue: time.value,
                                   onChanged: (value) {
                                       time.value = value.toString();
-                                      print(time.value);
+                                      if (kDebugMode) {
+                                        print(time.value);
+                                      }
                                   },
                                 );
                               });

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,8 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
-import '../resources/app_theme.dart';
-import '../widgets/custom_appbar.dart';
+import '../../resources/app_theme.dart';
+import '../../routers/my_router.dart';
+import '../../widgets/custom_appbar.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({Key? key}) : super(key: key);
@@ -63,8 +65,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       children: <Widget>[
                         TabBar(
                           labelColor: AppTheme.darkBlueText,
-                          labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                          unselectedLabelColor: Color(0xff707070),
+                          labelStyle:
+                              const TextStyle(fontWeight: FontWeight.w500),
+                          unselectedLabelColor: const Color(0xff707070),
                           // indicatorColor: const Color(0xffFA61FF),
                           indicator: UnderlineTabIndicator(
                             borderSide: BorderSide(
@@ -104,62 +107,64 @@ class _ReportsScreenState extends State<ReportsScreen> {
                             child: TabBarView(
                               children: [
                                 ListView.builder(
-                                  padding: EdgeInsets.only(bottom: 20),
+                                  padding: const EdgeInsets.only(bottom: 20),
                                   shrinkWrap: true,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemCount: 5,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Card(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Work in progress",
-                                                  style: TextStyle(
-                                                      fontSize: 13,
-                                                      color:
-                                                          AppTheme.textColor),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Text(
-                                                  "\$1000.00",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: AppTheme
-                                                          .primaryColor),
-                                                )
-                                              ],
-                                            ),
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_outlined,
-                                                  color: AppTheme.blackColor,
-                                                  size: 20,
-                                                )),
-                                          ],
+                                    return InkWell(
+                                      onTap: ()=>Get.toNamed(MyRouter.workInProgressScreen),
+                                      child: Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: const [
+                                                  Text(
+                                                    "Work in progress",
+                                                    style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: AppTheme.textColor),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
+                                                    "\$1000.00",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppTheme
+                                                            .primaryColor),
+                                                  )
+                                                ],
+                                              ),
+                                              IconButton(
+                                                  onPressed: () {},
+                                                  icon: const Icon(
+                                                    Icons
+                                                        .arrow_forward_ios_outlined,
+                                                    color: AppTheme.blackColor,
+                                                    size: 20,
+                                                  )),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
                                   },
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(top: 10),
+                                  margin: const EdgeInsets.only(top: 10),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -167,34 +172,38 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Transaction History",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color: AppTheme.textColor,
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 5,
                                           ),
                                           InkWell(
                                             onTap: () {
                                               showModalBottomSheet<void>(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                            topLeft: Radius
-                                                                .circular(10),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    10))),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        10),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        10))),
                                                 context: context,
                                                 isScrollControlled: true,
                                                 builder:
                                                     (BuildContext context) {
                                                   return Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    decoration: BoxDecoration(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    decoration: const BoxDecoration(
                                                         color: AppTheme
                                                             .whiteColor,
                                                         borderRadius:
@@ -224,13 +233,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                               onTap: () =>
                                                                   Navigator.pop(
                                                                       context),
-                                                              child: Icon(
+                                                              child: const Icon(
                                                                 Icons.clear,
                                                                 color: AppTheme
                                                                     .primaryColor,
                                                               ),
                                                             ),
-                                                            Text(
+                                                            const Text(
                                                               'Filters',
                                                               style: TextStyle(
                                                                   fontSize: 25,
@@ -240,7 +249,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                                   color: AppTheme
                                                                       .textColor),
                                                             ),
-                                                            SizedBox(),
+                                                            const SizedBox(),
                                                           ],
                                                         ),
                                                         SizedBox(
@@ -248,7 +257,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                         ),
                                                         PopupMenuButton<int>(
                                                           constraints:
-                                                              BoxConstraints(
+                                                              const BoxConstraints(
                                                                   maxHeight:
                                                                       400),
                                                           position:
@@ -258,7 +267,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                               .fromDirection(
                                                                   50, 100),
                                                           onSelected: (value) {
-                                                            print(value);
+                                                            if (kDebugMode) {
+                                                              print(value);
+                                                            }
                                                             setState(() {
                                                               dropDownValue1
                                                                       .value =
@@ -273,18 +284,21 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                                       value:
                                                                           index,
                                                                       child: Text(
-                                                                          "${items[index]}"))),
+                                                                          items[
+                                                                              index]))),
                                                           child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
                                                                     horizontal:
                                                                         10,
                                                                     vertical:
                                                                         10),
                                                             decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
                                                                             5)),
                                                                 border: Border.all(
                                                                     color: AppTheme
@@ -296,8 +310,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                               children: [
                                                                 Obx(() {
                                                                   return Text(
-                                                                    "${dropDownValue1.value.toString()}",
-                                                                    style: TextStyle(
+                                                                    dropDownValue1
+                                                                        .value
+                                                                        .toString(),
+                                                                    style: const TextStyle(
                                                                         fontSize:
                                                                             14,
                                                                         color: AppTheme
@@ -306,7 +322,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                                             FontWeight.w600),
                                                                   );
                                                                 }),
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .keyboard_arrow_down_rounded,
                                                                   color: AppTheme
@@ -447,7 +463,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                         ),*/
                                                         PopupMenuButton<int>(
                                                           constraints:
-                                                              BoxConstraints(
+                                                              const BoxConstraints(
                                                                   maxHeight:
                                                                       300),
                                                           position:
@@ -457,7 +473,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                               .fromDirection(
                                                                   50, 100),
                                                           onSelected: (value) {
-                                                            print(value);
+                                                            if (kDebugMode) {
+                                                              print(value);
+                                                            }
                                                             setState(() {
                                                               dropDownValue2
                                                                       .value =
@@ -472,18 +490,21 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                                       value:
                                                                           index,
                                                                       child: Text(
-                                                                          "${items[index]}"))),
+                                                                          items[
+                                                                              index]))),
                                                           child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
                                                                     horizontal:
                                                                         10,
                                                                     vertical:
                                                                         10),
                                                             decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
                                                                             5)),
                                                                 border: Border.all(
                                                                     color: AppTheme
@@ -495,8 +516,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                               children: [
                                                                 Obx(() {
                                                                   return Text(
-                                                                    "${dropDownValue2.value.toString()}",
-                                                                    style: TextStyle(
+                                                                    dropDownValue2
+                                                                        .value
+                                                                        .toString(),
+                                                                    style: const TextStyle(
                                                                         fontSize:
                                                                             14,
                                                                         color: AppTheme
@@ -505,7 +528,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                                             FontWeight.w600),
                                                                   );
                                                                 }),
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .keyboard_arrow_down_rounded,
                                                                   color: AppTheme
@@ -693,8 +716,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                               );
                                             },
                                             child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                decoration: BoxDecoration(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                decoration: const BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color:
                                                         AppTheme.primaryColor),
@@ -707,7 +731,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                         height: 5.h,
                                       ),
                                       Row(
-                                        children: [
+                                        children: const [
                                           Text(
                                             "Balance:",
                                             style: TextStyle(
@@ -730,7 +754,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                       ),
                                       Container(
                                         width: deviceWidth,
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           color: AppTheme.whiteColor,
                                           borderRadius: const BorderRadius.all(
@@ -750,7 +774,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Align(
+                                            const Align(
                                               alignment: Alignment.topLeft,
                                               child: Text(
                                                 "Posted by",
@@ -765,27 +789,37 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                showDialog(context: context,
+                                                showDialog(
+                                                    context: context,
                                                     builder: (ctx) => Dialog(
-                                                          child: Column(mainAxisSize: MainAxisSize.min,
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
                                                             children: [
                                                               Container(
-                                                                  width: deviceWidth,
+                                                                  width:
+                                                                      deviceWidth,
                                                                   height: 80,
-                                                                  color: AppTheme.primaryColor,
-                                                                  child: Center(
-                                                                      child: Text(
+                                                                  color: AppTheme
+                                                                      .primaryColor,
+                                                                  child:
+                                                                      const Center(
+                                                                          child:
+                                                                              Text(
                                                                     "Date Range",
                                                                     style: TextStyle(
-                                                                        fontSize: 18,
-                                                                        color: AppTheme.whiteColor),
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: AppTheme
+                                                                            .whiteColor),
                                                                   ))),
                                                               Container(
                                                                 width: MediaQuery.of(
                                                                         context)
                                                                     .size
                                                                     .width,
-                                                                decoration: BoxDecoration(
+                                                                decoration: const BoxDecoration(
                                                                     color: AppTheme
                                                                         .whiteColor),
                                                                 child:
@@ -815,8 +849,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                             ],
                                                           ),
                                                         ));
-                                                print(_startDateVPG);
-                                                print(_endDateVPG);
+                                                if (kDebugMode) {
+                                                  print(_startDateVPG);
+                                                  print(_endDateVPG);
+                                                }
                                               },
                                               child: TextFormField(
                                                   enabled: false,
@@ -825,58 +861,60 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                                   },
                                                   decoration: InputDecoration(
                                                       contentPadding:
-                                                          EdgeInsets.symmetric(
+                                                          const EdgeInsets
+                                                                  .symmetric(
                                                               vertical: 5,
                                                               horizontal: 10),
                                                       border:
-                                                          new OutlineInputBorder(
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            new BorderSide(
+                                                            const BorderSide(
                                                                 color: Color(
                                                                     0xffE8E7E7)),
                                                       ),
                                                       hintText:
-                                                          '${_startDateVPG} - ${_endDateVPG}',
-                                                      focusColor:
-                                                          Color(0xffE8E7E7),
-                                                      hintStyle: TextStyle(
-                                                          fontSize: 13,
-                                                          color: Color(
-                                                              0xff828282)),
+                                                          '$_startDateVPG - $_endDateVPG',
+                                                      focusColor: const Color(
+                                                          0xffE8E7E7),
+                                                      hintStyle:
+                                                          const TextStyle(
+                                                              fontSize: 13,
+                                                              color: Color(
+                                                                  0xff828282)),
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            new BorderSide(
+                                                            const BorderSide(
                                                                 color: Color(
                                                                     0xffE8E7E7)),
                                                       ),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            new BorderSide(
+                                                            const BorderSide(
                                                                 color: Color(
                                                                     0xffE8E7E7)),
                                                       ),
                                                       errorBorder:
                                                           OutlineInputBorder(
                                                         borderRadius:
-                                                            new BorderRadius
+                                                            BorderRadius
                                                                 .circular(5.0),
                                                         borderSide:
-                                                            new BorderSide(
+                                                            const BorderSide(
                                                                 color: Color(
                                                                     0xffE8E7E7)),
                                                       ),
-                                                      suffixIcon: Icon(
+                                                      suffixIcon: const Icon(
                                                         Icons
                                                             .calendar_month_outlined,
                                                         color: AppTheme
@@ -891,7 +929,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                             SizedBox(
                                               height: 20.h,
                                             ),
-                                            Text(
+                                            const Text(
                                               "No transactions meet your selected criteria",
                                               style: TextStyle(
                                                   fontSize: 16,

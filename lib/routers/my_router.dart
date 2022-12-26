@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/userflow/login_screen.dart';
-import 'package:unifyfreelancer/screens/questions_screens/profile_details.dart';
 import 'package:unifyfreelancer/screens/userflow/splashScreen.dart';
 import '../Screens/alerts_screen.dart';
 import '../Screens/chat_screen.dart';
@@ -12,7 +11,6 @@ import '../Screens/job_details_screen.dart';
 import '../Screens/messages_screen.dart';
 import '../Screens/profile/profile_screen.dart';
 import '../Screens/proposals_screen.dart';
-import '../Screens/reports_screen.dart';
 import '../Screens/save_jobs_screen.dart';
 import '../Screens/settings_screen.dart';
 import '../Screens/unify_qualifications.dart';
@@ -38,6 +36,8 @@ import '../screens/proposals/submitted_proposal_screen.dart';
 import '../screens/proposals/invitations_to_interview.dart';
 import '../screens/proposals/offer_details_screen.dart';
 import '../screens/proposals/change_terms.dart';
+import '../screens/reports/reports_screen.dart';
+import '../screens/reports/work_in_progress.dart';
 import '../screens/request_milestone_changes.dart';
 import '../screens/search_jobs.dart';
 import '../screens/settings/change_password_screen.dart';
@@ -118,6 +118,7 @@ class MyRouter {
   static var changeTermsScreen = "/changeTermsScreen";
   static var activeProposalScreen = "/activeProposalScreen";
   static var filterScreen = "/filterScreen";
+  static var workInProgressScreen = "/workInProgressScreen";
 
   static var route = [
     GetPage(name: '/', page: () =>  const SplashScreen()),
@@ -178,5 +179,6 @@ class MyRouter {
     GetPage(name: MyRouter.changeTermsScreen, page: () => const ChangeTermsScreen()),
     GetPage(name: MyRouter.activeProposalScreen, page: () => const ActiveProposalScreen()),
     GetPage(name: MyRouter.filterScreen, page: () => const FilterScreen()),
+    GetPage(name: MyRouter.workInProgressScreen, page: () => const WorkInProgressScreen()),
   ];
 }

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 class ModelSkillListResponse {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<AllData>? data;
 
   ModelSkillListResponse({this.status, this.message, this.data});
 
@@ -11,9 +11,9 @@ class ModelSkillListResponse {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <AllData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new AllData.fromJson(v));
       });
     }
   }
@@ -29,14 +29,14 @@ class ModelSkillListResponse {
   }
 }
 
-class Data {
+class AllData {
   int? id;
   String? name;
   RxBool? isSelected = false.obs;
 
-  Data({this.id, this.name,this.isSelected});
+  AllData({this.id, this.name,this.isSelected});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AllData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

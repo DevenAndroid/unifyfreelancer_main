@@ -54,11 +54,11 @@ class _Page8State extends State<Page8> {
       return Scaffold(
         body: status.value.isSuccess
             ? Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 height: AddSize.screenHeight,
                 width: AddSize.screenWidth,
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -97,7 +97,7 @@ class _Page8State extends State<Page8> {
                       ),
 
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
                             color: AppTheme.primaryColor.withOpacity(.04),
                             borderRadius: BorderRadius.circular(5)),
