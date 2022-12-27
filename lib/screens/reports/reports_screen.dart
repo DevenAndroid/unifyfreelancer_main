@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
 import '../../routers/my_router.dart';
 import '../../widgets/custom_appbar.dart';
 
@@ -32,6 +33,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
   ];
 
   String? _startDateVPG, _endDateVPG;
+
+  bool data = true;
 
   @override
   Widget build(BuildContext context) {
@@ -742,9 +745,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                             width: 5,
                                           ),
                                           Text(
-                                            "\$0.00",
+                                            "\$150.00",
                                             style: TextStyle(
                                                 fontSize: 12,
+                                                fontWeight: FontWeight.w600,
                                                 color: AppTheme.primaryColor),
                                           ),
                                         ],
@@ -752,7 +756,181 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                       SizedBox(
                                         height: 10.h,
                                       ),
-                                      Container(
+                                      const Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          "Posted by",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppTheme.textColor),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (ctx) => Dialog(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                  MainAxisSize
+                                                      .min,
+                                                  children: [
+                                                    Container(
+                                                        width:
+                                                        deviceWidth,
+                                                        height: 80,
+                                                        color: AppTheme
+                                                            .primaryColor,
+                                                        child:
+                                                        const Center(
+                                                            child:
+                                                            Text(
+                                                              "Date Range",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                  18,
+                                                                  color: AppTheme
+                                                                      .whiteColor),
+                                                            ))),
+                                                    Container(
+                                                      width: MediaQuery.of(
+                                                          context)
+                                                          .size
+                                                          .width,
+                                                      decoration: const BoxDecoration(
+                                                          color: AppTheme
+                                                              .whiteColor),
+                                                      child:
+                                                      SfDateRangePicker(
+                                                        showActionButtons:
+                                                        true,
+                                                        backgroundColor:
+                                                        AppTheme
+                                                            .whiteColor,
+                                                        onSubmit:
+                                                            (Object?
+                                                        value) {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        onCancel: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        selectionMode:
+                                                        DateRangePickerSelectionMode
+                                                            .range,
+                                                        onSelectionChanged:
+                                                        selectionChangedVPG,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ));
+                                          if (kDebugMode) {
+                                            print(_startDateVPG);
+                                            print(_endDateVPG);
+                                          }
+                                        },
+                                        child: TextFormField(
+                                            enabled: false,
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                const EdgeInsets
+                                                    .symmetric(
+                                                    vertical: 5,
+                                                    horizontal: 10),
+                                                border:
+                                                OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(5.0),
+                                                  borderSide:
+                                                  const BorderSide(
+                                                      color: Color(
+                                                          0xffE8E7E7)),
+                                                ),
+                                                hintText:
+                                                '$_startDateVPG - $_endDateVPG',
+                                                focusColor: const Color(
+                                                    0xffE8E7E7),
+                                                hintStyle:
+                                                const TextStyle(
+                                                    fontSize: 13,
+                                                    color: Color(
+                                                        0xff828282)),
+                                                focusedBorder:
+                                                OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(5.0),
+                                                  borderSide:
+                                                  const BorderSide(
+                                                      color: Color(
+                                                          0xffE8E7E7)),
+                                                ),
+                                                enabledBorder:
+                                                OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(5.0),
+                                                  borderSide:
+                                                  const BorderSide(
+                                                      color: Color(
+                                                          0xffE8E7E7)),
+                                                ),
+                                                errorBorder:
+                                                OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(5.0),
+                                                  borderSide:
+                                                  const BorderSide(
+                                                      color: Color(
+                                                          0xffE8E7E7)),
+                                                ),
+                                                suffixIcon: const Icon(
+                                                  Icons
+                                                      .calendar_month_outlined,
+                                                  color: AppTheme
+                                                      .primaryColor,
+                                                ))),
+                                      ),
+                                      SizedBox(
+                                        height: 30.h,
+                                      ),
+                                      SizedBox(
+                                        child: data ?
+                                        listData():
+                                        Column(children: [
+                                      Image.asset(
+                                          "assets/images/investment.png"),
+                                      SizedBox(
+                                        height: 20.h,
+                                      ),
+                                      const Text(
+                                        "No transactions meet your selected criteria",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff00065A)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      ]
+
+                                      )
+                                      ),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                    /*  Container(
                                         width: deviceWidth,
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
@@ -774,175 +952,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                "Posted by",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: AppTheme.textColor),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (ctx) => Dialog(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              Container(
-                                                                  width:
-                                                                      deviceWidth,
-                                                                  height: 80,
-                                                                  color: AppTheme
-                                                                      .primaryColor,
-                                                                  child:
-                                                                      const Center(
-                                                                          child:
-                                                                              Text(
-                                                                    "Date Range",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: AppTheme
-                                                                            .whiteColor),
-                                                                  ))),
-                                                              Container(
-                                                                width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width,
-                                                                decoration: const BoxDecoration(
-                                                                    color: AppTheme
-                                                                        .whiteColor),
-                                                                child:
-                                                                    SfDateRangePicker(
-                                                                  showActionButtons:
-                                                                      true,
-                                                                  backgroundColor:
-                                                                      AppTheme
-                                                                          .whiteColor,
-                                                                  onSubmit:
-                                                                      (Object?
-                                                                          value) {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  onCancel: () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  selectionMode:
-                                                                      DateRangePickerSelectionMode
-                                                                          .range,
-                                                                  onSelectionChanged:
-                                                                      selectionChangedVPG,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ));
-                                                if (kDebugMode) {
-                                                  print(_startDateVPG);
-                                                  print(_endDateVPG);
-                                                }
-                                              },
-                                              child: TextFormField(
-                                                  enabled: false,
-                                                  onChanged: (value) {
-                                                    setState(() {});
-                                                  },
-                                                  decoration: InputDecoration(
-                                                      contentPadding:
-                                                          const EdgeInsets
-                                                                  .symmetric(
-                                                              vertical: 5,
-                                                              horizontal: 10),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5.0),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                                color: Color(
-                                                                    0xffE8E7E7)),
-                                                      ),
-                                                      hintText:
-                                                          '$_startDateVPG - $_endDateVPG',
-                                                      focusColor: const Color(
-                                                          0xffE8E7E7),
-                                                      hintStyle:
-                                                          const TextStyle(
-                                                              fontSize: 13,
-                                                              color: Color(
-                                                                  0xff828282)),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5.0),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                                color: Color(
-                                                                    0xffE8E7E7)),
-                                                      ),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5.0),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                                color: Color(
-                                                                    0xffE8E7E7)),
-                                                      ),
-                                                      errorBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5.0),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                                color: Color(
-                                                                    0xffE8E7E7)),
-                                                      ),
-                                                      suffixIcon: const Icon(
-                                                        Icons
-                                                            .calendar_month_outlined,
-                                                        color: AppTheme
-                                                            .primaryColor,
-                                                      ))),
-                                            ),
-                                            SizedBox(
-                                              height: 30.h,
-                                            ),
-                                            Image.asset(
-                                                "assets/images/investment.png"),
-                                            SizedBox(
-                                              height: 20.h,
-                                            ),
-                                            const Text(
-                                              "No transactions meet your selected criteria",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xff00065A)),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(
-                                              height: 10.h,
-                                            ),
+
                                           ],
                                         ),
-                                      )
+                                      )*/
                                     ],
                                   ),
                                 ),
@@ -964,5 +977,132 @@ class _ReportsScreenState extends State<ReportsScreen> {
           .format(args.value.endDate ?? args.value.startDate)
           .toString();
     });
+  }
+
+  listData() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(top: 15),
+          width: double.infinity,
+          decoration: const BoxDecoration(color: Color(0xffF9F9F9)),
+          child: Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    "Date",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Client / Description",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    "Amount",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: AddSize.size10,
+        ),
+        ListView.builder(
+            itemCount: 3,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context,index){
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      const Expanded(
+                        flex: 1,
+                        child: Text(
+                          "12-12-2022",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.blackColor),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Jolly Smith",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.blackColor),
+                            ),
+                            SizedBox(
+                              height: AddSize.size10 * .5,
+                            ),
+                            const Text(
+                              "WordPress Developer...",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff545454)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Text(
+                        "\$50.00",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.blackColor),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: AddSize.size10 * .5,
+                  ),
+                  const Divider(
+                    color: Color(0xffE2E2E2),
+                  )
+                ],
+              );
+
+            }),
+        const Align(
+          alignment: Alignment.topRight,
+          child: Text(
+            "\$150.00",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.blackColor),
+          ),
+        ),
+        const Divider(
+          color: Color(0xffE2E2E2),
+        )
+      ],
+    );
   }
 }

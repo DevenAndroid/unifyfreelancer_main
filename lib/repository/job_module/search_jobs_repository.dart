@@ -9,7 +9,9 @@ import '../../utils/api_contant.dart';
 
 Future<ModelJobsList> searchJobListRepo({search,page,pagination,type,project_duration,budget_type,min_price,max_price,english_level,project_category,skills}) async {
   Map map = <String,dynamic>{};
+if(search != ""){
   map['search'] = search;
+}
   map['page'] = page;
   map['pagination'] = pagination;
   map['min_price'] = min_price;

@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
@@ -21,7 +18,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  var _formKey = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
 
   @override
@@ -40,11 +37,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               decoration: BoxDecoration(
                 color: AppTheme.whiteColor,
                 borderRadius: const BorderRadius.all(
@@ -64,14 +61,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Enter Email Address",
                     style: TextStyle(
                         color: AppTheme.textColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   BoxTextField(
@@ -79,15 +76,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       obSecure: false.obs,
                       hintText: "Email ID".obs,
                       validator: MultiValidator([
-                        RequiredValidator(
-                            errorText: 'Email is required'),
+                        RequiredValidator(errorText: 'Email is required'),
                         EmailValidator(errorText: 'enter a valid email address')
                       ])),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   CommonButton("Send", () {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       forgotPassword(emailController.text, context)
                           .then((value) async {
                         showToast(value.message.toString());

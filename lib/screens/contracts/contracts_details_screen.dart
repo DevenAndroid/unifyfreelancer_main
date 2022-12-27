@@ -7,9 +7,12 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
+import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
-import '../resources/app_theme.dart';
-import '../widgets/custom_appbar.dart';
+import '../../resources/app_theme.dart';
+import '../../widgets/button_for_milestone.dart';
+import '../../widgets/common_button.dart';
+import '../../widgets/custom_appbar.dart';
 
 class ContractsDetailsScreen extends StatefulWidget {
   const ContractsDetailsScreen({Key? key}) : super(key: key);
@@ -32,7 +35,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   width: deviceWidth,
                   height: 80,
                   color: AppTheme.primaryColor,
-                  child: Center(
+                  child: const Center(
                       child: Text(
                         "Date Range",
                         style:
@@ -40,7 +43,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ))),
               Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(color: AppTheme.whiteColor),
+                decoration: const BoxDecoration(color: AppTheme.whiteColor),
                 child: SfDateRangePicker(
                   showActionButtons: true,
                   backgroundColor: AppTheme.whiteColor,
@@ -78,13 +81,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       ));
 
   List<DaysDataFormate> daysData = [
-    DaysDataFormate(mileStoneName: "Web Development",selected: false,),
-    DaysDataFormate(mileStoneName: "Tuesday",selected: true),
-    DaysDataFormate(mileStoneName: "Wednesday",selected: false),
+    DaysDataFormate(mileStoneName: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",selected: false,),
+    DaysDataFormate(mileStoneName: "Simple Smart 'Add to queue', Synced currently playing",selected: true),
+/*    DaysDataFormate(mileStoneName: "Wednesday",selected: false),
     DaysDataFormate(mileStoneName: "Thursday",selected: true),
     DaysDataFormate(mileStoneName: "Friday",selected: false),
     DaysDataFormate(mileStoneName: "Saturday",selected: true),
-    DaysDataFormate(mileStoneName: "Sunday",selected: false),
+    DaysDataFormate(mileStoneName: "Sunday",selected: false),*/
   ];
 
   @override
@@ -102,15 +105,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       body: DefaultTabController(
           length: 2,
           child: NestedScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (_, __) {
               return [
                 SliverToBoxAdapter(
                   child: Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     width: deviceWidth,
                     padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppTheme.whiteColor,
                     ),
                     child: Column(
@@ -127,7 +130,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   Container(
                                     height: 50,
                                     width: 50,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: AppTheme.primaryColor,
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
@@ -138,11 +141,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   Positioned(
                                       right: 0,
                                       child: Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
                                         ),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.circle,
                                           color: AppTheme.primaryColor,
                                           size: 15,
@@ -176,14 +179,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             InkWell(
                               onTap: () => Get.toNamed(MyRouter.chatScreen),
                               child: Container(
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: AppTheme.whiteColor,
                                   border:
                                       Border.all(color: AppTheme.primaryColor),
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.message,
                                   color: AppTheme.primaryColor,
                                   size: 15,
@@ -199,7 +202,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           "UI/UX Design And Laravel Development.",
                           style: TextStyle(
                               fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: AppTheme.darkBlueText),
                         ),
                         SizedBox(
@@ -207,8 +210,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         ),
                         TabBar(
                           labelColor: AppTheme.darkBlueText,
-                          labelStyle: TextStyle(fontWeight: FontWeight.w500),
-                          unselectedLabelColor: Color(0xff707070),
+                          labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+                          unselectedLabelColor: const Color(0xff707070),
                           // indicatorColor: const Color(0xffFA61FF),
                           indicator: UnderlineTabIndicator(
                             borderSide: BorderSide(
@@ -230,7 +233,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             ),
                             Tab(
                               child: Text(
-                                "Timesheet",
+                                "Details",
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                 ),
@@ -249,11 +252,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               child: TabBarView(
                 children: [
                   SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: overview(),
                   ),
                   SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: timesheet(),
                   ),
                 ],
@@ -269,7 +272,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-            // child: Row(
+      /*      // child: Row(
             //   mainAxisAlignment:
             //   MainAxisAlignment.spaceBetween,
             //   children: [
@@ -356,11 +359,12 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //       ],
             //     ),
             //   ],
-            // )),
-          SizedBox(
+            // )),*/
+          //Earnings
+          /*const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "Earnings",
             style: TextStyle(
                 fontSize: 16,
@@ -385,7 +389,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   color: AppTheme.primaryColor,
                 ),
               )),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -397,15 +401,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 children: [
                   Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 5.0),
                         child: Icon(
                           Icons.circle,
                           size: 12,
                           color: AppTheme.primaryColor,
                         ),
                       ),
-                      Text(
+                      const Text(
                         "Received",
                         style: TextStyle(
                             fontSize: 12,
@@ -422,7 +426,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             size: 12,
                             color: AppTheme.pinkText.withOpacity(.29)),
                       ),
-                      Text(
+                      const Text(
                         "Founded (Escrow Protection)",
                         style: TextStyle(
                             fontSize: 12,
@@ -433,14 +437,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ),
                   Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 5.0),
                         child: Icon(
                           Icons.circle,
                           size: 12,
                         ),
                       ),
-                      Text(
+                      const Text(
                         "Project Price",
                         style: TextStyle(
                             fontSize: 12,
@@ -454,21 +458,21 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "\$1000.00",
                     style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.textColor,
                         fontWeight: FontWeight.w600),
                   ),
-                  Text(
+                  const Text(
                     "\$5000.00",
                     style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.textColor,
                         fontWeight: FontWeight.w600),
                   ),
-                  Text(
+                  const Text(
                     "\$10000.00",
                     style: TextStyle(
                         fontSize: 12,
@@ -479,17 +483,18 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Divider(
             thickness: 1,
             color: AppTheme.primaryColor.withOpacity(.13),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
-          ),
-          Text(
+          ),*/
+          SizedBox(height: AddSize.size10),
+          const Text(
             "Milestone timeline",
             style: TextStyle(
                 fontSize: 16,
@@ -510,7 +515,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     Row(
                       children: [
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppTheme.primaryColor
                           ),
@@ -531,17 +536,20 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         SizedBox(
                           width: AddSize.size100*.14,
                         ),
-                        Text(
-                          daysData[index1].mileStoneName!,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                        Expanded(
+                          child: Text(
+                            daysData[index1].mileStoneName!,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),
+                            maxLines: 2,
+                          ),
                         ),
                       ],
                     ),
                     Container(
                       decoration: BoxDecoration(
                           border: Border(
-                            left: BorderSide(width: AddSize.size100*.04, color: AppTheme.pinkText.withOpacity(.33)),
+                            left: BorderSide(width: AddSize.size100*.04, color: AppTheme.primaryColor.withOpacity(.33)),
                           )
                       ),
                       margin:  EdgeInsets.only(left: AddSize.size100*.21),
@@ -552,7 +560,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           const SizedBox(
                             height: 8,
                           ),
-                          Row(
+                          Column(
+                            children: [
+                              NewButton(title: 'Paid',backgroundColor: AppTheme.whiteColor,
+                              textColor: AppTheme.primaryColor,onPressed: (){},)
+                            ],
+                          ),
+                          /*Row(
                             children: [
                               buildChip(
                                   selected: daysData[index1].selected!,
@@ -577,7 +591,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   },
                                   text: "Time Slot"),
                             ],
-                          ),
+                          ),*/
                           const SizedBox(
                             height: 30,
                           ),
@@ -589,14 +603,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ],
                 );
               }),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Divider(
             thickness: 1,
             color: AppTheme.primaryColor.withOpacity(.13),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -611,9 +625,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             width: deviceWidth,
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppTheme.whiteColor,
               border: Border.all(color: AppTheme.primaryColor.withOpacity(.29)),
@@ -626,14 +640,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               children: [
                 Column(
                   children: [
-                    Text(
+                    const Text(
                       "Last 24 hours",
                       style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
                     ),
                     SizedBox(
                       height: 5.h,
                     ),
-                    Text(
+                    const Text(
                       "1:10 hrs",
                       style: TextStyle(
                           fontSize: 14,
@@ -651,14 +665,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 ),
                 Column(
                   children: [
-                    Text(
+                    const Text(
                       "This Week",
                       style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
                     ),
                     SizedBox(
                       height: 5.h,
                     ),
-                    Text(
+                    const Text(
                       "6:20 hrs",
                       style: TextStyle(
                           fontSize: 14,
@@ -676,14 +690,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 ),
                 Column(
                   children: [
-                    Text(
+                    const Text(
                       "Last Week",
                       style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
                     ),
                     SizedBox(
                       height: 5.h,
                     ),
-                    Text(
+                    const Text(
                       "7:55 hrs",
                       style: TextStyle(
                           fontSize: 14,
@@ -694,7 +708,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 ),
               ],
             )),
-        Text(
+        const Text(
           "Hours this week",
           style: TextStyle(
               fontSize: 16,
@@ -725,14 +739,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "6:50 hrs",
               style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppTheme.textColor),
             ),
-            Text(
+            const Text(
               "20 hrs limit",
               style: TextStyle(
                   fontSize: 13,
@@ -741,17 +755,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        Text(
+        const Text(
           "you will get paid for these hours on Monday (unifybilling timezon)",
           style: TextStyle(fontSize: 12, color: AppTheme.textColor),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
-        Text(
+        const Text(
           "Work Diary",
           style: TextStyle(
               fontSize: 16,
@@ -782,15 +796,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   },
                   decoration: InputDecoration(
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                         borderSide: new BorderSide(color: AppTheme.whiteColor),
                       ),
                       hintText: '${_startDateVPG} To ${_endDateVPG}',
-                      focusColor: Color(0xffE8E7E7),
+                      focusColor: const Color(0xffE8E7E7),
                       hintStyle:
-                          TextStyle(fontSize: 14, color: AppTheme.textColor),
+                          const TextStyle(fontSize: 14, color: AppTheme.textColor),
                       disabledBorder: OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(5.0),
                         borderSide: new BorderSide(color: AppTheme.whiteColor),
@@ -807,7 +821,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         borderRadius: new BorderRadius.circular(5.0),
                         borderSide: new BorderSide(color: AppTheme.whiteColor),
                       ),
-                      suffixIcon: Icon(
+                      suffixIcon: const Icon(
                         Icons.calendar_month_outlined,
                         color: AppTheme.primaryColor,
                         size: 20,
@@ -819,13 +833,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
           height: 10.h,
         ),
         ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: 9,
-            padding: EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.only(bottom: 20),
             itemBuilder: (context, index) {
               return Container(
-                padding: EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
@@ -835,7 +849,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   children: [
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           "Mon 8/22",
                           style: TextStyle(
                               fontSize: 13, color: AppTheme.textColor),
@@ -863,7 +877,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           "0:00 hrs",
                           style: TextStyle(
                               fontSize: 13, color: AppTheme.textColor),
@@ -871,7 +885,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: AppTheme.blackColor,
                           size: 15,

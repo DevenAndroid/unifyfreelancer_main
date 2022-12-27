@@ -4,11 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../controller/contract_controller.dart';
-import '../resources/app_theme.dart';
-import '../resources/size.dart';
-import '../routers/my_router.dart';
-import '../widgets/common_outline_button.dart';
+import '../../controller/contract_controller.dart';
+import '../../resources/app_theme.dart';
+import '../../resources/size.dart';
+import '../../routers/my_router.dart';
+import '../../widgets/common_outline_button.dart';
 
 class ContractsScreen extends StatefulWidget {
   const ContractsScreen({Key? key}) : super(key: key);

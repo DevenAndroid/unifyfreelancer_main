@@ -33,6 +33,7 @@ class SearchJobListController extends GetxController {
 
   Rx<ModelDislikeReasons> dislikeReasons = ModelDislikeReasons().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
+  Rx<RxStatus> statusSkills = RxStatus.empty().obs;
   Rx<RxStatus> dislikeReasonStatus = RxStatus.empty().obs;
 
   //category
@@ -135,9 +136,9 @@ class SearchJobListController extends GetxController {
             }
           }
         }*/
-        status.value = RxStatus.success();
+        statusSkills.value = RxStatus.success();
       } else {
-        status.value = RxStatus.error();
+        statusSkills.value = RxStatus.error();
       }
     });
   }

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/Screens/alerts_screen.dart';
-import 'package:unifyfreelancer/Screens/contracts_screen.dart';
 import 'package:unifyfreelancer/Screens/home_screen.dart';
 import 'package:unifyfreelancer/Screens/messages_screen.dart';
 import 'package:unifyfreelancer/Screens/proposals_screen.dart';
 import 'package:unifyfreelancer/controller/contract_controller.dart';
+import 'package:unifyfreelancer/screens/contracts/contracts_screen.dart';
 
 import 'Controller/bottom_nav_bar_controller.dart';
 
