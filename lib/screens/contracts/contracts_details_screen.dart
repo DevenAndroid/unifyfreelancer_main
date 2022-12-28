@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -11,7 +11,6 @@ import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../resources/app_theme.dart';
 import '../../widgets/button_for_milestone.dart';
-import '../../widgets/common_button.dart';
 import '../../widgets/custom_appbar.dart';
 
 class ContractsDetailsScreen extends StatefulWidget {
@@ -23,55 +22,54 @@ class ContractsDetailsScreen extends StatefulWidget {
 
 class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   String? _startDateVPG, _endDateVPG;
+  final dateFormat = DateFormat('dd-MMM-yyyy');
 
   Future<dynamic> showDatePickerDialogue(double deviceWidth) {
     return showDialog(
         context: context,
         builder: (ctx) => Dialog(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  width: deviceWidth,
-                  height: 80,
-                  color: AppTheme.primaryColor,
-                  child: const Center(
-                      child: Text(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      width: deviceWidth,
+                      height: 80,
+                      color: AppTheme.primaryColor,
+                      child: const Center(
+                          child: Text(
                         "Date Range",
                         style:
-                        TextStyle(fontSize: 18, color: AppTheme.whiteColor),
+                            TextStyle(fontSize: 18, color: AppTheme.whiteColor),
                       ))),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(color: AppTheme.whiteColor),
-                child: SfDateRangePicker(
-                  showActionButtons: true,
-                  backgroundColor: AppTheme.whiteColor,
-                  onSubmit: (Object? value) {
-                    Navigator.pop(context);
-                  },
-                  onCancel: () {
-                    Navigator.pop(context);
-                  },
-                  selectionMode: DateRangePickerSelectionMode.range,
-                  onSelectionChanged: selectionChangedVPG,
-                ),
-              )
-            ],
-          ),
-        ));
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(color: AppTheme.whiteColor),
+                    child: SfDateRangePicker(
+                      showActionButtons: true,
+                      backgroundColor: AppTheme.whiteColor,
+                      onSubmit: (Object? value) {
+                        Navigator.pop(context);
+                      },
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                      selectionMode: DateRangePickerSelectionMode.range,
+                      onSelectionChanged: selectionChangedVPG,
+                    ),
+                  )
+                ],
+              ),
+            ));
   }
 
   void selectionChangedVPG(DateRangePickerSelectionChangedArgs args) {
     setState(() {
-      _startDateVPG =
-          DateFormat('yyyy-MM-dd').format(args.value.startDate).toString();
-      _endDateVPG = DateFormat('yyyy-MM-dd')
+      _startDateVPG = dateFormat.format(args.value.startDate).toString();
+      _endDateVPG = dateFormat
           .format(args.value.endDate ?? args.value.startDate)
           .toString();
     });
   }
-
 
   final InputBorder inputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
@@ -80,9 +78,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         color: Colors.grey,
       ));
 
-  List<DaysDataFormate> daysData = [
-    DaysDataFormate(mileStoneName: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",selected: false,),
-    DaysDataFormate(mileStoneName: "Simple Smart 'Add to queue', Synced currently playing",selected: true),
+  List<DaysDataFormat> daysData = [
+    DaysDataFormat(
+      mileStoneName:
+          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+      selected: false,
+    ),
+    DaysDataFormat(
+        mileStoneName: "Simple Smart 'Add to queue', Synced currently playing",
+        selected: true),
 /*    DaysDataFormate(mileStoneName: "Wednesday",selected: false),
     DaysDataFormate(mileStoneName: "Thursday",selected: true),
     DaysDataFormate(mileStoneName: "Friday",selected: false),
@@ -103,7 +107,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         ),
       ),
       body: DefaultTabController(
-          length: 2,
+          length: 3,
           child: NestedScrollView(
             physics: const BouncingScrollPhysics(),
             headerSliverBuilder: (_, __) {
@@ -210,7 +214,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         ),
                         TabBar(
                           labelColor: AppTheme.darkBlueText,
-                          labelStyle: const TextStyle(fontWeight: FontWeight.w500),
+                          labelStyle:
+                              const TextStyle(fontWeight: FontWeight.w500),
                           unselectedLabelColor: const Color(0xff707070),
                           // indicatorColor: const Color(0xffFA61FF),
                           indicator: UnderlineTabIndicator(
@@ -226,6 +231,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             Tab(
                               child: Text(
                                 "Overview",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                ),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                "Timesheet",
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                 ),
@@ -259,6 +272,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     physics: const BouncingScrollPhysics(),
                     child: timesheet(),
                   ),
+                  SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: details(),
+                  ),
                 ],
               ),
             ),
@@ -267,12 +284,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   overview() {
-    var deviceWidth = MediaQuery.of(context).size.width;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-      /*      // child: Row(
+          /*      // child: Row(
             //   mainAxisAlignment:
             //   MainAxisAlignment.spaceBetween,
             //   children: [
@@ -360,260 +376,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //     ),
             //   ],
             // )),*/
-          //Earnings
-          /*const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Earnings",
-            style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.textColor,
-                fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Container(
-              width: deviceWidth,
-              height: 7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: AppTheme.pinkText.withOpacity(.29),
-              ),
-              padding:
-                  EdgeInsets.only(right: deviceWidth - deviceWidth / 100 * 33),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: AppTheme.primaryColor,
-                ),
-              )),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(right: 5.0),
-                        child: Icon(
-                          Icons.circle,
-                          size: 12,
-                          color: AppTheme.primaryColor,
-                        ),
-                      ),
-                      const Text(
-                        "Received",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.textColor,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: Icon(Icons.circle,
-                            size: 12,
-                            color: AppTheme.pinkText.withOpacity(.29)),
-                      ),
-                      const Text(
-                        "Founded (Escrow Protection)",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.textColor,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(right: 5.0),
-                        child: Icon(
-                          Icons.circle,
-                          size: 12,
-                        ),
-                      ),
-                      const Text(
-                        "Project Price",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.textColor,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "\$1000.00",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.textColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const Text(
-                    "\$5000.00",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.textColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const Text(
-                    "\$10000.00",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.textColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Divider(
-            thickness: 1,
-            color: AppTheme.primaryColor.withOpacity(.13),
-          ),
-          const SizedBox(
-            height: 10,
-          ),*/
-          SizedBox(height: AddSize.size10),
-          const Text(
-            "Milestone timeline",
-            style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.textColor,
-                fontWeight: FontWeight.w600),
-          ),
-          SizedBox(height: AddSize.size20,),
-          ListView.builder(
-              itemCount: daysData.length,
-              padding: EdgeInsets.symmetric(horizontal: AddSize.size12),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index1) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.primaryColor
-                          ),
-                          height: AddSize.size100*.46,
-                          width: AddSize.size100*.46,
-                          alignment: Alignment.center,
-                          child: index1 < 2 ?
-                          Icon(Icons.check,color: Colors.white,size: AddSize.size25,) :
-                          Padding(
-                            padding: EdgeInsets.only(top: AddSize.size10*.5),
-                            child: AddText(
-                                text: (index1+1).toString(),
-                              color: Colors.white,
-                              fontSize: AddSize.size20,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: AddSize.size100*.14,
-                        ),
-                        Expanded(
-                          child: Text(
-                            daysData[index1].mileStoneName!,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                            left: BorderSide(width: AddSize.size100*.04, color: AppTheme.primaryColor.withOpacity(.33)),
-                          )
-                      ),
-                      margin:  EdgeInsets.only(left: AddSize.size100*.21),
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Column(
-                            children: [
-                              NewButton(title: 'Paid',backgroundColor: AppTheme.whiteColor,
-                              textColor: AppTheme.primaryColor,onPressed: (){},)
-                            ],
-                          ),
-                          /*Row(
-                            children: [
-                              buildChip(
-                                  selected: daysData[index1].selected!,
-                                  onTap: (){
-                                    daysData[index1].selected = true;
-                                    setState(() {
-
-                                    });
-                                  },
-                                  text: "Daily"
-                              ),
-                              const SizedBox(
-                                width: 40,
-                              ),
-                              buildChip(
-                                  selected: !daysData[index1].selected!,
-                                  onTap: (){
-                                    daysData[index1].selected = false;
-                                    setState(() {
-
-                                    });
-                                  },
-                                  text: "Time Slot"),
-                            ],
-                          ),*/
-                          const SizedBox(
-                            height: 30,
-                          ),
-
-                        ],
-                      ),
-                    ),
-
-                  ],
-                );
-              }),
-          const SizedBox(
-            height: 10,
-          ),
-          Divider(
-            thickness: 1,
-            color: AppTheme.primaryColor.withOpacity(.13),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-
+         //    milestones(),
+          //  earnings(),
+          toDo(),
+          hoursThisWeek(),
+          recentFiles()
         ]);
   }
 
@@ -708,7 +475,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 ),
               ],
             )),
-        const Text(
+        /* const Text(
           "Hours this week",
           style: TextStyle(
               fontSize: 16,
@@ -738,15 +505,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
+          children: const [
+            Text(
               "6:50 hrs",
               style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppTheme.textColor),
             ),
-            const Text(
+            Text(
               "20 hrs limit",
               style: TextStyle(
                   fontSize: 13,
@@ -761,9 +528,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         const Text(
           "you will get paid for these hours on Monday (unifybilling timezon)",
           style: TextStyle(fontSize: 12, color: AppTheme.textColor),
-        ),
+        ),*/
         const SizedBox(
-          height: 20,
+          height: 10,
         ),
         const Text(
           "Work Diary",
@@ -772,8 +539,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               color: AppTheme.textColor,
               fontWeight: FontWeight.w600),
         ),
-        SizedBox(
-          height: 10.h,
+        const SizedBox(
+          height: 10,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -784,10 +551,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             child: Container(
               decoration: BoxDecoration(color: AppTheme.whiteColor, boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withOpacity(0.1),
                     spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2))
+                    blurRadius: 2,
+                    offset: const Offset(0, 1))
               ]),
               child: TextFormField(
                   enabled: false,
@@ -795,31 +562,36 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     setState(() {});
                   },
                   decoration: InputDecoration(
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        borderSide: new BorderSide(color: AppTheme.whiteColor),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide:
+                            const BorderSide(color: AppTheme.whiteColor),
                       ),
-                      hintText: '${_startDateVPG} To ${_endDateVPG}',
+                      hintText: '$_startDateVPG To $_endDateVPG',
                       focusColor: const Color(0xffE8E7E7),
-                      hintStyle:
-                          const TextStyle(fontSize: 14, color: AppTheme.textColor),
+                      hintStyle: const TextStyle(
+                          fontSize: 14, color: AppTheme.textColor),
                       disabledBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        borderSide: new BorderSide(color: AppTheme.whiteColor),
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide:
+                            const BorderSide(color: AppTheme.whiteColor),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        borderSide: new BorderSide(color: AppTheme.whiteColor),
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide:
+                            const BorderSide(color: AppTheme.whiteColor),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        borderSide: new BorderSide(color: AppTheme.whiteColor),
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide:
+                            const BorderSide(color: AppTheme.whiteColor),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        borderSide: new BorderSide(color: AppTheme.whiteColor),
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide:
+                            const BorderSide(color: AppTheme.whiteColor),
                       ),
                       suffixIcon: const Icon(
                         Icons.calendar_month_outlined,
@@ -900,7 +672,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
     );
   }
 
-  buildChip({required bool selected, required text,required onTap}) {
+  buildChip({required bool selected, required text, required onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -922,12 +694,999 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
     );
   }
 
+  recentFiles() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      // margin: const EdgeInsets.only(top: 15, bottom: 10),
+      width: size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Recent Files",
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Color(0xff6D2EF1),
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      )),
+                      backgroundColor: AppTheme.whiteColor,
+                      // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {},
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.file_upload_outlined,
+                        size: 16,
+                        color: AppTheme.primaryColor,
+                      ),
+                      Text(
+                        "  Upload ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15.0),
+                              child:
+                                  SvgPicture.asset("assets/icon/doc_icon.svg"),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rough Design vO2 File",
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(
+                                      0xff1F1F1F,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Text(
+                                  "Ran Z...",
+                                  style: TextStyle(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xff1F1F1F)),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2.0),
+                          child: Text(
+                            "3 days ago",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff1F1F1F),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Divider(
+                      color: AppTheme.primaryColor.withOpacity(.49),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                );
+              })
+        ],
+      ),
+    );
+  }
+
+  earnings() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      margin: const EdgeInsets.only(top: 10, bottom: 10),
+      width: size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Earnings
+          const Text(
+            "Earnings",
+            style: TextStyle(
+                fontSize: 16,
+                color: AppTheme.textColor,
+                fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Container(
+              width: size.width,
+              height: 7,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: AppTheme.primaryColor.withOpacity(.29),
+              ),
+              padding:
+                  EdgeInsets.only(right: size.width - size.width / 100 * 33),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: AppTheme.primaryColor,
+                ),
+              )),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(right: 5.0),
+                        child: Icon(
+                          Icons.circle,
+                          size: 12,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        "Received",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Icon(Icons.circle,
+                            size: 12,
+                            color: AppTheme.primaryColor.withOpacity(.29)),
+                      ),
+                      const Text(
+                        "Funded (Escrow Protection)",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Icon(
+                          Icons.circle,
+                          size: 12,
+                          color: Colors.grey.withOpacity(.44),
+                        ),
+                      ),
+                      const Text(
+                        "Project Price",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: const [
+                  Text(
+                    "\$1000.00",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    "\$5000.00",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    "\$10000.00",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
+    );
+  }
+
+  milestones() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      //    margin: const EdgeInsets.only(top: 10, bottom: 10),
+      width: size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: AddSize.size10),
+          const Text(
+            "Milestone timeline",
+            style: TextStyle(
+                fontSize: 16,
+                color: AppTheme.textColor,
+                fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: AddSize.size20,
+          ),
+          ListView.builder(
+              itemCount: daysData.length,
+              padding: EdgeInsets.symmetric(horizontal: AddSize.size12),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index1) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.primaryColor),
+                          height: AddSize.size100 * .46,
+                          width: AddSize.size100 * .46,
+                          alignment: Alignment.center,
+                          child: index1 < 2
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: AddSize.size25,
+                                )
+                              : Padding(
+                                  padding:
+                                      EdgeInsets.only(top: AddSize.size10 * .5),
+                                  child: AddText(
+                                    text: (index1 + 1).toString(),
+                                    color: Colors.white,
+                                    fontSize: AddSize.size20,
+                                  ),
+                                ),
+                        ),
+                        SizedBox(
+                          width: AddSize.size100 * .14,
+                        ),
+                        Expanded(
+                          child: Text(
+                            daysData[index1].mileStoneName!,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis),
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        left: BorderSide(
+                            width: AddSize.size100 * .04,
+                            color: AppTheme.primaryColor.withOpacity(.33)),
+                      )),
+                      margin: EdgeInsets.only(left: AddSize.size100 * .21),
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Column(
+                            children: [
+                              NewButton(
+                                title: 'Paid',
+                                backgroundColor: AppTheme.whiteColor,
+                                textColor: AppTheme.primaryColor,
+                                onPressed: () {},
+                              )
+                            ],
+                          ),
+                          /*Row(
+                              children: [
+                                buildChip(
+                                    selected: daysData[index1].selected!,
+                                    onTap: (){
+                                      daysData[index1].selected = true;
+                                      setState(() {
+
+                                      });
+                                    },
+                                    text: "Daily"
+                                ),
+                                const SizedBox(
+                                  width: 40,
+                                ),
+                                buildChip(
+                                    selected: !daysData[index1].selected!,
+                                    onTap: (){
+                                      daysData[index1].selected = false;
+                                      setState(() {
+
+                                      });
+                                    },
+                                    text: "Time Slot"),
+                              ],
+                            ),*/
+                          const SizedBox(
+                            height: 30,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
+    );
+  }
+
+  toDo() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      width: size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "To-dos",
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textColor),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 5, top: 3.0),
+                    child: Icon(
+                      Icons.circle_outlined,
+                      color: AppTheme.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Color(0xff6D2EF1),
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      )),
+                      backgroundColor: AppTheme.whiteColor,
+                      // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {},
+                  child: const Text(
+                    "  New  ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: AppTheme.primaryColor,
+                    ),
+                  ))
+            ],
+          ),
+          Image.asset(
+            "assets/images/todo.png",
+            height: 225,
+            width: 225,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  "Add to-dos to your project with josh to organize, prioritize, and track your collaboration.",
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff6B6B6B)),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  hoursThisWeek() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      width: size.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppTheme.whiteColor,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Hours this week",
+            style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff170048),
+                fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+              width: size.width,
+              height: 7,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: AppTheme.primaryColor.withOpacity(.29),
+              ),
+              padding:
+                  EdgeInsets.only(right: size.width - size.width / 100 * 51),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: AppTheme.primaryColor,
+                ),
+              )),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                "6:50 hrs",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+              Text(
+                "20 hrs limit",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "you will get paid for these hours on Monday (unify billing timezone)",
+            style: TextStyle(fontSize: 12, color: AppTheme.textColor),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomOutlineButton(
+            title: "Add Time Manually",
+            backgroundColor: AppTheme.primaryColor,
+            onPressed: () {},
+            textColor: AppTheme.whiteColor,
+            expandedValue: true,
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          const Center(
+            child: Text(
+              "View Timesheet",
+              style: TextStyle(
+                  fontSize: 15,
+                  color: Color(
+                    0xff1F1F1F,
+                  ),
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  details() {
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          width: size.width,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: AppTheme.whiteColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: const Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "Summary",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Contract type",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rate",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Weekly limit",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Manual time",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Start date",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: AddSize.size20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Hourly",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "\$20.00/hr ",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "25 hr/week ",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Manual time allowed ",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Nov 22, 2022",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Details",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Verified name",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Contract ID",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff878787),
+                            fontWeight: FontWeight.w500),
+                      ),
+
+                    ],
+                  ),
+                  SizedBox(
+                    width: AddSize.size20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Ankit Kumawat",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "30891767",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff1F1F1F),
+                            fontWeight: FontWeight.w600),
+                      ),
+
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+               Divider(
+                color: const Color(0xff6D2EF1).withOpacity(.49),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Description",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff6B6B6B),
+                    fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "View original offer",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                "View original proposal",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Divider(
+                color: const Color(0xff6D2EF1).withOpacity(.49),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Recent Activity",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                "Date",style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff6B6B6B),
+                    fontWeight: FontWeight.w500),
+              ),
+              const Text(
+                "Nov 22, 2022",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                "Description",style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff6B6B6B),
+                  fontWeight: FontWeight.w500),
+              ),
+              const Text(
+                "You accepted Sara Watson's offer at \$20.00/hr",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.darkBlueText,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top:10,bottom: 10),
+          width: size.width,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: AppTheme.whiteColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 2,
+                offset: const Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Column(
+            children: const [
+
+            ],
+          ),
+
+        )
+      ],
+    );
+  }
 }
 
-
-class DaysDataFormate {
+class DaysDataFormat {
   String? mileStoneName;
   bool? selected;
 
-  DaysDataFormate({this.mileStoneName, this.selected = false});
+  DaysDataFormat({this.mileStoneName, this.selected = false});
 }

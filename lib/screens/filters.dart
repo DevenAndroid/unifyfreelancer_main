@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/widgets/error_widget.dart';
 import 'package:unifyfreelancer/widgets/progress_indicator.dart';
@@ -171,6 +170,7 @@ class _FilterScreenState extends State<FilterScreen> {
       }
     }
   }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -183,9 +183,10 @@ class _FilterScreenState extends State<FilterScreen> {
         ),
         body: Obx(() {
           return controller.statusCategory.value.isSuccess &&
-              controller.statusSkills.value.isSuccess ? Form(
-            key: _formKey,
-                child: SingleChildScrollView(
+                  controller.statusSkills.value.isSuccess
+              ? Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
                     child: Container(
                       margin: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width,
@@ -200,8 +201,8 @@ class _FilterScreenState extends State<FilterScreen> {
                             color: Colors.grey.withOpacity(0.2),
                             spreadRadius: 2,
                             blurRadius: 4,
-                            offset:
-                                const Offset(0, 3), // changes position of shadow
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
                           ),
                         ],
                       ),
@@ -240,19 +241,22 @@ class _FilterScreenState extends State<FilterScreen> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -319,37 +323,40 @@ class _FilterScreenState extends State<FilterScreen> {
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: AppTheme.whiteColor,
                                 border: Border.all(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                               ),
                               child: SizedBox(
                                 height: 35,
                                 child: controller.selectedList.isEmpty
                                     ? Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: const [
-                                         Text(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: const [
+                                            Text(
                                               " Enter skills",
                                               style: TextStyle(
                                                   fontSize: 13,
                                                   color: Color(0xff596681)),
                                             ),
-                                      /*  Icon(
+                                            /*  Icon(
                                             Icons.keyboard_arrow_down,
                                           ),*/
-                                        ],
-                                      ),
-                                    )
+                                          ],
+                                        ),
+                                      )
                                     : ListView.builder(
-                                        itemCount: controller.selectedList.length,
+                                        itemCount:
+                                            controller.selectedList.length,
                                         shrinkWrap: true,
                                         physics: const BouncingScrollPhysics(),
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           return Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 8.0),
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
                                             child: Chip(
                                               label: AddText(
                                                   text: controller
@@ -396,19 +403,22 @@ class _FilterScreenState extends State<FilterScreen> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -475,19 +485,22 @@ class _FilterScreenState extends State<FilterScreen> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: AppTheme.primaryColor.withOpacity(.15),
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(.15),
                                     width: 1.0),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -548,14 +561,14 @@ class _FilterScreenState extends State<FilterScreen> {
                             onChanged: (RangeValues values) {
                               setState(() {
                                 controller.currentRangeValues = values;
-                                controller.firstRangeController.text = controller
-                                    .currentRangeValues.start
-                                    .toInt()
-                                    .toString();
-                                controller.secondRangeController.text = controller
-                                    .currentRangeValues.end
-                                    .toInt()
-                                    .toString();
+                                controller.firstRangeController.text =
+                                    controller.currentRangeValues.start
+                                        .toInt()
+                                        .toString();
+                                controller.secondRangeController.text =
+                                    controller.currentRangeValues.end
+                                        .toInt()
+                                        .toString();
                               });
                             },
                           ),
@@ -576,15 +589,13 @@ class _FilterScreenState extends State<FilterScreen> {
                                   obSecure: false.obs,
                                   keyboardType: TextInputType.text,
                                   hintText: "3".obs,
-                                  validator: (value){
-                                    if(double.parse(value.toString())<3.00){
+                                  validator: (value) {
+                                    if (double.parse(value.toString()) < 3.00) {
                                       return "Start price must be 3 \$";
-                                    }
-                                    else{
+                                    } else {
                                       return null;
                                     }
-
-                    },
+                                  },
                                   onChanged: (value) {
                                     //  controller.currentRangeValues.start = double.parse(value.toString());
                                   },
@@ -599,7 +610,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                   obSecure: false.obs,
                                   keyboardType: TextInputType.text,
                                   hintText: "9999".obs,
-                                 /* validator: MultiValidator([
+                                  /* validator: MultiValidator([
                                     RequiredValidator(
                                         errorText: 'Please start price')
                                   ]),*/
@@ -699,8 +710,9 @@ class _FilterScreenState extends State<FilterScreen> {
                       ),
                     ),
                   ),
-              )
-              : controller.statusCategory.value.isError && controller.statusSkills.value.isError
+                )
+              : controller.statusCategory.value.isError &&
+                      controller.statusSkills.value.isError
                   ? CommonErrorWidget(
                       errorText:
                           controller.modelCategory.value.message.toString(),
@@ -711,7 +723,7 @@ class _FilterScreenState extends State<FilterScreen> {
         }),
         bottomNavigationBar: Obx(() {
           return controller.statusCategory.value.isSuccess &&
-              controller.statusSkills.value.isSuccess
+                  controller.statusSkills.value.isSuccess
               ? Row(
                   children: [
                     Expanded(
@@ -726,8 +738,13 @@ class _FilterScreenState extends State<FilterScreen> {
                             controller.getData();
                             Get.back();*/
                             setState(() {
-                              for(int i = 0; i< controller.modelCategory.value.data!.length!;i++){
-                                controller.modelCategory.value.data![i]?.checkboxData = false;
+                              for (int i = 0;
+                                  i <
+                                      controller
+                                          .modelCategory.value.data!.length!;
+                                  i++) {
+                                controller.modelCategory.value.data![i]
+                                    ?.checkboxData = false;
                               }
                               controller.jobType = "".obs;
                               controller.projectDuration = "".obs;
@@ -735,9 +752,13 @@ class _FilterScreenState extends State<FilterScreen> {
                               controller.englishLevel = "".obs;
                               controller.selectedList.clear();
                               controller.catId.clear();
-                              controller.currentRangeValues = const RangeValues(3.00, 10000.00);
-                              controller.firstRangeController.text =  controller.currentRangeValues.start.toString();
-                              controller.secondRangeController.text =  controller.currentRangeValues.end.toString();
+                              controller.currentRangeValues =
+                                  const RangeValues(3.00, 10000.00);
+                              controller.firstRangeController.text = controller
+                                  .currentRangeValues.start
+                                  .toString();
+                              controller.secondRangeController.text =
+                                  controller.currentRangeValues.end.toString();
                             });
                           },
                           textColor: AppTheme.primaryColor,
@@ -753,10 +774,10 @@ class _FilterScreenState extends State<FilterScreen> {
                           title: 'Filter Result',
                           backgroundColor: AppTheme.primaryColor,
                           onPressed: () {
-                            if(_formKey.currentState!.validate()){
-                            controller.modelForPagination.clear();
-                            controller.getData();
-                            Get.back();
+                            if (_formKey.currentState!.validate()) {
+                              controller.modelForPagination.clear();
+                              controller.getData();
+                              Get.back();
                             }
                           },
                           textColor: AppTheme.whiteColor,
@@ -779,74 +800,98 @@ class _FilterScreenState extends State<FilterScreen> {
           .copyWith(dividerColor: Colors.transparent),
       child: ListTileTheme(
         contentPadding: EdgeInsets.zero,
-        child: ExpansionTile(
-            title: const Text("Category",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 15,
+            ),
+            const Text("Category",
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.darkBlueText)),
-            children: List.generate(
-                controller.modelCategory.value.data!.length,
-                (index) => Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                value: controller.modelCategory.value
-                                    .data![index].checkboxData!,
-                                activeColor: AppTheme.primaryColor,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    controller.modelCategory.value.data![index].checkboxData = newValue;
-                                    if (newValue == true) {
-                                      controller.catId.add(controller
-                                          .modelCategory.value.data![index].id
-                                          .toString());
-                                    } else {
-                                      controller.catId.removeWhere((element) =>
-                                          element ==
+            const SizedBox(
+              height: 5,
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(right: 8, left: 5),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(
+                      color: AppTheme.primaryColor.withOpacity(.15), width: 1.0)),
+              child: ExpansionTile(
+                  title: const Text("Select category",
+                      style: TextStyle(fontSize: 13, color: Color(0xff596681))),
+                  children: List.generate(
+                      controller.modelCategory.value.data!.length,
+                      (index) => Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Checkbox(
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      value: controller.modelCategory.value
+                                          .data![index].checkboxData!,
+                                      activeColor: AppTheme.primaryColor,
+                                      onChanged: (newValue) {
+                                        setState(() {
                                           controller.modelCategory.value
-                                              .data![index].id
-                                              .toString());
-                                    }
-                                    if (kDebugMode) {
-                                      print(controller.catId);
-                                    }
-                                  });
-                                }),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                                controller.modelCategory.value.data![index].name
-                                    .toString(),
+                                              .data![index].checkboxData = newValue;
+                                          if (newValue == true) {
+                                            controller.catId.add(controller
+                                                .modelCategory.value.data![index].id
+                                                .toString());
+                                          } else {
+                                            controller.catId.removeWhere(
+                                                (element) =>
+                                                    element ==
+                                                    controller.modelCategory.value
+                                                        .data![index].id
+                                                        .toString());
+                                          }
+                                          if (kDebugMode) {
+                                            print(controller.catId);
+                                          }
+                                        });
+                                      }),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                      controller
+                                          .modelCategory.value.data![index].name
+                                          .toString(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppTheme.darkBlueText)),
+                                ],
+                              ),
+                              /* CheckboxListTile(
+                                          title: Text(
+                                controller.modelCategory.value.data![index].name.toString(),
                                 style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: AppTheme.darkBlueText)),
-                          ],
-                        ),
-                        /* CheckboxListTile(
-                                    title: Text(
-                          controller.modelCategory.value.data![index].name.toString(),
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: AppTheme.darkBlueText)),
-                                    value: false,
-                                    contentPadding: const EdgeInsets.all(0),
-                                    dense: true,
-                                    visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                                    onChanged: (bool? value) {  },
+                                          value: false,
+                                          contentPadding: const EdgeInsets.all(0),
+                                          dense: true,
+                                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                                          onChanged: (bool? value) {  },
 
-                                  ),*/
-                        const SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    ))),
+                                        ),*/
+                              const SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          ))),
+            ),
+          ],
+        ),
       ),
     );
   }

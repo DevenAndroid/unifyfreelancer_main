@@ -21,7 +21,7 @@ class AppTheme {
   static const Color textfield = Color(0xfff0ebf3);
 }
 
-MaterialColor primaryColorShades = MaterialColor(
+MaterialColor primaryColorShades = const MaterialColor(
   0xff6D2EF1,
   <int, Color>{
     50: Color(0xff6D2EF1),

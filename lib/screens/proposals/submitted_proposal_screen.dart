@@ -90,7 +90,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: PreferredSize(
+        appBar: const PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: CustomAppbar(
               isLikeButton: false,
@@ -114,7 +114,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                         getData();
                       },
                     )
-                  : CommonProgressIndicator();
+                  : const CommonProgressIndicator();
         }));
   }
 
@@ -143,7 +143,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             model.value.data!.projectData!.name.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font24,
                 fontWeight: FontWeight.w600),
           ),
@@ -165,7 +165,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
               Text(
                 model.value.data!.projectData!.postedDate.toString(),
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font16,
                     fontWeight: FontWeight.w500),
               ),
@@ -177,7 +177,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             model.value.data!.projectData!.description.toString(),
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
                 fontWeight: FontWeight.w500),
           ),
@@ -210,7 +210,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             "Your Proposed terms",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font20,
                 fontWeight: FontWeight.w600),
           ),
@@ -220,7 +220,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             "Client's budget: \$${model.value.data!.projectData!.price.toString()}",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font16,
                 fontWeight: FontWeight.w500),
           ),
@@ -230,7 +230,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             "How do you want to be paid?",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font16,
                 fontWeight: FontWeight.w600),
           ),
@@ -240,7 +240,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             "By ${model.value.data!.projectData!.budgetType.toString().toLowerCase() == "fixed" ? "project" : "hourly"}",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font14,
                 fontWeight: FontWeight.w500),
           ),
@@ -265,7 +265,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
             Text(
               "This includes all milestones, and is the amount your client will see",
               style: TextStyle(
-                  color: Color(0xff4D4D4D),
+                  color: const Color(0xff4D4D4D),
                   fontSize: AddSize.font16,
                   fontWeight: FontWeight.w500),
             ),
@@ -313,7 +313,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           Text(
             "Your estimated payment. after service fees",
             style: TextStyle(
-                color: Color(0xff4D4D4D),
+                color: const Color(0xff4D4D4D),
                 fontSize: AddSize.font16,
                 fontWeight: FontWeight.w500),
           ),
@@ -355,7 +355,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                         borderRadius: BorderRadius.all(
                       Radius.circular(30),
                     )),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                     )),
@@ -363,7 +363,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                   Get.toNamed(MyRouter.changeTermsScreen,
                       arguments: [id, "submit"]);
                 },
-                child: Text(
+                child: const Text(
                   "Change terms",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -385,14 +385,14 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                         borderRadius: BorderRadius.all(
                       Radius.circular(30),
                     )),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                     )),
                 onPressed: () {
                   withdrawProposal(context);
                 },
-                child: Text(
+                child: const Text(
                   "Withdraw proposal",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -429,7 +429,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
+                expansionTileTheme: const ExpansionTileThemeData(
                     textColor: AppTheme.primaryColor,
                     iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
@@ -440,7 +440,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
               title: Text(
                 "Cover letter",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font20,
                     fontWeight: FontWeight.w600),
               ),
@@ -450,7 +450,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                 ),
                 Text(
                   model.value.data!.proposalData!.coverLetter.toString(),
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 ),
               ]),
         ),
@@ -529,7 +529,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
       ),
       child: Theme(
         data: ThemeData(
-                expansionTileTheme: ExpansionTileThemeData(
+                expansionTileTheme: const ExpansionTileThemeData(
                     textColor: AppTheme.primaryColor,
                     iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
@@ -540,7 +540,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
               title: Text(
                 "About the client",
                 style: TextStyle(
-                    color: Color(0xff4D4D4D),
+                    color: const Color(0xff4D4D4D),
                     fontSize: AddSize.font20,
                     fontWeight: FontWeight.w600),
               ),
@@ -563,7 +563,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                       model.value.data!.clientData!.paymentVerified == true
                           ? "Payment method verified"
                           : "Payment method not verified",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff4D4D4D),
@@ -583,12 +583,12 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                       .value.data!.clientData!.rating
                                       .toString()) >
                                   index
-                              ? Icon(
+                              ? const Icon(
                                   Icons.star,
                                   color: AppTheme.pinkText,
                                   size: 20,
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.star_border_outlined,
                                   color: Colors.grey,
                                   size: 20,
@@ -599,10 +599,10 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                     ),
                     Text(
                       "${double.parse(model.value.data!.clientData!.rating.toString())} of ${double.parse(model.value.data!.clientData!.numberOfReview.toString())} reviews",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: const Color(0xff170048)),
+                          color: Color(0xff170048)),
                     ),
                   ],
                 ),
@@ -632,7 +632,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -654,7 +654,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -676,7 +676,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -699,7 +699,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -719,7 +719,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                         SizedBox(
@@ -730,7 +730,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           style: TextStyle(
                             fontSize: AddSize.font16,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff462D7A),
+                            color: const Color(0xff462D7A),
                           ),
                         ),
                       ],
@@ -760,7 +760,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           child: Column(
                             children: [
                               Text(
@@ -779,7 +779,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                   Text(
                                     "Reason",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: AddSize.font16,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -799,7 +799,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                       },
                                       decoration: InputDecoration(
                                         hintText: "Select a reason",
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                             fontSize: 13,
                                             color: Color(0xff596681)),
                                         counterText: "",
@@ -833,7 +833,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                             value: modelReasonList.value.data![index].title.toString(),
                                             child: Text(
                                               modelReasonList.value.data![index].title.toString(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 13,
                                                   color: Color(
                                                       0xff596681)),
@@ -858,7 +858,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                                   Text(
                                     "Message (optional)",
                                     style: TextStyle(
-                                        color: Color(0xff4D4D4D),
+                                        color: const Color(0xff4D4D4D),
                                         fontSize: AddSize.font16,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -948,7 +948,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                           onTap: () {
                             getReasonList();
                           })
-                      : CommonProgressIndicator();
+                      : const CommonProgressIndicator();
             }),
           );
         });
