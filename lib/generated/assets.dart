@@ -39,6 +39,7 @@ class Assets {
   static const String imagesCard = 'assets/images/card.png';
   static const String imagesCertification = 'assets/images/certification.png';
   static const String imagesFiles = 'assets/images/files.png';
+  static const String imagesFolder = 'assets/images/folder.svg';
   static const String imagesInvestment = 'assets/images/investment.png';
   static const String imagesLike = 'assets/images/like.svg';
   static const String imagesLoginBg = 'assets/images/loginBg.png';
@@ -48,7 +49,7 @@ class Assets {
   static const String imagesOnBoarding03 = 'assets/images/onBoarding_03.png';
   static const String imagesSplashBgImage = 'assets/images/splashBgImage.png';
   static const String imagesTestimonials = 'assets/images/testimonials.png';
-  static const String imagesTodoo = 'assets/images/todoo.png';
+  static const String imagesTodo = 'assets/images/todo.png';
   static const String imagesUnify = 'assets/images/Unify.png';
   static const String imagesUser = 'assets/images/user.svg';
 

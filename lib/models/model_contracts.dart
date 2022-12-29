@@ -61,12 +61,12 @@ class Data {
         awaitingMilestone!.add(new All.fromJson(v));
       });
     }
-/*    if (json['PaymentRequest'] != null) {
-      paymentRequest = <Null>[];
+    if (json['PaymentRequest'] != null) {
+      paymentRequest = <All>[];
       json['PaymentRequest'].forEach((v) {
-       // paymentRequest!.add(new All.fromJson(v));
+        paymentRequest!.add(new All.fromJson(v));
       });
-    }*/
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -85,29 +85,30 @@ class Data {
       data['AwaitingMilestone'] =
           this.awaitingMilestone!.map((v) => v.toJson()).toList();
     }
-    /*if (this.paymentRequest != null) {
+    if (this.paymentRequest != null) {
       data['PaymentRequest'] =
           this.paymentRequest!.map((v) => v.toJson()).toList();
-    }*/
+    }
     return data;
   }
 }
 
 class All {
-  dynamic id;
-  dynamic type;
-  dynamic weeklyLimit;
-  dynamic projectId;
-  dynamic projectTitle;
-  dynamic proposalId;
-  dynamic startTime;
-  dynamic endTime;
-  dynamic clientId;
-  dynamic freelancerId;
-  dynamic amount;
-  dynamic inEscrow;
-  dynamic status;
-  dynamic activeStatus;
+  int? id;
+  String? type;
+  String? weeklyLimit;
+  int? projectId;
+  String? projectTitle;
+  int? proposalId;
+  String? startTime;
+  String? endTime;
+  int? clientId;
+  int? freelancerId;
+  int? amount;
+  int? inEscrow;
+  String? status;
+  String? buttonStatus;
+  String? activeStatus;
   Project? project;
   Proposal? proposal;
   Client? client;
@@ -128,6 +129,7 @@ class All {
         this.amount,
         this.inEscrow,
         this.status,
+        this.buttonStatus,
         this.activeStatus,
         this.project,
         this.proposal,
@@ -149,6 +151,7 @@ class All {
     amount = json['amount'];
     inEscrow = json['in_escrow'];
     status = json['status'];
+    buttonStatus = json['button_status'];
     activeStatus = json['active_status'];
     project =
     json['project'] != null ? new Project.fromJson(json['project']) : null;
@@ -178,6 +181,7 @@ class All {
     data['amount'] = this.amount;
     data['in_escrow'] = this.inEscrow;
     data['status'] = this.status;
+    data['button_status'] = this.buttonStatus;
     data['active_status'] = this.activeStatus;
     if (this.project != null) {
       data['project'] = this.project!.toJson();
@@ -197,43 +201,43 @@ class All {
 }
 
 class Project {
-  dynamic id;
-  dynamic clientId;
-  dynamic image;
-  dynamic imageName;
-  dynamic name;
-  dynamic type;
-  dynamic description;
-  dynamic budgetType;
-  dynamic minPrice;
-  dynamic price;
-  dynamic projectDuration;
-  dynamic scop;
-  dynamic status;
-  dynamic experienceLevel;
-  dynamic englishLevel;
-  dynamic categories;
-  dynamic categoryId;
-  dynamic createdAt;
-  dynamic postedDate;
+  String? id;
+  String? clientId;
+  String? image;
+  String? imageName;
+  String? name;
+  String? type;
+  String? description;
+  String? budgetType;
+  int? minPrice;
+  int? price;
+  String? projectDuration;
+  String? scop;
+  String? status;
+  String? experienceLevel;
+  String? englishLevel;
+  String? categories;
+  String? categoryId;
+  String? createdAt;
+  String? postedDate;
   List<JobSkills>? jobSkills;
-  dynamic proposalList;
-  dynamic clientData;
-  dynamic isPrivate;
-  dynamic isProposalSend;
-  dynamic isSaved;
-  dynamic serviceFee;
-  dynamic proposalCount;
-  dynamic inviteSent;
-  dynamic unansweredInvite;
-  dynamic interview;
-  dynamic hireRate;
-  dynamic openJobs;
-  dynamic totalHire;
-  dynamic totalActive;
-  dynamic inviteId;
-  dynamic isInvited;
-  dynamic clientRecentHistory;
+  Null? proposalList;
+  Null? clientData;
+  bool? isPrivate;
+  bool? isProposalSend;
+  bool? isSaved;
+  int? serviceFee;
+  int? proposalCount;
+  Null? inviteSent;
+  Null? unansweredInvite;
+  int? interview;
+  int? hireRate;
+  int? openJobs;
+  int? totalHire;
+  int? totalActive;
+  int? inviteId;
+  bool? isInvited;
+  Null? clientRecentHistory;
 
   Project(
       {this.id,
@@ -365,8 +369,8 @@ class Project {
 }
 
 class JobSkills {
-  dynamic id;
-  dynamic name;
+  int? id;
+  String? name;
 
   JobSkills({this.id, this.name});
 
@@ -384,16 +388,16 @@ class JobSkills {
 }
 
 class Proposal {
- dynamic id;
- dynamic jobId;
- dynamic userId;
- dynamic bidAmount;
- dynamic receiveAmount;
- dynamic projectDuration;
- dynamic coverLetter;
- dynamic status;
- dynamic platformFee;
- dynamic image;
+  String? id;
+  String? jobId;
+  String? userId;
+  String? bidAmount;
+  String? receiveAmount;
+  String? projectDuration;
+  String? coverLetter;
+  String? status;
+  String? platformFee;
+  String? image;
 
   Proposal(
       {this.id,
@@ -437,35 +441,38 @@ class Proposal {
 }
 
 class Client {
-  dynamic id;
-  dynamic profileImage;
-  dynamic firstName;
-  dynamic lastName;
-  dynamic email;
-  dynamic companyName;
-  dynamic website;
-  dynamic tagline;
-  dynamic industry;
-  dynamic employeeNo;
-  dynamic description;
-  dynamic companyPhone;
-  dynamic vatId;
-  dynamic timezone;
-  dynamic localTime;
-  dynamic companyAddress;
-  dynamic country;
-  dynamic state;
-  dynamic city;
-  dynamic zipCode;
-  dynamic isVerified;
+  String? id;
+  String? profileImage;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? companyName;
+  String? website;
+  String? tagline;
+  String? industry;
+  String? employeeNo;
+  String? description;
+  String? companyPhone;
+  String? vatId;
+  String? timezone;
+  String? localTime;
+  String? companyAddress;
+  String? country;
+  String? state;
+  String? city;
+  String? zipCode;
+  String? isVerified;
   bool? paymentVerified;
-  dynamic rating;
-  dynamic numberOfReview;
-  dynamic jobPosted;
-  dynamic moneySpent;
-  dynamic ratePaidClient;
-  dynamic memberSince;
-  dynamic lastActivity;
+  String? rating;
+  String? numberOfReview;
+  int? jobPosted;
+  String? moneySpent;
+  String? ratePaidClient;
+  String? memberSince;
+  String? onlineStatus;
+  String? subscriptionId;
+  bool? isSubscription;
+  String? lastActivity;
 
   Client(
       {this.id,
@@ -496,6 +503,9 @@ class Client {
         this.moneySpent,
         this.ratePaidClient,
         this.memberSince,
+        this.onlineStatus,
+        this.subscriptionId,
+        this.isSubscription,
         this.lastActivity});
 
   Client.fromJson(Map<String, dynamic> json) {
@@ -527,6 +537,9 @@ class Client {
     moneySpent = json['money_spent'];
     ratePaidClient = json['rate_paid_client'];
     memberSince = json['member_since'];
+    onlineStatus = json['online_status'];
+    subscriptionId = json['subscription_id'];
+    isSubscription = json['is_subscription'];
     lastActivity = json['last_activity'];
   }
 
@@ -560,42 +573,50 @@ class Client {
     data['money_spent'] = this.moneySpent;
     data['rate_paid_client'] = this.ratePaidClient;
     data['member_since'] = this.memberSince;
+    data['online_status'] = this.onlineStatus;
+    data['subscription_id'] = this.subscriptionId;
+    data['is_subscription'] = this.isSubscription;
     data['last_activity'] = this.lastActivity;
     return data;
   }
 }
 
 class Freelancer {
-  dynamic id;
-  dynamic profileImage;
-  dynamic visibility;
-  dynamic projectPreference;
-  dynamic experienceLevel;
-  dynamic firstName;
-  dynamic lastName;
-  dynamic email;
-  dynamic occuption;
-  dynamic description;
-  dynamic rating;
-  dynamic totalEarning;
-  dynamic totalJobs;
-  dynamic totalHours;
-  dynamic pendingProject;
-  dynamic amount;
-  dynamic timezone;
-  dynamic localTime;
-  dynamic address;
-  dynamic phone;
-  dynamic country;
-  dynamic state;
-  dynamic city;
-  dynamic zipCode;
-  dynamic hoursPerWeek;
-  dynamic categoryId;
-  dynamic category;
-  dynamic isVerified;
+  String? id;
+  String? profileImage;
+  String? visibility;
+  String? projectPreference;
+  String? experienceLevel;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? occuption;
+  String? description;
+  String? rating;
+  int? totalEarning;
+  int? totalJobs;
+  int? totalHours;
+  int? pendingProject;
+  String? amount;
+  String? timezone;
+  String? localTime;
+  String? address;
+  String? phone;
+  String? country;
+  String? state;
+  String? city;
+  String? zipCode;
+  String? hoursPerWeek;
+  int? hoursPerWeekId;
+  String? categoryId;
+  String? category;
+  String? isVerified;
   bool? isProfileComplete;
-  dynamic successRate;
+  String? successRate;
+  String? onlineStatus;
+  String? subscriptionId;
+  bool? isSubscription;
+  bool? isSaveTalent;
 
   Freelancer(
       {this.id,
@@ -623,11 +644,16 @@ class Freelancer {
         this.city,
         this.zipCode,
         this.hoursPerWeek,
+        this.hoursPerWeekId,
         this.categoryId,
         this.category,
         this.isVerified,
         this.isProfileComplete,
-        this.successRate});
+        this.successRate,
+        this.onlineStatus,
+        this.subscriptionId,
+        this.isSubscription,
+        this.isSaveTalent});
 
   Freelancer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -655,11 +681,16 @@ class Freelancer {
     city = json['city'];
     zipCode = json['zip_code'];
     hoursPerWeek = json['hours_per_week'];
+    hoursPerWeekId = json['hours_per_week_id'];
     categoryId = json['category_id'];
     category = json['category'];
     isVerified = json['is_verified'];
     isProfileComplete = json['is_profile_complete'];
     successRate = json['success_rate'];
+    onlineStatus = json['online_status'];
+    subscriptionId = json['subscription_id'];
+    isSubscription = json['is_subscription'];
+    isSaveTalent = json['isSaveTalent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -689,11 +720,16 @@ class Freelancer {
     data['city'] = this.city;
     data['zip_code'] = this.zipCode;
     data['hours_per_week'] = this.hoursPerWeek;
+    data['hours_per_week_id'] = this.hoursPerWeekId;
     data['category_id'] = this.categoryId;
     data['category'] = this.category;
     data['is_verified'] = this.isVerified;
     data['is_profile_complete'] = this.isProfileComplete;
     data['success_rate'] = this.successRate;
+    data['online_status'] = this.onlineStatus;
+    data['subscription_id'] = this.subscriptionId;
+    data['is_subscription'] = this.isSubscription;
+    data['isSaveTalent'] = this.isSaveTalent;
     return data;
   }
 }

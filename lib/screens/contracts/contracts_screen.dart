@@ -262,7 +262,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                   .model.value.data!.all![index].projectTitle
                                   .toString(),
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -356,9 +356,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
+
                       /*Text(
                   "Staffed by: Robert Smith",
                   style: TextStyle(
@@ -367,8 +365,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                     AppTheme.darkBlueText,
                   ),
                 ),*/
-                      SizedBox(
-                        height: deviceHeight * .02,
+                      const SizedBox(
+                        height: 15,
                       ),
                       Text(
                         "Hired by: ${controller.model.value.data!.all![index].client!.firstName} ${controller.model.value.data!.all![index].client!.lastName}",
@@ -377,68 +375,151 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             color: AppTheme.textColor,
                             fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
-                        height: deviceHeight * .01,
+                      const SizedBox(
+                        height: 15,
                       ),
-                      /*   Text(
-                  "Soft Co",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color:
-                    AppTheme.textColor3,
-                  ),
-                ),*/
-                      SizedBox(
-                        height: deviceHeight * .02,
+                      /* Text(
+                        "Soft Co",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textColor3,
+                        ),
                       ),
-                      /*Text(
-                                              "Active: 2:30 hrs this week",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppTheme.textColor,
-                                                  fontWeight: FontWeight.w600),
-                                            ),*/
-
+                      Text(
+                        "Active: 2:30 hrs this week",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w600),
+                      ),*/
                       RichText(
-                        text: const TextSpan(
-                          text: 'Active: ',
-                          style: TextStyle(
-                              fontSize: 16,
+                        text: TextSpan(
+                          text:
+                              "${controller.model.value.data!.all![index].status.toString().capitalizeFirst}: ",
+                          style: const TextStyle(
+                              fontSize: 14,
                               color: AppTheme.textColor,
                               fontWeight: FontWeight.w600),
                           children: <TextSpan>[
-                            TextSpan(
+                            /*TextSpan(
                               text: '2:30',
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: AppTheme.primaryColor,
                                   fontWeight: FontWeight.w600),
-                            ),
+                            ),*/
                             TextSpan(
-                              text: ' hrs this week',
-                              style: TextStyle(
-                                  fontSize: 16,
+                              text: controller
+                                  .model.value.data!.all![index].activeStatus
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 14,
                                   color: AppTheme.textColor,
                                   fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: deviceHeight * .01,
+                      const SizedBox(
+                        height: 10,
                       ),
-                      Text(
-                        "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.all![index].createdAt.toString()))} - Present",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.textColor3,
+                      if (controller
+                              .model.value.data!.all![index].project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "\$${controller.model.value.data!.all![index].project!.price.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  "\$${controller.model.value.data!.all![index].inEscrow.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Budget",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                const Text(
+                                  "in Escrow",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
+                      if (controller
+                              .model.value.data!.all![index].project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.all![index].startTime.toString()))} - ",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                          Text(
+                            controller.model.value.data!.all![index].endTime
+                                        .toString() ==
+                                    ""
+                                ? "Present"
+                                : dateFormatForShow.format(DateTime.parse(
+                                    controller
+                                        .model.value.data!.all![index].endTime
+                                        .toString())),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: "See Timesheet",
+                        title: controller
+                            .model.value.data!.all![index].buttonStatus
+                            .toString()
+                            .capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
@@ -508,7 +589,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                                   .model.value.data!.hourly![index].projectTitle
                                   .toString(),
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -602,88 +683,106 @@ class _ContractsScreenState extends State<ContractsScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: deviceHeight * .01,
-                      ),
-                      /*    Text(
+
+                      /*Text(
                   "Staffed by: Robert Smith",
                   style: TextStyle(
                     fontSize: 12,
                     color:
                     AppTheme.darkBlueText,
                   ),
-                ),
-                SizedBox(
-                  height: deviceHeight * .02,
                 ),*/
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Text(
-                        "Hired by : ${controller.model.value.data!.hourly![index].client!.firstName} ${controller.model.value.data!.hourly![index].client!.lastName}",
+                        "Hired by: ${controller.model.value.data!.hourly![index].client!.firstName} ${controller.model.value.data!.hourly![index].client!.lastName}",
                         style: const TextStyle(
                             fontSize: 14,
                             color: AppTheme.textColor,
                             fontWeight: FontWeight.w600),
                       ),
-                      /* SizedBox(
-                  height: deviceHeight * .01,
-                ),
-                Text(
-                  "Soft Co",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textColor3,
-                  ),
-                ),*/
-                      SizedBox(
-                        height: deviceHeight * .02,
+                      const SizedBox(
+                        height: 15,
                       ),
-                      /*Text(
-                                              "Active: 2:30 hrs this week",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppTheme.textColor,
-                                                  fontWeight: FontWeight.w600),
-                                            ),*/
-
+                      /* Text(
+                        "Soft Co",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.textColor3,
+                        ),
+                      ),
+                      Text(
+                        "Active: 2:30 hrs this week",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w600),
+                      ),*/
                       RichText(
-                        text: const TextSpan(
-                          text: 'Active: ',
-                          style: TextStyle(
-                              fontSize: 16,
+                        text: TextSpan(
+                          text:
+                              "${controller.model.value.data!.hourly![index].status.toString().capitalizeFirst}: ",
+                          style: const TextStyle(
+                              fontSize: 14,
                               color: AppTheme.textColor,
                               fontWeight: FontWeight.w600),
                           children: <TextSpan>[
-                            TextSpan(
+                            /*TextSpan(
                               text: '2:30',
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: AppTheme.primaryColor,
                                   fontWeight: FontWeight.w600),
-                            ),
+                            ),*/
                             TextSpan(
-                              text: ' hrs this week',
-                              style: TextStyle(
-                                  fontSize: 16,
+                              text: controller
+                                  .model.value.data!.hourly![index].activeStatus
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 14,
                                   color: AppTheme.textColor,
                                   fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: deviceHeight * .01,
+                      const SizedBox(
+                        height: 10,
                       ),
-                      Text(
-                        "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.hourly![index].createdAt.toString()))} - Present",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.textColor3,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.hourly![index].startTime.toString()))} - ",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                          Text(
+                            controller.model.value.data!.hourly![index].endTime
+                                        .toString() ==
+                                    ""
+                                ? "Present"
+                                : dateFormatForShow.format(DateTime.parse(
+                                    controller.model.value.data!.hourly![index]
+                                        .endTime
+                                        .toString())),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: "See Timesheet",
+                        title: controller
+                            .model.value.data!.hourly![index].buttonStatus
+                            .toString()
+                            .capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
@@ -751,10 +850,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             child: Text(
                               controller.model.value.data!
                                   .activeMilestone![index].projectTitle
-                                  .toString()
-                                  .capitalizeFirst!,
+                                  .toString(),
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -848,105 +946,171 @@ class _ContractsScreenState extends State<ContractsScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 10.h,
+
+                      /*Text(
+                  "Staffed by: Robert Smith",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                    AppTheme.darkBlueText,
+                  ),
+                ),*/
+                      const SizedBox(
+                        height: 15,
                       ),
                       Text(
-                        "Hired by : ${controller.model.value.data!.activeMilestone![index].client!.firstName} ${controller.model.value.data!.activeMilestone![index].client!.lastName}",
+                        "Hired by: ${controller.model.value.data!.activeMilestone![index].client!.firstName} ${controller.model.value.data!.activeMilestone![index].client!.lastName}",
                         style: const TextStyle(
                             fontSize: 14,
                             color: AppTheme.textColor,
                             fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
-                        height: 10.h,
+                      const SizedBox(
+                        height: 15,
                       ),
-                      const Text(
-                        "Admin: Soft Co",
+                      /* Text(
+                        "Soft Co",
                         style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.textColor3,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      const Text(
-                        "Active: Waiting for Admin to fund new Milestone",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xff130E1D),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "\$2000.00",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff130E1D),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              const Text(
-                                "\$500.00",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff130E1D),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Budget",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.textColor3,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              const Text(
-                                "in Escrow",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.textColor3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text(
-                        "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.activeMilestone![index].createdAt.toString()))} - Present",
-                        style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.textColor3,
                         ),
                       ),
+                      Text(
+                        "Active: 2:30 hrs this week",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w600),
+                      ),*/
+                      RichText(
+                        text: TextSpan(
+                          text:
+                              "${controller.model.value.data!.activeMilestone![index].status.toString().capitalizeFirst}: ",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: AppTheme.textColor,
+                              fontWeight: FontWeight.w600),
+                          children: <TextSpan>[
+                            /*TextSpan(
+                              text: '2:30',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),*/
+                            TextSpan(
+                              text: controller.model.value.data!
+                                  .activeMilestone![index].activeStatus
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.textColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      if (controller.model.value.data!.activeMilestone![index]
+                              .project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "\$${controller.model.value.data!.activeMilestone![index].project!.price.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  "\$${controller.model.value.data!.activeMilestone![index].inEscrow.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Budget",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                const Text(
+                                  "in Escrow",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      if (controller.model.value.data!.activeMilestone![index]
+                              .project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.activeMilestone![index].startTime.toString()))} - ",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                          Text(
+                            controller.model.value.data!.activeMilestone![index]
+                                        .endTime
+                                        .toString() ==
+                                    ""
+                                ? "Present"
+                                : dateFormatForShow.format(DateTime.parse(
+                                    controller.model.value.data!
+                                        .activeMilestone![index].endTime
+                                        .toString())),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(
-                        height: 20.h,
+                        height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: "Submit Work for Payment",
+                        title: controller.model.value.data!
+                            .activeMilestone![index].buttonStatus
+                            .toString()
+                            .capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
@@ -1014,10 +1178,9 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             child: Text(
                               controller.model.value.data!
                                   .awaitingMilestone![index].projectTitle
-                                  .toString()
-                                  .capitalizeFirst!,
+                                  .toString(),
                               style: const TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: AppTheme.darkBlueText,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -1111,105 +1274,171 @@ class _ContractsScreenState extends State<ContractsScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 10.h,
+
+                      /*Text(
+                  "Staffed by: Robert Smith",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color:
+                    AppTheme.darkBlueText,
+                  ),
+                ),*/
+                      const SizedBox(
+                        height: 15,
                       ),
                       Text(
-                        "Hired by : ${controller.model.value.data!.awaitingMilestone![index].client!.firstName} ${controller.model.value.data!.awaitingMilestone![index].client!.lastName}",
+                        "Hired by: ${controller.model.value.data!.awaitingMilestone![index].client!.firstName} ${controller.model.value.data!.awaitingMilestone![index].client!.lastName}",
                         style: const TextStyle(
                             fontSize: 14,
                             color: AppTheme.textColor,
                             fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
-                        height: 10.h,
+                      const SizedBox(
+                        height: 15,
                       ),
-                      const Text(
-                        "Admin: Soft Co",
+                      /* Text(
+                        "Soft Co",
                         style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.textColor3,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      const Text(
-                        "Active: Waiting for Admin to fund new Milestone",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xff130E1D),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: deviceHeight * .02,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "\$2000.00",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff130E1D),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              const Text(
-                                "\$500.00",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xff130E1D),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Budget",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.textColor3,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              const Text(
-                                "in Escrow",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.textColor3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text(
-                        "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.awaitingMilestone![index].createdAt.toString()))} - Present",
-                        style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.textColor3,
                         ),
                       ),
+                      Text(
+                        "Active: 2:30 hrs this week",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.textColor,
+                            fontWeight: FontWeight.w600),
+                      ),*/
+                      RichText(
+                        text: TextSpan(
+                          text:
+                              "${controller.model.value.data!.awaitingMilestone![index].status.toString().capitalizeFirst}: ",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: AppTheme.textColor,
+                              fontWeight: FontWeight.w600),
+                          children: <TextSpan>[
+                            /*TextSpan(
+                              text: '2:30',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),*/
+                            TextSpan(
+                              text: controller.model.value.data!
+                                  .awaitingMilestone![index].activeStatus
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.textColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      if (controller.model.value.data!.awaitingMilestone![index]
+                              .project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "\$${controller.model.value.data!.awaitingMilestone![index].project!.price.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  "\$${controller.model.value.data!.awaitingMilestone![index].inEscrow.toString()}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xff130E1D),
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Budget",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                const Text(
+                                  "in Escrow",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.textColor3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      if (controller.model.value.data!.awaitingMilestone![index]
+                              .project!.budgetType
+                              .toString()
+                              .toLowerCase() ==
+                          "fixed")
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "${dateFormatForShow.format(DateTime.parse(controller.model.value.data!.awaitingMilestone![index].startTime.toString()))} - ",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                          Text(
+                            controller.model.value.data!
+                                        .awaitingMilestone![index].endTime
+                                        .toString() ==
+                                    ""
+                                ? "Present"
+                                : dateFormatForShow.format(DateTime.parse(
+                                    controller.model.value.data!
+                                        .awaitingMilestone![index].endTime
+                                        .toString())),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textColor3,
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(
-                        height: 20.h,
+                        height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: "Submit Work for Payment",
+                        title: controller.model.value.data!
+                            .awaitingMilestone![index].buttonStatus
+                            .toString()
+                            .capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
