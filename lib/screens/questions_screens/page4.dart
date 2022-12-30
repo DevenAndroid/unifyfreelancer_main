@@ -68,7 +68,7 @@ class Page4 extends StatelessWidget {
                   },*/
                     validator: MultiValidator([
                       RequiredValidator(errorText: 'Please enter your title'),
-                      MinLengthValidator(3, errorText: 'title minimum length is 3 characters'),
+                      MinLengthValidator(3, errorText: 'Title minimum length is 3 characters'),
                     ]),
                     obSecure: false.obs,
                     hintText: "Example: full stack developer | web & mobile".obs,

@@ -27,7 +27,7 @@ class SearchJobListController extends GetxController {
   RxString budgetType = "".obs;
   RxString englishLevel = "".obs;
   List catId = <String>[];
-  RangeValues currentRangeValues =  const RangeValues(3, 10000);
+ // RangeValues currentRangeValues =  const RangeValues(3, 10000);
   TextEditingController firstRangeController = TextEditingController();
   TextEditingController secondRangeController = TextEditingController();
 
@@ -148,8 +148,8 @@ class SearchJobListController extends GetxController {
   void onInit() {
     super.onInit();
    searchController.text = Get.arguments[0];
-    firstRangeController.text = currentRangeValues.start.toString();
-    secondRangeController.text = currentRangeValues.end.toString();
+     firstRangeController.text = 3.00.toString();
+    // secondRangeController.text = currentRangeValues.end.toString();
     getData();
     getDislikeReasons();
     getCategoryList();

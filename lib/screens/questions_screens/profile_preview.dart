@@ -462,6 +462,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                         ),
                                         Expanded(
                                           child: TextFormField(
+                                            autovalidateMode: AutovalidateMode.onUserInteraction ,
                                             onTap: () {
                                               FocusManager
                                                   .instance.primaryFocus!
@@ -2156,7 +2157,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${controller.model.value.data!.basicInfo!.firstName.toString()} ${controller.model.value.data!.basicInfo!.lastName.toString()}",
+                        "${controller.model.value.data!.basicInfo!.firstName.toString().capitalizeFirst} ${controller.model.value.data!.basicInfo!.lastName.toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.darkBlueText,
@@ -2813,22 +2814,22 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             children: [
               Row(
                 children: [
-                  Text(
-                    controller.model.value.data!.employment![index1].company
-                        .toString()
-                        .capitalizeFirst!,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textColor,
-                        fontSize: AddSize.font18),
+                  Expanded(
+                    child: Text(
+                      controller.model.value.data!.employment![index1].company
+                          .toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textColor,
+                          fontSize: AddSize.font18),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: InkWell(
                       onTap: () {
                         showDialogue(
-                            item: controller
-                                .model.value.data!.employment![index1]);
+                            item: controller.model.value.data!.employment![index1]);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
@@ -2870,8 +2871,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               ),
               Text(
                 controller.model.value.data!.employment![index1].subject
-                    .toString()
-                    .capitalizeFirst!,
+                    .toString(),
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textColor,
@@ -2922,14 +2922,15 @@ class _ProfilePreviewState extends State<ProfilePreview> {
             children: [
               Row(
                 children: [
-                  Text(
-                    controller.model.value.data!.education![index].school
-                        .toString()
-                        .capitalizeFirst!,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textColor,
-                        fontSize: AddSize.font18),
+                  Expanded(
+                    child: Text(
+                      controller.model.value.data!.education![index].school
+                          .toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textColor,
+                          fontSize: AddSize.font18),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -2976,6 +2977,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                 height: AddSize.size10,
               ),
               Text(
+
                 controller.model.value.data!.education![index].degree
                     .toString(),
                 style: TextStyle(
@@ -2984,14 +2986,17 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                     fontSize: AddSize.font16),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    controller.model.value.data!.education![index].areaStudy
-                        .toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: AppTheme.textColor,
-                        fontSize: AddSize.font14),
+                  Expanded(
+                    child: Text(
+                      controller.model.value.data!.education![index].areaStudy
+                          .toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.textColor,
+                          fontSize: AddSize.font14),
+                    ),
                   ),
                   Text(
                     " ${controller.model.value.data!.education![index].startYear} - ${controller.model.value.data!.education![index].endYear}",

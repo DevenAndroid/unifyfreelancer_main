@@ -15,7 +15,9 @@ if(search != ""){
   map['page'] = page;
   map['pagination'] = pagination;
   map['min_price'] = min_price;
+  if(max_price != ""){
   map['max_price'] = max_price;
+}
   if(type != ""){
     map['type'] = type;
   }

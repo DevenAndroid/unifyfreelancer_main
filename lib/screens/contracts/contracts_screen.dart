@@ -517,9 +517,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       ),
                       CustomOutlineButton(
                         title: controller
-                            .model.value.data!.all![index].buttonStatus
-                            .toString()
-                            .capitalizeFirst!,
+                            .model.value.data!.all![index].buttonStatus.toString().capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,

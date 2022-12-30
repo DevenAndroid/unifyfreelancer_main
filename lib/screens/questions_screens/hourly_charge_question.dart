@@ -254,7 +254,6 @@ class _HourlyChargeQuestionState extends State<HourlyChargeQuestion> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               editHoursPerWeekRepo(
-                                      hours_id: 1,
                                       hours_price: controller.priceController.text.trim(),
                                       context: context)
                                   .then((value) {

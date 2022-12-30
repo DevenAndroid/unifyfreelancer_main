@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -546,7 +545,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          RangeSlider(
+                    /*      RangeSlider(
                             values: controller.currentRangeValues,
                             max: 10000,
                             //   divisions: 5,
@@ -571,7 +570,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                         .toString();
                               });
                             },
-                          ),
+                          ),*/
                           const SizedBox(
                             height: 10,
                           ),
@@ -580,19 +579,31 @@ class _FilterScreenState extends State<FilterScreen> {
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  readOnly: true,
-                                  //      prefix: Icon(Icons.attach_money,color: AppTheme.primaryColor,),
+                                  prefix: const Icon(Icons.attach_money),
+                           //       readOnly: true,
                                   controller: controller.firstRangeController,
                                   inputFormatters1: [
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   obSecure: false.obs,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   hintText: "3".obs,
-                                  validator: (value) {
+                                  /*validator: (value) {
                                     if (double.parse(value.toString()) < 3.00) {
                                       return "Start price must be 3 \$";
-                                    } else {
+                                    }
+                                    else {
+                                      return null;
+                                    }
+                                  },*/
+                                  validator: (value){
+                                    if(value!.isEmpty && value.toString().trim() != ""){
+                                      return "Please enter minimum price";
+                                    }
+                                    else if(double.parse(value.isEmpty ? "0" : value) < 3){
+                                      return "Minimum price must be 3 \$";
+                                    }
+                                    else {
                                       return null;
                                     }
                                   },
@@ -606,9 +617,13 @@ class _FilterScreenState extends State<FilterScreen> {
                               ),
                               Expanded(
                                 child: CustomTextField(
+                                  prefix: const Icon(Icons.attach_money),
+                                  inputFormatters1: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   controller: controller.secondRangeController,
                                   obSecure: false.obs,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   hintText: "9999".obs,
                                   /* validator: MultiValidator([
                                     RequiredValidator(
@@ -729,7 +744,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     Expanded(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(10),
                         child: CustomOutlineButton(
                           title: 'Clear All',
                           backgroundColor: AppTheme.whiteColor,
@@ -752,13 +767,9 @@ class _FilterScreenState extends State<FilterScreen> {
                               controller.englishLevel = "".obs;
                               controller.selectedList.clear();
                               controller.catId.clear();
-                              controller.currentRangeValues =
-                                  const RangeValues(3.00, 10000.00);
-                              controller.firstRangeController.text = controller
-                                  .currentRangeValues.start
-                                  .toString();
-                              controller.secondRangeController.text =
-                                  controller.currentRangeValues.end.toString();
+                             // controller.currentRangeValues = const RangeValues(3.00, 10000.00);
+                              controller.firstRangeController.text = 3.00.toString();
+                              controller.secondRangeController.text = "";
                             });
                           },
                           textColor: AppTheme.primaryColor,
@@ -769,7 +780,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     Expanded(
                       flex: 1,
                       child: Padding(
-                        padding: const EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(10),
                         child: CustomOutlineButton(
                           title: 'Filter Result',
                           backgroundColor: AppTheme.primaryColor,
@@ -820,7 +831,8 @@ class _FilterScreenState extends State<FilterScreen> {
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                   border: Border.all(
-                      color: AppTheme.primaryColor.withOpacity(.15), width: 1.0)),
+                      color: AppTheme.primaryColor.withOpacity(.15),
+                      width: 1.0)),
               child: ExpansionTile(
                   title: const Text("Select category",
                       style: TextStyle(fontSize: 13, color: Color(0xff596681))),
@@ -838,18 +850,24 @@ class _FilterScreenState extends State<FilterScreen> {
                                       activeColor: AppTheme.primaryColor,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          controller.modelCategory.value
-                                              .data![index].checkboxData = newValue;
+                                          controller
+                                              .modelCategory
+                                              .value
+                                              .data![index]
+                                              .checkboxData = newValue;
                                           if (newValue == true) {
                                             controller.catId.add(controller
-                                                .modelCategory.value.data![index].id
+                                                .modelCategory
+                                                .value
+                                                .data![index]
+                                                .id
                                                 .toString());
                                           } else {
                                             controller.catId.removeWhere(
                                                 (element) =>
                                                     element ==
-                                                    controller.modelCategory.value
-                                                        .data![index].id
+                                                    controller.modelCategory
+                                                        .value.data![index].id
                                                         .toString());
                                           }
                                           if (kDebugMode) {

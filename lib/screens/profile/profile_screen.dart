@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +17,7 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/utils/api_contant.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
+
 import '../../repository/add_category_repository.dart';
 import '../../repository/delete_certificate_info_repository.dart';
 import '../../repository/delete_education_info_repository.dart';
@@ -44,7 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final profileController = Get.put(ProfileScreenController());
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
- // final TextEditingController _occputationController = TextEditingController();
+
+  // final TextEditingController _occputationController = TextEditingController();
 
 /*  final TextEditingController _designationController = TextEditingController();
   final TextEditingController _designationDescriptionController = TextEditingController();*/
@@ -97,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     map["first_name"] = _fNameController.text.trim();
     map["last_name"] = _lNameController.text.trim();
     map["occcuption"] = controller.titleController.text.trim();
-  //  ;
+    //  ;
     editNameInfoRepo(
             mapData: map,
             fieldName1: "profile_image",
@@ -1481,7 +1484,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 10.h,
                               ),
                               testimonials(),
-
                             ],
                           )),
                       Container(
@@ -2609,19 +2611,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  Text(
-                    profileController
-                            .model.value.data!.education![index].startYear
-                            .toString() +
-                        " - " +
-                        profileController
-                            .model.value.data!.education![index].endYear
-                            .toString(),
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff4D4D4D)),
-                  ),
+                  RichText(
+                      text: TextSpan(
+                          text:
+                              "${profileController.model.value.data!.education![index].areaStudy} ",
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff4D4D4D)),
+                          children: [
+                        TextSpan(
+                          text:
+                              "${profileController.model.value.data!.education![index].startYear} - ${profileController.model.value.data!.education![index].endYear}",
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff4D4D4D)),
+                        ),
+                      ])),
                   Divider(
                     color: AppTheme.pinkText.withOpacity(.29),
                   ),
@@ -2785,7 +2792,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ));
   }
 
-   services() {
+  services() {
     return showFilterButtonSheet(
         context: context,
         titleText: "Select a service",
@@ -3136,369 +3143,290 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   testimonials() {
     var deviceWidth = MediaQuery.of(context).size.width;
-    return  SizedBox(
+    return SizedBox(
         width: deviceWidth,
-        child:
-        profileController.model.value.data!
-            .testimonial!.isEmpty
+        child: profileController.model.value.data!.testimonial!.isEmpty
             ? Container(
-          margin: const EdgeInsets.all(5),
-          decoration: const BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: AppTheme.whiteColor,
-          ),
-          child: InkWell(
-            onTap: () {},
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/images/testimonials.png",
-                  height: 100,
-                  width: 100,
+                margin: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: AppTheme.whiteColor,
                 ),
-                SizedBox(
-                  height: 10.h,
+                child: InkWell(
+                  onTap: () {},
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "assets/images/testimonials.png",
+                        height: 100,
+                        width: 100,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Text(
+                        "Showcase your skills with non-Unify client testimonials",
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w300,
+                            color: const Color(0xff363636)),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  "Showcase your skills with non-Unify client testimonials",
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight:
-                      FontWeight.w300,
-                      color: const Color(
-                          0xff363636)),
-                  textAlign:
-                  TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        )
+              )
             : ListView.builder(
-          shrinkWrap: true,
-          physics:
-          const NeverScrollableScrollPhysics(),
-          itemCount: profileController.model.value.data!.testimonial!.length,
-          itemBuilder: (BuildContext context, int index) {
-            return profileController.model.value.data!.testimonial![index].status.toString() == "pending"
-                ? Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment
-                      .start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .start,
-                      children: [
-                        Text(
-                          "Message :",
-                          style: TextStyle(
-                              fontSize:
-                              14.sp,
-                              fontWeight:
-                              FontWeight
-                                  .w600,
-                              color: AppTheme
-                                  .darkBlueText),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Text(
-                            profileController
-                                .model
-                                .value
-                                .data!
-                                .testimonial![
-                            index]
-                                .message
-                                .toString(),
-                            style: TextStyle(
-                                fontSize: 14
-                                    .sp,
-                                fontWeight:
-                                FontWeight
-                                    .w500,
-                                color: AppTheme
-                                    .darkBlueText),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .start,
-                      children: [
-                        Text(
-                          "Request :",
-                          style: TextStyle(
-                              fontSize:
-                              14.sp,
-                              fontWeight:
-                              FontWeight
-                                  .w600,
-                              color: AppTheme
-                                  .darkBlueText),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Text(
-                            profileController
-                                .model
-                                .value
-                                .data!
-                                .testimonial![
-                            index]
-                                .requestSent
-                                .toString(),
-                            style: TextStyle(
-                                fontSize: 14
-                                    .sp,
-                                fontWeight:
-                                FontWeight
-                                    .w500,
-                                color: AppTheme
-                                    .darkBlueText),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      crossAxisAlignment:
-                      CrossAxisAlignment
-                          .start,
-                      children: [
-                        Text(
-                          "Status :",
-                          style: TextStyle(
-                              fontSize:
-                              14.sp,
-                              fontWeight:
-                              FontWeight
-                                  .w600,
-                              color: AppTheme
-                                  .darkBlueText),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Text(
-                            profileController
-                                .model
-                                .value
-                                .data!
-                                .testimonial![
-                            index]
-                                .status
-                                .toString(),
-                            style: TextStyle(
-                                fontSize: 14
-                                    .sp,
-                                fontWeight:
-                                FontWeight
-                                    .w500,
-                                color: AppTheme
-                                    .darkBlueText),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      color: AppTheme
-                          .pinkText
-                          .withOpacity(
-                          .29),
-                    ),
-                  ],
-                )
-                : Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment
-                      .start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Name :",
-                          style: TextStyle(
-                              fontSize:
-                              14.sp,
-                              fontWeight:
-                              FontWeight
-                                  .w600,
-                              color: AppTheme
-                                  .darkBlueText),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "${profileController.model.value.data!.testimonial![index].firstName} ${profileController.model.value.data!.testimonial![index].lastName}",
-                            style: TextStyle(
-                                fontSize: 14
-                                    .sp,
-                                fontWeight:
-                                FontWeight
-                                    .w500,
-                                color: AppTheme
-                                    .darkBlueText),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            deleteTestimonialInfoRepo(
-                                profileController.model.value.data!.testimonial![index].id,
-                                context)
-                                .then((value) {
-                              if (value
-                                  .status ==
-                                  true) {
-                                print(profileController
-                                    .model
-                                    .value
-                                    .data!
-                                    .testimonial![index]
-                                    .id);
-                                profileController
-                                    .model
-                                    .value
-                                    .data!
-                                    .testimonial!
-                                    .removeAt(index);
-                                profileController
-                                    .getData();
-                              }
-                              showToast(value
-                                  .message
-                                  .toString());
-                              print(profileController
-                                  .model
-                                  .value
-                                  .data!
-                                  .testimonial![
-                              index]
-                                  .id);
-                            });
-                          },
-                          child:
-                          Container(
-                            margin: const EdgeInsets
-                                .only(
-                                left:
-                                15),
-                            padding:
-                            const EdgeInsets
-                                .all(5),
-                            decoration: BoxDecoration(
-                                shape: BoxShape
-                                    .circle,
-                                color: AppTheme
-                                    .whiteColor,
-                                border: Border.all(
-                                    color:
-                                    const Color(0xff707070))),
-                            child:
-                            const Icon(
-                              Icons
-                                  .delete,
-                              color: AppTheme
-                                  .primaryColor,
-                              size: 15,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    RichText(
-                      maxLines: profileController.model.value.data!.testimonial![index].showText == true
-                          ? 1000
-                          : 4,
-                      textAlign: TextAlign.left,
-                      text: TextSpan(
-                          text:
-                          "Description : ",
-                          style: TextStyle(
-                              fontSize:
-                              14.sp,
-                              fontWeight:
-                              FontWeight
-                                  .w600,
-                              color: AppTheme
-                                  .darkBlueText),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount:
+                    profileController.model.value.data!.testimonial!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return profileController
+                              .model.value.data!.testimonial![index].status
+                              .toString() ==
+                          "pending"
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextSpan(
-                                text: profileController
-                                    .model
-                                    .value
-                                    .data!
-                                    .testimonial![
-                                index]
-                                    .description
-                                    .toString(),
-                                style: TextStyle(
-                                    fontSize:
-                                    14.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppTheme.darkBlueText,),
-                                )
-                          ]),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    SizedBox(
-                        child: profileController.model.value.data!.testimonial![index].description.toString().length <= 200
-                            ? const SizedBox()
-                            : InkWell(
-                            onTap: () {
-                              setState(() {
-                                profileController.model.value.data!.testimonial![index].showText = !profileController.model.value.data!.testimonial![index].showText!;
-                              });
-                            },
-                            child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.end,
-                                children: <Widget>[
-                                  profileController.model.value.data!.testimonial![index].showText!
-                                      ? const Text(
-                                    "Show Less",
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Message :",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    profileController.model.value.data!
+                                        .testimonial![index].message
+                                        .toString(),
                                     style: TextStyle(
-                                        color: AppTheme
-                                            .primaryColor),
-                                  )
-                                      : const Text("Show More",
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Request :",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    profileController.model.value.data!
+                                        .testimonial![index].requestSent
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Status :",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    profileController.model.value.data!
+                                        .testimonial![index].status
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              color: AppTheme.pinkText.withOpacity(.29),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Name :",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "${profileController.model.value.data!.testimonial![index].firstName} ${profileController.model.value.data!.testimonial![index].lastName}",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppTheme.darkBlueText),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    deleteTestimonialInfoRepo(
+                                            profileController.model.value.data!
+                                                .testimonial![index].id,
+                                            context)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        print(profileController.model.value
+                                            .data!.testimonial![index].id);
+                                        profileController
+                                            .model.value.data!.testimonial!
+                                            .removeAt(index);
+                                        profileController.getData();
+                                      }
+                                      showToast(value.message.toString());
+                                      print(profileController.model.value.data!
+                                          .testimonial![index].id);
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 15),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppTheme.whiteColor,
+                                        border: Border.all(
+                                            color: const Color(0xff707070))),
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: AppTheme.primaryColor,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            RichText(
+                              maxLines: profileController.model.value.data!
+                                          .testimonial![index].showText ==
+                                      true
+                                  ? 1000
+                                  : 4,
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                  text: "Description : ",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                  children: [
+                                    TextSpan(
+                                      text: profileController.model.value.data!
+                                          .testimonial![index].description
+                                          .toString(),
                                       style: TextStyle(
-                                          color: AppTheme
-                                              .primaryColor))
-                                ]))),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppTheme.darkBlueText,
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                                child: profileController.model.value.data!
+                                            .testimonial![index].description
+                                            .toString()
+                                            .length <=
+                                        200
+                                    ? const SizedBox()
+                                    : InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            profileController
+                                                    .model
+                                                    .value
+                                                    .data!
+                                                    .testimonial![index]
+                                                    .showText =
+                                                !profileController
+                                                    .model
+                                                    .value
+                                                    .data!
+                                                    .testimonial![index]
+                                                    .showText!;
+                                          });
+                                        },
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              profileController
+                                                      .model
+                                                      .value
+                                                      .data!
+                                                      .testimonial![index]
+                                                      .showText!
+                                                  ? const Text(
+                                                      "Show Less",
+                                                      style: TextStyle(
+                                                          color: AppTheme
+                                                              .primaryColor),
+                                                    )
+                                                  : const Text("Show More",
+                                                      style: TextStyle(
+                                                          color: AppTheme
+                                                              .primaryColor))
+                                            ]))),
 
-
-                    /*Row(
+                            /*Row(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
@@ -3671,18 +3599,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               ),
                                                             ],
                                                           ),*/
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      color: AppTheme
-                          .pinkText
-                          .withOpacity(
-                          .29),
-                    ),
-                  ],
-                );
-          },
-        ));
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              color: AppTheme.pinkText.withOpacity(.29),
+                            ),
+                          ],
+                        );
+                },
+              ));
   }
 }

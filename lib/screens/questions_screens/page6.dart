@@ -794,7 +794,7 @@ class _Page6State extends State<Page6> {
             children: [
               Expanded(
                 child: Text(
-                  item.school.toString().capitalizeFirst ?? "",
+                  item.school.toString() ?? "",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: AppTheme.textColor,

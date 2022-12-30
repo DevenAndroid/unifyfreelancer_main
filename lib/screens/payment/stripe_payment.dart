@@ -138,7 +138,7 @@ class _StripPaymentState extends State<StripPayment> {
                             stripeToken: value.id.toString(), context: context
                         ).then((value) {
                           if(value.status == true){
-                            Get.toNamed(MyRouter.bottomNavbar);
+                            Get.offAllNamed(MyRouter.bottomNavbar);
                             if (kDebugMode) {
                               print("Subscription.....$value");
                             }
