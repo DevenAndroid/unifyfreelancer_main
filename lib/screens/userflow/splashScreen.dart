@@ -1,9 +1,15 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unifyfreelancer/resources/app_assets.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
+
+import '../../resources/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,13 +19,35 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+   StreamSubscription? subscription;
+
   @override
   void initState() {
     super.initState();
+    subscription = Connectivity().onConnectivityChanged.listen((event) async {
+//      log("Internet is working fine");
+      final getConnectionStatus = await InternetConnectionChecker().hasConnection;
+      if (!getConnectionStatus) {
+        //  showToast('No Internet Connection Available');
+        log("No internet access");
+        Get.snackbar("No Internet Access", "Please connect with nearby network",
+            colorText: AppTheme.whiteColor,
+            backgroundColor: AppTheme.primaryColor,
+            isDismissible: false,
+            duration: const Duration(days: 1000));
+      } else {
+        log("Internet is working fine");
+        Get.closeCurrentSnackbar();
+      }
+    }
+    );
+    local();
     Timer(const Duration(seconds: 2), () async {
       SharedPreferences pref = await SharedPreferences.getInstance();
       if (pref.getString('cookie') != null) {
-        print("object" + pref.getString('cookie').toString());
+        if (kDebugMode) {
+          print("object${pref.getString('cookie')}");
+        }
         Get.offAllNamed(MyRouter.bottomNavbar);
       } else {
         if (pref.getBool("shownIntro") == null) {
@@ -29,6 +57,19 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     });
+  }
+
+  local() async{
+    final getConnectionStatus = await InternetConnectionChecker().hasConnection;
+    if (!getConnectionStatus) {
+      //  showToast('No Internet Connection Available');
+      log("No internet access");
+      Get.snackbar("No Internet Access", "Please connect with nearby network",
+          colorText: AppTheme.whiteColor,
+          backgroundColor: AppTheme.primaryColor,
+          isDismissible: false,
+          duration: const Duration(days: 1000));
+    }
   }
 
   @override

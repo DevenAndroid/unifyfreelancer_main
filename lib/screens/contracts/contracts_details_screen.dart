@@ -1637,12 +1637,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
-                "View original offer",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w600),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(MyRouter.viewOriginalOffer);
+                },
+                child: const Text(
+                  "View original offer",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -2003,7 +2008,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             fontSize: 13,
                             color: AppTheme.whiteColor,
                           ),
-                        ))
+                        )),
                   ],
                 ),
               )

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/controller/profie_screen_controller.dart';
 import 'package:unifyfreelancer/controller/saved_job_controller.dart';
 import 'package:unifyfreelancer/resources/app_theme.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
@@ -25,11 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    profileController.getData();
   }
 
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final controller = Get.put(JobListController());
   final saveController = Get.put(SavedJobController());
+  final profileController = Get.put(ProfileScreenController());
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -188,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: controller.status.value.isSuccess
           ? controller.modelJobList.value.data!.isEmpty
               ? Center(
-                  child: Text("No my  feed",
+                  child: Text("No my feed",
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -635,6 +638,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             controller.getData();
                             controller.getDataRecentJob();
                             controller.getDataBestJob();
+                            profileController.getData();
                           },
                           icon: Icon(
                             Icons.change_circle_outlined,
@@ -1151,6 +1155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             controller.getData();
                             controller.getDataRecentJob();
                             controller.getDataBestJob();
+                            profileController.getData();
                           },
                           icon: Icon(
                             Icons.change_circle_outlined,
@@ -1192,8 +1197,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.toNamed(MyRouter.jobDetailsScreen, arguments: [
                             controller.modelBestJobList.value.data![index].id,
                           ]);
-                          print(controller
-                              .modelBestJobList.value.data![index].id);
+                          if (kDebugMode) {
+                            print(controller.modelBestJobList.value.data![index].id);
+                          }
                         },
                         child: Container(
                             margin: const EdgeInsets.only(
@@ -1660,6 +1666,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             controller.getData();
                             controller.getDataRecentJob();
                             controller.getDataBestJob();
+                            profileController.getData();
                           },
                           icon: Icon(
                             Icons.change_circle_outlined,

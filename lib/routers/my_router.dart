@@ -19,6 +19,7 @@ import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/contracts/contracts_details_screen.dart';
 import '../screens/contracts/contracts_screen.dart';
+import '../screens/contracts/view_origianal_offer.dart';
 import '../screens/create_client_account.dart';
 import '../screens/filters.dart';
 import '../screens/payment/stripe_payment.dart';
@@ -36,6 +37,7 @@ import '../screens/proposals/submitted_proposal_screen.dart';
 import '../screens/proposals/invitations_to_interview.dart';
 import '../screens/proposals/offer_details_screen.dart';
 import '../screens/proposals/change_terms.dart';
+import '../screens/reports/get_paid_now.dart';
 import '../screens/reports/reports_screen.dart';
 import '../screens/reports/work_in_progress.dart';
 import '../screens/request_milestone_changes.dart';
@@ -119,6 +121,8 @@ class MyRouter {
   static var activeProposalScreen = "/activeProposalScreen";
   static var filterScreen = "/filterScreen";
   static var workInProgressScreen = "/workInProgressScreen";
+  static var viewOriginalOffer = "/viewOriginalOffer";
+  static var getPaidNow = "/getPaidNow";
 
   static var route = [
     GetPage(name: '/', page: () =>  const SplashScreen()),
@@ -180,5 +184,7 @@ class MyRouter {
     GetPage(name: MyRouter.activeProposalScreen, page: () => const ActiveProposalScreen()),
     GetPage(name: MyRouter.filterScreen, page: () => const FilterScreen()),
     GetPage(name: MyRouter.workInProgressScreen, page: () => const WorkInProgressScreen()),
+    GetPage(name: MyRouter.viewOriginalOffer, page: () => const ViewOriginalOffer()),
+    GetPage(name: MyRouter.getPaidNow, page: () => const GetPaidNow()),
   ];
 }
