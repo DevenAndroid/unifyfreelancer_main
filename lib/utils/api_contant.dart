@@ -75,6 +75,7 @@ class ApiUrls {
   static const String declineReasonList = "${apiBaseUrl}decline-reason-list/";
   static const String setVisibility = "${apiBaseUrl}set-visibility";
   static const String editExperienceLevel = "${apiBaseUrl}edit-experience-level";
+  static const String singleContract = "${apiBaseUrl}single-contract/";
 
 
 }

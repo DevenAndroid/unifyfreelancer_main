@@ -185,6 +185,7 @@ class _Page5State extends State<Page5> {
                                         ),
                                         Expanded(
                                           child: TextFormField(
+                                            autovalidateMode: AutovalidateMode.onUserInteraction,
                                             onTap: () {
                                               FocusManager
                                                   .instance.primaryFocus!
@@ -193,7 +194,7 @@ class _Page5State extends State<Page5> {
                                               for (var item in controller
                                                   .countryList
                                                   .value
-                                                  .countrylist!) {
+                                                  .countryListData!) {
                                                 controller.searchList1
                                                     .add(item.name.toString());
                                               }
@@ -255,7 +256,7 @@ class _Page5State extends State<Page5> {
                                                                     in controller
                                                                         .countryList
                                                                         .value
-                                                                        .countrylist!) {
+                                                                        .countryListData!) {
                                                                   if (item.name
                                                                       .toString()
                                                                       .toLowerCase()
@@ -277,7 +278,7 @@ class _Page5State extends State<Page5> {
                                                                     in controller
                                                                         .countryList
                                                                         .value
-                                                                        .countrylist!) {
+                                                                        .countryListData!) {
                                                                   controller
                                                                       .searchList1
                                                                       .add(item

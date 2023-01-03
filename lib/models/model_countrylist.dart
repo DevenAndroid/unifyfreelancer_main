@@ -1,44 +1,50 @@
 class ModelCountryList {
-  List<Countrylist>? countrylist;
   bool? status;
   String? message;
+  List<Data>? countryListData;
 
-  ModelCountryList({this.countrylist, this.status, this.message});
+  ModelCountryList({this.status, this.message, this.countryListData});
 
   ModelCountryList.fromJson(Map<String, dynamic> json) {
-    if (json['countrylist'] != null) {
-      countrylist = <Countrylist>[];
-      json['countrylist'].forEach((v) {
-        countrylist!.add(new Countrylist.fromJson(v));
-      });
-    }
     status = json['status'];
     message = json['message'];
+    if (json['data'] != null) {
+      countryListData = <Data>[];
+      json['data'].forEach((v) {
+        countryListData!.add(new Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.countrylist != null) {
-      data['countrylist'] = this.countrylist!.map((v) => v.toJson()).toList();
-    }
     data['status'] = this.status;
     data['message'] = this.message;
+    if (this.countryListData != null) {
+      data['data'] = this.countryListData!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class Countrylist {
+class Data {
+  int? id;
   String? name;
+  String? countryCode;
 
-  Countrylist({this.name});
+  Data({this.id, this.name, this.countryCode});
 
-  Countrylist.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
+    countryCode = json['country_code'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
+    data['country_code'] = this.countryCode;
     return data;
   }
 }

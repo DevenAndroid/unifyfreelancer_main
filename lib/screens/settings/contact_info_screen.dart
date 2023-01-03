@@ -984,7 +984,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                     .unfocus();
                                                 searchList1.clear();
                                                 for (var item in countryList
-                                                    .countrylist!) {
+                                                    .countryListData!) {
                                                   searchList1.add(
                                                       item.name.toString());
                                                 }
@@ -1044,7 +1044,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                                       .clear();
                                                                   for (var item
                                                                       in countryList
-                                                                          .countrylist!) {
+                                                                          .countryListData!) {
                                                                     if (item
                                                                         .name
                                                                         .toString()
@@ -1061,7 +1061,7 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                                                                       .clear();
                                                                   for (var item
                                                                       in countryList
-                                                                          .countrylist!) {
+                                                                          .countryListData!) {
                                                                     searchList1
                                                                         .add(item
                                                                             .name

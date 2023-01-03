@@ -110,7 +110,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             child: Obx(() {
               return Form(
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -213,7 +213,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                                   size: AddSize.size10 * .8,
                                                   color: AppTheme.primaryColor,
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 5,
                                                 ),
                                                 Expanded(
@@ -267,10 +267,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                               context: context)
                                           .then((value) {
                                         if (value.status == true) {
+                                          controller.getData(
+                                            refresh:true
+                                          );
                                           Get.back();
                                         }
                                         showToast(value.message.toString());
-                                        controller.getData();
                                       });
                                     } else {
                                       showToast("Please select a image");
@@ -305,7 +307,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Obx(() {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: AddSize.padding14),
@@ -442,7 +444,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   alignment: Alignment.bottomCenter,
                   child: controller.profileImage.value.toString() == "" ||
                           controller.profileImage.value.toString() == "null"
-                      ? Container(
+                      ? SizedBox(
                       height: AddSize.size200 * .72,
                       width: AddSize.size200 * .72,
                       child: SvgPicture.asset("assets/images/user.svg"))
@@ -482,7 +484,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Country*",
                   style: TextStyle(
                       fontSize: 14,
@@ -496,12 +498,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   onTap: () {
                     FocusManager.instance.primaryFocus!.unfocus();
                     searchList1.clear();
-                    for (var item in countryList.countrylist!) {
+                    for (var item in countryList.countryListData!) {
                       searchList1.add(item.name.toString());
                     }
                     showModalBottomSheet<void>(
                       isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
@@ -517,21 +519,21 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                 alignment: Alignment.topRight,
                                 child: IconButton(
                                   onPressed: () => Navigator.pop(context),
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.clear,
                                     color: AppTheme.blackColor,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(10).copyWith(top: 0),
+                                padding: const EdgeInsets.all(10).copyWith(top: 0),
                                 child: TextFormField(
                                   onChanged: (value) {
                                     if (value != "") {
                                       searchList1.clear();
                                       // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                       for (var item
-                                          in countryList.countrylist!) {
+                                          in countryList.countryListData!) {
                                         if (item.name
                                             .toString()
                                             .toLowerCase()
@@ -542,7 +544,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                     } else {
                                       searchList1.clear();
                                       for (var item
-                                          in countryList.countrylist!) {
+                                          in countryList.countryListData!) {
                                         searchList1.add(item.name.toString());
                                       }
                                     }
@@ -553,7 +555,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                     fillColor:
                                         AppTheme.primaryColor.withOpacity(.05),
                                     hintText: "Select country",
-                                    prefixIcon: Icon(Icons.flag),
+                                    prefixIcon: const Icon(Icons.flag),
                                     hintStyle: const TextStyle(
                                         color: Color(0xff596681), fontSize: 15),
                                     contentPadding: const EdgeInsets.symmetric(
@@ -585,7 +587,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                               Obx(() {
                                 return Expanded(
                                   child: ListView.builder(
-                                      physics: BouncingScrollPhysics(),
+                                      physics: const BouncingScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: searchList1.length,
                                       itemBuilder: (context, index) {
@@ -603,12 +605,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                               Navigator.pop(context);
                                             },
                                             child: Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 30,
                                                     vertical: 10),
                                                 child: Text(
                                                   searchList1[index].toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w600),
@@ -626,7 +628,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   },
                   readOnly: true,
                   controller: controller.countryController,
-                  suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
+                  suffixIcon: const Icon(Icons.keyboard_arrow_down_outlined),
                   obSecure: false.obs,
                   hintText: "".obs,
                   keyboardType: TextInputType.text,
@@ -637,7 +639,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-                Text(
+                const Text(
                   "Street address* (won't show on profile)",
                   style: TextStyle(
                       fontSize: 14,
@@ -659,7 +661,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-                Text(
+                const Text(
                   "City*",
                   style: TextStyle(
                       fontSize: 14,
@@ -681,7 +683,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-                Text(
+                const Text(
                   "Zip/Postal code*",
                   style: TextStyle(
                       fontSize: 14,
@@ -720,7 +722,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 SizedBox(
                   height: AddSize.size15,
                 ),
-                Text(
+                const Text(
                   "Phone number*",
                   style: TextStyle(
                       fontSize: 14,

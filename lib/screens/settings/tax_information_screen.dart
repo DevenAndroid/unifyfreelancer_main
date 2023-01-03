@@ -66,7 +66,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
   ];
   Map<String, String> searchList = {};
 
-  List<Countrylist> countryList1 = [];
+//  List<countryListData> countryList1 = [];
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +180,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                       // searchList1.value = countryList1;
                                       searchList1.clear();
                                       for (var item
-                                          in countryList.countrylist!) {
+                                          in countryList.countryListData!) {
                                         searchList1.add(item.name.toString());
                                       }
                                       showModalBottomSheet<void>(
@@ -223,7 +223,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                         for (var item
                                                             in countryList
-                                                                .countrylist!) {
+                                                                .countryListData!) {
                                                           if (item.name
                                                               .toString()
                                                               .toLowerCase()
@@ -238,7 +238,7 @@ class _TaxInformationScreenState extends State<TaxInformationScreen> {
                                                         searchList1.clear();
                                                         for (var item
                                                             in countryList
-                                                                .countrylist!) {
+                                                                .countryListData!) {
                                                           searchList1.add(item
                                                               .name
                                                               .toString());

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -174,11 +175,11 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                               width: 5,
                             ),
                             Expanded(
-                              child:     TextFormField(
+                              child:  TextFormField(
                                 onTap: () {
                                   FocusManager.instance.primaryFocus!.unfocus();
                                   searchList1.clear();
-                                  for (var item in countryList.countrylist!) {
+                                  for (var item in countryList.countryListData!) {
                                     searchList1.add(item.name.toString());
                                   }
                                   showModalBottomSheet<void>(
@@ -216,7 +217,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                     searchList1.clear();
                                                     // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                     for (var item in countryList
-                                                        .countrylist!) {
+                                                        .countryListData!) {
                                                       if (item.name
                                                           .toString()
                                                           .toLowerCase()
@@ -229,7 +230,7 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                   } else {
                                                     searchList1.clear();
                                                     for (var item in countryList
-                                                        .countrylist!) {
+                                                        .countryListData!) {
                                                       searchList1.add(
                                                           item.name.toString());
                                                     }
@@ -294,8 +295,10 @@ class _AddEmploymentScreenState extends State<AddEmploymentScreen> {
                                                                   searchList1[index]
                                                                       .toString();
                                                             });
-                                                            print(countryController
+                                                            if (kDebugMode) {
+                                                              print(countryController
                                                                 .text);
+                                                            }
                                                             Navigator.pop(context);
                                                           },
                                                           child: Padding(

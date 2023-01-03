@@ -516,13 +516,12 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: controller
-                            .model.value.data!.all![index].buttonStatus.toString().capitalizeFirst!,
+                        title: controller.model.value.data!.all![index].buttonStatus.toString().capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.all![index].id.toString()]);
                         },
                       )
                     ],
@@ -785,7 +784,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.hourly![index].id.toString()]);
                         },
                       )
                     ],
@@ -1113,7 +1112,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.activeMilestone![index].id.toString()]);
                         },
                       )
                     ],
@@ -1441,7 +1440,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.awaitingMilestone![index].id.toString()]);
                         },
                       )
                     ],

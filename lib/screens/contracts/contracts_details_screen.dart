@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,15 @@ import 'package:unifyfreelancer/routers/my_router.dart';
 import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
+import '../../controller/single_contract_controller.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/button_for_milestone.dart';
 import '../../widgets/custom_appbar.dart';
+import '../../widgets/custom_text_field_for_timesheet.dart';
 import '../../widgets/custom_textfield.dart';
+import '../../widgets/error_widget.dart';
+import '../../widgets/progress_indicator.dart';
 
 class ContractsDetailsScreen extends StatefulWidget {
   const ContractsDetailsScreen({Key? key}) : super(key: key);
@@ -116,6 +121,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
     DaysDataFormat(mileStoneName: "Sunday",selected: false),*/
   ];
 
+  final controller = Get.put(SingleContractController());
+
   bool value = true;
   TabController? _tabController;
   RxString todoRadio = "".obs;
@@ -128,191 +135,245 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: CustomAppbar(
-          isLikeButton: false,
-          isProfileImage: false,
-          titleText: "Contract room",
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: CustomAppbar(
+            isLikeButton: false,
+            isProfileImage: false,
+            titleText: "Contract room",
+          ),
         ),
-      ),
-      body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            physics: const BouncingScrollPhysics(),
-            headerSliverBuilder: (_, __) {
-              return [
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    width: deviceWidth,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.whiteColor,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+        body: Obx(() {
+          return controller.status.value.isSuccess
+              ? DefaultTabController(
+                  length: controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly" ? 3 : 2,
+                  child: NestedScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    headerSliverBuilder: (_, __) {
+                      return [
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            width: deviceWidth,
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              color: AppTheme.whiteColor,
+                            ),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Stack(children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: const BoxDecoration(
-                                        color: AppTheme.primaryColor,
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                "https://images.unsplash.com/photo-1520635360276-79f3dbd809f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"))),
-                                  ),
-                                  Positioned(
-                                      right: 0,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            decoration: const BoxDecoration(
+                                              color: AppTheme.primaryColor,
+                                              shape: BoxShape.circle,
+                                              /*  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: NetworkImage(
+                                                        "https://images.unsplash.com/photo-1520635360276-79f3dbd809f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"))),*/
+                                            ),
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(1000),
+                                                child: controller
+                                                        .modelSingleContract
+                                                        .value
+                                                        .data!
+                                                        .client!
+                                                        .profileImage
+                                                        .toString()
+                                                        .isNotEmpty
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: controller
+                                                            .modelSingleContract
+                                                            .value
+                                                            .data!
+                                                            .client!
+                                                            .profileImage
+                                                            .toString(),
+                                                        errorWidget: (_, __,
+                                                                ___) =>
+                                                            SvgPicture.asset(
+                                                          "assets/images/user.svg",
+                                                        ),
+                                                        placeholder: (_, __) =>
+                                                            SvgPicture.asset(
+                                                          "assets/images/user.svg",
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : SvgPicture.asset(
+                                                        "assets/images/user.svg",
+                                                      )),
+                                          ),
+                                          Positioned(
+                                              right: 0,
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.circle,
+                                                  color: AppTheme.primaryColor,
+                                                  size: 15,
+                                                ),
+                                              ))
+                                        ]),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${controller.modelSingleContract.value.data!.client!.firstName.toString().capitalizeFirst} ${controller.modelSingleContract.value.data!.client!.lastName.toString().capitalizeFirst}",
+                                              style: TextStyle(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppTheme.textColor),
+                                            ),
+                                            Text(
+                                              "${controller.modelSingleContract.value.data!.client!.country.toString()} ${controller.modelSingleContract.value.data!.client!.localTime.toString()}",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  color: AppTheme.textColor),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () =>
+                                          Get.toNamed(MyRouter.chatScreen),
                                       child: Container(
-                                        decoration: const BoxDecoration(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppTheme.whiteColor,
+                                          border: Border.all(
+                                              color: AppTheme.primaryColor),
                                         ),
                                         child: const Icon(
-                                          Icons.circle,
+                                          Icons.message,
                                           color: AppTheme.primaryColor,
                                           size: 15,
                                         ),
-                                      ))
-                                ]),
-                                SizedBox(
-                                  width: 10.w,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Jolly Smith",
-                                      style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppTheme.textColor),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  controller.modelSingleContract.value.data!
+                                      .projectTitle
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                TabBar(
+                                  controller: _tabController,
+                                  labelColor: AppTheme.darkBlueText,
+                                  labelStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500),
+                                  unselectedLabelColor: const Color(0xff707070),
+                                  // indicatorColor: const Color(0xffFA61FF),
+                                  indicator: UnderlineTabIndicator(
+                                    borderSide: BorderSide(
+                                      width: 2.0.w,
+                                      color: AppTheme.pinkText,
                                     ),
-                                    Text(
-                                      "United States - Wed 8:10 AM",
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          color: AppTheme.textColor),
+                                  ),
+                                  automaticIndicatorColorAdjustment: true,
+                                  unselectedLabelStyle:
+                                      const TextStyle(color: Color(0xff707070)),
+                                  tabs: [
+                                    Tab(
+                                      child: Text(
+                                        "Overview",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                        "Timesheet",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                        "Details",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
-                            InkWell(
-                              onTap: () => Get.toNamed(MyRouter.chatScreen),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppTheme.whiteColor,
-                                  border:
-                                      Border.all(color: AppTheme.primaryColor),
-                                ),
-                                child: const Icon(
-                                  Icons.message,
-                                  color: AppTheme.primaryColor,
-                                  size: 15,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
-                          "UI/UX Design And Laravel Development.",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.darkBlueText),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TabBar(
-                          controller: _tabController,
-                          labelColor: AppTheme.darkBlueText,
-                          labelStyle:
-                              const TextStyle(fontWeight: FontWeight.w500),
-                          unselectedLabelColor: const Color(0xff707070),
-                          // indicatorColor: const Color(0xffFA61FF),
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(
-                              width: 2.0.w,
-                              color: AppTheme.pinkText,
-                            ),
                           ),
-                          automaticIndicatorColorAdjustment: true,
-                          unselectedLabelStyle:
-                              const TextStyle(color: Color(0xff707070)),
-                          tabs: [
-                            Tab(
-                              child: Text(
-                                "Overview",
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Text(
-                                "Timesheet",
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Text(
-                                "Details",
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                        )
+                      ];
+                    },
+                    body: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: AddSize.padding14),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: overview(),
+                          ),
+                          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: timesheet(),
+                          ),
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: details(),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ];
-            },
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AddSize.padding14),
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: overview(),
-                  ),
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: timesheet(),
-                  ),
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: details(),
-                  ),
-                ],
-              ),
-            ),
-          )),
-    );
+                  ))
+              : controller.status.value.isError
+                  ? CommonErrorWidget(
+                      errorText: controller.modelSingleContract.value.message
+                          .toString(),
+                      onTap: () {
+                        controller.getData();
+                      },
+                    )
+                  : const CommonProgressIndicator();
+        }));
   }
 
   overview() {
@@ -408,11 +469,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //     ),
             //   ],
             // )),*/
+          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
           milestones(),
+          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
           earnings(),
+          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
           toDo(),
+          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
           hoursThisWeek(),
-          recentFiles()
+
         ]);
   }
 
@@ -639,64 +704,40 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 9,
+            itemCount: 8,
             padding: const EdgeInsets.only(bottom: 20),
             itemBuilder: (context, index) {
               return Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: AppTheme.primaryColor.withOpacity(.100)))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppTheme.primaryColor.withOpacity(.100)))),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           "Mon 8/22",
                           style: TextStyle(
                               fontSize: 13, color: AppTheme.textColor),
                         ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Container(
-                            width: barWidth,
-                            height: 7,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: AppTheme.whiteColor,
+                        Center(
+                          child: SizedBox(
+                            width: AddSize.size100,
+                            child: CustomTextFieldForTimesheet(
+                              hintText: "00:00".obs, obSecure: false.obs,
                             ),
-                            padding: EdgeInsets.only(
-                                right: barWidth -
-                                    barWidth / 100 * int.parse("${index}0")),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: AppTheme.primaryColor,
-                              ),
-                            ))
+                          ),
+                        ),
+                        NewButton(title: "Add time",
+                            backgroundColor: AppTheme.primaryColor,
+                        onPressed: (){},
+                        textColor: AppTheme.whiteColor,)
+
+
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          "0:00 hrs",
-                          style: TextStyle(
-                              fontSize: 13, color: AppTheme.textColor),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: AppTheme.blackColor,
-                          size: 15,
-                        )
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               );
             })
@@ -728,7 +769,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
 
   recentFiles() {
     Size size = MediaQuery.of(context).size;
-    return Container(
+   /* return Container(
       // margin: const EdgeInsets.only(top: 15, bottom: 10),
       width: size.width,
       padding: const EdgeInsets.all(10),
@@ -867,7 +908,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               })
         ],
       ),
-    );
+    );*/
   }
 
   earnings() {
@@ -1437,8 +1478,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "Contract type",
                         style: TextStyle(
                             fontSize: 14,
@@ -1446,26 +1487,37 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             fontWeight: FontWeight.w500),
                       ),
                       SizedBox(
-                        height: 10,
+                        child: controller.modelSingleContract.value.data!.type
+                                    .toString() ==
+                                "hourly"
+                            ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Rate",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff878787),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Weekly limit",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff878787),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
                       ),
-                      Text(
-                        "Rate",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff878787),
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Weekly limit",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff878787),
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
+                      /* SizedBox(
                         height: 10,
                       ),
                       Text(
@@ -1474,11 +1526,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             fontSize: 14,
                             color: Color(0xff878787),
                             fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
+                      ),*/
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text(
+                      const Text(
                         "Start date",
                         style: TextStyle(
                             fontSize: 14,
@@ -1492,35 +1544,49 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        "Hourly",
-                        style: TextStyle(
+                        controller.modelSingleContract.value.data!.type
+                            .toString(),
+                        style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
                             fontWeight: FontWeight.w600),
                       ),
                       SizedBox(
-                        height: 10,
+                        child: controller.modelSingleContract.value.data!.type
+                                    .toString() ==
+                                "hourly"
+                            ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "\$${controller.modelSingleContract.value.data!.amount.toString()}/hr ",
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff1F1F1F),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    controller.modelSingleContract.value.data!
+                                        .weeklyLimit
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff1F1F1F),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
                       ),
-                      Text(
-                        "\$20.00/hr ",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff1F1F1F),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "25 hr/week ",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff1F1F1F),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
+                      /*SizedBox(
                         height: 10,
                       ),
                       Text(
@@ -1529,13 +1595,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
                             fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 10,
+                      ),*/
+                      const SizedBox(
+                        height: 11,
                       ),
                       Text(
-                        "Nov 22, 2022",
-                        style: TextStyle(
+                        dateFormat.format(DateTime.parse(controller
+                            .modelSingleContract.value.data!.startTime
+                            .toString())),
+                        style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
                             fontWeight: FontWeight.w600),
@@ -1586,20 +1654,21 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        "Ankit Kumawat",
-                        style: TextStyle(
+                        "${controller.modelSingleContract.value.data!.client!.firstName.toString().capitalizeFirst} ${controller.modelSingleContract.value.data!.client!.lastName.toString().capitalizeFirst}",
+                        style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
                             fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "30891767",
-                        style: TextStyle(
+                        controller.modelSingleContract.value.data!.id
+                            .toString(),
+                        style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
                             fontWeight: FontWeight.w600),
@@ -1627,9 +1696,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.",
-                style: TextStyle(
+              Text(
+                controller.modelSingleContract.value.data!.project!.description
+                    .toString(),
+                style: const TextStyle(
                     fontSize: 14,
                     color: Color(0xff6B6B6B),
                     fontWeight: FontWeight.w500),
@@ -1662,7 +1732,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 15,
               ),
-              Divider(
+              /* Divider(
                 color: const Color(0xff6D2EF1).withOpacity(.49),
               ),
               const SizedBox(
@@ -1708,7 +1778,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     fontSize: 14,
                     color: AppTheme.darkBlueText,
                     fontWeight: FontWeight.w600),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -1746,7 +1816,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
+              /*Row(
                 children: [
                   Icon(Icons.verified,
                       color: value == true
@@ -1909,6 +1979,201 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
                       Text(
                         "Member since Sep 16, 2022 ",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )*/
+              Row(
+                children: [
+                  Icon(Icons.verified,
+                      color: controller.modelSingleContract.value.data!.client!
+                                  .paymentVerified ==
+                              true
+                          ? AppTheme.primaryColor
+                          : Colors.grey.withOpacity(.49),
+                      size: 20),
+                  SizedBox(
+                    width: AddSize.size10,
+                  ),
+                  Text(
+                    controller.modelSingleContract.value.data!.client!
+                                .paymentVerified ==
+                            true
+                        ? "Payment method verified"
+                        : "Payment method not verified",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff4D4D4D),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size10,
+              ),
+              Row(
+                children: [
+                  Wrap(
+                    children: List.generate(
+                        5,
+                        (index) => double.parse(controller.modelSingleContract
+                                    .value.data!.client!.rating
+                                    .toString()) >
+                                index
+                            ? const Icon(
+                                Icons.star,
+                                color: AppTheme.pinkText,
+                                size: 20,
+                              )
+                            : const Icon(
+                                Icons.star_border_outlined,
+                                color: Colors.grey,
+                                size: 20,
+                              )),
+                  ),
+                  SizedBox(
+                    width: AddSize.size10,
+                  ),
+                  Text(
+                    "${double.parse(controller.modelSingleContract.value.data!.client!.rating.toString())} of ${double.parse(controller.modelSingleContract.value.data!.client!.numberOfReview.toString())} reviews",
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff170048)),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: AddSize.size10,
+              ),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        controller
+                            .modelSingleContract.value.data!.client!.country
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "${controller.modelSingleContract.value.data!.client!.city} ${controller.modelSingleContract.value.data!.client!.localTime}",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size10,
+                      ),
+                      Text(
+                        "${controller.modelSingleContract.value.data!.client!.jobPosted.toString()} jobs posted",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "${controller.modelSingleContract.value.data!.project!.hireRate.toString()}% hire rate, ${controller.modelSingleContract.value.data!.project!.openJobs.toString()} open job",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size10,
+                      ),
+                      Text(
+                        "\$${controller.modelSingleContract.value.data!.client!.moneySpent.toString()}+ total spent",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "${controller.modelSingleContract.value.data!.project!.totalHire.toString()} hires, ${controller.modelSingleContract.value.data!.project!.openJobs.toString()} active",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size10,
+                      ),
+                      Text(
+                        controller.modelSingleContract.value.data!.project!
+                            .projectDuration
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size5,
+                      ),
+                      Text(
+                        "Project Length",
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size15,
+                      ),
+                      Text(
+                        companySize(double.parse(controller.modelSingleContract
+                                        .value.data!.client!.employeeNo
+                                        .toString() ==
+                                    "null" ||
+                                controller.modelSingleContract.value.data!
+                                        .client!.employeeNo
+                                        .toString() ==
+                                    ""
+                            ? "0"
+                            : controller.modelSingleContract.value.data!.client!
+                                .employeeNo
+                                .toString())),
+                        style: TextStyle(
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff462D7A),
+                        ),
+                      ),
+                      SizedBox(
+                        height: AddSize.size15,
+                      ),
+                      Text(
+                        "Member since ${controller.modelSingleContract.value.data!.client!.memberSince.toString()}",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,

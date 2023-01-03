@@ -471,7 +471,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                               for (var item in controller
                                                   .countryList
                                                   .value
-                                                  .countrylist!) {
+                                                  .countryListData!) {
                                                 controller.searchList1
                                                     .add(item.name.toString());
                                               }
@@ -533,7 +533,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                     in controller
                                                                         .countryList
                                                                         .value
-                                                                        .countrylist!) {
+                                                                        .countryListData!) {
                                                                   if (item.name
                                                                       .toString()
                                                                       .toLowerCase()
@@ -555,7 +555,7 @@ class _ProfilePreviewState extends State<ProfilePreview> {
                                                                     in controller
                                                                         .countryList
                                                                         .value
-                                                                        .countrylist!) {
+                                                                        .countryListData!) {
                                                                   controller
                                                                       .searchList1
                                                                       .add(item
@@ -2988,22 +2988,23 @@ class _ProfilePreviewState extends State<ProfilePreview> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                 /* Text(
+                    controller.model.value.data!.education![index].areaStudy
+                        .toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: AppTheme.textColor,
+                        fontSize: AddSize.font14),
+                  ),*/
                   Expanded(
                     child: Text(
-                      controller.model.value.data!.education![index].areaStudy
-                          .toString(),
+                      "${controller.model.value.data!.education![index].areaStudy
+                          .toString()} ${controller.model.value.data!.education![index].startYear} - ${controller.model.value.data!.education![index].endYear}",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppTheme.textColor,
                           fontSize: AddSize.font14),
                     ),
-                  ),
-                  Text(
-                    " ${controller.model.value.data!.education![index].startYear} - ${controller.model.value.data!.education![index].endYear}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: AppTheme.textColor,
-                        fontSize: AddSize.font14),
                   ),
                 ],
               ),

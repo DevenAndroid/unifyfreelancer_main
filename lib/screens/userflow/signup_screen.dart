@@ -333,7 +333,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             onTap: () {
                               FocusManager.instance.primaryFocus!.unfocus();
                               searchList1.clear();
-                              for (var item in countryList.countrylist!) {
+                              for (var item in countryList.countryListData!) {
                                 searchList1.add(item.name.toString());
                               }
                               showModalBottomSheet<void>(
@@ -371,7 +371,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 searchList1.clear();
                                                 // searchList1.value = countryList.countrylist!.map((e) => e.name!.toLowerCase().contains(value.toLowerCase())).toList();
                                                 for (var item in countryList
-                                                    .countrylist!) {
+                                                    .countryListData!) {
                                                   if (item.name
                                                       .toString()
                                                       .toLowerCase()
@@ -384,7 +384,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               } else {
                                                 searchList1.clear();
                                                 for (var item in countryList
-                                                    .countrylist!) {
+                                                    .countryListData!) {
                                                   searchList1.add(
                                                       item.name.toString());
                                                 }

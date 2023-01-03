@@ -148,7 +148,7 @@ class SearchJobListController extends GetxController {
   void onInit() {
     super.onInit();
    searchController.text = Get.arguments[0];
-     firstRangeController.text = 3.00.toString();
+   //  firstRangeController.text = 3.00.toString();
     // secondRangeController.text = currentRangeValues.end.toString();
     getData();
     getDislikeReasons();

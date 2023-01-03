@@ -3,9 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
-import 'package:unifyfreelancer/utils/api_contant.dart';
 
 import '../models/model_category_list.dart';
 import '../models/model_countrylist.dart';
@@ -16,12 +14,10 @@ import '../repository/languages_list_repository.dart';
 import '../repository/profile_screen_repository.dart';
 
 class ProfileScreenController extends GetxController {
-
   // description length
   RxString descText = "".obs;
   RxBool descTextShowFlag = false.obs;
   RxInt textLength = 0.obs;
-
 
   RxString timeValue = "".obs;
 
@@ -30,7 +26,6 @@ class ProfileScreenController extends GetxController {
   Rx<RxStatus> serviceStatus = RxStatus.empty().obs;
 
   ModelLanguageList languages = ModelLanguageList();
-
 
   final PageController pageController = PageController();
   final TextEditingController titleController = TextEditingController();
@@ -60,31 +55,29 @@ class ProfileScreenController extends GetxController {
 
   Rx<ModelCategoryList> modelOfService = ModelCategoryList().obs;
 
-
   getDataOfService() {
     categoryListRepo().then((value) {
       modelOfService.value = value;
       if (value.status == true) {
-         serviceStatus.value = RxStatus.success();
+        serviceStatus.value = RxStatus.success();
 
         // for(var item in modelOfService.value.data!){
         //   if(item.name!.toLowerCase() == controller.model.value.data!.basicInfo!.category!.toLowerCase()){
         //     id.value = item.id!;
         //     controller.serviceController.text = item.name.toString();
         //   }
-        }
-
-      else {
+      } else {
         serviceStatus.value = RxStatus.error();
       }
     });
   }
 
-  nextPage(){
+  nextPage() {
     pageController.nextPage(
         duration: Duration(milliseconds: 800), curve: Curves.linear);
   }
-  previousPage(){
+
+  previousPage() {
     pageController.previousPage(
         duration: Duration(milliseconds: 800), curve: Curves.linear);
   }
@@ -96,9 +89,10 @@ class ProfileScreenController extends GetxController {
     getLanguageData();
     getDataOfService();
   }
-  getData() {
+
+  getData({bool? refresh = false}) {
     freelancerProfileRepo().then((value) async {
-      log("Profile Data......  "+jsonEncode(value));
+      log("Profile Data......  " + jsonEncode(value));
       model.value = value;
       if (value.status == true) {
         status.value = RxStatus.success();
@@ -107,45 +101,50 @@ class ProfileScreenController extends GetxController {
         textLength.value = descText.value.length;
 
         titleController.text = value.data!.basicInfo!.occuption.toString();
-        descriptionController.text = value.data!.basicInfo!.description.toString();
-        if(value.data!.basicInfo!.amount.toString() == "0.00"){
+        descriptionController.text =
+            value.data!.basicInfo!.description.toString();
+        if (value.data!.basicInfo!.amount.toString() == "0.00") {
           priceController.text = "3.00";
-        }
-        else{
+        } else {
           priceController.text = value.data!.basicInfo!.amount.toString();
         }
-        if(value.data!.education!.isNotEmpty){
+        if (value.data!.education!.isNotEmpty) {
           nothingToAddForEducation.value = true;
         }
-        if(value.data!.employment!.isNotEmpty){
+        if (value.data!.employment!.isNotEmpty) {
           nothingToAddForExperience.value = true;
         }
-        countryController.text = value.data!.basicInfo!.country.toString();
-        phoneController.text = value.data!.basicInfo!.phone.toString();
-        zipController .text = value.data!.basicInfo!.zipCode.toString();
-        addressController.text = value.data!.basicInfo!.address.toString();
-        cityController .text = value.data!.basicInfo!.city.toString();
+
+        if (refresh == false) {
+          countryController.text = value.data!.basicInfo!.country.toString();
+          phoneController.text = value.data!.basicInfo!.phone.toString();
+          zipController.text = value.data!.basicInfo!.zipCode.toString();
+          addressController.text = value.data!.basicInfo!.address.toString();
+          cityController.text = value.data!.basicInfo!.city.toString();
+        }
+
         profileImage.value = value.data!.basicInfo!.profileImage.toString();
-        designationController.text =  value.data!.basicInfo!.occuption.toString();
-        designationDescriptionController.text =  value.data!.basicInfo!.description.toString();
-        serviceController.text =  value.data!.basicInfo!.category.toString();
-        print("Profile ....."+ model.value.data!.basicInfo!.isProfileComplete.toString() );
-        print("Profile Subscription....."+ model.value.data!.basicInfo!.isSubscription.toString() );
-        if(model.value.data!.basicInfo!.isProfileComplete!)
-        {
-          if(model.value.data!.basicInfo!.isSubscription!){
-        //    Get.offNamed(MyRouter.bottomNavbar);
-          }
-          else{
+        designationController.text =
+            value.data!.basicInfo!.occuption.toString();
+        designationDescriptionController.text =
+            value.data!.basicInfo!.description.toString();
+        serviceController.text = value.data!.basicInfo!.category.toString();
+        print("Profile ....." +
+            model.value.data!.basicInfo!.isProfileComplete.toString());
+        print("Profile Subscription....." +
+            model.value.data!.basicInfo!.isSubscription.toString());
+        if (model.value.data!.basicInfo!.isProfileComplete!) {
+          if (model.value.data!.basicInfo!.isSubscription!) {
+            //    Get.offNamed(MyRouter.bottomNavbar);
+          } else {
             Get.offNamed(MyRouter.subscriptionScreen);
-        //    showToast("Please choose a subscription ");
+            //    showToast("Please choose a subscription ");
           }
         } else {
           Get.offNamed(MyRouter.questionsScreen);
-        //  showToast("Please create your profile");
+          //  showToast("Please create your profile");
         }
-      }
-      else{
+      } else {
         status.value = RxStatus.error();
       }
     });

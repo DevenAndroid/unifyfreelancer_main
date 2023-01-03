@@ -587,31 +587,60 @@ class _FilterScreenState extends State<FilterScreen> {
                                   ],
                                   obSecure: false.obs,
                                   keyboardType: TextInputType.number,
-                                  hintText: "3".obs,
-                                  /*validator: (value) {
-                                    if (double.parse(value.toString()) < 3.00) {
-                                      return "Start price must be 3 \$";
-                                    }
-                                    else {
-                                      return null;
-                                    }
-                                  },*/
-                                  validator: (value){
-                                    if(value!.isEmpty && value.toString().trim() != ""){
-                                      return "Please enter minimum price";
-                                    }
-                                    else if(double.parse(value.isEmpty ? "0" : value) < 3){
+                                  hintText: "3.00".obs,
+                                  validator:(value){
+                                    if(value!.isNotEmpty && double.parse(value!.isEmpty ? "0" : value.toString()) < 3) {
                                       return "Minimum price must be 3 \$";
                                     }
                                     else {
                                       return null;
                                     }
-                                  },
+                                  } ,
                                   onChanged: (value) {
                                     //  controller.currentRangeValues.start = double.parse(value.toString());
                                   },
                                 ),
                               ),
+                           /*   Expanded(
+                                child:  TextFormField(
+                                  controller: controller.firstRangeController,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    errorMaxLines: 2,
+                                    fillColor: AppTheme.whiteColor,
+                                    hintText: "3.00",
+                                    labelStyle: const TextStyle(color: Colors.black),
+                                    suffixIcon:  const Icon(Icons.keyboard_arrow_down),
+                                    hintStyle: const TextStyle(
+                                      color: Color(0xff596681),
+                                      fontSize: 15,
+                                    ),
+                                    contentPadding: const EdgeInsets.only(left: 10),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
+                                        borderRadius: BorderRadius.circular(8.0)),
+                                  ),
+                                  validator:(value){
+                                    if(value!.isNotEmpty && double.parse(value!.isEmpty ? "0" : value.toString()) < 3) {
+                                      return "Minimum price must be 3 \$";
+                                    }
+                                    else {
+                                      return null;
+                                    }
+                                  } ,
+                                ),
+                              ),*/
                               const SizedBox(
                                 width: 5,
                               ),
@@ -624,7 +653,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                   controller: controller.secondRangeController,
                                   obSecure: false.obs,
                                   keyboardType: TextInputType.number,
-                                  hintText: "9999".obs,
+                                  hintText: "10000.00".obs,
                                   /* validator: MultiValidator([
                                     RequiredValidator(
                                         errorText: 'Please start price')
@@ -770,6 +799,7 @@ class _FilterScreenState extends State<FilterScreen> {
                              // controller.currentRangeValues = const RangeValues(3.00, 10000.00);
                               controller.firstRangeController.text = 3.00.toString();
                               controller.secondRangeController.text = "";
+                              controller.firstRangeController.text = "".toString();
                             });
                           },
                           textColor: AppTheme.primaryColor,
