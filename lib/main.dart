@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: "/splash",
           getPages: MyRouter.route,
-
           theme: ThemeData(
               primarySwatch: primaryColorShades,
               fontFamily: 'Poppins',

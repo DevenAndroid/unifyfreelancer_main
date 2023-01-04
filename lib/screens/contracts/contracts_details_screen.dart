@@ -16,6 +16,7 @@ import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../controller/single_contract_controller.dart';
+import '../../repository/contracts/add_timesheet_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/button_for_milestone.dart';
@@ -35,6 +36,18 @@ class ContractsDetailsScreen extends StatefulWidget {
 class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   String? _startDateVPG, _endDateVPG;
   final dateFormat = DateFormat('dd-MMM-yyyy');
+
+  final DateRangePickerController _controller = DateRangePickerController();
+
+  List<ModelTimeSheet> timesheetData = <ModelTimeSheet>[
+    ModelTimeSheet(date: "Mon 1/3", time: "02:00", save: false),
+    ModelTimeSheet(date: "Mon 2/3", time: "03:00", save: false),
+    ModelTimeSheet(date: "Mon 3/3", time: "04:00", save: false),
+    ModelTimeSheet(date: "Mon 4/3", time: "03:00", save: false),
+    ModelTimeSheet(date: "Mon 5/3", time: "02:00", save: false),
+    ModelTimeSheet(date: "Mon 6/3", time: "05:00", save: false),
+    ModelTimeSheet(date: "Mon 7/3", time: "06:00", save: false),
+  ];
 
   Future<dynamic> showDatePickerDialogue(double deviceWidth) {
     return showDialog(
@@ -57,21 +70,89 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(color: AppTheme.whiteColor),
                     child: SfDateRangePicker(
+                      controller: _controller,
+                      view: DateRangePickerView.month,
+                      maxDate: DateTime.now()
+                          .add(Duration(days: DateTime.now().weekday)),
+                      selectionMode: DateRangePickerSelectionMode.range,
+                      onSelectionChanged: selectionChanged,
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
+                          enableSwipeSelection: false),
+                      showActionButtons: true,
+                      onSubmit: (Object? value) {
+                        Navigator.pop(context);
+                        for (int i = DateTime.parse(_startDateVPG!).day;
+                            i < DateTime.parse(_endDateVPG!).day;
+                            i++) {
+                          timesheetData.add(ModelTimeSheet(
+                              date: i.toString(),
+                              save: true,
+                              time: i.toString()));
+                          print(timesheetData);
+                        }
+                      },
+                      onCancel: () {
+                        Navigator.pop(context);
+                      },
+                    ), /*SfDateRangePicker(
+                      maxDate: DateTime.now().add(const Duration(days: 6)),
                       showActionButtons: true,
                       backgroundColor: AppTheme.whiteColor,
                       onSubmit: (Object? value) {
-                        Navigator.pop(context);
+                         Navigator.pop(context);
                       },
                       onCancel: () {
                         Navigator.pop(context);
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
                       onSelectionChanged: selectionChangedVPG,
-                    ),
+                    ),*/
                   )
                 ],
               ),
             ));
+  }
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    int firstDayOfWeek = DateTime.sunday % 7;
+    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
+    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    int day1 = date1.weekday % 7;
+    int day2 = date2.weekday % 7;
+
+    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
+    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
+
+    if (!isSameDate(dat1, ranges.startDate!) ||
+        !isSameDate(dat2, ranges.endDate!)) {
+      _controller.selectedRange = PickerDateRange(dat1, dat2);
+      print("Start:$dat1");
+      print("Start:$dat2");
+      setState(() {
+        _startDateVPG = dateFormat.format(DateTime.parse(dat1.toString()));
+        _endDateVPG = dateFormat.format(DateTime.parse(dat2.toString()));
+      });
+    }
+  }
+
+  bool isSameDate(DateTime date1, DateTime date2) {
+    if (date2 == date1) {
+      return true;
+    }
+    if (date1 == null || date2 == null) {
+      return false;
+    }
+    return date1.month == date2.month &&
+        date1.year == date2.year &&
+        date1.day == date2.day;
   }
 
   void selectionChangedVPG(DateRangePickerSelectionChangedArgs args) {
@@ -80,6 +161,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       _endDateVPG = dateFormat
           .format(args.value.endDate ?? args.value.startDate)
           .toString();
+      print("Start date :${_startDateVPG!}");
+      print("End date :${_endDateVPG!}");
     });
   }
 
@@ -130,6 +213,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   Rx<File> documentFile = File("").obs;
   RxString fileName = "".obs;
   RxBool isSwitched = false.obs;
+  int _index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _startDateVPG = dateFormat.format(DateTime.now().weekday.).toString();
+    // _endDateVPG = dateFormat.format(DateTime.now().add(const Duration(days: 6)));
+  }
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +240,12 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         body: Obx(() {
           return controller.status.value.isSuccess
               ? DefaultTabController(
-                  length: controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly" ? 3 : 2,
+                  length: controller.modelSingleContract.value.data!.type
+                              .toString()
+                              .toLowerCase() ==
+                          "hourly"
+                      ? 3
+                      : 2,
                   child: NestedScrollView(
                     physics: const BouncingScrollPhysics(),
                     headerSliverBuilder: (_, __) {
@@ -351,11 +450,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             physics: const BouncingScrollPhysics(),
                             child: overview(),
                           ),
-                          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
-                          SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: timesheet(),
-                          ),
+                          if (controller.modelSingleContract.value.data!.type
+                                  .toString()
+                                  .toLowerCase() ==
+                              "hourly")
+                            SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: timesheet(),
+                            ),
                           SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             child: details(),
@@ -469,279 +571,317 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //     ),
             //   ],
             // )),*/
-          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
-          milestones(),
-          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
-          earnings(),
-          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
-          toDo(),
-          if(controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
-          hoursThisWeek(),
-
+          /*   stepper(),*/
+          if (controller.modelSingleContract.value.data!.type
+                  .toString()
+                  .toLowerCase() ==
+              "fixed")
+            milestones(),
+          if (controller.modelSingleContract.value.data!.type
+                  .toString()
+                  .toLowerCase() ==
+              "fixed")
+            earnings(),
+          if (controller.modelSingleContract.value.data!.type
+                  .toString()
+                  .toLowerCase() ==
+              "hourly")
+            hoursThisWeek(),
+          if (controller.modelSingleContract.value.data!.type
+                  .toString()
+                  .toLowerCase() ==
+              "hourly")
+            toDo(),
         ]);
+  }
+
+  stepper() {
+    return Stepper(
+      type: StepperType.vertical,
+      currentStep: _index,
+      onStepCancel: () {
+        if (_index > 0) {
+          setState(() {
+            _index -= 1;
+          });
+        }
+      },
+      onStepContinue: () {
+        if (_index <= 0) {
+          setState(() {
+            _index += 1;
+          });
+        }
+      },
+      onStepTapped: (int index) {
+        setState(() {
+          _index = index;
+        });
+      },
+      steps: <Step>[
+        Step(
+          label: Icon(
+            Icons.add,
+            size: 44,
+          ),
+          isActive: true,
+          title: const Text('Step 1 title'),
+          subtitle: NewButton(
+              title: 'Paid',
+              backgroundColor: AppTheme.whiteColor,
+              textColor: AppTheme.primaryColor,
+              onPressed: () {}),
+          content: Container(
+              alignment: Alignment.centerLeft,
+              child: const Text('Content for Step 1')),
+        ),
+        const Step(
+          title: Text('Step 2 title'),
+          content: Text('Content for Step 2'),
+        ),
+      ],
+    );
   }
 
   timesheet() {
     var deviceWidth = MediaQuery.of(context).size.width;
     double barWidth = deviceWidth - deviceWidth * .55;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            width: deviceWidth,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppTheme.whiteColor,
-              border: Border.all(color: AppTheme.primaryColor.withOpacity(.29)),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              width: deviceWidth,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppTheme.whiteColor,
+                border:
+                    Border.all(color: AppTheme.primaryColor.withOpacity(.29)),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5),
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    const Text(
-                      "Last 24 hours",
-                      style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    const Text(
-                      "1:10 hrs",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.darkBlueText,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                  child: VerticalDivider(
-                    thickness: 1,
-                    color: AppTheme.primaryColor.withOpacity(.100),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        "Last 24 hours",
+                        style:
+                            TextStyle(fontSize: 12, color: AppTheme.pinkText),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      const Text(
+                        "1:10 hrs",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.darkBlueText,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
-                ),
-                Column(
-                  children: [
-                    const Text(
-                      "This Week",
-                      style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
+                  SizedBox(
+                    height: 40,
+                    child: VerticalDivider(
+                      thickness: 1,
+                      color: AppTheme.primaryColor.withOpacity(.100),
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    const Text(
-                      "6:20 hrs",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.darkBlueText,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                  child: VerticalDivider(
-                    thickness: 1,
-                    color: AppTheme.primaryColor.withOpacity(.100),
                   ),
-                ),
-                Column(
-                  children: [
-                    const Text(
-                      "Last Week",
-                      style: TextStyle(fontSize: 12, color: AppTheme.pinkText),
+                  Column(
+                    children: [
+                      const Text(
+                        "This Week",
+                        style:
+                            TextStyle(fontSize: 12, color: AppTheme.pinkText),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      const Text(
+                        "6:20 hrs",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.darkBlueText,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: VerticalDivider(
+                      thickness: 1,
+                      color: AppTheme.primaryColor.withOpacity(.100),
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    const Text(
-                      "7:55 hrs",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.darkBlueText,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ],
-            )),
-        /* const Text(
-          "Hours this week",
-          style: TextStyle(
-              fontSize: 16,
-              color: AppTheme.textColor,
-              fontWeight: FontWeight.w600),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        Container(
-            width: deviceWidth,
-            height: 7,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: AppTheme.pinkText.withOpacity(.29),
-            ),
-            padding:
-                EdgeInsets.only(right: deviceWidth - deviceWidth / 100 * 51),
-            child: Container(
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        "Last Week",
+                        style:
+                            TextStyle(fontSize: 12, color: AppTheme.pinkText),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      const Text(
+                        "7:55 hrs",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.darkBlueText,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+          /* const Text(
+            "Hours this week",
+            style: TextStyle(
+                fontSize: 16,
+                color: AppTheme.textColor,
+                fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Container(
+              width: deviceWidth,
+              height: 7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: AppTheme.primaryColor,
+                color: AppTheme.pinkText.withOpacity(.29),
               ),
-            )),
-        SizedBox(
-          height: 10.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              "6:50 hrs",
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textColor),
-            ),
-            Text(
-              "20 hrs limit",
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textColor),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          "you will get paid for these hours on Monday (unifybilling timezon)",
-          style: TextStyle(fontSize: 12, color: AppTheme.textColor),
-        ),*/
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          "Work Diary",
-          style: TextStyle(
-              fontSize: 16,
-              color: AppTheme.textColor,
-              fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          child: InkWell(
-            onTap: () {
-              showDatePickerDialogue(deviceWidth);
-            },
-            child: Container(
-              decoration: BoxDecoration(color: AppTheme.whiteColor, boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: const Offset(0, 1))
-              ]),
-              child: TextFormField(
-                  enabled: false,
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                      ),
-                      hintText: '$_startDateVPG To $_endDateVPG',
-                      focusColor: const Color(0xffE8E7E7),
-                      hintStyle: const TextStyle(
-                          fontSize: 14, color: AppTheme.textColor),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                      ),
-                      suffixIcon: const Icon(
-                        Icons.calendar_month_outlined,
-                        color: AppTheme.primaryColor,
-                        size: 20,
-                      ))),
+              padding:
+                  EdgeInsets.only(right: deviceWidth - deviceWidth / 100 * 51),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: AppTheme.primaryColor,
+                ),
+              )),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                "6:50 hrs",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+              Text(
+                "20 hrs limit",
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textColor),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "you will get paid for these hours on Monday (unifybilling timezon)",
+            style: TextStyle(fontSize: 12, color: AppTheme.textColor),
+          ),*/
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "Work Diary",
+            style: TextStyle(
+                fontSize: 16,
+                color: AppTheme.textColor,
+                fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: InkWell(
+              onTap: () {
+                showDatePickerDialogue(deviceWidth);
+              },
+              child: Container(
+                decoration:
+                    BoxDecoration(color: AppTheme.whiteColor, boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(0, 1))
+                ]),
+                child: TextFormField(
+                    enabled: false,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                              const BorderSide(color: AppTheme.whiteColor),
+                        ),
+                        hintText: '$_startDateVPG To $_endDateVPG',
+                        focusColor: const Color(0xffE8E7E7),
+                        hintStyle: const TextStyle(
+                            fontSize: 14, color: AppTheme.textColor),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                              const BorderSide(color: AppTheme.whiteColor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                              const BorderSide(color: AppTheme.whiteColor),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                              const BorderSide(color: AppTheme.whiteColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide:
+                              const BorderSide(color: AppTheme.whiteColor),
+                        ),
+                        suffixIcon: const Icon(
+                          Icons.calendar_month_outlined,
+                          color: AppTheme.primaryColor,
+                          size: 20,
+                        ))),
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 10.h,
-        ),
-        ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 8,
-            padding: const EdgeInsets.only(bottom: 20),
-            itemBuilder: (context, index) {
-              return Container(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppTheme.primaryColor.withOpacity(.100)))),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Mon 8/22",
-                          style: TextStyle(
-                              fontSize: 13, color: AppTheme.textColor),
-                        ),
-                        Center(
-                          child: SizedBox(
-                            width: AddSize.size100,
-                            child: CustomTextFieldForTimesheet(
-                              hintText: "00:00".obs, obSecure: false.obs,
-                            ),
-                          ),
-                        ),
-                        NewButton(title: "Add time",
-                            backgroundColor: AppTheme.primaryColor,
-                        onPressed: (){},
-                        textColor: AppTheme.whiteColor,)
-
-
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            })
-      ],
+          SizedBox(
+            height: 10.h,
+          ),
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: timesheetData.length,
+              padding: const EdgeInsets.only(bottom: 20),
+              itemBuilder: (context, index) {
+                return timeContainer(
+                  index,
+                );
+              })
+        ],
+      ),
     );
   }
 
@@ -769,7 +909,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
 
   recentFiles() {
     Size size = MediaQuery.of(context).size;
-   /* return Container(
+    /* return Container(
       // margin: const EdgeInsets.only(top: 15, bottom: 10),
       width: size.width,
       padding: const EdgeInsets.all(10),
@@ -1403,7 +1543,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
           const SizedBox(
             height: 10,
           ),
-          CustomOutlineButton(
+          /* CustomOutlineButton(
             title: "Add Time Manually",
             backgroundColor: AppTheme.primaryColor,
             onPressed: () {
@@ -1430,7 +1570,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     fontWeight: FontWeight.w600),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
@@ -1491,7 +1631,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     .toString() ==
                                 "hourly"
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
                                   SizedBox(
                                     height: 10,
@@ -1558,7 +1698,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     .toString() ==
                                 "hourly"
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(
                                     height: 10,
@@ -3414,7 +3554,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         });
   }
 
-  showDialogForAddTimeManually() {
+/*  showDialogForAddTimeManually() {
     showDialog(
         context: context,
         builder: (context) {
@@ -3460,9 +3600,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "Thu, Dec 29, 2022".obs,
-                          /*validator: MultiValidator([
+
+                         validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
+
                         ),
                         const SizedBox(
                           height: 10,
@@ -3484,9 +3626,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "UTC".obs,
-                          /*validator: MultiValidator([
+                            validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
+
                         ),
                         const SizedBox(
                           height: 10,
@@ -3508,9 +3651,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "Start Time".obs,
-                          /*validator: MultiValidator([
+
+                         validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
+
                         ),
                         const SizedBox(
                           height: 10,
@@ -3532,9 +3677,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "End Time".obs,
-                          /*validator: MultiValidator([
+                           validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
+
                         ),
                         const SizedBox(
                           height: 10,
@@ -3554,9 +3700,11 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
-                          /*validator: MultiValidator([
+
+                          validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
+
                         ),
                         RichText(
                             text: const TextSpan(
@@ -3614,7 +3762,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 ),
               ));
         });
-  }
+  }*/
 
   String companySize(double numberOfEmp) {
     if (numberOfEmp <= 10) {
@@ -3627,6 +3775,99 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
       return "Company size (1000+ people)";
     }
   }
+
+  timeContainer(int index) {
+    final TextEditingController timeController = TextEditingController();
+    timeController.text = timesheetData[index].time.toString();
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+          border: Border(
+              bottom:
+                  BorderSide(color: AppTheme.primaryColor.withOpacity(.100)))),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                timesheetData[index].date.toString(),
+                style: const TextStyle(fontSize: 13, color: AppTheme.textColor),
+              ),
+              SizedBox(
+                width: AddSize.size100,
+                child: timesheetData[index].save == true
+                    ? CustomTextFieldForTimesheet(
+                        controller: timeController,
+                        hintText: "00:00".obs,
+                        obSecure: false.obs,
+                        validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter time'),
+                        ]),
+                      )
+                    : Text(
+                        timesheetData[index].time.toString(),
+                        style: const TextStyle(
+                            fontSize: 13, color: AppTheme.textColor),
+                      ),
+              ),
+              if (timesheetData[index].save == false)
+                NewButton(
+                  title: "Add time",
+                  backgroundColor: AppTheme.primaryColor,
+                  onPressed: () {
+                    setState(() {
+                      timesheetData[index].save = !timesheetData[index].save!;
+                    });
+                  },
+                  textColor: AppTheme.whiteColor,
+                ),
+              if (timesheetData[index].save == true)
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        setState(() {
+                          timesheetData[index].save = !timesheetData[index].save!;
+                        });
+
+                      },child: const Icon(Icons.clear)),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: NewButton(
+                        title: "Save",
+                        backgroundColor: AppTheme.primaryColor,
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            addTimesheetRepo(
+                              contract_id: controller
+                                  .modelSingleContract.value.data!.id
+                                  .toString(),
+                              hours: timesheetData[index].time.toString(),
+                              date: timesheetData[index].date.toString(),
+                              context: context,
+                            ).then((value) {
+                              if (value.status == true) {
+                                setState(() {
+                                  timesheetData[index].save = !timesheetData[index].save!;
+                                });
+                              }
+                              showToast(value.message.toString());
+                            });
+                          }
+                        },
+                        textColor: AppTheme.whiteColor,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class DaysDataFormat {
@@ -3634,4 +3875,12 @@ class DaysDataFormat {
   bool? selected;
 
   DaysDataFormat({this.mileStoneName, this.selected = false});
+}
+
+class ModelTimeSheet {
+  String? date;
+  String? time;
+  bool? save;
+
+  ModelTimeSheet({this.date, this.time, this.save});
 }

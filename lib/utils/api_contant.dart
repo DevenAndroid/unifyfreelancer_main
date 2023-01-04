@@ -76,6 +76,7 @@ class ApiUrls {
   static const String setVisibility = "${apiBaseUrl}set-visibility";
   static const String editExperienceLevel = "${apiBaseUrl}edit-experience-level";
   static const String singleContract = "${apiBaseUrl}single-contract/";
+  static const String addTimesheet = "${apiBaseUrl}add-timesheet";
 
 
 }

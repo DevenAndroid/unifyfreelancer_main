@@ -423,8 +423,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      if (controller
-                              .model.value.data!.all![index].project!.budgetType
+                      if (controller.model.value.data!.all![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -479,8 +478,7 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             ),
                           ],
                         ),
-                      if (controller
-                              .model.value.data!.all![index].project!.budgetType
+                      if (controller.model.value.data!.all![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -516,12 +514,19 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         height: deviceHeight * .025,
                       ),
                       CustomOutlineButton(
-                        title: controller.model.value.data!.all![index].buttonStatus.toString().capitalizeFirst!,
+                        title: controller
+                            .model.value.data!.all![index].buttonStatus
+                            .toString()
+                            .capitalizeFirst!,
                         backgroundColor: AppTheme.primaryColor,
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.all![index].id.toString()]);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,
+                              arguments: [
+                                controller.model.value.data!.all![index].id
+                                    .toString()
+                              ]);
                         },
                       )
                     ],
@@ -784,7 +789,11 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.hourly![index].id.toString()]);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,
+                              arguments: [
+                                controller.model.value.data!.hourly![index].id
+                                    .toString()
+                              ]);
                         },
                       )
                     ],
@@ -1010,8 +1019,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      if (controller.model.value.data!.activeMilestone![index]
-                              .project!.budgetType
+                      if (controller
+                              .model.value.data!.activeMilestone![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -1066,8 +1075,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             ),
                           ],
                         ),
-                      if (controller.model.value.data!.activeMilestone![index]
-                              .project!.budgetType
+                      if (controller
+                              .model.value.data!.activeMilestone![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -1112,7 +1121,12 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.activeMilestone![index].id.toString()]);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,
+                              arguments: [
+                                controller.model.value.data!
+                                    .activeMilestone![index].id
+                                    .toString()
+                              ]);
                         },
                       )
                     ],
@@ -1338,8 +1352,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      if (controller.model.value.data!.awaitingMilestone![index]
-                              .project!.budgetType
+                      if (controller
+                              .model.value.data!.awaitingMilestone![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -1394,8 +1408,8 @@ class _ContractsScreenState extends State<ContractsScreen> {
                             ),
                           ],
                         ),
-                      if (controller.model.value.data!.awaitingMilestone![index]
-                              .project!.budgetType
+                      if (controller
+                              .model.value.data!.awaitingMilestone![index].type
                               .toString()
                               .toLowerCase() ==
                           "fixed")
@@ -1440,7 +1454,12 @@ class _ContractsScreenState extends State<ContractsScreen> {
                         textColor: AppTheme.whiteColor,
                         expandedValue: true,
                         onPressed: () {
-                          Get.toNamed(MyRouter.contractsDetailsScreen,arguments: [controller.model.value.data!.awaitingMilestone![index].id.toString()]);
+                          Get.toNamed(MyRouter.contractsDetailsScreen,
+                              arguments: [
+                                controller.model.value.data!
+                                    .awaitingMilestone![index].id
+                                    .toString()
+                              ]);
                         },
                       )
                     ],

@@ -34,8 +34,7 @@ class CustomOutlineButton extends StatelessWidget {
               fontWeight: FontWeight.bold,
             )),
         onPressed: onPressed,
-        child: expandedValue == true
-            ? SizedBox(
+        child: expandedValue == true ? SizedBox(
                 width: double.maxFinite,
                 child: Center(
                   child: Text(
