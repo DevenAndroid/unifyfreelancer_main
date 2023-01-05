@@ -77,6 +77,7 @@ class ApiUrls {
   static const String editExperienceLevel = "${apiBaseUrl}edit-experience-level";
   static const String singleContract = "${apiBaseUrl}single-contract/";
   static const String addTimesheet = "${apiBaseUrl}add-timesheet";
+  static const String contractTimesheet = "${apiBaseUrl}contract-timesheet";
 
 
 }

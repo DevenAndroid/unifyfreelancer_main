@@ -4,9 +4,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 
+import '../widgets/add_text.dart';
 import 'app_theme.dart';
 import '../widgets/circular_widget.dart';
 
@@ -37,6 +40,68 @@ class Helpers {
   String base64ToString(String credentials) {
     final Codec<String, String> base64ToString = utf8.fuse(base64);
     return base64ToString.decode(credentials);
+  }
+  static OverlayEntry overlayLoaderProgress(context,
+      {required RxString progress, required text}) {
+    OverlayEntry loader = OverlayEntry(builder: (context) {
+      final size = MediaQuery.of(context).size;
+      return Positioned(
+        height: size.height,
+        width: size.width,
+        top: 0,
+        left: 0,
+        child: Material(
+          color: AppTheme.primaryColor.withOpacity(0.02),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  elevation: 5,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AddSize.size40, vertical: AddSize.size40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CupertinoActivityIndicator(
+                          radius: AddSize.size30,
+                          color: AppTheme.primaryColor,
+                        ),
+                        SizedBox(
+                          height: AddSize.size16,
+                        ),
+                       /* Obx(() {
+                          return Center(
+                            child: AddText(
+                              text: "${progress.value}%",
+                              fontWeight: FontWeight.bold,
+                              fontSize: AddSize.font18,
+                              color: Colors.black,
+                            ),
+                          );
+                        }),*/
+                        SizedBox(
+                          height: AddSize.size16,
+                        ),
+                        AddText(
+                          text: text,
+                          fontSize: AddSize.font16,
+                          fontWeight: FontWeight.bold,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+    return loader;
   }
 
   static OverlayEntry overlayLoader(context) {

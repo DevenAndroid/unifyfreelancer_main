@@ -1,13 +1,20 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:unifyfreelancer/routers/my_router.dart';
 
 import '../../resources/app_theme.dart';
 import '../../widgets/custom_appbar.dart';
 import '../models/model_single_job.dart';
 import '../repository/job_module/job_details_repository.dart';
+import '../resources/helper.dart';
 import '../resources/size.dart';
 import '../widgets/common_outline_button.dart';
 
@@ -50,6 +57,47 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
   bool descTextShowFlag = false;
   int textLength = 0;
 
+  RxString progress = "0".obs;
+
+  Future<File?> writeToFile(ByteData data,String link) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = tempPath+"/"+link.split("/").last; // file_01.tmp is dump file, can be anything
+    return File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+  }
+
+  Future<void> fileDownloader({link, context, loadingText}) async {
+
+    OverlayEntry loader = Helpers.overlayLoaderProgress(context, progress: progress, text: "Downloading");
+    Overlay.of(context)!.insert(loader);
+    final request = MultipartRequest(
+      'Get',
+      Uri.parse(link),
+      onProgress: (int bytes, int total) {
+        print(bytes);
+        print(total);
+        print((bytes / total * 100).round().toString());
+        progress.value = (bytes / total * 100).round().toString();
+      },
+    );
+    final response1 = await request.send();
+    var response = await http.Response.fromStream(response1);
+    Helpers.hideLoader(loader);
+    final File? file = await writeToFile(response.bodyBytes.buffer.asByteData(),link);
+    // final request = MultipartRequest(
+    //   'Get',
+    //   Uri.parse(link),
+    //   onProgress: (int bytes, int total) {
+    //     print((bytes / total * 100).round().toString());
+    //     progress.value = (bytes / total * 100).round().toString();
+    //   },
+    // );
+    OpenFile.open(file!.path);
+    print(response.bodyBytes);
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -73,11 +121,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                         padding: const EdgeInsets.all(10),
                         child: Column(
                           children: [
-                            if(model.value.data!.isInvited == true)
+                            if (model.value.data!.isInvited == true)
                               isInvited(),
-
                             Container(
-                                margin: const EdgeInsets.only(bottom: 15, top: 10),
+                                margin:
+                                    const EdgeInsets.only(bottom: 15, top: 10),
                                 width: deviceWidth,
                                 padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
@@ -110,7 +158,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                             height: deviceWidth * .01,
                                           ),
                                           Text(
-                                            model.value.data!.name.toString().capitalizeFirst!,
+                                            model.value.data!.name
+                                                .toString()
+                                                .capitalizeFirst!,
                                             style: TextStyle(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
@@ -248,7 +298,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     "Project type",
                                                     style: TextStyle(
                                                         fontSize: 13.sp,
-                                                        fontWeight: FontWeight.w300,
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
@@ -257,10 +308,12 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   ),
                                                   Text(
                                                     model.value.data!.budgetType
-                                                        .toString().capitalizeFirst!,
+                                                        .toString()
+                                                        .capitalizeFirst!,
                                                     style: TextStyle(
                                                         fontSize: 14.sp,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: const Color(
                                                             0xff170048)),
                                                   ),
@@ -274,7 +327,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     "Project duration",
                                                     style: TextStyle(
                                                         fontSize: 13.sp,
-                                                        fontWeight: FontWeight.w300,
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
@@ -282,12 +336,13 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     height: 5,
                                                   ),
                                                   Text(
-                                                    model
-                                                        .value.data!.projectDuration
+                                                    model.value.data!
+                                                        .projectDuration
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontSize: 14.sp,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: const Color(
                                                             0xff170048)),
                                                   ),
@@ -310,7 +365,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     "Experience level",
                                                     style: TextStyle(
                                                         fontSize: 13.sp,
-                                                        fontWeight: FontWeight.w300,
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         color: const Color(
                                                             0xff6B6B6B)),
                                                   ),
@@ -318,12 +374,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     height: 5,
                                                   ),
                                                   Text(
-                                                    model
-                                                        .value.data!.experienceLevel
-                                                        .toString().capitalizeFirst!,
+                                                    model.value.data!
+                                                        .experienceLevel
+                                                        .toString()
+                                                        .capitalizeFirst!,
                                                     style: TextStyle(
                                                         fontSize: 14.sp,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         color: const Color(
                                                             0xff170048)),
                                                   ),
@@ -354,7 +412,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     SizedBox(
                                       height: deviceHeight * .01,
                                     ),
-                                    Text(model.value.data!.description.toString(),
+                                    Text(
+                                        model.value.data!.description
+                                            .toString(),
                                         style: TextStyle(
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w500,
@@ -381,7 +441,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                   color: AppTheme
                                                                       .primaryColor),
                                                             )
-                                                          : const Text("Show More",
+                                                          : const Text(
+                                                              "Show More",
                                                               style: TextStyle(
                                                                   color: AppTheme
                                                                       .primaryColor))
@@ -420,7 +481,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                       children: List.generate(
                                           model.value.data!.jobSkills!.length,
                                           (index) => Container(
-                                              margin: const EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(
+                                                  right: 4),
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                     backgroundColor:
@@ -431,14 +493,17 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     shape:
                                                         const RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius.all(
+                                                                BorderRadius
+                                                                    .all(
                                                       Radius.circular(30),
                                                     )),
-                                                    padding: const EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                       horizontal: 20,
                                                     ),
                                                     textStyle: const TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     )),
                                                 onPressed: () {},
                                                 child: Text(
@@ -446,12 +511,67 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                       .jobSkills![index].name
                                                       .toString(),
                                                   style: const TextStyle(
-                                                      color: AppTheme.primaryColor),
+                                                      color: AppTheme
+                                                          .primaryColor),
                                                 ),
                                               ))),
                                     ),
                                     SizedBox(
                                       height: deviceHeight * .005,
+                                    ),
+                                    const Divider(
+                                      color: Color(0xff6D2EF1),
+                                    ),
+                                    SizedBox(
+                                      height: deviceHeight * .002,
+                                    ),
+                                    Text(
+                                      "File",
+                                      style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: const Color(0xff170048)),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      child: model.value.data!.image
+                                              .toString()
+                                              .isEmpty
+                                          ? Text(
+                                              "No file",
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppTheme.textColor),
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                fileDownloader(context: context,link: model.value.data!.image
+                                                    .toString(),loadingText: "Downloading" );
+                                              },
+                                              child: Text(
+                                                model.value.data!.image
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        AppTheme.primaryColor),
+                                              ),
+                                            ),
+                                    ),
+
+                                    /*NewButton(
+                                      title: "Download File",
+                                      backgroundColor: AppTheme.primaryColor,
+                                      textColor: AppTheme.whiteColor,
+                                      onPressed: () {},
+                                    ),*/
+
+                                    SizedBox(
+                                      height: deviceHeight * .01,
                                     ),
                                     const Divider(
                                       color: Color(0xff6D2EF1),
@@ -483,7 +603,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -493,7 +614,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -503,7 +625,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -513,7 +636,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -523,7 +647,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w400,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -540,7 +665,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -550,7 +676,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -560,7 +687,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -570,7 +698,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                             SizedBox(
                                               height: deviceHeight * .002,
@@ -580,7 +709,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xff170048)),
+                                                  color:
+                                                      const Color(0xff170048)),
                                             ),
                                           ],
                                         )
@@ -608,8 +738,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   const ExpansionTileThemeData(
                                                       textColor:
                                                           AppTheme.primaryColor,
-                                                      iconColor:
-                                                          AppTheme.primaryColor))
+                                                      iconColor: AppTheme
+                                                          .primaryColor))
                                           .copyWith(
                                               dividerColor: Colors.transparent),
                                       child: ListTileTheme(
@@ -622,11 +752,15 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             children: List.generate(
-                                                model.value.data!
-                                                    .clientRecentHistory!.length,
+                                                model
+                                                    .value
+                                                    .data!
+                                                    .clientRecentHistory!
+                                                    .length,
                                                 (index) => Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
                                                           model
@@ -639,43 +773,39 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                           style: TextStyle(
                                                               fontSize: 14.sp,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               color: const Color(
                                                                   0xff170048)),
                                                         ),
                                                         SizedBox(
-                                                          height:
-                                                              deviceHeight * .01,
+                                                          height: deviceHeight *
+                                                              .01,
                                                         ),
                                                         Text.rich(
                                                           TextSpan(
                                                             children: [
                                                               WidgetSpan(
                                                                 child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .only(
-                                                                          bottom:
-                                                                              2.0,
-                                                                          right: 2,
-                                                                          left: 2),
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          2.0,
+                                                                      right: 2,
+                                                                      left: 2),
                                                                   child: Wrap(
                                                                     children: List.generate(
                                                                         5,
                                                                         (index) => 4 > index
                                                                             ? const Icon(
                                                                                 Icons.star,
-                                                                                color:
-                                                                                    AppTheme.primaryColor,
-                                                                                size:
-                                                                                    16,
+                                                                                color: AppTheme.primaryColor,
+                                                                                size: 16,
                                                                               )
                                                                             : const Icon(
                                                                                 Icons.star_border_outlined,
-                                                                                color:
-                                                                                    Colors.grey,
-                                                                                size:
-                                                                                    16,
+                                                                                color: Colors.grey,
+                                                                                size: 16,
                                                                               )),
                                                                   ),
                                                                 ),
@@ -716,13 +846,14 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                           style: TextStyle(
                                                               fontSize: 12.sp,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                               color: const Color(
                                                                   0xff170048)),
                                                         ),
                                                         SizedBox(
-                                                          height:
-                                                              deviceHeight * .01,
+                                                          height: deviceHeight *
+                                                              .01,
                                                         ),
                                                         Row(
                                                           mainAxisAlignment:
@@ -735,7 +866,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                             Text(
                                                               "\$${model.value.data!.clientRecentHistory![index].price.toString()}",
                                                               style: TextStyle(
-                                                                  fontSize: 14.sp,
+                                                                  fontSize:
+                                                                      14.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -747,7 +879,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                                   .budgetType
                                                                   .toString(),
                                                               style: TextStyle(
-                                                                  fontSize: 14.sp,
+                                                                  fontSize:
+                                                                      14.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -758,15 +891,16 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                           ],
                                                         ),
                                                         SizedBox(
-                                                          height:
-                                                              deviceHeight * .005,
+                                                          height: deviceHeight *
+                                                              .005,
                                                         ),
                                                         const Divider(
-                                                          color: Color(0xff6D2EF1),
+                                                          color:
+                                                              Color(0xff6D2EF1),
                                                         ),
                                                         SizedBox(
-                                                          height:
-                                                              deviceHeight * .01,
+                                                          height: deviceHeight *
+                                                              .01,
                                                         ),
                                                       ],
                                                     ))),
@@ -775,7 +909,9 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                     SizedBox(
                                       height: deviceHeight * .02,
                                     ),
-                                    if (model.value.data!.isProposalSend == false && model.value.data!.isInvited == false)
+                                    if (model.value.data!.isProposalSend ==
+                                            false &&
+                                        model.value.data!.isInvited == false)
                                       CustomOutlineButton(
                                         onPressed: () {
                                           /* if (_formKey.currentState!.validate() && imageFileToPick.path != "") {
@@ -803,17 +939,23 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                         } else {
                                           showToast("Please add a file");
                                         }*/
-                                          Get.toNamed(MyRouter.submitProposalScreen,
+                                          Get.toNamed(
+                                              MyRouter.submitProposalScreen,
                                               arguments: [
                                                 id,
-                                                model.value.data!.name.toString(),
-                                                model.value.data!.description.toString(),
-                                                model.value.data!.price.toString(),
-                                                model.value.data!.budgetType.toString(),
-                                           "fromJob",
-                                           "0",
-                                                model.value.data!.minPrice.toString(),
-                                           //     model.value.data!.clientData!.id,
+                                                model.value.data!.name
+                                                    .toString(),
+                                                model.value.data!.description
+                                                    .toString(),
+                                                model.value.data!.price
+                                                    .toString(),
+                                                model.value.data!.budgetType
+                                                    .toString(),
+                                                "fromJob",
+                                                "0",
+                                                model.value.data!.minPrice
+                                                    .toString(),
+                                                //     model.value.data!.clientData!.id,
                                               ]);
                                         },
                                         title: "Send Proposal",
@@ -821,7 +963,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                         expandedValue: true,
                                         backgroundColor: AppTheme.primaryColor,
                                       ),
-                                    if (model.value.data!.isProposalSend == true)
+                                    if (model.value.data!.isProposalSend ==
+                                        true)
                                       Row(
                                         children: [
                                           Expanded(
@@ -836,14 +979,17 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                     shape:
                                                         const RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius.all(
+                                                                BorderRadius
+                                                                    .all(
                                                       Radius.circular(30),
                                                     )),
-                                                    padding: const EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
                                                         horizontal: 25,
                                                         vertical: 15),
                                                     textStyle: const TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     )),
                                                 onPressed: () {},
                                                 child: Text(
@@ -851,7 +997,8 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 13.sp,
-                                                    color: AppTheme.primaryColor,
+                                                    color:
+                                                        AppTheme.primaryColor,
                                                   ),
                                                 )),
                                           ),
@@ -940,10 +1087,10 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
 
   isInvited() {
     return Container(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-         /* decoration: BoxDecoration(
+      padding: const EdgeInsets.all(10),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        /* decoration: BoxDecoration(
             color: AppTheme.whiteColor,
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
@@ -957,20 +1104,26 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               ),
             ],
           ),*/
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.lightbulb_outline,color: AppTheme.primaryColor,),
-              const SizedBox(
-                width: 10,
-              ),
-              Text("You are already invited for this job",  style: TextStyle(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(
+              Icons.lightbulb_outline,
+              color: AppTheme.primaryColor,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              "You are already invited for this job",
+              style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff170048)),),
-            ],
-          ),
+                  color: const Color(0xff170048)),
+            ),
+          ],
         ),
+      ),
     );
   }
 
@@ -1167,5 +1320,36 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
               ),
             ],
           );
+  }
+}
+
+class MultipartRequest extends http.MultipartRequest {
+  MultipartRequest(
+    String method,
+    Uri url, {
+    required this.onProgress,
+  }) : super(method, url);
+
+  final void Function(int bytes, int totalBytes) onProgress;
+
+  @override
+  http.ByteStream finalize() {
+    final byteStream = super.finalize();
+    if (onProgress == null) return byteStream;
+
+    final total = contentLength;
+    int bytes = 0;
+
+    final t = StreamTransformer.fromHandlers(
+      handleData: (List<int> data, EventSink<List<int>> sink) {
+        bytes += data.length;
+        onProgress(bytes, total);
+        if (total >= bytes) {
+          sink.add(data);
+        }
+      },
+    );
+    final stream = byteStream.transform(t);
+    return http.ByteStream(stream);
   }
 }

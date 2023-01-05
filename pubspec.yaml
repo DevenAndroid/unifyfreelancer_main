@@ -24,7 +24,8 @@ dependencies:
   form_field_validator: ^1.1.0
 #  flutter_rating_bar: ^4.0.1
   flutter_svg: ^1.1.6
-  file_picker: ^5.2.2
+  file_picker:
+  path_provider: ^2.0.11
 #  country_pickers:
 #  country_calling_code_picker: ^2.0.1
   http: ^0.13.5
@@ -46,6 +47,7 @@ dependencies:
   pin_code_fields:
   connectivity_plus: ^3.0.2
   internet_connection_checker: ^1.0.0+1
+  open_file: ^3.2.1
 
 dev_dependencies:
   flutter_test:

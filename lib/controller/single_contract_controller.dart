@@ -1,26 +1,50 @@
 import 'package:get/get.dart';
+import 'package:unifyfreelancer/utils/api_contant.dart';
 
+import '../models/contracts/model_for_timesheet.dart';
 import '../models/contracts/model_single_contract.dart';
 import '../repository/contracts/single_contract_repository.dart';
+import '../repository/contracts/timesheet_data_repository.dart';
 
-class SingleContractController extends GetxController{
+class SingleContractController extends GetxController {
   Rx<ModelSingleContract> modelSingleContract = ModelSingleContract().obs;
   Rx<RxStatus> status = RxStatus.empty().obs;
   String? id;
+  Rx<ModelTimesheet> modelTimesheet = ModelTimesheet().obs;
+  Rx<RxStatus> timesheetStatus = RxStatus.empty().obs;
+  RxString startDate = "".obs;
+  RxString endDate = "".obs;
 
-
-  getData(){
+  getData() {
     singleContract(id).then((value) {
       modelSingleContract.value = value;
-      if(value.status!){
+      if (value.status!) {
         status.value = RxStatus.success();
-      }
-      else{
+        getTimesheet();
+      } else {
         status.value = RxStatus.error();
       }
     });
   }
-@override
+
+  getTimesheet() {
+    contractTimesheetRepo(contract_id: modelSingleContract.value.data!.id.toString(),start_date: startDate.value,
+    end_date: endDate.value).then((value) {
+      print(value);
+      modelTimesheet.value = value;
+      if (value.status == true) {
+        timesheetStatus.value = RxStatus.success();
+      } else {
+        timesheetStatus.value = RxStatus.error();
+      }
+    //  showToast(value.message.toString());
+    });
+
+  }
+
+
+
+  @override
   void onInit() {
     super.onInit();
     id = Get.arguments[0];
