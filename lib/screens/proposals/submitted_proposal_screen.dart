@@ -272,7 +272,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) !=
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString().isEmpty ? "0" :model.value.data!.proposalData!.bidAmount.toString()) !=
               0)
             Text(
               "\$${model.value.data!.proposalData!.bidAmount.toString()}",
@@ -281,7 +281,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                   fontSize: AddSize.font16,
                   fontWeight: FontWeight.w600),
             ),
-          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) ==
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString().isEmpty ? "0" :model.value.data!.proposalData!.bidAmount.toString()) ==
               0)
             Text(
               "\$${milestonePrice}",
@@ -320,7 +320,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
           SizedBox(
             height: deviceHeight * .01,
           ),
-          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) !=
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString().isEmpty ? "0" : model.value.data!.proposalData!.bidAmount.toString()) !=
               0)
             Text(
               "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
@@ -329,7 +329,7 @@ class _SubmittedProposalScreenState extends State<SubmittedProposalScreen> {
                   fontSize: AddSize.font16,
                   fontWeight: FontWeight.w600),
             ),
-          if (int.parse(model.value.data!.proposalData!.bidAmount.toString()) ==
+          if (int.parse(model.value.data!.proposalData!.bidAmount.toString().isEmpty ? "0" :model.value.data!.proposalData!.bidAmount.toString()) ==
               0)
             Text(
               "\$${(milestonePrice - milestonePrice * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",

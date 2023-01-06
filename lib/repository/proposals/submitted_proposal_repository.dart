@@ -10,7 +10,7 @@ Future<ModelSubmittedProposal> submittedRepo(id,type) async {
   try {
     http.Response response = await http.get(Uri.parse(ApiUrls.singleProposalDetails+"${id}/${type}"),
         headers: await getAuthHeader() );
-    print(ApiUrls.singleProposalDetails+"${id}/submit");
+    print(ApiUrls.singleProposalDetails+"${id}/${type}");
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));

@@ -78,6 +78,7 @@ class ApiUrls {
   static const String singleContract = "${apiBaseUrl}single-contract/";
   static const String addTimesheet = "${apiBaseUrl}add-timesheet";
   static const String contractTimesheet = "${apiBaseUrl}contract-timesheet";
+  static const String freelancerAddMilestone = "${apiBaseUrl}freelancer-add-milestone";
 
 
 }

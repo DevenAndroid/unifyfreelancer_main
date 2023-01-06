@@ -525,7 +525,13 @@ class _ActiveProposalScreenState extends State<ActiveProposalScreen> {
                 textColor: AppTheme.primaryColor,
                 iconColor: AppTheme.primaryColor))
             .copyWith(dividerColor: Colors.transparent),
-        child: ListTileTheme(
+        child: model.value.data!.clientData == null ? Text(
+          "Client data not available",
+          style: TextStyle(
+              color: Color(0xff4D4D4D),
+              fontSize: AddSize.font20,
+              fontWeight: FontWeight.w600),
+        ) : ListTileTheme(
           contentPadding: EdgeInsets.zero,
           child: ExpansionTile(
               expandedAlignment: Alignment.topLeft,

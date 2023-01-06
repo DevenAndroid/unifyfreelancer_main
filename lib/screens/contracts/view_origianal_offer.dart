@@ -1,12 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
+import '../../models/proposals/model_offer_proposal.dart';
+import '../../repository/proposals/offer_repository.dart';
 import '../../resources/app_theme.dart';
+import '../../utils/api_contant.dart';
 import '../../widgets/custom_appbar.dart';
 
-class ViewOriginalOffer extends StatelessWidget {
+class ViewOriginalOffer extends StatefulWidget {
   const ViewOriginalOffer({Key? key}) : super(key: key);
+
+  @override
+  State<ViewOriginalOffer> createState() => _ViewOriginalOfferState();
+}
+
+class _ViewOriginalOfferState extends State<ViewOriginalOffer> {
+  String? id;
+
+  Rx<ModelOffer> model = ModelOffer().obs;
+  Rx<RxStatus> status = RxStatus.empty().obs;
+
+  @override
+  void initState() {
+    super.initState();
+    id = Get.arguments[0];
+    getData();
+  }
+
+  void getData() {
+    offerRepo(id).then((value) {
+      model.value = value;
+      if (value.status == true) {
+        status.value = RxStatus.success();
+      } else {
+        showToast(value.message.toString());
+        status.value = RxStatus.error();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

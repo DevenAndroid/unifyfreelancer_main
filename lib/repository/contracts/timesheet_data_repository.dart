@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -19,6 +20,8 @@ Future<ModelTimesheet> contractTimesheetRepo({required contract_id, start_date, 
   try {
 
     http.Response response = await http.post(Uri.parse(ApiUrls.contractTimesheet), headers: await getAuthHeader(), body: jsonEncode(map));
+   log(response.body);
+
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
       return ModelTimesheet.fromJson(jsonDecode(response.body));

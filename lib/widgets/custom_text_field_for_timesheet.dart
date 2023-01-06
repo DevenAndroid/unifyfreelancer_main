@@ -80,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextFieldForTimesheet> {
           decoration: InputDecoration(
             counter: const Offstage(),
             filled: true,
-            errorMaxLines: 2,
+            errorMaxLines: 10,
             enabled: widget.enabled,
             fillColor: AppTheme.whiteColor,
             hintText: widget.hintText.value,
@@ -96,7 +96,7 @@ class _CustomTextFieldState extends State<CustomTextFieldForTimesheet> {
             /*errorStyle: const TextStyle(
               overflow: TextOverflow.clip,
             ),*/
-            contentPadding: const EdgeInsets.only(left: 5,top: 2),
+            contentPadding: const EdgeInsets.all(0),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppTheme.primaryColor.withOpacity(.15), width: 1.0),
               borderRadius: BorderRadius.circular(8),

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -16,6 +17,7 @@ import 'package:unifyfreelancer/widgets/add_text.dart';
 import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 
 import '../../controller/single_contract_controller.dart';
+import '../../repository/contracts/add_milestone_repository.dart';
 import '../../repository/contracts/add_timesheet_repository.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
@@ -55,8 +57,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   Future<dynamic> showDatePickerDialogue(double deviceWidth) {
     return showDialog(
         context: context,
-        builder: (ctx) =>
-            Dialog(
+        builder: (ctx) => Dialog(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -66,20 +67,18 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       color: AppTheme.primaryColor,
                       child: const Center(
                           child: Text(
-                            "Date Range",
-                            style:
+                        "Date Range",
+                        style:
                             TextStyle(fontSize: 18, color: AppTheme.whiteColor),
-                          ))),
+                      ))),
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(color: AppTheme.whiteColor),
                     child: SfDateRangePicker(
                       controller: _controller,
                       view: DateRangePickerView.month,
-                      maxDate: DateTime.now().add(Duration(days: 6 - DateTime.now().weekday)),
+                      maxDate: DateTime.now()
+                          .add(Duration(days: 6 - DateTime.now().weekday)),
                       selectionMode: DateRangePickerSelectionMode.range,
                       onSelectionChanged: selectionChanged,
                       monthViewSettings: const DateRangePickerMonthViewSettings(
@@ -194,7 +193,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   List<DaysDataFormat> daysData = [
     DaysDataFormat(
       mileStoneName:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+          "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
       selected: false,
     ),
     DaysDataFormat(
@@ -218,13 +217,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   RxBool isSwitched = false.obs;
   int _index = 0;
 
-/*  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
-    return dateTime.subtract(Duration(days: dateTime.weekday));
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(
+        Duration(days: dateTime.weekday) /*).add(const Duration(days: 1)*/);
   }
+
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
     return dateTime
-        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday-1));
-  }*/
+        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday - 1));
+  }
 
   @override
   void initState() {
@@ -232,16 +233,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
     super.initState();
     //  _startDateVPG = dateFormat.format(findFirstDateOfTheWeek(DateTime.now()));
     //  _endDateVPG = dateFormat.format(findLastDateOfTheWeek(DateTime.now()));
+    print(findFirstDateOfTheWeek(DateTime.now()));
   }
 
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    var deviceWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
@@ -254,258 +253,244 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         body: Obx(() {
           return controller.status.value.isSuccess
               ? DefaultTabController(
-              length: controller.modelSingleContract.value.data!.type
-                  .toString()
-                  .toLowerCase() ==
-                  "hourly"
-                  ? 3
-                  : 2,
-              child: NestedScrollView(
-                physics: const BouncingScrollPhysics(),
-                headerSliverBuilder: (_, __) {
-                  return [
-                    SliverToBoxAdapter(
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        width: deviceWidth,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: AppTheme.whiteColor,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                  length: controller.modelSingleContract.value.data!.type
+                              .toString()
+                              .toLowerCase() ==
+                          "hourly"
+                      ? 3
+                      : 2,
+                  child: NestedScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    headerSliverBuilder: (_, __) {
+                      return [
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            width: deviceWidth,
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              color: AppTheme.whiteColor,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Stack(children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: const BoxDecoration(
-                                          color: AppTheme.primaryColor,
-                                          shape: BoxShape.circle,
-                                          /*  image: DecorationImage(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(children: [
+                                          Container(
+                                            height: 50,
+                                            width: 50,
+                                            decoration: const BoxDecoration(
+                                              color: AppTheme.primaryColor,
+                                              shape: BoxShape.circle,
+                                              /*  image: DecorationImage(
                                                     fit: BoxFit.cover,
                                                     image: NetworkImage(
                                                         "https://images.unsplash.com/photo-1520635360276-79f3dbd809f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"))),*/
-                                        ),
-                                        child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(1000),
-                                            child: controller
-                                                .modelSingleContract
-                                                .value
-                                                .data!
-                                                .client!
-                                                .profileImage
-                                                .toString()
-                                                .isNotEmpty
-                                                ? CachedNetworkImage(
-                                              imageUrl: controller
-                                                  .modelSingleContract
-                                                  .value
-                                                  .data!
-                                                  .client!
-                                                  .profileImage
-                                                  .toString(),
-                                              errorWidget: (_, __,
-                                                  ___) =>
-                                                  SvgPicture.asset(
-                                                    "assets/images/user.svg",
-                                                  ),
-                                              placeholder: (_, __) =>
-                                                  SvgPicture.asset(
-                                                    "assets/images/user.svg",
-                                                  ),
-                                              fit: BoxFit.cover,
-                                            )
-                                                : SvgPicture.asset(
-                                              "assets/images/user.svg",
-                                            )),
-                                      ),
-                                      Positioned(
-                                          right: 0,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppTheme.whiteColor,
                                             ),
-                                            child: const Icon(
-                                              Icons.circle,
-                                              color: AppTheme.primaryColor,
-                                              size: 15,
+                                            child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(1000),
+                                                child: controller
+                                                        .modelSingleContract
+                                                        .value
+                                                        .data!
+                                                        .client!
+                                                        .profileImage
+                                                        .toString()
+                                                        .isNotEmpty
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: controller
+                                                            .modelSingleContract
+                                                            .value
+                                                            .data!
+                                                            .client!
+                                                            .profileImage
+                                                            .toString(),
+                                                        errorWidget: (_, __,
+                                                                ___) =>
+                                                            SvgPicture.asset(
+                                                          "assets/images/user.svg",
+                                                        ),
+                                                        placeholder: (_, __) =>
+                                                            SvgPicture.asset(
+                                                          "assets/images/user.svg",
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : SvgPicture.asset(
+                                                        "assets/images/user.svg",
+                                                      )),
+                                          ),
+                                          Positioned(
+                                              right: 0,
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppTheme.whiteColor,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.circle,
+                                                  color: AppTheme.primaryColor,
+                                                  size: 15,
+                                                ),
+                                              ))
+                                        ]),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${controller.modelSingleContract.value.data!.client!.firstName.toString().capitalizeFirst} ${controller.modelSingleContract.value.data!.client!.lastName.toString().capitalizeFirst}",
+                                              style: TextStyle(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppTheme.textColor),
                                             ),
-                                          ))
-                                    ]),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${controller.modelSingleContract
-                                              .value.data!
-                                              .client!
-                                              .firstName
-                                              .toString()
-                                              .capitalizeFirst} ${controller
-                                              .modelSingleContract.value.data!
-                                              .client!
-                                              .lastName
-                                              .toString()
-                                              .capitalizeFirst}",
-                                          style: TextStyle(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppTheme.textColor),
-                                        ),
-                                        Text(
-                                          "${controller.modelSingleContract
-                                              .value.data!.client!.country
-                                              .toString()} ${controller
-                                              .modelSingleContract.value.data!
-                                              .client!.localTime.toString()}",
-                                          style: TextStyle(
-                                              fontSize: 13.sp,
-                                              color: AppTheme.textColor),
-                                        ),
+                                            Text(
+                                              "${controller.modelSingleContract.value.data!.client!.country.toString()} ${controller.modelSingleContract.value.data!.client!.localTime.toString()}",
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  color: AppTheme.textColor),
+                                            ),
+                                          ],
+                                        )
                                       ],
+                                    ),
+                                    InkWell(
+                                      onTap: () =>
+                                          Get.toNamed(MyRouter.chatScreen),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppTheme.whiteColor,
+                                          border: Border.all(
+                                              color: AppTheme.primaryColor),
+                                        ),
+                                        child: const Icon(
+                                          Icons.message,
+                                          color: AppTheme.primaryColor,
+                                          size: 15,
+                                        ),
+                                      ),
                                     )
                                   ],
                                 ),
-                                InkWell(
-                                  onTap: () =>
-                                      Get.toNamed(MyRouter.chatScreen),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppTheme.whiteColor,
-                                      border: Border.all(
-                                          color: AppTheme.primaryColor),
-                                    ),
-                                    child: const Icon(
-                                      Icons.message,
-                                      color: AppTheme.primaryColor,
-                                      size: 15,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              controller.modelSingleContract.value.data!
-                                  .projectTitle
-                                  .toString(),
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.darkBlueText),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            TabBar(
-                              controller: _tabController,
-                              labelColor: AppTheme.darkBlueText,
-                              labelStyle: const TextStyle(
-                                  fontWeight: FontWeight.w500),
-                              unselectedLabelColor: const Color(0xff707070),
-                              // indicatorColor: const Color(0xffFA61FF),
-                              indicator: UnderlineTabIndicator(
-                                borderSide: BorderSide(
-                                  width: 2.0.w,
-                                  color: AppTheme.pinkText,
+                                SizedBox(
+                                  height: 10.h,
                                 ),
-                              ),
-                              automaticIndicatorColorAdjustment: true,
-                              unselectedLabelStyle:
-                              const TextStyle(color: Color(0xff707070)),
-                              tabs: [
-                                Tab(
-                                  child: Text(
-                                    "Overview",
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                    ),
-                                  ),
+                                Text(
+                                  controller.modelSingleContract.value.data!
+                                      .projectTitle
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppTheme.darkBlueText),
                                 ),
-                                Tab(
-                                  child: Text(
-                                    "Timesheet",
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                    ),
-                                  ),
+                                SizedBox(
+                                  height: 10.h,
                                 ),
-                                Tab(
-                                  child: Text(
-                                    "Details",
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
+                                TabBar(
+                                  controller: _tabController,
+                                  labelColor: AppTheme.darkBlueText,
+                                  labelStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500),
+                                  unselectedLabelColor: const Color(0xff707070),
+                                  // indicatorColor: const Color(0xffFA61FF),
+                                  indicator: UnderlineTabIndicator(
+                                    borderSide: BorderSide(
+                                      width: 2.0.w,
+                                      color: AppTheme.pinkText,
                                     ),
                                   ),
+                                  automaticIndicatorColorAdjustment: true,
+                                  unselectedLabelStyle:
+                                      const TextStyle(color: Color(0xff707070)),
+                                  tabs: [
+                                    Tab(
+                                      child: Text(
+                                        "Overview",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
+                                    ),
+                                    if (controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
+                                    Tab(
+                                      child: Text(
+                                        "Timesheet",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
+                                    ),
+
+                                    Tab(
+                                      child: Text(
+                                        "Details",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        )
+                      ];
+                    },
+                    body: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: AddSize.padding14),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: overview(),
+                          ),
+                          if (controller.modelSingleContract.value.data!.type
+                                  .toString()
+                                  .toLowerCase() ==
+                              "hourly")
+                            SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: timesheet(),
+                            ),
+                          SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: details(),
+                          ),
+                        ],
                       ),
-                    )
-                  ];
-                },
-                body: Padding(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: AddSize.padding14),
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: overview(),
-                      ),
-                      if (controller.modelSingleContract.value.data!.type
-                          .toString()
-                          .toLowerCase() ==
-                          "hourly")
-                        SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: timesheet(),
-                        ),
-                      SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: details(),
-                      ),
-                    ],
-                  ),
-                ),
-              ))
+                    ),
+                  ))
               : controller.status.value.isError
-              ? CommonErrorWidget(
-            errorText: controller.modelSingleContract.value.message
-                .toString(),
-            onTap: () {
-              controller.getData();
-            },
-          )
-              : const CommonProgressIndicator();
-        }
-        )
-    );
+                  ? CommonErrorWidget(
+                      errorText: controller.modelSingleContract.value.message
+                          .toString(),
+                      onTap: () {
+                        controller.getData();
+                      },
+                    )
+                  : const CommonProgressIndicator();
+        }));
   }
 
   overview() {
@@ -602,24 +587,21 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //   ],
             // )),*/
           /*   stepper(),*/
-          if (controller.modelSingleContract.value.data!.type
-              .toString()
-              .toLowerCase() ==
-              "fixed")
+          if (controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
             milestones(),
           if (controller.modelSingleContract.value.data!.type
-              .toString()
-              .toLowerCase() ==
+                  .toString()
+                  .toLowerCase() ==
               "fixed")
             earnings(),
           if (controller.modelSingleContract.value.data!.type
-              .toString()
-              .toLowerCase() ==
+                  .toString()
+                  .toLowerCase() ==
               "hourly")
             hoursThisWeek(),
           if (controller.modelSingleContract.value.data!.type
-              .toString()
-              .toLowerCase() ==
+                  .toString()
+                  .toLowerCase() ==
               "hourly")
             toDo(),
         ]);
@@ -674,108 +656,105 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   timesheet() {
-    var deviceWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var deviceWidth = MediaQuery.of(context).size.width;
     double barWidth = deviceWidth - deviceWidth * .55;
     return Obx(() {
-      return controller.timesheetStatus.value.isSuccess ?
-        Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: deviceWidth,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.whiteColor,
-                  border:
-                  Border.all(color: AppTheme.primaryColor.withOpacity(.29)),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        const Text(
-                          "Last 24 hours",
-                          style:
-                          TextStyle(fontSize: 12, color: AppTheme.pinkText),
+      return controller.timesheetStatus.value.isSuccess
+          ? Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      width: deviceWidth,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.whiteColor,
+                        border: Border.all(
+                            color: AppTheme.primaryColor.withOpacity(.29)),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5),
                         ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        const Text(
-                          "1:10 hrs",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.darkBlueText,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: VerticalDivider(
-                        thickness: 1,
-                        color: AppTheme.primaryColor.withOpacity(.100),
                       ),
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "This Week",
-                          style:
-                          TextStyle(fontSize: 12, color: AppTheme.pinkText),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        const Text(
-                          "6:20 hrs",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.darkBlueText,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: VerticalDivider(
-                        thickness: 1,
-                        color: AppTheme.primaryColor.withOpacity(.100),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "Last Week",
-                          style:
-                          TextStyle(fontSize: 12, color: AppTheme.pinkText),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        const Text(
-                          "7:55 hrs",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.darkBlueText,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            /* const Text(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              const Text(
+                                "Last 24 hours",
+                                style: TextStyle(
+                                    fontSize: 12, color: AppTheme.pinkText),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              const Text(
+                                "1:10 hrs",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.darkBlueText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: VerticalDivider(
+                              thickness: 1,
+                              color: AppTheme.primaryColor.withOpacity(.100),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "This Week",
+                                style: TextStyle(
+                                    fontSize: 12, color: AppTheme.pinkText),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              const Text(
+                                "6:20 hrs",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.darkBlueText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 40,
+                            child: VerticalDivider(
+                              thickness: 1,
+                              color: AppTheme.primaryColor.withOpacity(.100),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                "Last Week",
+                                style: TextStyle(
+                                    fontSize: 12, color: AppTheme.pinkText),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              const Text(
+                                "7:55 hrs",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.darkBlueText,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                  /* const Text(
             "Hours this week",
             style: TextStyle(
                 fontSize: 16,
@@ -829,103 +808,104 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             "you will get paid for these hours on Monday (unifybilling timezon)",
             style: TextStyle(fontSize: 12, color: AppTheme.textColor),
           ),*/
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              "Work Diary",
-              style: TextStyle(
-                  fontSize: 16,
-                  color: AppTheme.textColor,
-                  fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: InkWell(
-                onTap: () {
-                  showDatePickerDialogue(deviceWidth);
-                },
-                child: Container(
-                  decoration:
-                  BoxDecoration(color: AppTheme.whiteColor, boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        offset: const Offset(0, 1))
-                  ]),
-                  child: TextFormField(
-                      enabled: false,
-                      onChanged: (value) {
-                        setState(() {});
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "Work Diary",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: AppTheme.textColor,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: InkWell(
+                      onTap: () {
+                        showDatePickerDialogue(deviceWidth);
                       },
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                          ),
-                          hintText: '$_startDateVPG To $_endDateVPG',
-                          focusColor: const Color(0xffE8E7E7),
-                          hintStyle: const TextStyle(
-                              fontSize: 14, color: AppTheme.textColor),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide:
-                            const BorderSide(color: AppTheme.whiteColor),
-                          ),
-                          suffixIcon: const Icon(
-                            Icons.calendar_month_outlined,
-                            color: AppTheme.primaryColor,
-                            size: 20,
-                          ))),
-                ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppTheme.whiteColor,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: const Offset(0, 1))
+                            ]),
+                        child: TextFormField(
+                            enabled: false,
+                            onChanged: (value) {
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                      color: AppTheme.whiteColor),
+                                ),
+                                hintText: '$_startDateVPG To $_endDateVPG',
+                                focusColor: const Color(0xffE8E7E7),
+                                hintStyle: const TextStyle(
+                                    fontSize: 14, color: AppTheme.textColor),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                      color: AppTheme.whiteColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                      color: AppTheme.whiteColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                      color: AppTheme.whiteColor),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: const BorderSide(
+                                      color: AppTheme.whiteColor),
+                                ),
+                                suffixIcon: const Icon(
+                                  Icons.calendar_month_outlined,
+                                  color: AppTheme.primaryColor,
+                                  size: 20,
+                                ))),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.modelTimesheet.value.data!.all!.length,
+                      padding: const EdgeInsets.only(bottom: 20),
+                      itemBuilder: (context, index) {
+                        return timeContainer(
+                          index,
+                        );
+                      })
+                ],
               ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.modelTimesheet.value.data!.length,
-                padding: const EdgeInsets.only(bottom: 20),
-                itemBuilder: (context, index) {
-                  return timeContainer(
-                    index,
-                  );
-                })
-          ],
-        ),
-      ): controller.status.value.isError
-          ? CommonErrorWidget(
-        errorText: controller.modelTimesheet.value.message
-            .toString(),
-        onTap: () {
-          controller.getTimesheet();
-        },
-      )
-          : const CommonProgressIndicator();
+            )
+          : controller.status.value.isError
+              ? CommonErrorWidget(
+                  errorText: controller.modelTimesheet.value.message.toString(),
+                  onTap: () {
+                    controller.getTimesheet();
+                  },
+                )
+              : const CommonProgressIndicator();
     });
   }
 
@@ -952,9 +932,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   recentFiles() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     /* return Container(
       // margin: const EdgeInsets.only(top: 15, bottom: 10),
       width: size.width,
@@ -1098,9 +1076,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   earnings() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       width: size.width,
@@ -1141,7 +1117,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 color: AppTheme.primaryColor.withOpacity(.29),
               ),
               padding:
-              EdgeInsets.only(right: size.width - size.width / 100 * 33),
+                  EdgeInsets.only(right: size.width - size.width / 100 * 33),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -1252,9 +1228,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   milestones() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       //    margin: const EdgeInsets.only(top: 10, bottom: 10),
       width: size.width,
@@ -1308,19 +1282,19 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           alignment: Alignment.center,
                           child: index1 < 2
                               ? Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: AddSize.size25,
-                          )
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: AddSize.size25,
+                                )
                               : Padding(
-                            padding:
-                            EdgeInsets.only(top: AddSize.size10 * .5),
-                            child: AddText(
-                              text: (index1 + 1).toString(),
-                              color: Colors.white,
-                              fontSize: AddSize.size20,
-                            ),
-                          ),
+                                  padding:
+                                      EdgeInsets.only(top: AddSize.size10 * .5),
+                                  child: AddText(
+                                    text: (index1 + 1).toString(),
+                                    color: Colors.white,
+                                    fontSize: AddSize.size20,
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           width: AddSize.size100 * .14,
@@ -1340,10 +1314,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     Container(
                       decoration: BoxDecoration(
                           border: Border(
-                            left: BorderSide(
-                                width: AddSize.size100 * .04,
-                                color: AppTheme.primaryColor.withOpacity(.33)),
-                          )),
+                        left: BorderSide(
+                            width: AddSize.size100 * .04,
+                            color: AppTheme.primaryColor.withOpacity(.33)),
+                      )),
                       margin: EdgeInsets.only(left: AddSize.size100 * .21),
                       padding: const EdgeInsets.only(left: 20),
                       child: Column(
@@ -1418,9 +1392,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   toDo() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       width: size.width,
@@ -1469,8 +1441,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
-                            Radius.circular(30),
-                          )),
+                        Radius.circular(30),
+                      )),
                       backgroundColor: AppTheme.whiteColor,
                       // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       textStyle: const TextStyle(
@@ -1516,9 +1488,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   hoursThisWeek() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       width: size.width,
@@ -1558,7 +1528,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 color: AppTheme.primaryColor.withOpacity(.29),
               ),
               padding:
-              EdgeInsets.only(right: size.width - size.width / 100 * 51),
+                  EdgeInsets.only(right: size.width - size.width / 100 * 51),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -1570,8 +1540,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "6:50 hrs",
                 style: TextStyle(
                     fontSize: 13,
@@ -1579,8 +1549,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     color: AppTheme.textColor),
               ),
               Text(
-                "20 hrs limit",
-                style: TextStyle(
+                "${controller.modelSingleContract.value.data!.weeklyLimit.toString()} hrs limit",
+                style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.textColor),
@@ -1631,9 +1601,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   details() {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
@@ -1684,33 +1652,33 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
                       SizedBox(
                         child: controller.modelSingleContract.value.data!.type
-                            .toString() ==
-                            "hourly"
+                                    .toString() ==
+                                "hourly"
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Rate",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff878787),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Weekly limit",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff878787),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        )
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Rate",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff878787),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Weekly limit",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff878787),
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              )
                             : const SizedBox(),
                       ),
                       /* SizedBox(
@@ -1751,36 +1719,35 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
                       SizedBox(
                         child: controller.modelSingleContract.value.data!.type
-                            .toString() ==
-                            "hourly"
+                                    .toString() ==
+                                "hourly"
                             ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "\$${controller.modelSingleContract.value.data!
-                                  .amount.toString()}/hr ",
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff1F1F1F),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              controller.modelSingleContract.value.data!
-                                  .weeklyLimit
-                                  .toString(),
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff1F1F1F),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        )
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "\$${controller.modelSingleContract.value.data!.amount.toString()}/hr ",
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff1F1F1F),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    controller.modelSingleContract.value.data!
+                                        .weeklyLimit
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff1F1F1F),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              )
                             : const SizedBox(),
                       ),
                       /*SizedBox(
@@ -1853,16 +1820,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${controller.modelSingleContract.value.data!
-                            .client!
-                            .firstName
-                            .toString()
-                            .capitalizeFirst} ${controller.modelSingleContract
-                            .value.data!
-                            .client!
-                            .lastName
-                            .toString()
-                            .capitalizeFirst}",
+                        "${controller.modelSingleContract.value.data!.client!.firstName.toString().capitalizeFirst} ${controller.modelSingleContract.value.data!.client!.lastName.toString().capitalizeFirst}",
                         style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xff1F1F1F),
@@ -1913,9 +1871,14 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 20,
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () {
-                  Get.toNamed(MyRouter.viewOriginalOffer);
+                  Get.toNamed(MyRouter.viewOriginalOffer, arguments: [
+                    controller.modelSingleContract.value.data!.proposal!.id
+                        .toString()
+                  ]);
+                  print(controller.modelSingleContract.value.data!.proposal!.id
+                      .toString());
                 },
                 child: const Text(
                   "View original offer",
@@ -2199,8 +2162,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                 children: [
                   Icon(Icons.verified,
                       color: controller.modelSingleContract.value.data!.client!
-                          .paymentVerified ==
-                          true
+                                  .paymentVerified ==
+                              true
                           ? AppTheme.primaryColor
                           : Colors.grey.withOpacity(.49),
                       size: 20),
@@ -2209,8 +2172,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ),
                   Text(
                     controller.modelSingleContract.value.data!.client!
-                        .paymentVerified ==
-                        true
+                                .paymentVerified ==
+                            true
                         ? "Payment method verified"
                         : "Payment method not verified",
                     style: const TextStyle(
@@ -2229,31 +2192,26 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   Wrap(
                     children: List.generate(
                         5,
-                            (index) =>
-                        double.parse(controller.modelSingleContract
-                            .value.data!.client!.rating
-                            .toString()) >
-                            index
+                        (index) => double.parse(controller.modelSingleContract
+                                    .value.data!.client!.rating
+                                    .toString()) >
+                                index
                             ? const Icon(
-                          Icons.star,
-                          color: AppTheme.pinkText,
-                          size: 20,
-                        )
+                                Icons.star,
+                                color: AppTheme.pinkText,
+                                size: 20,
+                              )
                             : const Icon(
-                          Icons.star_border_outlined,
-                          color: Colors.grey,
-                          size: 20,
-                        )),
+                                Icons.star_border_outlined,
+                                color: Colors.grey,
+                                size: 20,
+                              )),
                   ),
                   SizedBox(
                     width: AddSize.size10,
                   ),
                   Text(
-                    "${double.parse(
-                        controller.modelSingleContract.value.data!.client!
-                            .rating.toString())} of ${double.parse(
-                        controller.modelSingleContract.value.data!.client!
-                            .numberOfReview.toString())} reviews",
+                    "${double.parse(controller.modelSingleContract.value.data!.client!.rating.toString())} of ${double.parse(controller.modelSingleContract.value.data!.client!.numberOfReview.toString())} reviews",
                     style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -2283,9 +2241,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size5,
                       ),
                       Text(
-                        "${controller.modelSingleContract.value.data!.client!
-                            .city} ${controller.modelSingleContract.value.data!
-                            .client!.localTime}",
+                        "${controller.modelSingleContract.value.data!.client!.city} ${controller.modelSingleContract.value.data!.client!.localTime}",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,
@@ -2296,8 +2252,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size10,
                       ),
                       Text(
-                        "${controller.modelSingleContract.value.data!.client!
-                            .jobPosted.toString()} jobs posted",
+                        "${controller.modelSingleContract.value.data!.client!.jobPosted.toString()} jobs posted",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w600,
@@ -2308,10 +2263,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size5,
                       ),
                       Text(
-                        "${controller.modelSingleContract.value.data!.project!
-                            .hireRate.toString()}% hire rate, ${controller
-                            .modelSingleContract.value.data!.project!.openJobs
-                            .toString()} open job",
+                        "${controller.modelSingleContract.value.data!.project!.hireRate.toString()}% hire rate, ${controller.modelSingleContract.value.data!.project!.openJobs.toString()} open job",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,
@@ -2322,8 +2274,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size10,
                       ),
                       Text(
-                        "\$${controller.modelSingleContract.value.data!.client!
-                            .moneySpent.toString()}+ total spent",
+                        "\$${controller.modelSingleContract.value.data!.client!.moneySpent.toString()}+ total spent",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w600,
@@ -2334,10 +2285,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size5,
                       ),
                       Text(
-                        "${controller.modelSingleContract.value.data!.project!
-                            .totalHire.toString()} hires, ${controller
-                            .modelSingleContract.value.data!.project!.openJobs
-                            .toString()} active",
+                        "${controller.modelSingleContract.value.data!.project!.totalHire.toString()} hires, ${controller.modelSingleContract.value.data!.project!.openJobs.toString()} active",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,
@@ -2373,17 +2321,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
                       Text(
                         companySize(double.parse(controller.modelSingleContract
-                            .value.data!.client!.employeeNo
-                            .toString() ==
-                            "null" ||
-                            controller.modelSingleContract.value.data!
-                                .client!.employeeNo
-                                .toString() ==
-                                ""
+                                        .value.data!.client!.employeeNo
+                                        .toString() ==
+                                    "null" ||
+                                controller.modelSingleContract.value.data!
+                                        .client!.employeeNo
+                                        .toString() ==
+                                    ""
                             ? "0"
                             : controller.modelSingleContract.value.data!.client!
-                            .employeeNo
-                            .toString())),
+                                .employeeNo
+                                .toString())),
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,
@@ -2394,8 +2342,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         height: AddSize.size15,
                       ),
                       Text(
-                        "Member since ${controller.modelSingleContract.value
-                            .data!.client!.memberSince.toString()}",
+                        "Member since ${controller.modelSingleContract.value.data!.client!.memberSince.toString()}",
                         style: TextStyle(
                           fontSize: AddSize.font16,
                           fontWeight: FontWeight.w500,
@@ -2480,8 +2427,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                 horizontal: 35, vertical: 15),
                             shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30),
-                                )),
+                              Radius.circular(30),
+                            )),
                             backgroundColor: const Color(0xffD8D8D8),
                             // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                             textStyle: const TextStyle(
@@ -2583,7 +2530,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           contentPadding: const EdgeInsets.all(0),
                           dense: true,
                           visualDensity:
-                          const VisualDensity(horizontal: -4, vertical: -4),
+                              const VisualDensity(horizontal: -4, vertical: -4),
                           value: "You",
                           groupValue: todoRadio.value,
                           onChanged: (value) {
@@ -2602,7 +2549,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           contentPadding: const EdgeInsets.all(0),
                           dense: true,
                           visualDensity:
-                          const VisualDensity(horizontal: -4, vertical: -4),
+                              const VisualDensity(horizontal: -4, vertical: -4),
                           value: "By jhon cena",
                           groupValue: todoRadio.value,
                           onChanged: (value) {
@@ -2764,7 +2711,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                             .withOpacity(.15))),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Row(
@@ -2772,16 +2719,16 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                           SizedBox(
                                             child: documentFile.value.path == ""
                                                 ? Image.asset(
-                                                "assets/icon/script.png")
+                                                    "assets/icon/script.png")
                                                 : InkWell(
-                                                onTap: () {
-                                                  documentFile.value =
-                                                      File("");
-                                                },
-                                                child: const Icon(
-                                                  Icons.clear,
-                                                  color: AppTheme.pinkText,
-                                                )),
+                                                    onTap: () {
+                                                      documentFile.value =
+                                                          File("");
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.clear,
+                                                      color: AppTheme.pinkText,
+                                                    )),
                                           ),
                                           SizedBox(
                                             width: 15.w,
@@ -2961,7 +2908,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                             .withOpacity(.15))),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Row(
@@ -2969,16 +2916,16 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                           SizedBox(
                                             child: documentFile.value.path == ""
                                                 ? Image.asset(
-                                                "assets/icon/script.png")
+                                                    "assets/icon/script.png")
                                                 : InkWell(
-                                                onTap: () {
-                                                  documentFile.value =
-                                                      File("");
-                                                },
-                                                child: const Icon(
-                                                  Icons.clear,
-                                                  color: AppTheme.pinkText,
-                                                )),
+                                                    onTap: () {
+                                                      documentFile.value =
+                                                          File("");
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.clear,
+                                                      color: AppTheme.pinkText,
+                                                    )),
                                           ),
                                           SizedBox(
                                             width: 15.w,
@@ -3106,7 +3053,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   setState(() {});
                                 },
                                 trackColor:
-                                AppTheme.primaryColor.withOpacity(.11),
+                                    AppTheme.primaryColor.withOpacity(.11),
                                 value: isSwitched.value,
                                 activeColor: AppTheme.primaryColor,
                                 thumbColor: const Color(0xffE2E2E2),
@@ -3140,7 +3087,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: const [
                                         Text(
                                           "\$1500.00",
@@ -3259,6 +3206,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   showDialogForAddMilestone() {
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
+    final TextEditingController dueDateController = TextEditingController();
+    final dateFormatForShow = DateFormat('dd-MMM-yyyy');
+    final dateFormatForSend = DateFormat('yyyy-MM-dd');
+    var dateInput = "";
     showDialog(
         context: context,
         builder: (context) {
@@ -3267,6 +3221,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   horizontal: AddSize.padding16,
                   vertical: AddSize.size100 * .4),
               child: Form(
+                key: formKey,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Padding(
@@ -3287,7 +3242,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: 25,
                         ),
                         const Text(
-                          "Name of Milestone 9",
+                          "Name of Milestone",
                           style: TextStyle(
                               fontSize: 14,
                               color: Color(0xff4D4D4D),
@@ -3297,12 +3252,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: nameController,
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
-                          /*validator: MultiValidator([
+                          validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                        ]),
                         ),
                         const SizedBox(
                           height: 10,
@@ -3318,15 +3274,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          controller: priceController,
+                          inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
                           prefix: const Icon(
                             Icons.attach_money,
                           ),
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
-                          /*validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                          validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter amount'),
+                        ]),
                         ),
                         const SizedBox(
                           height: 10,
@@ -3342,6 +3300,28 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: 5,
                         ),
                         CustomTextField(
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2100));
+                            if (pickedDate != null) {
+                              print(pickedDate);
+                              //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              dueDateController.text = dateFormatForShow.format(pickedDate);
+                              //    print(pickedDate.millisecondsSinceEpoch);
+                              setState(() {
+                                print(dueDateController.text);
+                                dateInput = dateFormatForSend.format(pickedDate);
+                                print(dateInput);
+                              });
+                            } else {
+                              return null;
+                            }
+                          },
+                          readOnly: true,
+                          controller: dueDateController,
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
@@ -3349,9 +3329,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             Icons.calendar_month_rounded,
                             color: AppTheme.primaryColor,
                           ),
-                          /*validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                          validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please select date'),
+                        ]),
                         ),
                         const Text(
                           "All dates and times are based on UTC",
@@ -3360,7 +3340,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               color: AppTheme.darkBlueText,
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(
+                        /*const SizedBox(
                           height: 10,
                         ),
                         const Text(
@@ -3378,10 +3358,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
-                          /*validator: MultiValidator([
+                          *//*validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
-                        ),
+                        ]),*//*
+                        ),*/
                         const SizedBox(
                           height: 25,
                         ),
@@ -3395,7 +3375,20 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   title: 'Save & Add other',
                                   backgroundColor: AppTheme.whiteColor,
                                   onPressed: () {
-                                    Get.back();
+                                    if(formKey.currentState!.validate()){
+                                      freelancerAddMilestoneRepo(contract_id: controller.modelSingleContract.value.data!.id.toString(),
+                                          title: nameController.text.trim(),
+                                          amount: priceController.text.trim(),
+                                          due_date: dateInput.toString(),
+                                          context: context).then((value) {
+                                        if(value.status == true){
+                                          Get.back();
+                                          showDialogForAddMilestone();
+                                        }showToast(value.message.toString());
+                                      });
+
+                                    }
+
                                   },
                                   textColor: AppTheme.primaryColor,
                                 ),
@@ -3408,7 +3401,20 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                 child: NewButton(
                                   title: 'Submit',
                                   backgroundColor: AppTheme.primaryColor,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if(formKey.currentState!.validate()){
+                                      freelancerAddMilestoneRepo(contract_id: controller.modelSingleContract.value.data!.id.toString(),
+                                      title: nameController.text.trim(),
+                                      amount: priceController.text.trim(),
+                                      due_date: dateInput.toString(),
+                                      context: context).then((value) {
+                                        if(value.status == true){
+                                          Get.back();
+                                        }showToast(value.message.toString());
+                                      });
+                                    }
+
+                                  },
                                   textColor: AppTheme.whiteColor,
                                 ),
                               ),
@@ -3860,13 +3866,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
 
   timeContainer(int index) {
     final TextEditingController timeController = TextEditingController();
-    timeController.text = controller.modelTimesheet.value.data![index].newValue.toString();
+    timeController.text = controller.modelTimesheet.value.data!.all![index].newValue.toString();
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
           border: Border(
               bottom:
-              BorderSide(color: AppTheme.primaryColor.withOpacity(.100)))),
+                  BorderSide(color: AppTheme.primaryColor.withOpacity(.100)))),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
@@ -3874,91 +3880,167 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                controller.modelTimesheet.value.data![index].date.toString(),
+                controller.modelTimesheet.value.data!.all![index].date.toString(),
                 style: const TextStyle(fontSize: 13, color: AppTheme.textColor),
               ),
               SizedBox(
                 //  width: AddSize.size100,
-                child: controller.modelTimesheet.value.data![index].save == true
+                child: controller.modelTimesheet.value.data!.all![index].save == true
                     ? SizedBox(
-                  width: AddSize.size80,
-                  child: CustomTextFieldForTimesheet(
-                    controller: timeController,
-                    hintText: "00:00".obs,
-                    obSecure: false.obs,
-                    validator: (value){
-                      if(value.runtimeType is int){
-                        return "data  type is int";
-                      }
-                      else {
-                        return null;
-                      }
-                    },
-                    /*validator: MultiValidator([
-                      RequiredValidator(errorText: 'Please enter time'),
-                    ]),*/
-                    onChanged: (value){
-                      controller.modelTimesheet.value.data![index].newValue = value.toString();
-                    },
-                  ),
-                )
+                  height: 45,
+                        width: AddSize.size80,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextFieldForTimesheet(
+                                controller: timeController,
+                                inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
+                                hintText: "00".obs,
+                                obSecure: false.obs,
+                                validator: (value) {
+                                  if(value.toString().length<2){
+                                    return "Hours must be under 24 hours";
+                                  }
+                                  else if(int.parse(value.toString().isEmpty? "0": value.toString())>24){
+                                    return "Hours must be under 24 hours";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  controller.modelTimesheet.value.data!.all![index].newValue = value.toString();
+                                },
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2.0),
+                              child: Text(":",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            ),
+                            Expanded(
+                              child: CustomTextFieldForTimesheet(
+                                controller: timeController,
+                                inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
+                                hintText: "00".obs,
+                                obSecure: false.obs,
+                                validator: (value) {
+                                  if (value.runtimeType is int) {
+                                    return "data  type is int";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (value) {
+                                  controller.modelTimesheet.value.data!.all![index]
+                                      .newValue = value.toString();
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      )
                     : Text(
-                  controller.modelTimesheet.value.data![index].hours.toString(),
-                  style: const TextStyle(
-                      fontSize: 13, color: AppTheme.textColor),
-                ),
-              ),
-              if (controller.modelTimesheet.value.data![index].save == false)
-                NewButton(
-                  title: "Add time",
-                  backgroundColor: AppTheme.primaryColor,
-                  onPressed: () {
-                    setState(() {
-                      controller.modelTimesheet.value.data![index].save =
-                      !controller.modelTimesheet.value.data![index].save;
-                    });
-                  },
-                  textColor: AppTheme.whiteColor,
-                ),
-              if (controller.modelTimesheet.value.data![index].save == true)
-                Row(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          setState(() {
-                            controller.modelTimesheet.value.data![index].save =
-                            !controller.modelTimesheet.value.data![index].save;
-                          });
-                        },
-                        child: const Icon(Icons.clear)),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: NewButton(
-                        title: "Save",
-                        backgroundColor: AppTheme.primaryColor,
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            addTimesheetRepo(
-                              contract_id: controller.modelSingleContract.value.data!.id.toString(),
-                              hours: timeController.text.toString(),
-                              date: controller.modelTimesheet.value.data![index].date.toString(),
-                              context: context,
-                            ).then((value) {
-                              if (value.status == true) {
-                                setState(() {
-                                  controller.modelTimesheet.value.data![index].save = !controller.modelTimesheet.value.data![index].save;
-                                  controller.getTimesheet();
-                                });
-                              }
-                              showToast(value.message.toString());
-                            });
-                          }
-                        },
-                        textColor: AppTheme.whiteColor,
+                        controller.modelTimesheet.value.data!.all![index].hours
+                            .toString(),
+                        style: const TextStyle(
+                            fontSize: 13, color: AppTheme.textColor),
                       ),
-                    ),
-                  ],
-                ),
+              ),
+              SizedBox(
+                child: controller.modelTimesheet.value.data!.all![index].save == true
+                    ? Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                setState(() {
+                                  controller.modelTimesheet.value.data!.all![index]
+                                          .save =
+                                      !controller.modelTimesheet.value
+                                          .data!.all![index].save;
+                                });
+                              },
+                              child: const Icon(Icons.clear)),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: NewButton(
+                              title: "Save",
+                              backgroundColor: AppTheme.primaryColor,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  addTimesheetRepo(
+                                    contract_id: controller
+                                        .modelSingleContract.value.data!.id
+                                        .toString(),
+                                    hours: timeController.text.toString(),
+                                    date: controller
+                                        .modelTimesheet.value.data!.all![index].date
+                                        .toString(),
+                                    context: context,
+                                  ).then((value) {
+                                    if (value.status == true) {
+                                      setState(() {
+                                        controller.modelTimesheet.value.data!.all![index].save =
+                                            !controller.modelTimesheet.value
+                                                .data!.all![index].save;
+                                        controller.getTimesheet();
+                                      });
+                                    }
+                                    showToast(value.message.toString());
+                                  });
+                                }
+                              },
+                              textColor: AppTheme.whiteColor,
+                            ),
+                          ),
+                        ],
+                      )
+                    : findFirstDateOfTheWeek(DateTime.now()).compareTo(
+                                    DateTime.parse(controller
+                                        .modelTimesheet.value.data!.all![index].date
+                                        .toString())) <
+                                0 &&
+                            DateTime.parse(controller
+                                        .modelTimesheet.value.data!.all![index].date
+                                        .toString())
+                                    .millisecondsSinceEpoch <
+                                DateTime.now().millisecondsSinceEpoch
+                        ? NewButton(
+                            title: "Add time",
+                            backgroundColor: AppTheme.primaryColor,
+                            onPressed: () {
+                              setState(() {
+                                // print(findFirstDateOfTheWeek(DateTime.now()).compareTo(DateTime.parse(controller.modelTimesheet.value.data![index].date.toString())));
+                                // print(findFirstDateOfTheWeek(DateTime.now()).millisecondsSinceEpoch.compareTo(DateTime.parse(controller.modelTimesheet.value.data![index].date.toString()).millisecondsSinceEpoch));
+                                controller.modelTimesheet.value.data!.all![index]
+                                        .save =
+                                    !controller
+                                        .modelTimesheet.value.data!.all![index].save;
+                              });
+                            },
+                            textColor: AppTheme.whiteColor,
+                          )
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                side: BorderSide(
+                                  color: Colors.grey.withOpacity(.49),
+                                ),
+                                backgroundColor: Colors.grey.withOpacity(.49),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                  Radius.circular(30),
+                                )),
+                                // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            onPressed: () {},
+                            child: const Text(
+                              "Add time",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: AppTheme.whiteColor,
+                              ),
+                            )),
+              )
             ],
           ),
         ),
