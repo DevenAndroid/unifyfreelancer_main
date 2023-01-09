@@ -24,20 +24,20 @@ class ModelSingleContract {
 
 class Data {
   int? id;
-  dynamic type;
-  dynamic weeklyLimit;
-  dynamic projectId;
-  dynamic projectTitle;
-  dynamic proposalId;
-  dynamic startTime;
-  dynamic endTime;
-  dynamic clientId;
-  dynamic freelancerId;
-  dynamic amount;
-  dynamic inEscrow;
-  dynamic status;
-  dynamic activeStatus;
-  dynamic createdAt;
+  String? type;
+  String? weeklyLimit;
+  int? projectId;
+  String? projectTitle;
+  int? proposalId;
+  String? startTime;
+  String? endTime;
+  int? clientId;
+  int? freelancerId;
+  int? amount;
+  int? inEscrow;
+  String? status;
+  String? activeStatus;
+  String? createdAt;
   Project? project;
   Proposal? proposal;
   List<Milestone>? milestone;
@@ -137,25 +137,25 @@ class Data {
 }
 
 class Project {
-  dynamic id;
-  dynamic clientId;
-  dynamic image;
-  dynamic imageName;
-  dynamic name;
-  dynamic type;
-  dynamic description;
-  dynamic budgetType;
-  dynamic minPrice;
-  dynamic price;
-  dynamic projectDuration;
-  dynamic scop;
-  dynamic status;
-  dynamic experienceLevel;
-  dynamic englishLevel;
-  dynamic categories;
-  dynamic categoryId;
-  dynamic createdAt;
-  dynamic postedDate;
+  String? id;
+  String? clientId;
+  String? image;
+  String? imageName;
+  String? name;
+  String? type;
+  String? description;
+  String? budgetType;
+  int? minPrice;
+  int? price;
+  String? projectDuration;
+  String? scop;
+  String? status;
+  String? experienceLevel;
+  String? englishLevel;
+  String? categories;
+  String? categoryId;
+  String? createdAt;
+  String? postedDate;
   List<JobSkills>? jobSkills;
   Null? proposalList;
   Null? clientData;
@@ -166,15 +166,15 @@ class Project {
   int? proposalCount;
   Null? inviteSent;
   Null? unansweredInvite;
-  dynamic interview;
-  dynamic hireRate;
-  dynamic openJobs;
-  dynamic totalHire;
-  dynamic totalActive;
-  dynamic inviteId;
-  dynamic isSendOffer;
-  dynamic offerId;
-  dynamic isInvited;
+  int? interview;
+  int? hireRate;
+  int? openJobs;
+  int? totalHire;
+  int? totalActive;
+  int? inviteId;
+  bool? isSendOffer;
+  int? offerId;
+  bool? isInvited;
   Null? clientRecentHistory;
 
   Project(
@@ -332,16 +332,17 @@ class JobSkills {
 }
 
 class Proposal {
-  dynamic id;
-  dynamic jobId;
-  dynamic userId;
-  dynamic bidAmount;
-  dynamic receiveAmount;
-  dynamic projectDuration;
-  dynamic coverLetter;
-  dynamic status;
-  dynamic platformFee;
-  dynamic image;
+  String? id;
+  String? jobId;
+  String? userId;
+  String? bidAmount;
+  String? receiveAmount;
+  String? projectDuration;
+  String? coverLetter;
+  String? status;
+  String? type;
+  String? platformFee;
+  String? image;
 
   Proposal(
       {this.id,
@@ -352,6 +353,7 @@ class Proposal {
         this.projectDuration,
         this.coverLetter,
         this.status,
+        this.type,
         this.platformFee,
         this.image});
 
@@ -364,6 +366,7 @@ class Proposal {
     projectDuration = json['project_duration'];
     coverLetter = json['cover_letter'];
     status = json['status'];
+    type = json['type'];
     platformFee = json['platform_fee'];
     image = json['image'];
   }
@@ -378,6 +381,7 @@ class Proposal {
     data['project_duration'] = this.projectDuration;
     data['cover_letter'] = this.coverLetter;
     data['status'] = this.status;
+    data['type'] = this.type;
     data['platform_fee'] = this.platformFee;
     data['image'] = this.image;
     return data;
@@ -385,20 +389,21 @@ class Proposal {
 }
 
 class Milestone {
-  dynamic id;
-  dynamic proposalId;
-  dynamic projectId;
-  dynamic clientId;
-  dynamic freelancerId;
-  dynamic description;
-  dynamic projectDuration;
-  dynamic amount;
-  dynamic dueDate;
-  dynamic status;
-  dynamic note;
-  dynamic type;
-  dynamic createdAt;
-  dynamic updatedAt;
+  int? id;
+  int? proposalId;
+  int? projectId;
+  int? clientId;
+  int? freelancerId;
+  String? description;
+  String? projectDuration;
+  int? amount;
+  String? dueDate;
+  String? status;
+  String? note;
+  String? type;
+  String? createdAt;
+  String? updatedAt;
+  dynamic workId;
 
   Milestone(
       {this.id,
@@ -414,7 +419,9 @@ class Milestone {
         this.note,
         this.type,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.workId,
+      });
 
   Milestone.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -431,6 +438,7 @@ class Milestone {
     type = json['type'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    workId = json['work_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -449,44 +457,45 @@ class Milestone {
     data['type'] = this.type;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['work_id'] = this.workId;
     return data;
   }
 }
 
 class Client {
-  dynamic id;
-  dynamic profileImage;
-  dynamic firstName;
-  dynamic lastName;
-  dynamic email;
-  dynamic companyName;
-  dynamic website;
-  dynamic tagline;
-  dynamic industry;
-  dynamic employeeNo;
-  dynamic description;
-  dynamic companyPhone;
-  dynamic vatId;
-  dynamic timezone;
-  dynamic localTime;
-  dynamic companyAddress;
-  dynamic country;
-  dynamic state;
-  dynamic city;
-  dynamic zipCode;
-  dynamic isVerified;
-  dynamic paymentVerified;
-  dynamic rating;
-  dynamic numberOfReview;
-  dynamic jobPosted;
-  dynamic moneySpent;
-  dynamic ratePaidClient;
-  dynamic memberSince;
-  dynamic onlineStatus;
-  dynamic subscriptionId;
-  dynamic isSubscription;
-  dynamic lastActivity;
-  dynamic isDeleted;
+  String? id;
+  String? profileImage;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? companyName;
+  String? website;
+  String? tagline;
+  String? industry;
+  String? employeeNo;
+  String? description;
+  String? companyPhone;
+  String? vatId;
+  String? timezone;
+  String? localTime;
+  String? companyAddress;
+  String? country;
+  String? state;
+  String? city;
+  String? zipCode;
+  String? isVerified;
+  bool? paymentVerified;
+  String? rating;
+  String? numberOfReview;
+  int? jobPosted;
+  String? moneySpent;
+  String? ratePaidClient;
+  String? memberSince;
+  String? onlineStatus;
+  String? subscriptionId;
+  bool? isSubscription;
+  String? lastActivity;
+  bool? isDeleted;
 
   Client(
       {this.id,
@@ -599,42 +608,42 @@ class Client {
 }
 
 class Freelancer {
-  dynamic id;
-  dynamic profileImage;
-  dynamic visibility;
-  dynamic projectPreference;
-  dynamic experienceLevel;
-  dynamic firstName;
-  dynamic lastName;
-  dynamic email;
-  dynamic occuption;
-  dynamic description;
-  dynamic rating;
-  dynamic totalEarning;
-  dynamic totalJobs;
-  dynamic totalHours;
-  dynamic pendingProject;
-  dynamic amount;
-  dynamic timezone;
-  dynamic localTime;
-  dynamic address;
-  dynamic phone;
-  dynamic country;
-  dynamic state;
-  dynamic city;
-  dynamic zipCode;
-  dynamic hoursPerWeek;
-  dynamic hoursPerWeekId;
-  dynamic categoryId;
-  dynamic category;
-  dynamic isVerified;
-  dynamic isProfileComplete;
-  dynamic successRate;
-  dynamic onlineStatus;
-  dynamic subscriptionId;
-  dynamic isSubscription;
-  dynamic isSaveTalent;
-  dynamic isDeleted;
+  String? id;
+  String? profileImage;
+  String? visibility;
+  String? projectPreference;
+  String? experienceLevel;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? occuption;
+  String? description;
+  String? rating;
+  int? totalEarning;
+  int? totalJobs;
+  int? totalHours;
+  int? pendingProject;
+  String? amount;
+  String? timezone;
+  String? localTime;
+  String? address;
+  String? phone;
+  String? country;
+  String? state;
+  String? city;
+  String? zipCode;
+  String? hoursPerWeek;
+  int? hoursPerWeekId;
+  String? categoryId;
+  String? category;
+  String? isVerified;
+  bool? isProfileComplete;
+  String? successRate;
+  String? onlineStatus;
+  String? subscriptionId;
+  bool? isSubscription;
+  bool? isSaveTalent;
+  bool? isDeleted;
 
   Freelancer(
       {this.id,

@@ -79,8 +79,8 @@ class ApiUrls {
   static const String addTimesheet = "${apiBaseUrl}add-timesheet";
   static const String contractTimesheet = "${apiBaseUrl}contract-timesheet";
   static const String freelancerAddMilestone = "${apiBaseUrl}freelancer-add-milestone";
-
-
+  static const String submitWork = "${apiBaseUrl}submit-work";
+  static const String overview = "${apiBaseUrl}overview";
 }
  showToast(message) {
   Fluttertoast.cancel();

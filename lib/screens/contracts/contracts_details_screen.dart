@@ -19,6 +19,7 @@ import 'package:unifyfreelancer/widgets/common_outline_button.dart';
 import '../../controller/single_contract_controller.dart';
 import '../../repository/contracts/add_milestone_repository.dart';
 import '../../repository/contracts/add_timesheet_repository.dart';
+import '../../repository/contracts/submit_work.dart';
 import '../../resources/app_theme.dart';
 import '../../utils/api_contant.dart';
 import '../../widgets/button_for_milestone.dart';
@@ -41,16 +42,6 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   final dateFormatForSend = DateFormat('dd-MMM-yyyy');
 
   final DateRangePickerController _controller = DateRangePickerController();
-
-  /* List<ModelTimeSheet> timesheetData = <ModelTimeSheet>[
-    ModelTimeSheet(date: "Mon 1/3", time: "02:00", save: false),
-    ModelTimeSheet(date: "Mon 2/3", time: "03:00", save: false),
-    ModelTimeSheet(date: "Mon 3/3", time: "04:00", save: false),
-    ModelTimeSheet(date: "Mon 4/3", time: "03:00", save: false),
-    ModelTimeSheet(date: "Mon 5/3", time: "02:00", save: false),
-    ModelTimeSheet(date: "Mon 6/3", time: "05:00", save: false),
-    ModelTimeSheet(date: "Mon 7/3", time: "06:00", save: false),
-  ];*/
 
   DateTime wow = DateTime.now();
 
@@ -175,21 +166,6 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         color: Colors.grey,
       ));
 
-  pickFileToUpload() async {
-    FocusManager.instance.primaryFocus!.unfocus();
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-
-    if (result.files.single.size / (1024 * 1024) > 10) {
-      showToast("Your file size is greater then 10 MB");
-      setState(() {});
-    } else {
-      documentFile.value = File(result.files.single.path!);
-      fileName.value = result.names.first.toString();
-      setState(() {});
-    }
-  }
-
   List<DaysDataFormat> daysData = [
     DaysDataFormat(
       mileStoneName:
@@ -212,14 +188,12 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   TabController? _tabController;
   RxString todoRadio = "".obs;
 
-  Rx<File> documentFile = File("").obs;
-  RxString fileName = "".obs;
   RxBool isSwitched = false.obs;
   int _index = 0;
 
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {
     return dateTime.subtract(
-        Duration(days: dateTime.weekday) /*).add(const Duration(days: 1)*/);
+        Duration(days: dateTime.weekday + 1) /*).add(const Duration(days: 1)*/);
   }
 
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
@@ -429,16 +403,19 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                         ),
                                       ),
                                     ),
-                                    if (controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly")
-                                    Tab(
-                                      child: Text(
-                                        "Timesheet",
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
+                                    if (controller.modelSingleContract.value
+                                            .data!.type
+                                            .toString()
+                                            .toLowerCase() ==
+                                        "hourly")
+                                      Tab(
+                                        child: Text(
+                                          "Timesheet",
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                          ),
                                         ),
                                       ),
-                                    ),
-
                                     Tab(
                                       child: Text(
                                         "Details",
@@ -587,7 +564,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             //   ],
             // )),*/
           /*   stepper(),*/
-          if (controller.modelSingleContract.value.data!.type.toString().toLowerCase() == "fixed")
+          if (controller.modelSingleContract.value.data!.type
+                  .toString()
+                  .toLowerCase() ==
+              "fixed")
             milestones(),
           if (controller.modelSingleContract.value.data!.type
                   .toString()
@@ -691,9 +671,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               SizedBox(
                                 height: 5.h,
                               ),
-                              const Text(
-                                "1:10 hrs",
-                                style: TextStyle(
+                              Text(
+                                "${controller.modelTimesheet.value.data!.sinceStart.toString()} hrs",
+                                style: const TextStyle(
                                     fontSize: 14,
                                     color: AppTheme.darkBlueText,
                                     fontWeight: FontWeight.w600),
@@ -717,9 +697,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               SizedBox(
                                 height: 5.h,
                               ),
-                              const Text(
-                                "6:20 hrs",
-                                style: TextStyle(
+                              Text(
+                                "${controller.modelTimesheet.value.data!.thisWeek.toString()} hrs",
+                                style: const TextStyle(
                                     fontSize: 14,
                                     color: AppTheme.darkBlueText,
                                     fontWeight: FontWeight.w600),
@@ -743,9 +723,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               SizedBox(
                                 height: 5.h,
                               ),
-                              const Text(
-                                "7:55 hrs",
-                                style: TextStyle(
+                              Text(
+                                "${controller.modelTimesheet.value.data!.lastWeek.toString()} hrs",
+                                style: const TextStyle(
                                     fontSize: 14,
                                     color: AppTheme.darkBlueText,
                                     fontWeight: FontWeight.w600),
@@ -888,7 +868,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: controller.modelTimesheet.value.data!.all!.length,
+                      itemCount:
+                          controller.modelTimesheet.value.data!.all!.length,
                       padding: const EdgeInsets.only(bottom: 20),
                       itemBuilder: (context, index) {
                         return timeContainer(
@@ -1262,7 +1243,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             height: AddSize.size20,
           ),
           ListView.builder(
-              itemCount: daysData.length,
+              itemCount: controller.modelSingleContract.value.data!.milestone!.length,
               padding: EdgeInsets.symmetric(horizontal: AddSize.size12),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -1280,105 +1261,235 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           height: AddSize.size100 * .46,
                           width: AddSize.size100 * .46,
                           alignment: Alignment.center,
-                          child: index1 < 2
-                              ? Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: AddSize.size25,
-                                )
-                              : Padding(
-                                  padding:
-                                      EdgeInsets.only(top: AddSize.size10 * .5),
-                                  child: AddText(
-                                    text: (index1 + 1).toString(),
-                                    color: Colors.white,
-                                    fontSize: AddSize.size20,
-                                  ),
-                                ),
+                          child: /*index1 < 2 ? Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: AddSize.size25,
+                          )
+                              :*/
+                              Padding(
+                            padding: EdgeInsets.only(top: AddSize.size10 * .5),
+                            child: AddText(
+                              text: (index1 + 1).toString(),
+                              color: Colors.white,
+                              fontSize: AddSize.size20,
+                            ),
+                          ),
                         ),
                         SizedBox(
                           width: AddSize.size100 * .14,
                         ),
                         Expanded(
                           child: Text(
-                            daysData[index1].mileStoneName!,
+                            controller.modelSingleContract.value.data!.milestone![index1].description.toString(),
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis),
-                            maxLines: 2,
+                          //  maxLines: 2,
                           ),
                         ),
                       ],
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        left: BorderSide(
-                            width: AddSize.size100 * .04,
-                            color: AppTheme.primaryColor.withOpacity(.33)),
-                      )),
-                      margin: EdgeInsets.only(left: AddSize.size100 * .21),
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Column(
-                            children: [
-                              NewButton(
-                                title: 'Paid',
-                                backgroundColor: AppTheme.whiteColor,
-                                textColor: AppTheme.primaryColor,
-                                onPressed: () {
-                                  if (index1 == 0) {
-                                    showDialogForSubmitWork();
-                                  } else if (index1 == 1) {
-                                    showDialogForSubmitWorkPayment();
-                                  } else if (index1 == 2) {
-                                    showDialogForRequestMilestoneChanges();
-                                  } else if (index1 == 3) {
-                                    showDialogForAddMilestone();
-                                  } else if (index1 == 4) {
-                                    showDialogForEditActiveMilestone();
-                                  }
-                                },
+                    Row(
+                      children: [
+                        Container(
+                          color: AppTheme.primaryColor.withOpacity(.49),
+                          height: 100,
+                          /* decoration: BoxDecoration(
+                              border:Border.all( width: AddSize.size100 * .01,
+                                  color: AppTheme.primaryColor.withOpacity(.33)
                               )
+                          ),*/
+                          margin: EdgeInsets.only(left: AddSize.size100 * .20),
+                        //  padding: const EdgeInsets.only(bottom: 50),
+                          child: Container(
+                            width: 5,
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryColor,
+                              borderRadius:
+                                  BorderRadius.circular(AddSize.size10),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          /*  decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                    width: AddSize.size100 * .04,
+                                    color: AppTheme.primaryColor.withOpacity(.33)),
+                              )),
+                          margin: EdgeInsets.only(left: AddSize.size100 * .21),*/
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(
+                                height: 8,
+                              ),
+                               Text(
+                                "\$${controller.modelSingleContract.value.data!.milestone![index1].amount.toString()}",
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppTheme.textColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                children: [
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "active")
+                                   SizedBox(
+                                     child: Column(
+                                       children: [
+                                         NewButton(
+                                           title: 'Active & funded',
+                                           backgroundColor: AppTheme.whiteColor,
+                                           textColor: AppTheme.primaryColor,
+                                           onPressed: () {
+                                           },
+                                         ),
+                                         NewButton(
+                                           title: 'Submit work',
+                                           backgroundColor: AppTheme.primaryColor,
+                                           textColor: AppTheme.whiteColor,
+                                           onPressed: () {
+                                               showDialogForSubmitWork(
+                                                 controller.modelSingleContract.value.data!.milestone![index1].id.toString(),
+                                                 controller.modelSingleContract.value.data!.milestone![index1].workId.toString(),
+                                               );
+
+                                           },
+                                         ),
+                                       ],
+                                     ),
+                                   ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "submit-work")
+                                    NewButton(
+                                      title: 'In review',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      textColor: AppTheme.primaryColor,
+                                      onPressed: () {
+                                      },
+                                    ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "changed")
+                                    NewButton(
+                                      title: 'Resubmit work',
+                                      backgroundColor: AppTheme.primaryColor,
+                                      textColor: AppTheme.whiteColor,
+                                      onPressed: () {
+                                          showDialogForSubmitWork(controller.modelSingleContract.value.data!.milestone![index1].workId.toString(),controller.modelSingleContract.value.data!.milestone![index1].id.toString(),);
+                                      },
+                                    ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "paid")
+                                    NewButton(
+                                      title: 'paid',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      textColor: AppTheme.primaryColor,
+                                      onPressed: () {
+                                      },
+                                    ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "draft")
+                                    NewButton(
+                                      title: 'Pending',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      textColor: AppTheme.primaryColor,
+                                      onPressed: () {
+                                      },
+                                    ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "created")
+                                    NewButton(
+                                      title: 'Active & Non funded',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      textColor: AppTheme.primaryColor,
+                                      onPressed: () {
+                                        showDialogForSubmitWorkPayment(controller.modelSingleContract.value.data!.milestone![index1].workId.toString());
+                                      },
+                                    ),
+                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "active")
+                                    NewButton(
+                                      title: 'Active & funded',
+                                      backgroundColor: AppTheme.whiteColor,
+                                      textColor: AppTheme.primaryColor,
+                                      onPressed: () {
+
+                                      },
+                                    ),
+
+                                   /* NewButton(
+                                      title: 'Submit work',
+                                      backgroundColor: AppTheme.primaryColor,
+                                      textColor: AppTheme.whiteColor,
+                                      onPressed: () {
+                                        if (index1 == 0) {
+                                          showDialogForSubmitWork();
+                                        } else if (index1 == 1) {
+                                          showDialogForSubmitWorkPayment();
+                                        } else if (index1 == 2) {
+                                          showDialogForRequestMilestoneChanges();
+                                        } else if (index1 == 3) {
+                                          showDialogForAddMilestone();
+                                        } else if (index1 == 4) {
+                                          showDialogForEditActiveMilestone();
+                                        }
+                                      },
+                                    ),
+
+
+                                  NewButton(
+                                    title: 'Paid',
+                                    backgroundColor: AppTheme.whiteColor,
+                                    textColor: AppTheme.primaryColor,
+                                    onPressed: () {
+                                      if (index1 == 0) {
+                                        showDialogForSubmitWork();
+                                      } else if (index1 == 1) {
+                                        showDialogForSubmitWorkPayment();
+                                      } else if (index1 == 2) {
+                                        showDialogForRequestMilestoneChanges();
+                                      } else if (index1 == 3) {
+                                        showDialogForAddMilestone();
+                                      } else if (index1 == 4) {
+                                        showDialogForEditActiveMilestone();
+                                      }
+                                    },
+                                  )*/
+                                ],
+                              ),
+                              /*Row(
+                                  children: [
+                                    buildChip(
+                                        selected: daysData[index1].selected!,
+                                        onTap: (){
+                                          daysData[index1].selected = true;
+                                          setState(() {
+
+                                          });
+                                        },
+                                        text: "Daily"
+                                    ),
+                                    const SizedBox(
+                                      width: 40,
+                                    ),
+                                    buildChip(
+                                        selected: !daysData[index1].selected!,
+                                        onTap: (){
+                                          daysData[index1].selected = false;
+                                          setState(() {
+
+                                          });
+                                        },
+                                        text: "Time Slot"),
+                                  ],
+                                ),*/
+                              const SizedBox(
+                                height: 30,
+                              ),
                             ],
                           ),
-                          /*Row(
-                              children: [
-                                buildChip(
-                                    selected: daysData[index1].selected!,
-                                    onTap: (){
-                                      daysData[index1].selected = true;
-                                      setState(() {
-
-                                      });
-                                    },
-                                    text: "Daily"
-                                ),
-                                const SizedBox(
-                                  width: 40,
-                                ),
-                                buildChip(
-                                    selected: !daysData[index1].selected!,
-                                    onTap: (){
-                                      daysData[index1].selected = false;
-                                      setState(() {
-
-                                      });
-                                    },
-                                    text: "Time Slot"),
-                              ],
-                            ),*/
-                          const SizedBox(
-                            height: 30,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 );
@@ -1507,67 +1618,69 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Hours this week",
-            style: TextStyle(
-                fontSize: 16,
-                color: Color(0xff170048),
-                fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-              width: size.width,
-              height: 7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: AppTheme.primaryColor.withOpacity(.29),
-              ),
-              padding:
-                  EdgeInsets.only(right: size.width - size.width / 100 * 51),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: AppTheme.primaryColor,
-                ),
-              )),
-          SizedBox(
-            height: 10.h,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "6:50 hrs",
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textColor),
-              ),
-              Text(
-                "${controller.modelSingleContract.value.data!.weeklyLimit.toString()} hrs limit",
-                style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textColor),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            "you will get paid for these hours on Monday (unify billing timezone)",
-            style: TextStyle(fontSize: 12, color: AppTheme.textColor),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          /* CustomOutlineButton(
+      child: Obx(() {
+        return controller.timesheetStatus.value.isSuccess
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Hours this week",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff170048),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      width: size.width,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: AppTheme.primaryColor.withOpacity(.29),
+                      ),
+                      padding: EdgeInsets.only(
+                          right: size.width - size.width / 100 * 51),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: AppTheme.primaryColor,
+                        ),
+                      )),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${controller.modelTimesheet.value.data!.thisWeek.toString()} hrs",
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textColor),
+                      ),
+                      Text(
+                        "${controller.modelSingleContract.value.data!.weeklyLimit.toString()} hrs limit",
+                        style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textColor),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "you will get paid for these hours on Monday (unify billing timezone)",
+                    style: TextStyle(fontSize: 12, color: AppTheme.textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  /* CustomOutlineButton(
             title: "Add Time Manually",
             backgroundColor: AppTheme.primaryColor,
             onPressed: () {
@@ -1595,8 +1708,18 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               ),
             ),
           ),*/
-        ],
-      ),
+                ],
+              )
+            : controller.status.value.isError
+                ? CommonErrorWidget(
+                    errorText:
+                        controller.modelTimesheet.value.message.toString(),
+                    onTap: () {
+                      controller.getTimesheet();
+                    },
+                  )
+                : const CommonProgressIndicator();
+      }),
     );
   }
 
@@ -2648,7 +2771,26 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         });
   }
 
-  showDialogForSubmitWork() {
+  showDialogForSubmitWork(workId,mileId) {
+    String milestoneId = "";
+    Rx<File> documentFile = File("").obs;
+    RxString fileName = "".obs;
+    final formKey = GlobalKey<FormState>();
+    pickFileToUpload() async {
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        documentFile.value = File(result.files.single.path!);
+        fileName.value = result.names.first.toString();
+        setState(() {});
+      }
+    }
+
     showDialog(
         context: context,
         builder: (context) {
@@ -2658,6 +2800,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   vertical: AddSize.size100 * .4),
               child: Obx(() {
                 return Form(
+                  key: formKey,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Padding(
@@ -2692,9 +2835,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             obSecure: false.obs,
                             keyboardType: TextInputType.text,
                             hintText: "".obs,
-                            /*validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                            validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter description'),
+                        ]),
                           ),
                           const SizedBox(
                             height: 10,
@@ -2787,7 +2930,21 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   child: CustomOutlineButton(
                                     title: 'Submit',
                                     backgroundColor: AppTheme.primaryColor,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if(formKey.currentState!.validate()){
+                                        Map map = <String,String>{};
+                                        map["work_id"] = workId.toString();
+                                        map["milestone_id"] = mileId.toString();
+                                        map["message"] = 1.toString();
+                                        submitWork(mapData: map,file1: documentFile.value,fieldName1: fileName.value.toString(),context: context ).then((value) {
+                                          if(value.status == true){
+                                            Get.back();
+                                            controller.getData();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      }
+                                    },
                                     textColor: AppTheme.whiteColor,
                                   ),
                                 ),
@@ -2803,7 +2960,25 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         });
   }
 
-  showDialogForSubmitWorkPayment() {
+  showDialogForSubmitWorkPayment(mileId) {
+    Rx<File> documentFile = File("").obs;
+    RxString fileName = "".obs;
+    final formKey = GlobalKey<FormState>();
+    pickFileToUpload() async {
+      FocusManager.instance.primaryFocus!.unfocus();
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null) return;
+
+      if (result.files.single.size / (1024 * 1024) > 10) {
+        showToast("Your file size is greater then 10 MB");
+        setState(() {});
+      } else {
+        documentFile.value = File(result.files.single.path!);
+        fileName.value = result.names.first.toString();
+        setState(() {});
+      }
+    }
+
     showDialog(
         context: context,
         builder: (context) {
@@ -2813,6 +2988,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                   vertical: AddSize.size100 * .4),
               child: Obx(() {
                 return Form(
+                  key: formKey,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Padding(
@@ -2879,9 +3055,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             obSecure: false.obs,
                             keyboardType: TextInputType.text,
                             hintText: "".obs,
-                            /*validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter title'),
-                        ]),*/
+                            validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter a messgae'),
+                        ]),
                           ),
                           const SizedBox(
                             height: 10,
@@ -2984,7 +3160,20 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   child: CustomOutlineButton(
                                     title: 'Submit',
                                     backgroundColor: AppTheme.primaryColor,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if(formKey.currentState!.validate()){
+                                        Map map = <String,String>{};
+                                        map["milestone_id"] = mileId.toString();
+                                        map["message"] = 1.toString();
+                                        submitWork(mapData: map,file1: documentFile.value,fieldName1: fileName.value.toString(),context: context ).then((value) {
+                                          if(value.status == true){
+                                            Get.back();
+                                            controller.getData();
+                                          }
+                                          showToast(value.message.toString());
+                                        });
+                                      }
+                                    },
                                     textColor: AppTheme.whiteColor,
                                   ),
                                 ),
@@ -3257,8 +3446,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
                           validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter title'),
-                        ]),
+                            RequiredValidator(errorText: 'Please enter title'),
+                          ]),
                         ),
                         const SizedBox(
                           height: 10,
@@ -3275,7 +3464,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         ),
                         CustomTextField(
                           controller: priceController,
-                          inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters1: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           prefix: const Icon(
                             Icons.attach_money,
                           ),
@@ -3283,8 +3474,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
                           validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter amount'),
-                        ]),
+                            RequiredValidator(errorText: 'Please enter amount'),
+                          ]),
                         ),
                         const SizedBox(
                           height: 10,
@@ -3309,11 +3500,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             if (pickedDate != null) {
                               print(pickedDate);
                               //  String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              dueDateController.text = dateFormatForShow.format(pickedDate);
+                              dueDateController.text =
+                                  dateFormatForShow.format(pickedDate);
                               //    print(pickedDate.millisecondsSinceEpoch);
                               setState(() {
                                 print(dueDateController.text);
-                                dateInput = dateFormatForSend.format(pickedDate);
+                                dateInput =
+                                    dateFormatForSend.format(pickedDate);
                                 print(dateInput);
                               });
                             } else {
@@ -3330,8 +3523,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             color: AppTheme.primaryColor,
                           ),
                           validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please select date'),
-                        ]),
+                            RequiredValidator(errorText: 'Please select date'),
+                          ]),
                         ),
                         const Text(
                           "All dates and times are based on UTC",
@@ -3358,9 +3551,9 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                           obSecure: false.obs,
                           keyboardType: TextInputType.text,
                           hintText: "".obs,
-                          *//*validator: MultiValidator([
+                          */ /*validator: MultiValidator([
                           RequiredValidator(errorText: 'Please enter title'),
-                        ]),*//*
+                        ]),*/ /*
                         ),*/
                         const SizedBox(
                           height: 25,
@@ -3375,20 +3568,27 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   title: 'Save & Add other',
                                   backgroundColor: AppTheme.whiteColor,
                                   onPressed: () {
-                                    if(formKey.currentState!.validate()){
-                                      freelancerAddMilestoneRepo(contract_id: controller.modelSingleContract.value.data!.id.toString(),
-                                          title: nameController.text.trim(),
-                                          amount: priceController.text.trim(),
-                                          due_date: dateInput.toString(),
-                                          context: context).then((value) {
-                                        if(value.status == true){
+                                    if (formKey.currentState!.validate()) {
+                                      freelancerAddMilestoneRepo(
+                                              contract_id: controller
+                                                  .modelSingleContract
+                                                  .value
+                                                  .data!
+                                                  .id
+                                                  .toString(),
+                                              title: nameController.text.trim(),
+                                              amount:
+                                                  priceController.text.trim(),
+                                              due_date: dateInput.toString(),
+                                              context: context)
+                                          .then((value) {
+                                        if (value.status == true) {
                                           Get.back();
                                           showDialogForAddMilestone();
-                                        }showToast(value.message.toString());
+                                        }
+                                        showToast(value.message.toString());
                                       });
-
                                     }
-
                                   },
                                   textColor: AppTheme.primaryColor,
                                 ),
@@ -3402,18 +3602,26 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                   title: 'Submit',
                                   backgroundColor: AppTheme.primaryColor,
                                   onPressed: () {
-                                    if(formKey.currentState!.validate()){
-                                      freelancerAddMilestoneRepo(contract_id: controller.modelSingleContract.value.data!.id.toString(),
-                                      title: nameController.text.trim(),
-                                      amount: priceController.text.trim(),
-                                      due_date: dateInput.toString(),
-                                      context: context).then((value) {
-                                        if(value.status == true){
+                                    if (formKey.currentState!.validate()) {
+                                      freelancerAddMilestoneRepo(
+                                              contract_id: controller
+                                                  .modelSingleContract
+                                                  .value
+                                                  .data!
+                                                  .id
+                                                  .toString(),
+                                              title: nameController.text.trim(),
+                                              amount:
+                                                  priceController.text.trim(),
+                                              due_date: dateInput.toString(),
+                                              context: context)
+                                          .then((value) {
+                                        if (value.status == true) {
                                           Get.back();
-                                        }showToast(value.message.toString());
+                                        }
+                                        showToast(value.message.toString());
                                       });
                                     }
-
                                   },
                                   textColor: AppTheme.whiteColor,
                                 ),
@@ -3866,7 +4074,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
 
   timeContainer(int index) {
     final TextEditingController timeController = TextEditingController();
-    timeController.text = controller.modelTimesheet.value.data!.all![index].newValue.toString();
+    timeController.text =
+        controller.modelTimesheet.value.data!.all![index].newValue.toString();
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
@@ -3880,63 +4089,41 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                controller.modelTimesheet.value.data!.all![index].date.toString(),
+                controller.modelTimesheet.value.data!.all![index].date
+                    .toString(),
                 style: const TextStyle(fontSize: 13, color: AppTheme.textColor),
               ),
               SizedBox(
-                //  width: AddSize.size100,
-                child: controller.modelTimesheet.value.data!.all![index].save == true
+                width: AddSize.size80,
+                child: controller.modelTimesheet.value.data!.all![index].save ==
+                        true
                     ? SizedBox(
-                  height: 45,
                         width: AddSize.size80,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFieldForTimesheet(
-                                controller: timeController,
-                                inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
-                                hintText: "00".obs,
-                                obSecure: false.obs,
-                                validator: (value) {
-                                  if(value.toString().length<2){
-                                    return "Hours must be under 24 hours";
-                                  }
-                                  else if(int.parse(value.toString().isEmpty? "0": value.toString())>24){
-                                    return "Hours must be under 24 hours";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  controller.modelTimesheet.value.data!.all![index].newValue = value.toString();
-                                },
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 2.0),
-                              child: Text(":",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                            ),
-                            Expanded(
-                              child: CustomTextFieldForTimesheet(
-                                controller: timeController,
-                                inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
-                                hintText: "00".obs,
-                                obSecure: false.obs,
-                                validator: (value) {
-                                  if (value.runtimeType is int) {
-                                    return "data  type is int";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                onChanged: (value) {
-                                  controller.modelTimesheet.value.data!.all![index]
-                                      .newValue = value.toString();
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      )
+                        child: CustomTextFieldForTimesheet(
+                          controller: timeController,
+                          //  inputFormatters1: [FilteringTextInputFormatter.digitsOnly],
+                          hintText: "00:00".obs,
+                          obSecure: false.obs,
+                          validator: (value) {
+                            if (value.toString().length == 5 &&
+                                value.toString().contains(RegExp(r"[:]"))) {
+                              if (int.parse(
+                                          value.toString().split(":").first) <=
+                                      24 &&
+                                  int.parse(value.toString().split(":").last) <=
+                                      60) {
+                                return null;
+                              }
+                              return "horus must be under 24 and minutes 60";
+                            }
+
+                            return "Please enter a valid format";
+                          },
+                          onChanged: (value) {
+                            controller.modelTimesheet.value.data!.all![index]
+                                .newValue = value.toString();
+                          },
+                        ))
                     : Text(
                         controller.modelTimesheet.value.data!.all![index].hours
                             .toString(),
@@ -3945,16 +4132,17 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                       ),
               ),
               SizedBox(
-                child: controller.modelTimesheet.value.data!.all![index].save == true
+                child: controller.modelTimesheet.value.data!.all![index].save ==
+                        true
                     ? Row(
                         children: [
                           InkWell(
                               onTap: () {
                                 setState(() {
-                                  controller.modelTimesheet.value.data!.all![index]
-                                          .save =
-                                      !controller.modelTimesheet.value
-                                          .data!.all![index].save;
+                                  controller.modelTimesheet.value.data!
+                                          .all![index].save =
+                                      !controller.modelTimesheet.value.data!
+                                          .all![index].save;
                                 });
                               },
                               child: const Icon(Icons.clear)),
@@ -3970,14 +4158,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                         .modelSingleContract.value.data!.id
                                         .toString(),
                                     hours: timeController.text.toString(),
-                                    date: controller
-                                        .modelTimesheet.value.data!.all![index].date
+                                    date: controller.modelTimesheet.value.data!
+                                        .all![index].date
                                         .toString(),
                                     context: context,
                                   ).then((value) {
                                     if (value.status == true) {
                                       setState(() {
-                                        controller.modelTimesheet.value.data!.all![index].save =
+                                        controller.modelTimesheet.value.data!
+                                                .all![index].save =
                                             !controller.modelTimesheet.value
                                                 .data!.all![index].save;
                                         controller.getTimesheet();
@@ -3993,12 +4182,12 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         ],
                       )
                     : findFirstDateOfTheWeek(DateTime.now()).compareTo(
-                                    DateTime.parse(controller
-                                        .modelTimesheet.value.data!.all![index].date
+                                    DateTime.parse(controller.modelTimesheet
+                                        .value.data!.all![index].date
                                         .toString())) <
                                 0 &&
-                            DateTime.parse(controller
-                                        .modelTimesheet.value.data!.all![index].date
+                            DateTime.parse(controller.modelTimesheet.value.data!
+                                        .all![index].date
                                         .toString())
                                     .millisecondsSinceEpoch <
                                 DateTime.now().millisecondsSinceEpoch
@@ -4009,10 +4198,10 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               setState(() {
                                 // print(findFirstDateOfTheWeek(DateTime.now()).compareTo(DateTime.parse(controller.modelTimesheet.value.data![index].date.toString())));
                                 // print(findFirstDateOfTheWeek(DateTime.now()).millisecondsSinceEpoch.compareTo(DateTime.parse(controller.modelTimesheet.value.data![index].date.toString()).millisecondsSinceEpoch));
-                                controller.modelTimesheet.value.data!.all![index]
-                                        .save =
-                                    !controller
-                                        .modelTimesheet.value.data!.all![index].save;
+                                controller.modelTimesheet.value.data!
+                                        .all![index].save =
+                                    !controller.modelTimesheet.value.data!
+                                        .all![index].save;
                               });
                             },
                             textColor: AppTheme.whiteColor,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unifyfreelancer/resources/size.dart';
 
+import '../../controller/reports_controller.dart';
+import '../../models/Reports/model_overview.dart';
 import '../../resources/app_theme.dart';
 import '../../routers/my_router.dart';
 import '../../widgets/custom_appbar.dart';
@@ -14,6 +16,16 @@ class WorkInProgressScreen extends StatefulWidget {
 }
 
 class _WorkInProgressScreenState extends State<WorkInProgressScreen> {
+
+ // final controller = Get.put(ReportsController());
+  Rx<ModelOverview> modelOverview = ModelOverview().obs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    modelOverview.value.data!.workInProgress = Get.arguments[0];
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
