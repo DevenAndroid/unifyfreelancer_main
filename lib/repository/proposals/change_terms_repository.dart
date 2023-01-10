@@ -18,6 +18,7 @@ Future<ModelCommonResponse> updateProposalRepo(proposal_id, bid_amount,
 
   if (milestone_type == "" || milestone_type == "single") {
     map['bid_amount'] = bid_amount;
+    map["milestone_data"] = milestone_data;
   }
 
   if (milestone_type != "") {

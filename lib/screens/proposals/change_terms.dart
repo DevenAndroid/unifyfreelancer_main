@@ -89,6 +89,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
           }
           controller.durationController.text = model.value.data!.proposalData!.projectDuration.toString();
         }
+        milestone.isEmpty ? milestone.add(ModelMilestones(description: "", amount: "", dueDate: "")) : null;
         status.value = RxStatus.success();
       } else {
         showToast(value.message.toString());
@@ -441,8 +442,8 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         height: deviceHeight * .01,
                                       ),
                                       if (int.parse(model.value.data!
-                                              .proposalData!.bidAmount
-                                              .toString()) !=
+                                              .proposalData!.bidAmount.toString().isEmpty ? "0" : model.value.data!
+                                          .proposalData!.bidAmount.toString() ) !=
                                           0)
                                         Text(
                                           "\$${(double.parse(model.value.data!.proposalData!.bidAmount.toString()) - double.parse(model.value.data!.proposalData!.bidAmount.toString()) * double.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
@@ -453,7 +454,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         ),
                                       if (int.parse(model.value.data!
                                               .proposalData!.bidAmount
-                                              .toString()) ==
+                                              .toString().isEmpty ? "0" : model.value.data!
+                                          .proposalData!.bidAmount
+                                          .toString()) ==
                                           0)
                                         Text(
                                           "\$${(milestonePrice * double.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
@@ -494,7 +497,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                       ),
                                       if (int.parse(model.value.data!
                                               .proposalData!.bidAmount
-                                              .toString()) !=
+                                              .toString().isEmpty ? "0" : model.value.data!
+                                          .proposalData!.bidAmount
+                                          .toString() ) !=
                                           0)
                                         Text(
                                           "\$${(int.parse(model.value.data!.proposalData!.bidAmount.toString()) - int.parse(model.value.data!.proposalData!.bidAmount.toString()) * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
@@ -505,7 +510,9 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                                         ),
                                       if (int.parse(model.value.data!
                                               .proposalData!.bidAmount
-                                              .toString()) ==
+                                              .toString().isEmpty ? "0" : model.value.data!
+                                          .proposalData!.bidAmount
+                                          .toString() ) ==
                                           0)
                                         Text(
                                           "\$${(milestonePrice - milestonePrice * int.parse(model.value.data!.projectData!.serviceFee.toString()) / 100).toString()}",
@@ -903,10 +910,10 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
                   }
                 }
                 if (_formKey.currentState!.validate()) {
+                  milestone[0].amount = _priceController.text.trim();
                   updateProposalRepo(
                           model.value.data!.proposalData!.id.toString(), _priceController.text.trim(),
-                      model.value.data!.projectData!.budgetType.toString().toLowerCase() == "hourly" ? ""
-                              : radioProjectType == "By project" ? "single" : "multiple",
+                      model.value.data!.projectData!.budgetType.toString().toLowerCase() == "hourly" ? "" : radioProjectType == "By project" ? "single" : "multiple",
                           jsonEncode(milestone),
                           controller.durationController.text,
                           context)
@@ -947,7 +954,7 @@ class _ChangeTermsScreenState extends State<ChangeTermsScreen> {
     map["amount"] = _amountController.text;*/
     // milestone.contains(index,ModelMilestones(description: _descriptionController.text.trim() ,amount: _amountController.text.trim(),dueDate:_dueDateController.text.trim()));
     _descriptionController.text = milestone[index].description.toString();
-    _dueDateController.text = milestone[index].dueDate.toString() != "" ? dateFormatForShow.format(DateTime.parse(milestone[index].dueDate.toString())) : "";
+    _dueDateController.text = milestone[index].dueDate.toString() != "" && milestone[index].dueDate.toString() != "null" ? dateFormatForShow.format(DateTime.parse(milestone[index].dueDate.toString())) : "";
     _amountController.text = milestone[index].amount.toString();
 
     return Column(

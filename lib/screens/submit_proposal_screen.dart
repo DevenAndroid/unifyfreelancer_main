@@ -742,7 +742,7 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                                               radioProjectType =
                                                   value.toString();
                                               print(radioProjectType);
-                                              milestone.clear();
+                                            //  milestone.clear();
                                             });
                                           }),
                                       RadioListTile(
@@ -1773,12 +1773,13 @@ class _SubmitProposalScreenState extends State<SubmitProposalScreen> {
                               // map['client_id'] = clientID.toString();
                               if (radioProjectType == "By project") {
                                 map['bid_amount'] = _bidController.text.trim();
+                                milestone[0].amount = _bidController.text.trim();
+                                map["milestone_data"] = jsonEncode(milestone);
                               }
                               map['cover_letter'] =
                                   _letterController.text.trim();
                               if (type.toString().toLowerCase() == "fixed") {
-                                map['milestone_type'] =
-                                    radioProjectType == "By milestone"
+                                map['milestone_type'] = radioProjectType == "By milestone"
                                         ? "multiple"
                                         : "single";
                               }

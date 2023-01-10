@@ -1174,8 +1174,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "\$1000.00",
                     style: TextStyle(
                         fontSize: 12,
@@ -1183,15 +1183,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "\$5000.00",
-                    style: TextStyle(
+                    "\$${controller.modelSingleContract.value.data!.inEscrow.toString()}",
+                    style: const TextStyle(
                         fontSize: 12,
                         color: AppTheme.textColor,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "\$10000.00",
-                    style: TextStyle(
+                    "\$${controller.modelSingleContract.value.data!.project!.price.toString()}",
+                    style: const TextStyle(
                         fontSize: 12,
                         color: AppTheme.textColor,
                         fontWeight: FontWeight.w600),
@@ -1243,7 +1243,8 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
             height: AddSize.size20,
           ),
           ListView.builder(
-              itemCount: controller.modelSingleContract.value.data!.milestone!.length,
+              itemCount:
+                  controller.modelSingleContract.value.data!.milestone!.length,
               padding: EdgeInsets.symmetric(horizontal: AddSize.size12),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -1255,63 +1256,93 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                     Row(
                       children: [
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration:  BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppTheme.primaryColor),
+                              color: controller.modelSingleContract.value.data!
+                                  .milestone![index1].status
+                                  .toString()
+                                  .toLowerCase() ==
+                                  "paid" ? AppTheme.primaryColor : AppTheme.primaryColor.withOpacity(.45)),
                           height: AddSize.size100 * .46,
                           width: AddSize.size100 * .46,
                           alignment: Alignment.center,
-                          child: /*index1 < 2 ? Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: AddSize.size25,
-                          )
-                              :*/
-                              Padding(
-                            padding: EdgeInsets.only(top: AddSize.size10 * .5),
-                            child: AddText(
-                              text: (index1 + 1).toString(),
-                              color: Colors.white,
-                              fontSize: AddSize.size20,
-                            ),
-                          ),
+                          child: controller.modelSingleContract.value.data!
+                                      .milestone![index1].status
+                                      .toString()
+                                      .toLowerCase() ==
+                                  "paid"
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: AddSize.size25,
+                                )
+                              : Padding(
+                                  padding:
+                                      EdgeInsets.only(top: AddSize.size10 * .5),
+                                  child: AddText(
+                                    text: (index1 + 1).toString(),
+                                    color: Colors.white,
+                                    fontSize: AddSize.size20,
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           width: AddSize.size100 * .14,
                         ),
                         Expanded(
                           child: Text(
-                            controller.modelSingleContract.value.data!.milestone![index1].description.toString(),
+                            controller.modelSingleContract.value.data!
+                                .milestone![index1].description
+                                .toString(),
                             style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.ellipsis),
-                          //  maxLines: 2,
+                              fontSize: 16,
+                              fontWeight: FontWeight
+                                  .bold, /*overflow: TextOverflow.ellipsis*/
+                            ),
+                            //  maxLines: 2,
                           ),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Container(
-                          color: AppTheme.primaryColor.withOpacity(.49),
-                          height: 100,
-                          /* decoration: BoxDecoration(
+                        controller.modelSingleContract.value.data!.milestone!.length > index1 + 1
+                            ? Container(
+                                color: AppTheme.primaryColor.withOpacity(.49),
+                                height: 100,
+                                /* decoration: BoxDecoration(
                               border:Border.all( width: AddSize.size100 * .01,
                                   color: AppTheme.primaryColor.withOpacity(.33)
                               )
                           ),*/
-                          margin: EdgeInsets.only(left: AddSize.size100 * .20),
-                        //  padding: const EdgeInsets.only(bottom: 50),
-                          child: Container(
-                            width: 5,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              borderRadius:
-                                  BorderRadius.circular(AddSize.size10),
-                            ),
-                          ),
-                        ),
+                                margin: EdgeInsets.only(
+                                    left: AddSize.size100 * .20),
+                                //  padding: const EdgeInsets.only(bottom: 50),
+                                child: AnimatedContainer(
+                                  width: 5,
+                                  decoration: BoxDecoration(
+                                    color: controller.modelSingleContract.value.data!
+                                        .milestone![index1].status
+                                        .toString()
+                                        .toLowerCase() ==
+                                        "paid" ? AppTheme.primaryColor : AppTheme.primaryColor.withOpacity(.25),
+                                    borderRadius:
+                                        BorderRadius.circular(AddSize.size10),
+                                  ), duration: Duration(seconds: 10),
+                                ),
+                              )
+                            : Container(
+                                height: 50,
+                                margin: EdgeInsets.only(
+                                    left: AddSize.size100 * .20),
+                                child: Container(
+                                  width: 5,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(AddSize.size10),
+                                  ),
+                                ),
+                              ),
                         Container(
                           /*  decoration: BoxDecoration(
                               border: Border(
@@ -1327,7 +1358,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               const SizedBox(
                                 height: 8,
                               ),
-                               Text(
+                              Text(
                                 "\$${controller.modelSingleContract.value.data!.milestone![index1].amount.toString()}",
                                 style: const TextStyle(
                                     fontSize: 16,
@@ -1339,150 +1370,123 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                               ),
                               Column(
                                 children: [
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "active")
-                                   SizedBox(
-                                     child: Column(
-                                       children: [
-                                         NewButton(
-                                           title: 'Active & funded',
-                                           backgroundColor: AppTheme.whiteColor,
-                                           textColor: AppTheme.primaryColor,
-                                           onPressed: () {
-                                           },
-                                         ),
-                                         NewButton(
-                                           title: 'Submit work',
-                                           backgroundColor: AppTheme.primaryColor,
-                                           textColor: AppTheme.whiteColor,
-                                           onPressed: () {
-                                               showDialogForSubmitWork(
-                                                 controller.modelSingleContract.value.data!.milestone![index1].id.toString(),
-                                                 controller.modelSingleContract.value.data!.milestone![index1].workId.toString(),
-                                               );
-
-                                           },
-                                         ),
-                                       ],
-                                     ),
-                                   ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "submit-work")
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "active")
+                                    SizedBox(
+                                      child: Column(
+                                        children: [
+                                          NewButton(
+                                            title: 'Active & funded',
+                                            backgroundColor:
+                                                AppTheme.whiteColor,
+                                            textColor: AppTheme.primaryColor,
+                                            onPressed: () {},
+                                          ),
+                                          NewButton(
+                                            title: 'Submit work',
+                                            backgroundColor:
+                                                AppTheme.primaryColor,
+                                            textColor: AppTheme.whiteColor,
+                                            onPressed: () {
+                                              showDialogForSubmitWorkPayment(
+                                                controller
+                                                    .modelSingleContract
+                                                    .value
+                                                    .data!
+                                                    .milestone![index1]
+                                                    .id
+                                                    .toString(),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "submit-work")
                                     NewButton(
                                       title: 'In review',
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
-                                      onPressed: () {
-                                      },
+                                      onPressed: () {},
                                     ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "changed")
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "changed")
                                     NewButton(
                                       title: 'Resubmit work',
                                       backgroundColor: AppTheme.primaryColor,
                                       textColor: AppTheme.whiteColor,
                                       onPressed: () {
-                                          showDialogForSubmitWork(controller.modelSingleContract.value.data!.milestone![index1].workId.toString(),controller.modelSingleContract.value.data!.milestone![index1].id.toString(),);
+                                        showDialogForSubmitWork(
+                                          controller.modelSingleContract.value
+                                              .data!.milestone![index1].workId
+                                              .toString(),
+                                          controller.modelSingleContract.value
+                                              .data!.milestone![index1].id
+                                              .toString(),
+                                        );
                                       },
                                     ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "paid")
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "paid")
                                     NewButton(
                                       title: 'paid',
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
-                                      onPressed: () {
-                                      },
+                                      onPressed: () {},
                                     ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "draft")
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "draft")
                                     NewButton(
                                       title: 'Pending',
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
-                                      onPressed: () {
-                                      },
+                                      onPressed: () {},
                                     ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "created")
+                                  if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "created")
                                     NewButton(
                                       title: 'Active & Non funded',
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
                                       onPressed: () {
-                                        showDialogForSubmitWorkPayment(controller.modelSingleContract.value.data!.milestone![index1].workId.toString());
+                                        showDialogForSubmitWorkPayment(
+                                            controller.modelSingleContract.value
+                                                .data!.milestone![index1].workId
+                                                .toString());
                                       },
                                     ),
-                                  if(controller.modelSingleContract.value.data!.milestone![index1].status.toString().toLowerCase() == "active")
+                                  /*if (controller.modelSingleContract.value.data!
+                                          .milestone![index1].status
+                                          .toString()
+                                          .toLowerCase() ==
+                                      "active")
                                     NewButton(
                                       title: 'Active & funded',
                                       backgroundColor: AppTheme.whiteColor,
                                       textColor: AppTheme.primaryColor,
-                                      onPressed: () {
-
-                                      },
-                                    ),
-
-                                   /* NewButton(
-                                      title: 'Submit work',
-                                      backgroundColor: AppTheme.primaryColor,
-                                      textColor: AppTheme.whiteColor,
-                                      onPressed: () {
-                                        if (index1 == 0) {
-                                          showDialogForSubmitWork();
-                                        } else if (index1 == 1) {
-                                          showDialogForSubmitWorkPayment();
-                                        } else if (index1 == 2) {
-                                          showDialogForRequestMilestoneChanges();
-                                        } else if (index1 == 3) {
-                                          showDialogForAddMilestone();
-                                        } else if (index1 == 4) {
-                                          showDialogForEditActiveMilestone();
-                                        }
-                                      },
-                                    ),
-
-
-                                  NewButton(
-                                    title: 'Paid',
-                                    backgroundColor: AppTheme.whiteColor,
-                                    textColor: AppTheme.primaryColor,
-                                    onPressed: () {
-                                      if (index1 == 0) {
-                                        showDialogForSubmitWork();
-                                      } else if (index1 == 1) {
-                                        showDialogForSubmitWorkPayment();
-                                      } else if (index1 == 2) {
-                                        showDialogForRequestMilestoneChanges();
-                                      } else if (index1 == 3) {
-                                        showDialogForAddMilestone();
-                                      } else if (index1 == 4) {
-                                        showDialogForEditActiveMilestone();
-                                      }
-                                    },
-                                  )*/
+                                      onPressed: () {},
+                                    ),*/
                                 ],
                               ),
-                              /*Row(
-                                  children: [
-                                    buildChip(
-                                        selected: daysData[index1].selected!,
-                                        onTap: (){
-                                          daysData[index1].selected = true;
-                                          setState(() {
-
-                                          });
-                                        },
-                                        text: "Daily"
-                                    ),
-                                    const SizedBox(
-                                      width: 40,
-                                    ),
-                                    buildChip(
-                                        selected: !daysData[index1].selected!,
-                                        onTap: (){
-                                          daysData[index1].selected = false;
-                                          setState(() {
-
-                                          });
-                                        },
-                                        text: "Time Slot"),
-                                  ],
-                                ),*/
                               const SizedBox(
                                 height: 30,
                               ),
@@ -1491,9 +1495,24 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                         ),
                       ],
                     ),
+
                   ],
                 );
               }),
+          const SizedBox(
+            height: 10,
+          ),
+          if(controller.modelSingleContract.value.data!.milestone![controller.modelSingleContract.value.data!.milestone!.length -1 ].status.toString().toLowerCase() == "paid" || controller.modelSingleContract.value.data!.milestone![controller.modelSingleContract.value.data!.milestone!.length -1 ].status.toString().toLowerCase() == "draft" )
+            NewButton(
+              title: 'Add new milestone',
+              backgroundColor:
+              AppTheme.primaryColor,
+              textColor: AppTheme.whiteColor,
+              onPressed: () {
+                showDialogForAddMilestone();
+
+              },
+            ),
           const SizedBox(
             height: 10,
           ),
@@ -1994,36 +2013,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
               const SizedBox(
                 height: 20,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(MyRouter.viewOriginalOffer, arguments: [
-                    controller.modelSingleContract.value.data!.proposal!.id
-                        .toString()
-                  ]);
-                  print(controller.modelSingleContract.value.data!.proposal!.id
-                      .toString());
-                },
-                child: const Text(
-                  "View original offer",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "View original proposal",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
+
               /* Divider(
                 color: const Color(0xff6D2EF1).withOpacity(.49),
               ),
@@ -2771,11 +2761,13 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
         });
   }
 
-  showDialogForSubmitWork(workId,mileId) {
+  showDialogForSubmitWork(workId, mileId) {
     String milestoneId = "";
     Rx<File> documentFile = File("").obs;
     RxString fileName = "".obs;
     final formKey = GlobalKey<FormState>();
+    TextEditingController messageController = TextEditingController();
+
     pickFileToUpload() async {
       FocusManager.instance.primaryFocus!.unfocus();
       final result = await FilePicker.platform.pickFiles();
@@ -2831,13 +2823,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             height: 5,
                           ),
                           CustomTextField(
+                            controller: messageController,
                             isMulti: true,
                             obSecure: false.obs,
                             keyboardType: TextInputType.text,
                             hintText: "".obs,
                             validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter description'),
-                        ]),
+                              RequiredValidator(
+                                  errorText: 'Please enter description'),
+                            ]),
                           ),
                           const SizedBox(
                             height: 10,
@@ -2931,13 +2925,20 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     title: 'Submit',
                                     backgroundColor: AppTheme.primaryColor,
                                     onPressed: () {
-                                      if(formKey.currentState!.validate()){
-                                        Map map = <String,String>{};
+                                      if (formKey.currentState!.validate()) {
+                                        Map map = <String, String>{};
                                         map["work_id"] = workId.toString();
                                         map["milestone_id"] = mileId.toString();
-                                        map["message"] = 1.toString();
-                                        submitWork(mapData: map,file1: documentFile.value,fieldName1: fileName.value.toString(),context: context ).then((value) {
-                                          if(value.status == true){
+                                        map["message"] =
+                                            messageController.text.trim();
+                                        submitWork(
+                                                mapData: map,
+                                                file1: documentFile.value,
+                                                fieldName1:
+                                                    fileName.value.toString(),
+                                                context: context)
+                                            .then((value) {
+                                          if (value.status == true) {
                                             Get.back();
                                             controller.getData();
                                           }
@@ -2964,6 +2965,7 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
     Rx<File> documentFile = File("").obs;
     RxString fileName = "".obs;
     final formKey = GlobalKey<FormState>();
+    TextEditingController messageController = TextEditingController();
     pickFileToUpload() async {
       FocusManager.instance.primaryFocus!.unfocus();
       final result = await FilePicker.platform.pickFiles();
@@ -3051,13 +3053,15 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                             height: 5,
                           ),
                           CustomTextField(
+                            controller: messageController,
                             isMulti: true,
                             obSecure: false.obs,
                             keyboardType: TextInputType.text,
                             hintText: "".obs,
                             validator: MultiValidator([
-                          RequiredValidator(errorText: 'Please enter a messgae'),
-                        ]),
+                              RequiredValidator(
+                                  errorText: 'Please enter a messgae'),
+                            ]),
                           ),
                           const SizedBox(
                             height: 10,
@@ -3161,12 +3165,19 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
                                     title: 'Submit',
                                     backgroundColor: AppTheme.primaryColor,
                                     onPressed: () {
-                                      if(formKey.currentState!.validate()){
-                                        Map map = <String,String>{};
+                                      if (formKey.currentState!.validate()) {
+                                        Map map = <String, String>{};
                                         map["milestone_id"] = mileId.toString();
-                                        map["message"] = 1.toString();
-                                        submitWork(mapData: map,file1: documentFile.value,fieldName1: fileName.value.toString(),context: context ).then((value) {
-                                          if(value.status == true){
+                                        map["message"] =
+                                            messageController.text.trim();
+                                        submitWork(
+                                                mapData: map,
+                                                file1: documentFile.value,
+                                                fieldName1:
+                                                    fileName.value.toString(),
+                                                context: context)
+                                            .then((value) {
+                                          if (value.status == true) {
                                             Get.back();
                                             controller.getData();
                                           }
@@ -3638,6 +3649,219 @@ class _ContractsDetailsScreenState extends State<ContractsDetailsScreen> {
   }
 
   showDialogForEditActiveMilestone() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+              insetPadding: EdgeInsets.symmetric(
+                  horizontal: AddSize.padding16,
+                  vertical: AddSize.size100 * .4),
+              child: Form(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Center(
+                          child: Text(
+                            "Edit Active Milestone",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: AppTheme.darkBlueText,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        const Text(
+                          "Title",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "Profile Edit, Profile Settings".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          "Currently Funded",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          prefix: const Icon(
+                            Icons.attach_money,
+                          ),
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          "Additional Payment",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          prefix: const Icon(
+                            Icons.attach_money,
+                          ),
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          "New Milestone Payment",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          prefix: const Icon(
+                            Icons.attach_money,
+                          ),
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          "Due Date (Optional)",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          suffixIcon: const Icon(
+                            Icons.calendar_month_rounded,
+                            color: AppTheme.primaryColor,
+                          ),
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const Text(
+                          "All dates and times are based on UTC",
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: AppTheme.darkBlueText,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          "Description",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff4D4D4D),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        CustomTextField(
+                          isMulti: true,
+                          obSecure: false.obs,
+                          keyboardType: TextInputType.text,
+                          hintText: "".obs,
+                          /*validator: MultiValidator([
+                          RequiredValidator(errorText: 'Please enter title'),
+                        ]),*/
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.all(AddSize.size10),
+                                child: CustomOutlineButton(
+                                  title: 'Cancel',
+                                  backgroundColor: AppTheme.whiteColor,
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  textColor: AppTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: EdgeInsets.all(AddSize.size10),
+                                child: CustomOutlineButton(
+                                  title: 'Update',
+                                  backgroundColor: AppTheme.primaryColor,
+                                  onPressed: () {},
+                                  textColor: AppTheme.whiteColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ));
+        });
+  }
+
+  showDialogForEditActive() {
     showDialog(
         context: context,
         builder: (context) {

@@ -20,7 +20,10 @@ class SingleContractController extends GetxController {
       modelSingleContract.value = value;
       if (value.status!) {
         status.value = RxStatus.success();
-        getTimesheet();
+        if(modelSingleContract.value.data!.type.toString().toLowerCase() == "hourly"){
+          getTimesheet();
+        }
+
       } else {
         status.value = RxStatus.error();
       }

@@ -24,9 +24,9 @@ class ModelOverview {
 
 class Data {
   WorkInProgress? workInProgress;
-  List<WorkInProgress>? inReview;
-  List<WorkInProgress>? pending;
-  List<WorkInProgress>? available;
+  List<Fixed>? inReview;
+  List<Fixed>? pending;
+  List<Fixed>? available;
 
   Data({this.workInProgress, this.inReview, this.pending, this.available});
 
@@ -35,21 +35,21 @@ class Data {
         ? new WorkInProgress.fromJson(json['work_in_progress'])
         : null;
     if (json['in_review'] != null) {
-      inReview = <WorkInProgress>[];
+      inReview = <Fixed>[];
       json['in_review'].forEach((v) {
-        inReview!.add(new WorkInProgress.fromJson(v));
+        inReview!.add(new Fixed.fromJson(v));
       });
     }
     if (json['pending'] != null) {
-      pending = <WorkInProgress>[];
+      pending = <Fixed>[];
       json['pending'].forEach((v) {
-        pending!.add(new WorkInProgress.fromJson(v));
+        pending!.add(new Fixed.fromJson(v));
       });
     }
     if (json['available'] != null) {
-      available = <WorkInProgress>[];
+      available = <Fixed>[];
       json['available'].forEach((v) {
-        available!.add(new WorkInProgress.fromJson(v));
+        available!.add(new Fixed.fromJson(v));
       });
     }
   }
@@ -106,14 +106,14 @@ class WorkInProgress {
 }
 
 class Hourly {
-  int? freelancerId;
-  int? clientId;
-  int? projectId;
-  String? amount;
-  String? projectName;
-  String? clientName;
-  String? hours;
-  String? date;
+  dynamic freelancerId;
+  dynamic clientId;
+  dynamic projectId;
+  dynamic amount;
+  dynamic projectName;
+  dynamic clientName;
+  dynamic hours;
+  dynamic date;
 
   Hourly(
       {this.freelancerId,
@@ -151,10 +151,10 @@ class Hourly {
 }
 
 class Fixed {
-  String? dueDate;
-  int? amount;
-  String? clientName;
-  String? projectName;
+  dynamic dueDate;
+  dynamic amount;
+  dynamic clientName;
+  dynamic projectName;
 
   Fixed({this.dueDate, this.amount, this.clientName, this.projectName});
 

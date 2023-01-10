@@ -19,6 +19,7 @@ import '../screens/agency_account_screen.dart';
 import '../screens/change_hour_rate.dart';
 import '../screens/contracts/contracts_details_screen.dart';
 import '../screens/contracts/contracts_screen.dart';
+import '../screens/contracts/search_contracts.dart';
 import '../screens/contracts/view_origianal_offer.dart';
 import '../screens/create_client_account.dart';
 import '../screens/filters.dart';
